@@ -17,19 +17,21 @@ objects := cyclotomic_radial chiral_radial corner_cases \
            griddual hexagonal higher_cyclo histogram \
            tuebingen
 
-all: build;
+all: $(objects)
 
 %.o: %.cpp
 	$(compiler) -c -o $@ $(flags) $<
 
 cyclotomic_radial: cyclotomic_octagonal.o cyclotomic_decagonal.o \
                    cyclotomic_dodecagonal.o cyclotomic_rhombic_penrose.o \
-                   common.o cyclotomic_radial.o
-	$(compiler) -o $@ $(flags) $^
-	
-%: %.cpp; $(compiler) -c -o $@ $(flags) $<
-
-build: $(objects)
+                   common.o cyclotomic_radial.o; $(compiler) -o $@ $(flags) $^
+chiral_radial: chiral_radial.o common.o; $(compiler) -o $@ $(flags) $^
+corner_cases: corner_cases.o common.o; $(compiler) -o $@ $(flags) $^
+griddual: griddual.o common.o; $(compiler) -o $@ $(flags) $^
+hexagonal: hexagonal.o common.o; $(compiler) -o $@ $(flags) $^
+higher_cyclo: higher_cyclo.o common.o; $(compiler) -o $@ $(flags) $^
+histogram: histogram.o common.o; $(compiler) -o $@ $(flags) $^
+tuebingen: tuebingen.o common.o; $(compiler) -o $@ $(flags) $^
 
 clean:
 	rm -f *.o
