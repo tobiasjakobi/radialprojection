@@ -8,9 +8,9 @@
 typedef unsigned int uint;
 typedef unsigned short ushort;
 
-namespace OctogonalRadial {
+namespace Octogonal {
 
-  struct OctogonalOp {
+  struct VisOp {
     typedef vec4i invectype;
     static const double epsilon;
 
@@ -63,13 +63,13 @@ namespace OctogonalRadial {
     }
   };
 
-  typedef VisTest::visibleList<OctogonalOp> octogonalVisList;
+  typedef VisTest::visibleList<VisOp> VisList;
 
 };
 
-namespace DodecagonalRadial {
+namespace Dodecagonal {
 
-  struct DodecagonalOp {
+  struct VisOp {
     typedef vec4i invectype;
     static const double epsilon;
 
@@ -122,13 +122,13 @@ namespace DodecagonalRadial {
     }
   };
 
-  typedef VisTest::visibleList<DodecagonalOp> dodecagonalVisList;
+  typedef VisTest::visibleList<VisOp> VisList;
 
 };
 
 namespace RhombicPenrose {
 
-  struct RhombicOp {
+  struct VisOp {
     typedef vec4i invectype;
     static const double epsilon;
 
@@ -180,7 +180,7 @@ namespace RhombicPenrose {
     }
   };
 
-  typedef VisTest::visibleList<RhombicOp> rhombicVisList;
+  typedef VisTest::visibleList<VisOp> VisList;
 
 };
 

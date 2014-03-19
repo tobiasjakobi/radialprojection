@@ -53,16 +53,17 @@ namespace CommonRadial {
                      uint samples, double radius, float percentage);
 };
 
-namespace OctogonalRadial {
+namespace Octogonal {
 
-  const double silverMeanLambda = 1.0 + sqrt(2.0);
+  const double silverMean = 1.0 + sqrt(2.0);
 
-  const double innerOctagonRadiusSquared = (2.0 * silverMeanLambda + 1.0) / 8.0;
-  const double outerOctagonRadiusSquared = (silverMeanLambda + 1.0) / 4.0;
+  /* octagon radii */
+  const double innerRadiusSquared = (2.0 * silverMean + 1.0) / 8.0;
+  const double outerRadiusSquared = (silverMean + 1.0) / 4.0;
 
-  const double refCircleRadiusSquared = silverMeanLambda / CommonRadial::pi;
+  const double refCircleRadiusSquared = silverMean / CommonRadial::pi;
 
-  const double OctogonalOp::epsilon = 2.0 * numeric_limits<double>::epsilon();
+  const double VisOp::epsilon = 2.0 * numeric_limits<double>::epsilon();
 
   bool checkProjInSector(const vec2d& orthpoint);
   bool checkProjInWindow(const vec4i& point, bool useCircle);
@@ -100,35 +101,36 @@ namespace OctogonalRadial {
 
 };
 
-namespace DecagonalRadial {
+namespace Decagonal {
 
   const double tau = 0.5 * (1.0 + sqrt(5.0));
 
-  const double innerDecagonRadius = 0.5 * (tau + 1.0);
-  const double outerDecagonRadius = tau*tau / sqrt(tau*tau + 1.0); /* = sqrt(1 + 2/sqrt(5)) */
+  /* decagon radii */
+  const double innerRadius = 0.5 * (tau + 1.0);
+  const double outerRadius = tau*tau / sqrt(tau*tau + 1.0); /* = sqrt(1 + 2/sqrt(5)) */
 
-  const double innerDecRadSquared = 0.25 * (3.0 * tau + 2.0);
-  const double outerDecRadSquared = 1.0 + 2.0/sqrt(5.0);
+  const double innerRadSquared = 0.25 * (3.0 * tau + 2.0);
+  const double outerRadSquared = 1.0 + 2.0/sqrt(5.0);
 
   const double refCircleRadiusSquared = sqrt((5.0 / 4.0) * (11.0 * tau + 7.0)) / CommonRadial::pi;
 
   /* Regular decagon with edge length sqrt((tau + 2)/5). *
    * The upper-most edge is aligned with the x-axis.     */
-  const vec2d decagonVertices[10] = {
-    vec2d(outerDecagonRadius, 0.0),                        vec2d(sqrt((11.0*tau + 7.0)/5.0)*0.5, tau*0.5),
-    vec2d(sqrt((tau + 2.0)/5.0)*0.5, innerDecagonRadius),  vec2d(-sqrt((tau + 2.0)/5.0)*0.5, innerDecagonRadius),
-    vec2d(-sqrt((11.0*tau + 7.0)/5.0)*0.5, tau*0.5),       vec2d(-outerDecagonRadius, 0.0),
-    vec2d(-sqrt((11.0*tau + 7.0)/5.0)*0.5, -tau*0.5),      vec2d(-sqrt((tau + 2.0)/5.0)*0.5, -innerDecagonRadius),
-    vec2d(sqrt((tau + 2.0)/5.0)*0.5, -innerDecagonRadius), vec2d(sqrt((11.0*tau + 7.0)/5.0)*0.5, -tau*0.5)};
+  const vec2d vertices[10] = {
+    vec2d(outerRadius, 0.0),                          vec2d(sqrt((11.0*tau + 7.0)/5.0)*0.5, tau*0.5),
+    vec2d(sqrt((tau + 2.0)/5.0)*0.5, innerRadius),    vec2d(-sqrt((tau + 2.0)/5.0)*0.5, innerRadius),
+    vec2d(-sqrt((11.0*tau + 7.0)/5.0)*0.5, tau*0.5),  vec2d(-outerRadius, 0.0),
+    vec2d(-sqrt((11.0*tau + 7.0)/5.0)*0.5, -tau*0.5), vec2d(-sqrt((tau + 2.0)/5.0)*0.5, -innerRadius),
+    vec2d(sqrt((tau + 2.0)/5.0)*0.5, -innerRadius),   vec2d(sqrt((11.0*tau + 7.0)/5.0)*0.5, -tau*0.5)};
 
   /* This is essentially the other decagon rotated by 18 degrees. *
    * Results in alignment of the right-most edge with the y-axis. */
-  const vec2d decagonVerticesAlt[10] = {
-    vec2d(innerDecagonRadius, -0.5 * sqrt((tau + 1.0)/(tau + 2.0))),  vec2d(innerDecagonRadius, 0.5 * sqrt((tau + 1.0)/(tau + 2.0))),
-    vec2d(0.5 * tau, 0.5 * sqrt((8.0 * tau + 5.0)/(tau + 2.0))),      vec2d(0.0, outerDecagonRadius), vec2d(-0.5 * tau,
-    0.5 * sqrt((8.0 * tau + 5.0)/(tau + 2.0))),                       vec2d(-innerDecagonRadius, 0.5 * sqrt((tau + 1.0)/(tau + 2.0))),
-    vec2d(-innerDecagonRadius, -0.5 * sqrt((tau + 1.0)/(tau + 2.0))), vec2d(-0.5 * tau, -0.5 * sqrt((8.0 * tau + 5.0)/(tau + 2.0))),
-    vec2d(0.0, -outerDecagonRadius),                                  vec2d(0.5 * tau, -0.5 * sqrt((8.0 * tau + 5.0)/(tau + 2.0)))
+  const vec2d verticesAlt[10] = {
+    vec2d(innerRadius, -0.5 * sqrt((tau + 1.0)/(tau + 2.0))),    vec2d(innerRadius, 0.5 * sqrt((tau + 1.0)/(tau + 2.0))),
+    vec2d(0.5 * tau, 0.5 * sqrt((8.0 * tau + 5.0)/(tau + 2.0))), vec2d(0.0, outerRadius), vec2d(-0.5 * tau,
+    0.5 * sqrt((8.0 * tau + 5.0)/(tau + 2.0))),                  vec2d(-innerRadius, 0.5 * sqrt((tau + 1.0)/(tau + 2.0))),
+    vec2d(-innerRadius, -0.5 * sqrt((tau + 1.0)/(tau + 2.0))),   vec2d(-0.5 * tau, -0.5 * sqrt((8.0 * tau + 5.0)/(tau + 2.0))),
+    vec2d(0.0, -outerRadius),                                    vec2d(0.5 * tau, -0.5 * sqrt((8.0 * tau + 5.0)/(tau + 2.0)))
   };
 
   /* Important: When using decagonVerticesAlt as window, it needs to be shifted *
@@ -156,45 +158,46 @@ namespace DecagonalRadial {
 
 };
 
-namespace DodecagonalRadial {
+namespace Dodecagonal {
 
-  const double tauDode = 2.0 + sqrt(3.0);
+  const double tau = 2.0 + sqrt(3.0);
 
-  const double innerDodecagonRadius = tauDode * 0.5;
-  const double outerDodecagonRadius = sqrt(tauDode);
+  /* dodecagon radii */
+  const double innerRadius = tau * 0.5;
+  const double outerRadius = sqrt(tau);
 
-  const double innerDodecRadSquared = tauDode - 0.25;
-  const double outerDodecRadSquared = tauDode;
+  const double innerRadSquared = tau - 0.25;
+  const double outerRadSquared = tau;
 
-  const double refCircleRadiusSquared = 3.0 * tauDode / CommonRadial::pi;
+  const double refCircleRadiusSquared = 3.0 * tau / CommonRadial::pi;
 
-  const double DodecagonalOp::epsilon = 2.0 * numeric_limits<double>::epsilon();
+  const double VisOp::epsilon = 2.0 * numeric_limits<double>::epsilon();
 
   /* Regular dodecagon (12 sides) with edge length one. *
    * Orientation is the one resulting from connecting   *
    * the twelve roots of unity (plus scaling).          */
-  const vec2d dodecagonVertices[12] = {
-    vec2d(outerDodecagonRadius, 0.0), /* v1 */
-    vec2d(0.5 * sqrt(3.0) * outerDodecagonRadius, 0.5 * outerDodecagonRadius), /* v2 */
-    vec2d(0.5 * outerDodecagonRadius, 0.5 * sqrt(3.0) * outerDodecagonRadius), /* v3 */
-    vec2d(0.0, outerDodecagonRadius), /* v4 */
-    vec2d(-0.5 * outerDodecagonRadius, 0.5 * sqrt(3.0) * outerDodecagonRadius), /* v5 */
-    vec2d(-0.5 * sqrt(3.0) * outerDodecagonRadius, 0.5 * outerDodecagonRadius), /* v6 */
-    vec2d(-outerDodecagonRadius, 0.0), /* v7 = -v1 */
-    vec2d(-0.5 * sqrt(3.0) * outerDodecagonRadius, -0.5 * outerDodecagonRadius), /* v8 = -v2 */
-    vec2d(-0.5 * outerDodecagonRadius, -0.5 * sqrt(3.0) * outerDodecagonRadius), /* v9 = -v3 */
-    vec2d(0.0, -outerDodecagonRadius), /* v10 = -v4 */
-    vec2d(0.5 * outerDodecagonRadius, -0.5 * sqrt(3.0) * outerDodecagonRadius), /* v11 = -v5 */
-    vec2d(0.5 * sqrt(3.0) * outerDodecagonRadius, -0.5 * outerDodecagonRadius)  /* v12 = -v6 */
+  const vec2d vertices[12] = {
+    vec2d(outerRadius, 0.0), /* v1 */
+    vec2d(0.5 * sqrt(3.0) * outerRadius, 0.5 * outerRadius), /* v2 */
+    vec2d(0.5 * outerRadius, 0.5 * sqrt(3.0) * outerRadius), /* v3 */
+    vec2d(0.0, outerRadius), /* v4 */
+    vec2d(-0.5 * outerRadius, 0.5 * sqrt(3.0) * outerRadius), /* v5 */
+    vec2d(-0.5 * sqrt(3.0) * outerRadius, 0.5 * outerRadius), /* v6 */
+    vec2d(-outerRadius, 0.0), /* v7 = -v1 */
+    vec2d(-0.5 * sqrt(3.0) * outerRadius, -0.5 * outerRadius), /* v8 = -v2 */
+    vec2d(-0.5 * outerRadius, -0.5 * sqrt(3.0) * outerRadius), /* v9 = -v3 */
+    vec2d(0.0, -outerRadius), /* v10 = -v4 */
+    vec2d(0.5 * outerRadius, -0.5 * sqrt(3.0) * outerRadius), /* v11 = -v5 */
+    vec2d(0.5 * sqrt(3.0) * outerRadius, -0.5 * outerRadius)  /* v12 = -v6 */
   };
 
-  const vec2d dodecagonVerticesAlt[12] = {
-    vec2d(0.5 * tauDode, -0.5), vec2d(0.5 * tauDode, 0.5), /* v12, v1 */
-    vec2d(0.5 * (tauDode - 1.0), 0.5 * (tauDode - 1.0)), vec2d(0.5, 0.5 * tauDode), /* v2, v3 */
-    vec2d(-0.5, 0.5 * tauDode), vec2d(-0.5 * (tauDode - 1.0), 0.5 * (tauDode - 1.0)), /* v4, v5 */
-    vec2d(-0.5 * tauDode, 0.5), vec2d(-0.5 * tauDode, -0.5), /* v6, v7 */
-    vec2d(-0.5 * (tauDode - 1.0), -0.5 * (tauDode - 1.0)), vec2d(-0.5, -0.5 * tauDode), /* v8, v9 */
-    vec2d(0.5, -0.5 * tauDode), vec2d(0.5 * (tauDode - 1.0), -0.5 * (tauDode - 1.0)) /* v10, v11 */
+  const vec2d verticesAlt[12] = {
+    vec2d(0.5 * tau, -0.5), vec2d(0.5 * tau, 0.5), /* v12, v1 */
+    vec2d(0.5 * (tau - 1.0), 0.5 * (tau - 1.0)), vec2d(0.5, 0.5 * tau), /* v2, v3 */
+    vec2d(-0.5, 0.5 * tau), vec2d(-0.5 * (tau - 1.0), 0.5 * (tau - 1.0)), /* v4, v5 */
+    vec2d(-0.5 * tau, 0.5), vec2d(-0.5 * tau, -0.5), /* v6, v7 */
+    vec2d(-0.5 * (tau - 1.0), -0.5 * (tau - 1.0)), vec2d(-0.5, -0.5 * tau), /* v8, v9 */
+    vec2d(0.5, -0.5 * tau), vec2d(0.5 * (tau - 1.0), -0.5 * (tau - 1.0)) /* v10, v11 */
   };
 
   bool checkProjInSector(const vec2d& orthpoint, bool useAlt);
@@ -252,7 +255,7 @@ namespace DodecagonalRadial {
 
 namespace RhombicPenrose {
 
-  const double RhombicOp::epsilon = 2.0 * numeric_limits<double>::epsilon();
+  const double VisOp::epsilon = 2.0 * numeric_limits<double>::epsilon();
 
   const double tau = 0.5 * (1.0 + sqrt(5.0));
 
@@ -261,13 +264,14 @@ namespace RhombicPenrose {
    * xi = exp(2*pi*i/5), then let                               *
    * W1 = P, W4 = -P, W3 = tau*P, W2 = -tau*P.                  */
 
-  const double innerPentagonRadius[2] = {0.5 * tau, 0.25 * (tau + 1.0)};
-  const double outerPentagonRadius[2] = {1.0, tau}; 
+  /* pentagon radii */
+  const double innerRadius[2] = {0.5 * tau, 0.25 * (tau + 1.0)};
+  const double outerRadius[2] = {1.0, tau}; 
 
-  const double innerPentaRadSquared[2] = {0.25 * (tau + 1.0), (7.0 + 3.0*sqrt(5.0)) / 8.0};
-  const double outerPentaRadSquared[2] = {1.0, tau*tau};
+  const double innerRadSquared[2] = {0.25 * (tau + 1.0), (7.0 + 3.0*sqrt(5.0)) / 8.0};
+  const double outerRadSquared[2] = {1.0, tau*tau};
 
-  const vec2d pentagonVertices[4][5] = {
+  const vec2d vertices[4][5] = {
     {vec2d(1.0, 0.0), vec2d(0.5 * (tau - 1.0), 0.5 * sqrt(tau + 2.0)),
      vec2d(-0.5 * tau, 0.5 * sqrt(3.0 - tau)), vec2d(-0.5 * tau, -0.5 * sqrt(3.0 - tau)),
      vec2d(0.5 * (tau - 1.0), -0.5 * sqrt(tau + 2.0))},
@@ -387,14 +391,14 @@ void CommonRadial::selectOrigins(const vector<T>& tiling, vector<T>& origins,
 
 }
 
-bool OctogonalRadial::checkProjInSector(const vec2d& orthpoint) {
+bool Octogonal::checkProjInSector(const vec2d& orthpoint) {
   using namespace CommonRadial;
 
   const double v[2] = {abs(orthpoint.x), abs(orthpoint.y)};
 
-  const double tt = min(min(sqrt((2.0 * silverMeanLambda + 1.0) / 8.0) - v[0],
-                            sqrt((2.0 * silverMeanLambda + 1.0) / 8.0) - v[1]),
-                            silverMeanLambda / 2.0 - (v[0] + v[1]));
+  const double tt = min(min(sqrt((2.0 * silverMean + 1.0) / 8.0) - v[0],
+                            sqrt((2.0 * silverMean + 1.0) / 8.0) - v[1]),
+                            silverMean / 2.0 - (v[0] + v[1]));
 
   if (tt > eps) {
     return true;
@@ -408,7 +412,7 @@ bool OctogonalRadial::checkProjInSector(const vec2d& orthpoint) {
   return false;
 }
 
-bool OctogonalRadial::checkProjInWindow(const vec4i& point, bool useCircle) {
+bool Octogonal::checkProjInWindow(const vec4i& point, bool useCircle) {
   using namespace CommonRadial;
 
   const vec2d pt(point.orthProjL8());
@@ -418,10 +422,10 @@ bool OctogonalRadial::checkProjInWindow(const vec4i& point, bool useCircle) {
     return circularCheck(refCircleRadiusSquared, pt1);
   }
 
-  if (innerOctagonRadiusSquared - pt1 > eps) {
+  if (innerRadiusSquared - pt1 > eps) {
     return true;
   } else {
-    if (outerOctagonRadiusSquared - pt1 < -eps) {
+    if (outerRadiusSquared - pt1 < -eps) {
       return false;
     } else {
       return checkProjInSector(pt);
@@ -429,20 +433,20 @@ bool OctogonalRadial::checkProjInWindow(const vec4i& point, bool useCircle) {
   }
 }
 
-bool OctogonalRadial::checkScaledProjInWindow(const vec4i& point, bool useCircle) {
+bool Octogonal::checkScaledProjInWindow(const vec4i& point, bool useCircle) {
   using namespace CommonRadial;
 
-  const vec2d pt(point.orthProjL8() * silverMeanLambda);
+  const vec2d pt(point.orthProjL8() * silverMean);
   const double pt1 = pt.lengthSquared();
 
   if (useCircle) {
     return circularCheck(refCircleRadiusSquared, pt1);
   }
 
-  if (innerOctagonRadiusSquared - pt1 > eps) {
+  if (innerRadiusSquared - pt1 > eps) {
     return true;
   } else {
-    if (outerOctagonRadiusSquared - pt1 < -eps) {
+    if (outerRadiusSquared - pt1 < -eps) {
       return false;
     } else {
       return checkProjInSector(pt);
@@ -450,7 +454,7 @@ bool OctogonalRadial::checkScaledProjInWindow(const vec4i& point, bool useCircle
   }
 }
 
-void OctogonalRadial::projTiling(const vec4i& initpoint, uint maxstep,
+void Octogonal::projTiling(const vec4i& initpoint, uint maxstep,
                  CommonRadial::vec4ilist& tilingpoints) {
   using namespace CommonRadial;
 
@@ -489,7 +493,7 @@ void OctogonalRadial::projTiling(const vec4i& initpoint, uint maxstep,
        << tilingpoints.size() << " vertices.\n";
 }
 
-void OctogonalRadial::projTilingVis(const vec4i& initpoint,
+void Octogonal::projTilingVis(const vec4i& initpoint,
                  const vec4i& origin,
                  uint maxstep, bool radialproj,
                  CommonRadial::vec4ilist& tilingpoints,
@@ -534,7 +538,7 @@ void OctogonalRadial::projTilingVis(const vec4i& initpoint,
        << tilingpoints.size() << " vertices.\n";
 
   // We're not removing vertices in this case, so allocate the full amount.
-  octogonalVisList* vlist = new octogonalVisList;
+  VisList* vlist = new VisList;
   vlist->reserve(tilingpoints.size() - 1);
 
   vlist->init();
@@ -560,7 +564,7 @@ void OctogonalRadial::projTilingVis(const vec4i& initpoint,
 }
 
 // See projTilingVis for more comments on the code.
-void OctogonalRadial::projTilingVisLocal(const vec4i& initpoint,
+void Octogonal::projTilingVisLocal(const vec4i& initpoint,
                  uint maxstep, bool onlySector,
                  CommonRadial::vec4ilist& tilingpoints,
                  CommonRadial::vec4ilist& visiblepoints) {
@@ -615,7 +619,7 @@ void OctogonalRadial::projTilingVisLocal(const vec4i& initpoint,
        << visiblepoints.size() << " visible ones.\n";
 }
 
-void OctogonalRadial::radialProj(const CommonRadial::vec4ilist& input,
+void Octogonal::radialProj(const CommonRadial::vec4ilist& input,
                           CommonRadial::dlist& output,
                           double& meandist, bool onlySector) {
   using namespace CommonRadial;
@@ -643,7 +647,7 @@ void OctogonalRadial::radialProj(const CommonRadial::vec4ilist& input,
   normalizeAngDists(output, meandist);
 }
 
-void OctogonalRadial::radialProj(const CommonRadial::vec4ilist& input,
+void Octogonal::radialProj(const CommonRadial::vec4ilist& input,
                           const vec4i& origin, double radius,
                           CommonRadial::dlist& output, double& meandist) {
   using namespace CommonRadial;
@@ -652,7 +656,7 @@ void OctogonalRadial::radialProj(const CommonRadial::vec4ilist& input,
   vec4ilist visiblepoints;
   dlist angles;
 
-  octogonalVisList* vlist = new octogonalVisList;
+  VisList* vlist = new VisList;
   vlist->reserve(input.size() - 1);
 
   vlist->init();
@@ -688,7 +692,7 @@ void OctogonalRadial::radialProj(const CommonRadial::vec4ilist& input,
   normalizeAngDists(output, meandist);
 }
 
-void OctogonalRadial::testWindow(CommonRadial::vec2ilist& output,
+void Octogonal::testWindow(CommonRadial::vec2ilist& output,
                           uint resolution) {
   using namespace CommonRadial;
 
@@ -709,7 +713,7 @@ void OctogonalRadial::testWindow(CommonRadial::vec2ilist& output,
   }
 }
 
-void OctogonalRadial::innerOuterRadius(const CommonRadial::vec4ilist& tilingpoints,
+void Octogonal::innerOuterRadius(const CommonRadial::vec4ilist& tilingpoints,
                           double& inner, double& outer) {
   using namespace CommonRadial;
 
@@ -728,13 +732,13 @@ void OctogonalRadial::innerOuterRadius(const CommonRadial::vec4ilist& tilingpoin
   cerr << "debug: inner = " << inner << endl;
 }
 
-bool DecagonalRadial::checkProjInSector(const vec2d& orthpoint, bool useAlt) {
+bool Decagonal::checkProjInSector(const vec2d& orthpoint, bool useAlt) {
   using namespace CommonRadial;
 
   const vec2d v(abs(orthpoint.x), abs(orthpoint.y));
   double test;
 
-  const vec2d* const vertices = (useAlt ? decagonVerticesAlt : decagonVertices);
+  const vec2d* const vertices = (useAlt ? verticesAlt : vertices);
 
   for (uint i = 0; i < 3; ++i) {
     test = checkPosition(vertices[i], vertices[i+1], v);
@@ -747,7 +751,7 @@ bool DecagonalRadial::checkProjInSector(const vec2d& orthpoint, bool useAlt) {
   return true;
 }
 
-bool DecagonalRadial::checkProjInWindow(const vec4i& point, bool useCircle) {
+bool Decagonal::checkProjInWindow(const vec4i& point, bool useCircle) {
   using namespace CommonRadial;
 
   const vec2d pt(point.orthProjShiftL5());
@@ -757,10 +761,10 @@ bool DecagonalRadial::checkProjInWindow(const vec4i& point, bool useCircle) {
     return circularCheck(refCircleRadiusSquared, pt1);
   }
 
-  if (innerDecRadSquared - pt1 > eps) {
+  if (innerRadSquared - pt1 > eps) {
     return true;
   } else {
-    if (outerDecRadSquared - pt1 < -eps) {
+    if (outerRadSquared - pt1 < -eps) {
       return false;
     } else {
       return checkProjInSector(pt, windowBookOrientation);
@@ -768,7 +772,7 @@ bool DecagonalRadial::checkProjInWindow(const vec4i& point, bool useCircle) {
   }
 }
 
-bool DecagonalRadial::checkScaledProjInWindow(const vec4i& point, bool useCircle) {
+bool Decagonal::checkScaledProjInWindow(const vec4i& point, bool useCircle) {
   using namespace CommonRadial;
 
   const vec2d pt(point.orthProjShiftL5(tau));
@@ -778,10 +782,10 @@ bool DecagonalRadial::checkScaledProjInWindow(const vec4i& point, bool useCircle
     return circularCheck(refCircleRadiusSquared, pt1);
   }
 
-  if (innerDecRadSquared - pt1 > eps) {
+  if (innerRadSquared - pt1 > eps) {
     return true;
   } else {
-    if (outerDecRadSquared - pt1 < -eps) {
+    if (outerRadSquared - pt1 < -eps) {
       return false;
     } else {
       return checkProjInSector(pt, windowBookOrientation);
@@ -789,7 +793,7 @@ bool DecagonalRadial::checkScaledProjInWindow(const vec4i& point, bool useCircle
   }
 }
 
-void DecagonalRadial::projTilingVisLocal(const vec4i& initpoint, uint maxstep,
+void Decagonal::projTilingVisLocal(const vec4i& initpoint, uint maxstep,
                      CommonRadial::vec4ilist& tilingpoints,
                      CommonRadial::vec4ilist& visiblepoints) {
   using namespace CommonRadial;
@@ -845,7 +849,7 @@ void DecagonalRadial::projTilingVisLocal(const vec4i& initpoint, uint maxstep,
        << visiblepoints.size() << " visible ones.\n";
 }
 
-void DecagonalRadial::extractSector(const CommonRadial::vec4ilist& input,
+void Decagonal::extractSector(const CommonRadial::vec4ilist& input,
                  CommonRadial::vec4ilist& output) {
   using namespace CommonRadial;
 
@@ -861,7 +865,7 @@ void DecagonalRadial::extractSector(const CommonRadial::vec4ilist& input,
   }
 }
 
-void DecagonalRadial::radialProj(const CommonRadial::vec4ilist& input,
+void Decagonal::radialProj(const CommonRadial::vec4ilist& input,
                           CommonRadial::dlist& output,
                           double& meandist) {
   using namespace CommonRadial;
@@ -882,7 +886,7 @@ void DecagonalRadial::radialProj(const CommonRadial::vec4ilist& input,
   normalizeAngDists(output, meandist);
 }
 
-void DecagonalRadial::testWindow(CommonRadial::vec2ilist& output, uint resolution) {
+void Decagonal::testWindow(CommonRadial::vec2ilist& output, uint resolution) {
   using namespace CommonRadial;
 
   // Scan the area [-2,2]^2 (outer decagon radius is approx. 1.37)
@@ -902,13 +906,13 @@ void DecagonalRadial::testWindow(CommonRadial::vec2ilist& output, uint resolutio
   }
 }
 
-bool DodecagonalRadial::checkProjInSector(const vec2d& orthpoint, bool useAlt) {
+bool Dodecagonal::checkProjInSector(const vec2d& orthpoint, bool useAlt) {
   using namespace CommonRadial;
 
   const vec2d v(orthpoint.reduceIntoSectorL12());
   double test;
 
-  const vec2d* const vertices = (useAlt ? dodecagonVerticesAlt : dodecagonVertices);
+  const vec2d* const vertices = (useAlt ? verticesAlt : vertices);
 
   for (uint i = 0; i < 2; ++i) {
     test = checkPosition(vertices[i], vertices[i+1], v);
@@ -921,7 +925,7 @@ bool DodecagonalRadial::checkProjInSector(const vec2d& orthpoint, bool useAlt) {
   return true;
 }
 
-bool DodecagonalRadial::checkProjInWindow(const vec4i& point, bool useCircle) {
+bool Dodecagonal::checkProjInWindow(const vec4i& point, bool useCircle) {
   using namespace CommonRadial;
 
   const vec2d pt(point.orthProjShiftL12());
@@ -931,10 +935,10 @@ bool DodecagonalRadial::checkProjInWindow(const vec4i& point, bool useCircle) {
     return circularCheck(refCircleRadiusSquared, pt1);
   }
 
-  if (innerDodecRadSquared - pt1 > eps) {
+  if (innerRadSquared - pt1 > eps) {
     return true;
   } else {
-    if (outerDodecRadSquared - pt1 < -eps) {
+    if (outerRadSquared - pt1 < -eps) {
       return false;
     } else {
       return checkProjInSector(pt, windowBookOrientation);
@@ -942,7 +946,7 @@ bool DodecagonalRadial::checkProjInWindow(const vec4i& point, bool useCircle) {
   }
 }
 
-bool DodecagonalRadial::checkScaledProjInWindow(const vec4i& point,
+bool Dodecagonal::checkScaledProjInWindow(const vec4i& point,
                     bool gcdNormTwo, bool useCircle) {
   using namespace CommonRadial;
 
@@ -951,8 +955,8 @@ bool DodecagonalRadial::checkScaledProjInWindow(const vec4i& point,
    * vertex. The scaling factors look a bit weird, but become   *
    * nicer if we don't consider the dodecagon with outer radius *
    * sqrt(tau) but the normalized dodecagon (outer rad = 1).    */
-  const double scaler = gcdNormTwo ? sqrt(tauDode * 0.5) :
-                                     sqrt(tauDode * 2.0);
+  const double scaler = gcdNormTwo ? sqrt(tau * 0.5) :
+                                     sqrt(tau * 2.0);
 
   /* Interesting observation: Multiply the two scaling factors and *
    * we recover tauDode again. Hmm, nice!                          */
@@ -964,10 +968,10 @@ bool DodecagonalRadial::checkScaledProjInWindow(const vec4i& point,
     return circularCheck(refCircleRadiusSquared, pt1);
   }
 
-  if (innerDodecRadSquared - pt1 > eps) {
+  if (innerRadSquared - pt1 > eps) {
     return true;
   } else {
-    if (outerDodecRadSquared - pt1 < -eps) {
+    if (outerRadSquared - pt1 < -eps) {
       return false;
     } else {
       return checkProjInSector(pt, windowBookOrientation);
@@ -975,7 +979,7 @@ bool DodecagonalRadial::checkScaledProjInWindow(const vec4i& point,
   }
 }
 
-void DodecagonalRadial::projTilingVisLocal(const vec4i& initpoint, uint maxstep,
+void Dodecagonal::projTilingVisLocal(const vec4i& initpoint, uint maxstep,
                      CommonRadial::vec4ilist& tilingpoints,
                      CommonRadial::vec4ilist& visiblepoints) {
   using namespace CommonRadial;
@@ -1037,7 +1041,7 @@ void DodecagonalRadial::projTilingVisLocal(const vec4i& initpoint, uint maxstep,
        << visiblepoints.size() << " visible ones.\n";
 }
 
-void DodecagonalRadial::projTilingVis(const vec4i& initpoint, uint maxstep,
+void Dodecagonal::projTilingVis(const vec4i& initpoint, uint maxstep,
                      bool radialproj,
                      CommonRadial::vec4ilist& tilingpoints,
                      CommonRadial::vec4ilist& visiblepoints) {
@@ -1081,7 +1085,7 @@ void DodecagonalRadial::projTilingVis(const vec4i& initpoint, uint maxstep,
 
   // TODO: Due to the shift into a non-singular position, there is no 12-star at the
   //       origin of the tiling. Can one still reduce the tiling to a, say 1/6 sector?
-  dodecagonalVisList* vlist = new dodecagonalVisList;
+  VisList* vlist = new VisList;
   vlist->reserve(double(tilingpoints.size() - 1) * (radialproj ? 0.17 : 1.0));
 
   vlist->init();
@@ -1117,13 +1121,13 @@ void DodecagonalRadial::projTilingVis(const vec4i& initpoint, uint maxstep,
   vlist = NULL;
 }
 
-vec4i DodecagonalRadial::sqDist(const vec4i& v, const vec4i& w) {
+vec4i Dodecagonal::sqDist(const vec4i& v, const vec4i& w) {
   const vec4i z(v - w);
 
   return z.multL12(z.conjL12());
 }
 
-void DodecagonalRadial::projTilingPatch(const vec4i& initpoint, uint maxstep,
+void Dodecagonal::projTilingPatch(const vec4i& initpoint, uint maxstep,
                      CommonRadial::vec4ilist& tilingpoints,
                      CommonRadial::edgelist& edges) {
   using namespace CommonRadial;
@@ -1179,7 +1183,7 @@ void DodecagonalRadial::projTilingPatch(const vec4i& initpoint, uint maxstep,
   cerr << "Introduced " << edges.size() << " edges to the patch.\n"; 
 }
 
-void DodecagonalRadial::extractSector(const CommonRadial::vec4ilist& input,
+void Dodecagonal::extractSector(const CommonRadial::vec4ilist& input,
                      CommonRadial::vec4ilist& output) {
 
   using namespace CommonRadial;
@@ -1196,7 +1200,7 @@ void DodecagonalRadial::extractSector(const CommonRadial::vec4ilist& input,
   }
 }
 
-void DodecagonalRadial::radialProj(const CommonRadial::vec4ilist& input,
+void Dodecagonal::radialProj(const CommonRadial::vec4ilist& input,
                   CommonRadial::dlist& output,
                   double& meandist) {
   using namespace CommonRadial;
@@ -1217,7 +1221,7 @@ void DodecagonalRadial::radialProj(const CommonRadial::vec4ilist& input,
   normalizeAngDists(output, meandist);
 }
 
-void DodecagonalRadial::testWindow(CommonRadial::vec2ilist& output, uint resolution) {
+void Dodecagonal::testWindow(CommonRadial::vec2ilist& output, uint resolution) {
   using namespace CommonRadial;
 
   // Scan the area [-3,3]^2 (outer dodecagon radius is approx. 1.93)
@@ -1241,14 +1245,14 @@ void RhombicPenrose::getInnerOuterSquared(double& inner, double& outer, uint win
   switch (window) {
     case 0:
     case 3:
-      inner = innerPentaRadSquared[0];
-      outer = outerPentaRadSquared[0];
+      inner = innerRadSquared[0];
+      outer = outerRadSquared[0];
       break;
 
     case 1:
     case 2:
-      inner = innerPentaRadSquared[1];
-      outer = outerPentaRadSquared[1];
+      inner = innerRadSquared[1];
+      outer = outerRadSquared[1];
       break;
 
     default:
@@ -1262,10 +1266,10 @@ bool RhombicPenrose::checkProjInSector(const vec2d& orthpoint, uint window) {
   const vec2d v(orthpoint.x, abs(orthpoint.y));
   double test;
 
-  const vec2d* const vertices = pentagonVertices[window];
+  const vec2d* const verts = vertices[window];
 
   for (uint i = 0; i < 3; ++i) {
-    test = checkPosition(vertices[i], vertices[i+1], v);
+    test = checkPosition(verts[i], verts[i+1], v);
     if (test < -eps) return false;
     if (test <= eps) {
       cerr << "Warning: Insufficient accuracy in function checkProjInSector.\n";
@@ -1365,7 +1369,7 @@ void RhombicPenrose::selectVisible(const CommonRadial::vec4ilist& patch,
              CommonRadial::vec4ilist& visiblepoints, bool radialproj) {
   using namespace CommonRadial;
 
-  rhombicVisList* vlist = new rhombicVisList;
+  VisList* vlist = new VisList;
   vlist->reserve(patch.size());
   vlist->init();
 
@@ -1388,13 +1392,13 @@ void RhombicPenrose::selectVisible(const CommonRadial::vec4ilist& patch,
 void RhombicPenrose::extractSector(const CommonRadial::vec4ilist& input,
              CommonRadial::vec4ilist& output) {
   // Identical to the decagonal case:
-  DecagonalRadial::extractSector(input, output);
+  Decagonal::extractSector(input, output);
 }
 
 void RhombicPenrose::radialProj(const CommonRadial::vec4ilist& input,
              CommonRadial::dlist& output, double& meandist) {
   // Identical to the decagonal case:
-  DecagonalRadial::radialProj(input, output, meandist);
+  Decagonal::radialProj(input, output, meandist);
 }
 
 void RhombicPenrose::radialProj(const CommonRadial::vec4ilist& input,
@@ -1471,8 +1475,8 @@ int main_mmachine_master(int argc, char* argv[]) {
 
 
 
-  OctogonalRadial::projTiling(init, steps, fulltiling);
-  OctogonalRadial::innerOuterRadius(fulltiling, inner, outer);
+  Octogonal::projTiling(init, steps, fulltiling);
+  Octogonal::innerOuterRadius(fulltiling, inner, outer);
 
   RadiusSelector::radiusSq = inner * inner;
 
@@ -1518,7 +1522,7 @@ int main_mmachine_slave(int argc, char* argv[]) {
   }
 
   readRawConsole(tiling);
-  OctogonalRadial::radialProj(tiling, origin, radius, output, mdist);
+  Octogonal::radialProj(tiling, origin, radius, output, mdist);
 
   writeRawConsole(output);
 }
@@ -1606,20 +1610,20 @@ int main(int argc, char* argv[]) {
    * output double-precision floating point data.           */
   switch (mode) {
     case 0: if (use_default_origin)
-              OctogonalRadial::projTilingVisLocal(init, steps, sector, tiling, visible);
+              Octogonal::projTilingVisLocal(init, steps, sector, tiling, visible);
             else
-              OctogonalRadial::projTilingVis(init, origin, steps, false, tiling, visible); // onlySector is ignored
+              Octogonal::projTilingVis(init, origin, steps, false, tiling, visible); // onlySector is ignored
             break;
 
     case 1: if (use_default_origin)
-              OctogonalRadial::projTilingVisLocal(init, steps, sector, tiling, visible);
+              Octogonal::projTilingVisLocal(init, steps, sector, tiling, visible);
             else
-              OctogonalRadial::projTilingVis(init, origin, steps, true, tiling, visible); // onlySector is ignored
+              Octogonal::projTilingVis(init, origin, steps, true, tiling, visible); // onlySector is ignored
             {
               CommonRadial::dlist output;
               double mean;
 
-              OctogonalRadial::radialProj(visible, output, mean, sector);
+              Octogonal::radialProj(visible, output, mean, sector);
 
               cerr << "mean distance " << mean
                    << " during radial projection of " << (output.size() + 1)
@@ -1629,24 +1633,24 @@ int main(int argc, char* argv[]) {
             }
             break;
 
-    case 2: DecagonalRadial::projTilingVisLocal(init, steps, tiling, visible);
+    case 2: Decagonal::projTilingVisLocal(init, steps, tiling, visible);
             if (sector) {
               CommonRadial::vec4ilist visSector;
-              DecagonalRadial::extractSector(visible, visSector);
+              Decagonal::extractSector(visible, visSector);
               visible = visSector;
               cerr << "Reduced visible tiling to a sector containing "
                    << visible.size() << " vertices.\n";
             }
             break;
 
-    case 3: DecagonalRadial::projTilingVisLocal(init, steps, tiling, visible);
+    case 3: Decagonal::projTilingVisLocal(init, steps, tiling, visible);
             {
               CommonRadial::vec4ilist visSector;
               CommonRadial::dlist output;
               double mean;
 
-              DecagonalRadial::extractSector(visible, visSector);
-              DecagonalRadial::radialProj(visSector, output, mean);
+              Decagonal::extractSector(visible, visSector);
+              Decagonal::radialProj(visSector, output, mean);
 
               cerr << "mean distance " << mean
                    << " during radial projection of " << visSector.size()
@@ -1667,25 +1671,25 @@ int main(int argc, char* argv[]) {
               }
               
               if (robustVisibilityTest)
-                DodecagonalRadial::projTilingVis(init, steps, false, tiling, visible);
+                Dodecagonal::projTilingVis(init, steps, false, tiling, visible);
               else
-                DodecagonalRadial::projTilingVisLocal(init, steps, tiling, visible);
+                Dodecagonal::projTilingVisLocal(init, steps, tiling, visible);
             }
             if (sector) {
               CommonRadial::vec4ilist visSector;
-              DodecagonalRadial::extractSector(visible, visSector);
+              Dodecagonal::extractSector(visible, visSector);
               visible = visSector;
               cerr << "Reduced visible tiling to a sector containing "
                    << visible.size() << " vertices.\n";
             }
             break;
 
-    case 5: DodecagonalRadial::projTilingVis(init, steps, true, tiling, visible);
+    case 5: Dodecagonal::projTilingVis(init, steps, true, tiling, visible);
             {
               CommonRadial::dlist output;
               double mean;
 
-              DodecagonalRadial::radialProj(visible, output, mean);
+              Dodecagonal::radialProj(visible, output, mean);
 
               cerr << "mean distance " << mean
                    << " during radial projection of " << visible.size()
