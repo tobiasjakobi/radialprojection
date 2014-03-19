@@ -1,0 +1,157 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 8.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[      5254,        148]
+NotebookOptionsPosition[      4841,        131]
+NotebookOutlinePosition[      5275,        148]
+CellTagsIndexPosition[      5232,        145]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{"Generate", " ", "reals", " ", "in", " ", "the", " ", 
+     RowBox[{"interval", " ", "[", 
+      RowBox[{"0", ",", 
+       RowBox[{"2", "*", "Pi"}]}], "]"}]}], ",", " ", 
+    RowBox[{
+    "sort", " ", "and", "\[IndentingNewLine]", "compute", " ", "distance", 
+     " ", "between", " ", "neighbouring", " ", 
+     RowBox[{"values", ":"}]}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"angles", "[", "Pois", "]"}], "=", 
+     RowBox[{"RandomReal", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"0.0", ",", 
+         RowBox[{"2", "*", "Pi"}]}], "}"}], ",", "4000000"}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"sorted", "[", "Pois", "]"}], "=", 
+     RowBox[{"Sort", "[", 
+      RowBox[{
+       RowBox[{"angles", "[", "Pois", "]"}], ",", "Greater"}], "]"}]}], ";"}],
+    "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"dists", "[", "Pois", "]"}], "=", 
+     RowBox[{"Drop", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"sorted", "[", "Pois", "]"}], "-", 
+        RowBox[{"RotateLeft", "[", 
+         RowBox[{"sorted", "[", "Pois", "]"}], "]"}]}], ",", 
+       RowBox[{"-", "1"}]}], "]"}]}], ";"}]}]}]], "Input",
+ CellChangeTimes->{{3.554538362434034*^9, 3.554538383147511*^9}, {
+   3.554538454089938*^9, 3.554538458173361*^9}, {3.554538534638631*^9, 
+   3.554538547614738*^9}, {3.554538589024624*^9, 3.554538590575956*^9}, {
+   3.554539099334888*^9, 3.554539103284417*^9}, {3.554539424938569*^9, 
+   3.554539483779497*^9}, {3.558949918314153*^9, 3.558949935435556*^9}, {
+   3.558949970620365*^9, 3.558949974479187*^9}, 3.57589171489515*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"Create", " ", 
+    RowBox[{"histogram", ":", " ", 
+     RowBox[{
+     "We", " ", "expect", " ", "something", " ", "that", " ", "resembles", 
+      " ", "the", "\[IndentingNewLine]", "density", " ", "function", " ", 
+      "for", " ", "the", " ", "homogeneous", " ", "Poisson", " ", "point", 
+      " ", "process", " ", 
+      RowBox[{"(", 
+       RowBox[{
+       "or", " ", "\"\<complete spatial randomness,\>\"", " ", "CSR"}], 
+       ")"}]}]}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"histo", "[", "Pois", "]"}], "=", 
+    RowBox[{"Histogram", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"dists", "[", "Pois", "]"}], "/", 
+       RowBox[{"Mean", "[", 
+        RowBox[{"dists", "[", "Pois", "]"}], "]"}]}], ",", 
+      RowBox[{"{", 
+       RowBox[{"0", ",", "4", ",", "0.01"}], "}"}], ",", "\"\<PDF\>\"", ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"ChartStyle", "\[Rule]", 
+       RowBox[{"Directive", "[", 
+        RowBox[{"Black", ",", 
+         RowBox[{"EdgeForm", "[", "None", "]"}]}], "]"}]}]}], "]"}]}], 
+   ";"}]}]], "Input",
+ CellChangeTimes->{{3.55453850534488*^9, 3.554538509634063*^9}, {
+  3.554538696803671*^9, 3.554538697170001*^9}, {3.554538737556637*^9, 
+  3.55453874172454*^9}, {3.554539534766554*^9, 3.554539536343575*^9}, {
+  3.55453966395355*^9, 3.554539701662037*^9}, {3.558353487844978*^9, 
+  3.558353517714424*^9}, {3.558353664902114*^9, 3.558353679573241*^9}, {
+  3.5589499385686*^9, 3.558949946895897*^9}, {3.558950029961101*^9, 
+  3.558950032216511*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"pcolor", "[", "Pois", "]"}], ":=", "Red"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Show", "[", 
+  RowBox[{
+   RowBox[{"histo", "[", "Pois", "]"}], ",", "\[IndentingNewLine]", 
+   RowBox[{"Plot", "[", 
+    RowBox[{
+     RowBox[{"ExpPDF", "[", 
+      RowBox[{"x", ",", "1", ",", "1"}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"x", ",", "0", ",", 
+       RowBox[{"histoParams", "[", 
+        RowBox[{"[", "1", "]"}], "]"}]}], "}"}], ",", 
+     RowBox[{"PlotStyle", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"pcolor", "[", "Pois", "]"}], ",", "Thick"}], "}"}]}], ",", 
+     RowBox[{"Exclusions", "\[Rule]", "None"}]}], "]"}]}], "]"}]}], "Input",
+ CellChangeTimes->{{3.558353522663145*^9, 3.558353526152319*^9}, {
+   3.558353610166796*^9, 3.558353612018666*^9}, {3.55835371687446*^9, 
+   3.558353721748958*^9}, 3.558949957192126*^9, {3.558950043001184*^9, 
+   3.558950049578467*^9}}]
+},
+WindowSize->{1600, 1143},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+PrivateNotebookOptions->{"VersionedStylesheet"->{"Default.nb"[8.] -> False}},
+Magnification->1.5,
+FrontEndVersion->"9.0 for Linux x86 (64-bit) (January 25, 2013)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[557, 20, 1729, 44, 167, "Input"],
+Cell[2289, 66, 1586, 37, 137, "Input"],
+Cell[3878, 105, 959, 24, 107, "Input"]
+}
+]
+*)
+
+(* End of internal cache information *)

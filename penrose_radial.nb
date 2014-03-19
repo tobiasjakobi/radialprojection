@@ -1,0 +1,302 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 8.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[     10873,        293]
+NotebookOptionsPosition[     10314,        271]
+NotebookOutlinePosition[     10670,        287]
+CellTagsIndexPosition[     10627,        284]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"<<", "PenroseTiles`"}]], "Input",
+ CellChangeTimes->{{3.530357224617213*^9, 3.530357227947921*^9}, {
+  3.530357270144228*^9, 3.530357272303065*^9}}],
+
+Cell[BoxData[
+ RowBox[{"GraphicsGrid", "[", 
+  RowBox[{"{", 
+   RowBox[{"LineGraphB", "/@", 
+    RowBox[{"{", 
+     RowBox[{"Kite", ",", "Dart"}], "}"}]}], "}"}], "]"}]], "Input",
+ CellChangeTimes->{{3.530359254515991*^9, 3.530359290334791*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Map", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"LineGraphB", "[", 
+     RowBox[{"Deflate", "[", 
+      RowBox[{"Sun", ",", "#"}], "]"}], "]"}], "&"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"2", ",", "3", ",", "4", ",", "5"}], "}"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.530357410278068*^9, 3.530357423519766*^9}, {
+  3.530357729559293*^9, 3.530357744298762*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Map", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"LineGraphA", "[", 
+     RowBox[{"Deflate", "[", 
+      RowBox[{"Sun", ",", "#"}], "]"}], "]"}], "&"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"2", ",", "3", ",", "4", ",", "5"}], "}"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.530357467387943*^9, 3.530357477344944*^9}, {
+  3.530357534584015*^9, 3.530357566885164*^9}, {3.530357766726985*^9, 
+  3.530357781100406*^9}, {3.53035797712467*^9, 3.530357984748953*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Map", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"LineGraphA", "[", 
+     RowBox[{"Deflate", "[", 
+      RowBox[{"Star", ",", "#"}], "]"}], "]"}], "&"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"2", ",", "3", ",", "4", ",", "5"}], "}"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.530358579322365*^9, 3.530358580087304*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"PlotPenroseChart", "[", "DeflFactor_", "]"}], ":=", 
+   RowBox[{"Module", "[", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "deflatedSun", ",", "allverts", ",", "unique", ",", "angles", ",", 
+       "dists"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"deflatedSun", ":=", 
+       RowBox[{"Deflate", "[", 
+        RowBox[{"Sun", ",", "DeflFactor"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"allverts", ":=", 
+       RowBox[{"Flatten", "[", 
+        RowBox[{
+         RowBox[{"deflatedSun", "/.", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"a", "[", 
+              RowBox[{"x_", ",", "y_", ",", "z_"}], "]"}], "\[Rule]", 
+             RowBox[{"{", 
+              RowBox[{"x", ",", "y", ",", "z"}], "}"}]}], ",", 
+            RowBox[{
+             RowBox[{"o", "[", 
+              RowBox[{"x_", ",", "y_", ",", "z_"}], "]"}], "\[Rule]", 
+             RowBox[{"{", 
+              RowBox[{"x", ",", "y", ",", "z"}], "}"}]}]}], "}"}]}], ",", 
+         "1"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"unique", ":=", 
+       RowBox[{"Union", "[", 
+        RowBox[{"Select", "[", 
+         RowBox[{"allverts", ",", 
+          RowBox[{
+           RowBox[{
+            RowBox[{
+             RowBox[{"Part", "[", 
+              RowBox[{"#", ",", "1"}], "]"}], "\[NotEqual]", "0"}], "||", 
+            RowBox[{
+             RowBox[{"Part", "[", 
+              RowBox[{"#", ",", "2"}], "]"}], "\[NotEqual]", "0"}]}], "&"}]}],
+          "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"angles", ":=", 
+       RowBox[{"Sort", "[", 
+        RowBox[{
+         RowBox[{"Map", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"ArcTan", "[", 
+             RowBox[{
+              RowBox[{"Part", "[", 
+               RowBox[{"#", ",", "1"}], "]"}], ",", 
+              RowBox[{"Part", "[", 
+               RowBox[{"#", ",", "2"}], "]"}]}], "]"}], "&"}], ",", 
+           "unique"}], "]"}], ",", "Greater"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"dists", ":=", 
+       RowBox[{"Drop", "[", 
+        RowBox[{
+         RowBox[{"angles", "-", 
+          RowBox[{"RotateLeft", "[", "angles", "]"}]}], ",", 
+         RowBox[{"-", "1"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"Histogram", "[", 
+       RowBox[{"dists", ",", "\"\<Wand\>\"", ",", 
+        RowBox[{"ScalingFunctions", "\[Rule]", 
+         RowBox[{"{", "\"\<Log\>\"", "}"}]}]}], "]"}]}]}], 
+    "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.530362481472415*^9, 3.530362622522336*^9}, {
+  3.530362667378286*^9, 3.530362672989874*^9}, {3.530362703426669*^9, 
+  3.530362705597689*^9}, {3.530442135869502*^9, 3.530442137236972*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Map", "[", 
+  RowBox[{"PlotPenroseChart", ",", 
+   RowBox[{"{", 
+    RowBox[{"4", ",", "6", ",", "7", ",", "8"}], "}"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.530362640415281*^9, 3.530362646007691*^9}, {
+  3.530362718974157*^9, 3.530362741809532*^9}, {3.530363124933617*^9, 
+  3.530363126539016*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"PlotPenroseChartA", "[", "DeflFactor_", "]"}], ":=", 
+   RowBox[{"Module", "[", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "deflatedSun", ",", "allverts", ",", "unique", ",", "angles", ",", 
+       "dists"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"deflatedSun", ":=", 
+       RowBox[{"Deflate", "[", 
+        RowBox[{"Sun", ",", "DeflFactor"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"(*", 
+       RowBox[{
+       "Extract", " ", "vertices", " ", "from", " ", "the", " ", "deflated", 
+        " ", "object"}], "*)"}], "\[IndentingNewLine]", 
+      RowBox[{"allverts", ":=", 
+       RowBox[{"Flatten", "[", 
+        RowBox[{
+         RowBox[{"deflatedSun", "/.", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"a", "[", 
+              RowBox[{"x_", ",", "y_", ",", "z_"}], "]"}], "\[Rule]", 
+             RowBox[{"{", 
+              RowBox[{"x", ",", "y", ",", "z"}], "}"}]}], ",", 
+            RowBox[{
+             RowBox[{"o", "[", 
+              RowBox[{"x_", ",", "y_", ",", "z_"}], "]"}], "\[Rule]", 
+             RowBox[{"{", 
+              RowBox[{"x", ",", "y", ",", "z"}], "}"}]}]}], "}"}]}], ",", 
+         "1"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"(*", 
+       RowBox[{
+       "Remove", " ", "duplicate", " ", "vertices", " ", "and", " ", "also", 
+        " ", "remove", " ", "central", " ", "vertex"}], "*)"}], 
+      "\[IndentingNewLine]", 
+      RowBox[{"unique", ":=", 
+       RowBox[{"Union", "[", 
+        RowBox[{"Select", "[", 
+         RowBox[{"allverts", ",", 
+          RowBox[{
+           RowBox[{
+            RowBox[{
+             RowBox[{"Part", "[", 
+              RowBox[{"#", ",", "1"}], "]"}], "\[NotEqual]", "0"}], "||", 
+            RowBox[{
+             RowBox[{"Part", "[", 
+              RowBox[{"#", ",", "2"}], "]"}], "\[NotEqual]", "0"}]}], "&"}]}],
+          "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"(*", 
+       RowBox[{
+       "Compute", " ", "angles", " ", "and", " ", "again", " ", "remove", " ",
+         "duplicate", " ", "ones", " ", 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{"e", ".", "g", ".", " ", "these"}], " ", "from", " ", "the",
+           " ", "symmetry", " ", "axes"}], ")"}]}], "*)"}], 
+      "\[IndentingNewLine]", 
+      RowBox[{"angles", ":=", 
+       RowBox[{"Sort", "[", 
+        RowBox[{
+         RowBox[{"N", "[", 
+          RowBox[{"Union", "[", 
+           RowBox[{"Map", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"Simplify", "[", 
+               RowBox[{"ArcTan", "[", 
+                RowBox[{
+                 RowBox[{"Part", "[", 
+                  RowBox[{"#", ",", "1"}], "]"}], ",", 
+                 RowBox[{"Part", "[", 
+                  RowBox[{"#", ",", "2"}], "]"}]}], "]"}], "]"}], "&"}], ",", 
+             "unique"}], "]"}], "]"}], "]"}], ",", "Greater"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"(*", 
+       RowBox[{
+        RowBox[{"Print", "[", "angles", "]"}], ";"}], "*)"}], 
+      "\[IndentingNewLine]", 
+      RowBox[{"dists", ":=", 
+       RowBox[{"Drop", "[", 
+        RowBox[{
+         RowBox[{"angles", "-", 
+          RowBox[{"RotateLeft", "[", "angles", "]"}]}], ",", 
+         RowBox[{"-", "1"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"Histogram", "[", 
+       RowBox[{"dists", ",", 
+        RowBox[{"{", 
+         RowBox[{"0", ",", "6", ",", "0.1"}], "}"}]}], "]"}]}]}], 
+    "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.530441734640062*^9, 3.530441747616181*^9}, {
+   3.530441900755408*^9, 3.530441901078134*^9}, {3.530441957537213*^9, 
+   3.530441971909694*^9}, {3.530442078471029*^9, 3.530442080657005*^9}, {
+   3.530442153972585*^9, 3.530442154788607*^9}, 3.530442503894674*^9, {
+   3.530442534550349*^9, 3.530442537608957*^9}, {3.530442984725751*^9, 
+   3.530443012494245*^9}, {3.530443065133396*^9, 3.530443180720684*^9}, {
+   3.530443315692723*^9, 3.530443317875994*^9}, {3.530443368694092*^9, 
+   3.53044344244426*^9}, {3.530449996568491*^9, 3.530450000330894*^9}, {
+   3.530450049342725*^9, 3.530450054548102*^9}, {3.530450355994514*^9, 
+   3.530450363342229*^9}, {3.530450452113401*^9, 3.530450473655958*^9}, {
+   3.530450537472617*^9, 3.530450560969032*^9}, {3.530450660494442*^9, 
+   3.530450666969904*^9}, {3.53045085618201*^9, 3.530450894617893*^9}, {
+   3.530451787757568*^9, 3.530451827769397*^9}, {3.530451864865538*^9, 
+   3.530451869346846*^9}, {3.530528249916182*^9, 3.530528254005041*^9}, {
+   3.530528290447233*^9, 3.530528297549073*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Map", "[", 
+  RowBox[{"PlotPenroseChartA", ",", 
+   RowBox[{"{", "6", "}"}]}], "]"}]], "Input",
+ CellChangeTimes->{
+  3.530450447569634*^9, 3.530450570282492*^9, {3.530451845464379*^9, 
+   3.5304518491759*^9}, {3.530524963585548*^9, 3.530524963768134*^9}}]
+},
+WindowSize->{1600, 1178},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+Magnification->1.5,
+FrontEndVersion->"8.0 for Linux x86 (32-bit) (October 10, 2011)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[557, 20, 172, 3, 43, "Input"],
+Cell[732, 25, 245, 6, 43, "Input"],
+Cell[980, 33, 387, 10, 43, "Input"],
+Cell[1370, 45, 481, 11, 43, "Input"],
+Cell[1854, 58, 339, 9, 43, "Input"],
+Cell[2196, 69, 2829, 72, 260, "Input"],
+Cell[5028, 143, 327, 7, 43, "Input"],
+Cell[5358, 152, 4669, 109, 368, "Input"],
+Cell[10030, 263, 280, 6, 43, "Input"]
+}
+]
+*)
+
+(* End of internal cache information *)

@@ -1,0 +1,96 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 9.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[      2564,         87]
+NotebookOptionsPosition[      2269,         72]
+NotebookOutlinePosition[      2628,         88]
+CellTagsIndexPosition[      2585,         85]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"myGrid", "[", "i_", "]"}], ":=", 
+   RowBox[{"Flatten", "[", 
+    RowBox[{
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"x", ",", "y"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"x", ",", 
+         RowBox[{"-", "i"}], ",", "i"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"y", ",", 
+         RowBox[{"-", "i"}], ",", "i"}], "}"}]}], "]"}], ",", "1"}], "]"}]}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.589622447856535*^9, 3.589622501142515*^9}}],
+
+Cell[BoxData[
+ RowBox[{"DynamicModule", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"curSelection", "=", 
+     RowBox[{"{", "}"}]}], "}"}], ",", "\[IndentingNewLine]", 
+   RowBox[{"Show", "[", 
+    RowBox[{
+     RowBox[{"Graphics", "[", 
+      RowBox[{"Map", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"EventHandler", "[", 
+          RowBox[{
+           RowBox[{"Point", "[", "#", "]"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"\"\<MouseClicked\>\"", "\[RuleDelayed]", 
+             RowBox[{"{", 
+              RowBox[{"AppendTo", "[", 
+               RowBox[{"curSelection", ",", "#"}], "]"}], "}"}]}], "}"}]}], 
+          "]"}], "&"}], ",", 
+        RowBox[{"myGrid", "[", "5", "]"}]}], "]"}], "]"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Graphics", "[", 
+      RowBox[{"{", 
+       RowBox[{"Red", ",", 
+        RowBox[{"Polygon", "[", 
+         RowBox[{"Dynamic", "[", "curSelection", "]"}], "]"}]}], "}"}], 
+      "]"}]}], "]"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.5896224899603043`*^9, 3.589622518615758*^9}, {
+  3.589622563059946*^9, 3.589622646562759*^9}, {3.5896227135034637`*^9, 
+  3.5896227554743967`*^9}}]
+},
+WindowSize->{1447, 867},
+WindowMargins->{{146, Automatic}, {Automatic, 30}},
+Magnification->1.25,
+FrontEndVersion->"9.0 for Linux x86 (64-bit) (January 25, 2013)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[557, 20, 545, 17, 38, "Input"],
+Cell[1105, 39, 1160, 31, 89, "Input"]
+}
+]
+*)
+
+(* End of internal cache information *)

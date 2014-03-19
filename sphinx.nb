@@ -1,0 +1,418 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 8.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[     14510,        409]
+NotebookOptionsPosition[     13782,        383]
+NotebookOutlinePosition[     14138,        399]
+CellTagsIndexPosition[     14095,        396]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"createSphinxTile", "[", 
+    RowBox[{"type_", ",", "ref_", ",", "rot_"}], "]"}], ":=", 
+   RowBox[{"{", 
+    RowBox[{"type", ",", "ref", ",", 
+     RowBox[{"Mod", "[", 
+      RowBox[{"rot", ",", "6"}], "]"}]}], "}"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.542450401443686*^9, 3.542450431886057*^9}, {
+  3.542453875697815*^9, 3.542453884270744*^9}, {3.542457471394029*^9, 
+  3.542457479247914*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"xiShift", "=", 
+   RowBox[{"{", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"0", ",", "0", ",", 
+       RowBox[{"-", "1"}]}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"1", ",", "0", ",", "0"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"0", ",", "1", ",", "0"}], "}"}]}], "\[IndentingNewLine]", 
+    "}"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"shiftRoot", "[", 
+    RowBox[{"r_", ",", "i_"}], "]"}], ":=", 
+   RowBox[{
+    RowBox[{"MatrixPower", "[", 
+     RowBox[{"xiShift", ",", "i"}], "]"}], ".", "r"}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.542450714995194*^9, 3.542450728212357*^9}, {
+  3.542451575470034*^9, 3.542451651976697*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"vertsSphinx", "[", 
+    RowBox[{"{", 
+     RowBox[{"type_", ",", "ref_", ",", "rot_"}], "}"}], "]"}], ":=", 
+   RowBox[{"If", "[", 
+    RowBox[{"type", ",", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"ref", ",", "\[IndentingNewLine]", 
+       RowBox[{"ref", "+", 
+        RowBox[{"shiftRoot", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"-", "3"}], ",", "0", ",", "0"}], "}"}], ",", "rot"}], 
+         "]"}]}], ",", "\[IndentingNewLine]", 
+       RowBox[{"ref", "+", 
+        RowBox[{"shiftRoot", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"-", "3"}], ",", "1", ",", "0"}], "}"}], ",", "rot"}], 
+         "]"}]}], ",", "\[IndentingNewLine]", 
+       RowBox[{"ref", "+", 
+        RowBox[{"shiftRoot", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"-", "2"}], ",", "1", ",", "0"}], "}"}], ",", "rot"}], 
+         "]"}]}], ",", "\[IndentingNewLine]", 
+       RowBox[{"ref", "+", 
+        RowBox[{"shiftRoot", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"-", "2"}], ",", "2", ",", "0"}], "}"}], ",", "rot"}], 
+         "]"}]}]}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"ref", ",", "\[IndentingNewLine]", 
+       RowBox[{"ref", "+", 
+        RowBox[{"shiftRoot", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"3", ",", "0", ",", "0"}], "}"}], ",", "rot"}], "]"}]}], 
+       ",", "\[IndentingNewLine]", 
+       RowBox[{"ref", "+", 
+        RowBox[{"shiftRoot", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"3", ",", "0", ",", "1"}], "}"}], ",", "rot"}], "]"}]}], 
+       ",", "\[IndentingNewLine]", 
+       RowBox[{"ref", "+", 
+        RowBox[{"shiftRoot", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"2", ",", "0", ",", "1"}], "}"}], ",", "rot"}], "]"}]}], 
+       ",", "\[IndentingNewLine]", 
+       RowBox[{"ref", "+", 
+        RowBox[{"shiftRoot", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"2", ",", "0", ",", "2"}], "}"}], ",", "rot"}], "]"}]}]}], 
+      "}"}]}], "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.5424504994656*^9, 3.542450501660195*^9}, {
+   3.542450763322961*^9, 3.542450764232149*^9}, {3.542450795547011*^9, 
+   3.542450816022743*^9}, 3.542451311641643*^9, {3.542451352541954*^9, 
+   3.542451366507709*^9}, {3.542453919677841*^9, 3.542453958424055*^9}, {
+   3.54263043432688*^9, 3.542630452246958*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"A", "=", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"Map", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"Cos", "[", 
+         RowBox[{"#", "*", 
+          RowBox[{"Pi", "/", "3"}]}], "]"}], "&"}], ",", 
+       RowBox[{"Range", "[", 
+        RowBox[{"0", ",", "2"}], "]"}]}], "]"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Map", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"Sin", "[", 
+         RowBox[{"#", "*", 
+          RowBox[{"Pi", "/", "3"}]}], "]"}], "&"}], ",", 
+       RowBox[{"Range", "[", 
+        RowBox[{"0", ",", "2"}], "]"}]}], "]"}]}], "}"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"vertToPhysical", "[", "v_", "]"}], ":=", 
+   RowBox[{"A", ".", "v"}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.542450936639535*^9, 3.54245093961931*^9}, {
+  3.542454078920338*^9, 3.542454079627672*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"rootsSphinx", "[", "i_", "]"}], "=", 
+   RowBox[{"Through", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"Cos", ",", "Sin"}], "}"}], "[", 
+     RowBox[{"i", "*", 
+      RowBox[{"Pi", "/", "3"}]}], "]"}], "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.542360357045107*^9, 3.542360375539823*^9}, {
+  3.54236074509965*^9, 3.542360771891368*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Map", "[", 
+  RowBox[{"rootsSphinx", ",", 
+   RowBox[{"{", 
+    RowBox[{"0", ",", "1", ",", "2", ",", "3", ",", "4", ",", "5", ",", "6"}],
+     "}"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.542361004167442*^9, 3.542361004744243*^9}, {
+  3.542361151323008*^9, 3.542361173136966*^9}, {3.542456912901817*^9, 
+  3.542456913159107*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"drawSphinxTile", "[", "input_", "]"}], ":=", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", "phys", "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"phys", "=", 
+       RowBox[{"Map", "[", 
+        RowBox[{"vertToPhysical", ",", "input"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"Graphics", "[", 
+       RowBox[{"Line", "[", 
+        RowBox[{"Append", "[", 
+         RowBox[{"phys", ",", 
+          RowBox[{"phys", "[", 
+           RowBox[{"[", "1", "]"}], "]"}]}], "]"}], "]"}], "]"}]}]}], "]"}]}],
+   ";"}]], "Input",
+ CellChangeTimes->{{3.542450971844641*^9, 3.542450999467085*^9}, {
+  3.542451509527329*^9, 3.542451510678375*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"inflate", "[", 
+    RowBox[{"{", 
+     RowBox[{"type_", ",", "ref_", ",", "rot_"}], "}"}], "]"}], ":=", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", "newref", "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"newref", "=", 
+       RowBox[{"ref", "*", "2"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{"type", ",", "\[IndentingNewLine]", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"createSphinxTile", "[", 
+           RowBox[{"type", ",", 
+            RowBox[{"newref", "+", 
+             RowBox[{"shiftRoot", "[", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{
+                 RowBox[{"-", "4"}], ",", "4", ",", "0"}], "}"}], ",", 
+               "rot"}], "]"}]}], ",", 
+            RowBox[{"rot", "+", "2"}]}], "]"}], ",", "\[IndentingNewLine]", 
+          RowBox[{"createSphinxTile", "[", 
+           RowBox[{
+            RowBox[{"Not", "[", "type", "]"}], ",", 
+            RowBox[{"newref", "+", 
+             RowBox[{"shiftRoot", "[", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{
+                 RowBox[{"-", "3"}], ",", "0", ",", "0"}], "}"}], ",", 
+               "rot"}], "]"}]}], ",", 
+            RowBox[{"rot", "+", "0"}]}], "]"}], ",", "\[IndentingNewLine]", 
+          RowBox[{"createSphinxTile", "[", 
+           RowBox[{
+            RowBox[{"Not", "[", "type", "]"}], ",", 
+            RowBox[{"newref", "+", 
+             RowBox[{"shiftRoot", "[", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{
+                 RowBox[{"-", "3"}], ",", "2", ",", "0"}], "}"}], ",", 
+               "rot"}], "]"}]}], ",", 
+            RowBox[{"rot", "+", "3"}]}], "]"}], ",", "\[IndentingNewLine]", 
+          RowBox[{"createSphinxTile", "[", 
+           RowBox[{
+            RowBox[{"Not", "[", "type", "]"}], ",", 
+            RowBox[{"newref", "+", 
+             RowBox[{"shiftRoot", "[", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{
+                 RowBox[{"-", "6"}], ",", "0", ",", "0"}], "}"}], ",", 
+               "rot"}], "]"}]}], ",", 
+            RowBox[{"rot", "+", "0"}]}], "]"}]}], "}"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"createSphinxTile", "[", 
+           RowBox[{"type", ",", 
+            RowBox[{"newref", "+", 
+             RowBox[{"shiftRoot", "[", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"0", ",", "4", ",", "0"}], "}"}], ",", "rot"}], 
+              "]"}]}], ",", 
+            RowBox[{"rot", "+", "4"}]}], "]"}], ",", "\[IndentingNewLine]", 
+          RowBox[{"createSphinxTile", "[", 
+           RowBox[{
+            RowBox[{"Not", "[", "type", "]"}], ",", 
+            RowBox[{"newref", "+", 
+             RowBox[{"shiftRoot", "[", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"6", ",", "0", ",", "0"}], "}"}], ",", "rot"}], 
+              "]"}]}], ",", 
+            RowBox[{"rot", "+", "0"}]}], "]"}], ",", "\[IndentingNewLine]", 
+          RowBox[{"createSphinxTile", "[", 
+           RowBox[{
+            RowBox[{"Not", "[", "type", "]"}], ",", 
+            RowBox[{"newref", "+", 
+             RowBox[{"shiftRoot", "[", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"1", ",", "2", ",", "0"}], "}"}], ",", "rot"}], 
+              "]"}]}], ",", 
+            RowBox[{"rot", "+", "3"}]}], "]"}], ",", "\[IndentingNewLine]", 
+          RowBox[{"createSphinxTile", "[", 
+           RowBox[{
+            RowBox[{"Not", "[", "type", "]"}], ",", 
+            RowBox[{"newref", "+", 
+             RowBox[{"shiftRoot", "[", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"3", ",", "0", ",", "0"}], "}"}], ",", "rot"}], 
+              "]"}]}], ",", 
+            RowBox[{"rot", "+", "0"}]}], "]"}]}], "\[IndentingNewLine]", 
+         "}"}]}], "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", 
+    "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.542454154000646*^9, 3.542454185324417*^9}, {
+  3.54245422248821*^9, 3.54245427309104*^9}, {3.542454303380311*^9, 
+  3.542454365340959*^9}, {3.542454478511144*^9, 3.542454482095673*^9}, {
+  3.542456007283823*^9, 3.542456033560303*^9}, {3.542457616503636*^9, 
+  3.542457726676218*^9}, {3.542630460244916*^9, 3.542630463064253*^9}, {
+  3.542630500339117*^9, 3.542630503442839*^9}, {3.542632882812254*^9, 
+  3.542633038758161*^9}, {3.542633311801703*^9, 3.542633345518579*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"iterate", "[", 
+    RowBox[{"input_", ",", "steps_"}], "]"}], ":=", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", "fct", "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"fct", "=", 
+       RowBox[{"Function", "[", 
+        RowBox[{"t", ",", 
+         RowBox[{"Flatten", "[", 
+          RowBox[{
+           RowBox[{"Map", "[", 
+            RowBox[{"inflate", ",", "t"}], "]"}], ",", "1"}], "]"}]}], 
+        "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"Nest", "[", 
+       RowBox[{"fct", ",", "input", ",", "steps"}], "]"}]}]}], 
+    "\[IndentingNewLine]", "]"}]}], ";"}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"initial", "=", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"createSphinxTile", "[", 
+      RowBox[{"False", ",", 
+       RowBox[{"{", 
+        RowBox[{"0", ",", "0", ",", "0"}], "}"}], ",", "0"}], "]"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"createSphinxTile", "[", 
+      RowBox[{"False", ",", 
+       RowBox[{"{", 
+        RowBox[{"3", ",", "2", ",", "0"}], "}"}], ",", "3"}], "]"}]}], 
+    "}"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.542633520552717*^9, 3.542633552896399*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"patch", "=", 
+   RowBox[{"iterate", "[", 
+    RowBox[{"initial", ",", "5"}], "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.542454369275323*^9, 3.54245439705367*^9}, {
+   3.542455852979757*^9, 3.542455858599356*^9}, {3.54245592710872*^9, 
+   3.542455928564574*^9}, {3.542456101352751*^9, 3.54245610936828*^9}, {
+   3.542456668478492*^9, 3.542456668607933*^9}, {3.542457858927268*^9, 
+   3.54245786007798*^9}, 3.542633242880305*^9, 3.542633418707004*^9, {
+   3.542633576453302*^9, 3.542633590085056*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Show", "[", 
+  RowBox[{"Sequence", "[", 
+   RowBox[{"Map", "[", 
+    RowBox[{"drawSphinxTile", ",", 
+     RowBox[{"Map", "[", 
+      RowBox[{"vertsSphinx", ",", "initial"}], "]"}]}], "]"}], "]"}], 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.542633506443496*^9, 3.542633509275205*^9}, {
+  3.552908839494148*^9, 3.552908840800546*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Show", "[", 
+  RowBox[{"Sequence", "[", 
+   RowBox[{"Map", "[", 
+    RowBox[{"drawSphinxTile", ",", 
+     RowBox[{"Map", "[", 
+      RowBox[{"vertsSphinx", ",", "patch"}], "]"}]}], "]"}], "]"}], 
+  "]"}]], "Input",
+ CellChangeTimes->{
+  3.54245670411059*^9, {3.542456879786332*^9, 3.542456881508102*^9}}]
+},
+WindowSize->{1600, 1178},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+Magnification->1.5,
+FrontEndVersion->"8.0 for Linux x86 (32-bit) (October 10, 2011)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[557, 20, 447, 11, 43, "Input"],
+Cell[1007, 33, 787, 21, 179, "Input"],
+Cell[1797, 56, 2576, 68, 314, "Input"],
+Cell[4376, 126, 888, 27, 98, "Input"],
+Cell[5267, 155, 397, 11, 43, "Input"],
+Cell[5667, 168, 357, 8, 43, "Input"],
+Cell[6027, 178, 729, 20, 98, "Input"],
+Cell[6759, 200, 4587, 109, 395, "Input"],
+Cell[11349, 311, 665, 19, 125, "Input"],
+Cell[12017, 332, 530, 15, 71, "Input"],
+Cell[12550, 349, 539, 10, 43, "Input"],
+Cell[13092, 361, 355, 9, 43, "Input"],
+Cell[13450, 372, 328, 9, 43, "Input"]
+}
+]
+*)
+
+(* End of internal cache information *)

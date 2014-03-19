@@ -1,0 +1,325 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 9.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[     10643,        316]
+NotebookOptionsPosition[     10036,        293]
+NotebookOutlinePosition[     10393,        309]
+CellTagsIndexPosition[     10350,        306]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "We", " ", "need", " ", "the", " ", "tuebingen", " ", "notebook", " ", 
+    RowBox[{"here", "!"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"patchTTT", "=", 
+    RowBox[{"iterateTTT", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"CreateTri", "[", 
+        RowBox[{"True", ",", "True", ",", "init", ",", "7"}], "]"}], "}"}], 
+      ",", "5"}], "]"}]}], ";"}]}]], "Input",
+ CellChangeTimes->{{3.589533618464571*^9, 3.58953362087055*^9}, 
+   3.589533658833644*^9, {3.589535371450481*^9, 3.5895353918942842`*^9}, 
+   3.589535618143693*^9, 3.5895356606491127`*^9, {3.5895403570042152`*^9, 
+   3.589540372536789*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{
+    "Here", " ", "we", " ", "select", " ", "the", " ", "vertices", " ", "for",
+      " ", "the", " ", "grey"}], "-", 
+    RowBox[{
+    "shaded", " ", "polygon", " ", "by", " ", "clicking", " ", "with", " ", 
+     "the", " ", 
+     RowBox[{"mouse", "."}]}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"selVertsTTT", "=", 
+     RowBox[{"{", "}"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{"Graphics", "[", 
+    RowBox[{"Map", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"EventHandler", "[", 
+        RowBox[{
+         RowBox[{"Point", "[", 
+          RowBox[{"vertToPhysical", "[", "#", "]"}], "]"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"\"\<MouseClicked\>\"", "\[RuleDelayed]", 
+           RowBox[{"{", 
+            RowBox[{"AppendTo", "[", 
+             RowBox[{"selVertsTTT", ",", "#"}], "]"}], "}"}]}], "}"}]}], 
+        "]"}], "&"}], ",", 
+      RowBox[{"Union", "[", 
+       RowBox[{"Flatten", "[", 
+        RowBox[{
+         RowBox[{"Map", "[", 
+          RowBox[{"vertsTri", ",", "patchTTT"}], "]"}], ",", "1"}], "]"}], 
+       "]"}]}], "]"}], "]"}]}]}]], "Input",
+ CellChangeTimes->{{3.589534065406665*^9, 3.58953413389633*^9}, {
+  3.589535587249772*^9, 3.5895355989502983`*^9}, {3.589535663911944*^9, 
+  3.58953568690819*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Show", "[", 
+  RowBox[{
+   RowBox[{"Graphics", "[", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"RGBColor", "[", 
+       RowBox[{"0.75", ",", "0.75", ",", "0.75"}], "]"}], ",", 
+      RowBox[{"Polygon", "[", 
+       RowBox[{"Map", "[", 
+        RowBox[{"vertToPhysical", ",", "selVertsTTT"}], "]"}], "]"}]}], "}"}],
+     "]"}], ",", "\[IndentingNewLine]", 
+   RowBox[{"cleanGfx", "[", 
+    RowBox[{"Show", "[", 
+     RowBox[{
+      RowBox[{"Sequence", "[", 
+       RowBox[{"Map", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"drawTri2", "[", 
+           RowBox[{"#", ",", "True", ",", "Tiny"}], "]"}], "&"}], ",", 
+         RowBox[{"Map", "[", 
+          RowBox[{"vertsTri", ",", 
+           RowBox[{"Select", "[", 
+            RowBox[{"patchTTT", ",", "isTypeA"}], "]"}]}], "]"}]}], "]"}], 
+       "]"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"Sequence", "[", 
+       RowBox[{"Map", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"drawTri2", "[", 
+           RowBox[{"#", ",", "False", ",", "Tiny"}], "]"}], "&"}], ",", 
+         RowBox[{"Map", "[", 
+          RowBox[{"vertsTri", ",", 
+           RowBox[{"Select", "[", 
+            RowBox[{"patchTTT", ",", "isTypeB"}], "]"}]}], "]"}]}], "]"}], 
+       "]"}]}], "]"}], "]"}]}], "]"}]], "Input",
+ CellChangeTimes->{
+  3.589535651202252*^9, {3.589535735608459*^9, 3.5895357376805067`*^9}, {
+   3.589537161999404*^9, 3.589537184131586*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Plot", "[", 
+  RowBox[{
+   RowBox[{"x", "^", "2"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x", ",", 
+     RowBox[{"-", "2"}], ",", "2"}], "}"}], ",", 
+   RowBox[{"Filling", "\[Rule]", "Axis"}], ",", 
+   RowBox[{"FillingStyle", "\[Rule]", 
+    RowBox[{"RGBColor", "[", 
+     RowBox[{"0.85", ",", "0.85", ",", "0.85"}], "]"}]}], ",", 
+   RowBox[{"PlotStyle", "\[Rule]", 
+    RowBox[{"RGBColor", "[", 
+     RowBox[{"0.35", ",", "0.35", ",", "0.35"}], "]"}]}]}], "]"}]], "Input",
+ CellChangeTimes->{
+  3.589536702922092*^9, {3.589538438457712*^9, 3.5895384735178547`*^9}, 
+   3.589544077162799*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"patchTTT", "=", 
+   RowBox[{"iterateTTT", "[", 
+    RowBox[{"initialTTT", ",", "4"}], "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.589544161122258*^9, 3.5895441649452887`*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"selVertsTTT", "=", 
+   RowBox[{"{", "}"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Graphics", "[", 
+  RowBox[{"Map", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"EventHandler", "[", 
+      RowBox[{
+       RowBox[{"Point", "[", 
+        RowBox[{"vertToPhysical", "[", "#", "]"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"\"\<MouseClicked\>\"", "\[RuleDelayed]", 
+         RowBox[{"{", 
+          RowBox[{"AppendTo", "[", 
+           RowBox[{"selVertsTTT", ",", "#"}], "]"}], "}"}]}], "}"}]}], "]"}], 
+     "&"}], ",", 
+    RowBox[{"Union", "[", 
+     RowBox[{"Flatten", "[", 
+      RowBox[{
+       RowBox[{"Map", "[", 
+        RowBox[{"vertsTri", ",", "patchTTT"}], "]"}], ",", "1"}], "]"}], 
+     "]"}]}], "]"}], "]"}]}], "Input",
+ CellChangeTimes->{{3.589544166613677*^9, 3.5895441789052773`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Show", "[", 
+  RowBox[{
+   RowBox[{"Graphics", "[", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"RGBColor", "[", 
+       RowBox[{"0.75", ",", "0.75", ",", "0.75"}], "]"}], ",", 
+      RowBox[{"Polygon", "[", 
+       RowBox[{"Map", "[", 
+        RowBox[{"vertToPhysical", ",", "selVertsTTT"}], "]"}], "]"}]}], "}"}],
+     "]"}], ",", "\[IndentingNewLine]", 
+   RowBox[{"cleanGfx", "[", 
+    RowBox[{"Show", "[", 
+     RowBox[{
+      RowBox[{"Sequence", "[", 
+       RowBox[{"Map", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"drawTri2", "[", 
+           RowBox[{"#", ",", "True", ",", "Tiny"}], "]"}], "&"}], ",", 
+         RowBox[{"Map", "[", 
+          RowBox[{"vertsTri", ",", 
+           RowBox[{"Select", "[", 
+            RowBox[{"patchTTT", ",", "isTypeA"}], "]"}]}], "]"}]}], "]"}], 
+       "]"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"Sequence", "[", 
+       RowBox[{"Map", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"drawTri2", "[", 
+           RowBox[{"#", ",", "False", ",", "Tiny"}], "]"}], "&"}], ",", 
+         RowBox[{"Map", "[", 
+          RowBox[{"vertsTri", ",", 
+           RowBox[{"Select", "[", 
+            RowBox[{"patchTTT", ",", "isTypeB"}], "]"}]}], "]"}]}], "]"}], 
+       "]"}]}], "]"}], "]"}], ",", "\[IndentingNewLine]", 
+   RowBox[{"Graphics", "[", 
+    RowBox[{"{", 
+     RowBox[{"Red", ",", 
+      RowBox[{"PointSize", "[", "Large", "]"}], ",", 
+      RowBox[{"Point", "[", 
+       RowBox[{"vertToPhysical", "[", "init", "]"}], "]"}]}], "}"}], "]"}]}], 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.589544207791545*^9, 3.589544262484829*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"We", " ", "need", " ", "the", " ", "chiral", " ", "notebook", " ", 
+    RowBox[{"here", "!"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"patchChir", "=", 
+    RowBox[{"iterate", "[", 
+     RowBox[{"initialSun", ",", "4"}], "]"}]}], ";"}]}]], "Input",
+ CellChangeTimes->{{3.589544478962801*^9, 3.589544501083008*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"selVertsChir", "=", 
+   RowBox[{"{", "}"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Show", "[", 
+  RowBox[{
+   RowBox[{"Graphics", "[", 
+    RowBox[{"Map", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"EventHandler", "[", 
+        RowBox[{
+         RowBox[{"Point", "[", 
+          RowBox[{"vertToPhysical", "[", "#", "]"}], "]"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"\"\<MouseClicked\>\"", "\[RuleDelayed]", 
+           RowBox[{"{", 
+            RowBox[{"AppendTo", "[", 
+             RowBox[{"selVertsChir", ",", "#"}], "]"}], "}"}]}], "}"}]}], 
+        "]"}], "&"}], ",", 
+      RowBox[{"Union", "[", 
+       RowBox[{"Flatten", "[", 
+        RowBox[{
+         RowBox[{"Map", "[", 
+          RowBox[{"verts", ",", "patchChir"}], "]"}], ",", "1"}], "]"}], 
+       "]"}]}], "]"}], "]"}], ",", "\[IndentingNewLine]", 
+   RowBox[{"Graphics", "[", 
+    RowBox[{"{", 
+     RowBox[{"Red", ",", 
+      RowBox[{"Point", "[", 
+       RowBox[{"{", 
+        RowBox[{"0", ",", "0"}], "}"}], "]"}]}], "}"}], "]"}]}], 
+  "]"}]}], "Input",
+ CellChangeTimes->{{3.589544553812553*^9, 3.589544573368874*^9}, {
+  3.589544612579521*^9, 3.589544632932454*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Show", "[", 
+  RowBox[{
+   RowBox[{"Graphics", "[", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"RGBColor", "[", 
+       RowBox[{"0.75", ",", "0.75", ",", "0.75"}], "]"}], ",", 
+      RowBox[{"Polygon", "[", 
+       RowBox[{"Map", "[", 
+        RowBox[{"vertToPhysical", ",", "selVertsChir"}], "]"}], "]"}]}], 
+     "}"}], "]"}], ",", "\[IndentingNewLine]", 
+   RowBox[{"cleanGfx", "[", 
+    RowBox[{"Show", "[", 
+     RowBox[{"Sequence", "[", 
+      RowBox[{"Map", "[", 
+       RowBox[{"drawRhomb", ",", 
+        RowBox[{"Map", "[", 
+         RowBox[{"verts", ",", "patch"}], "]"}]}], "]"}], "]"}], "]"}], "]"}],
+    ",", "\[IndentingNewLine]", 
+   RowBox[{"Graphics", "[", 
+    RowBox[{"{", 
+     RowBox[{"Red", ",", 
+      RowBox[{"PointSize", "[", "Large", "]"}], ",", 
+      RowBox[{"Point", "[", 
+       RowBox[{"vertToPhysical", "[", "init", "]"}], "]"}]}], "}"}], "]"}]}], 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.58954470780759*^9, 3.589544742704774*^9}, {
+  3.589544776958603*^9, 3.589544792750031*^9}}]
+},
+WindowSize->{1920, 1147},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+Magnification->1.25,
+FrontEndVersion->"9.0 for Linux x86 (64-bit) (January 25, 2013)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[557, 20, 702, 17, 64, "Input"],
+Cell[1262, 39, 1356, 37, 89, "Input"],
+Cell[2621, 78, 1448, 39, 89, "Input"],
+Cell[4072, 119, 615, 16, 38, "Input"],
+Cell[4690, 137, 214, 5, 38, "Input"],
+Cell[4907, 144, 847, 24, 64, "Input"],
+Cell[5757, 170, 1635, 44, 114, "Input"],
+Cell[7395, 216, 394, 9, 64, "Input"],
+Cell[7792, 227, 1196, 34, 89, "Input"],
+Cell[8991, 263, 1041, 28, 89, "Input"]
+}
+]
+*)
+
+(* End of internal cache information *)

@@ -1,0 +1,688 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 8.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[     24875,        679]
+NotebookOptionsPosition[     23704,        643]
+NotebookOutlinePosition[     24138,        660]
+CellTagsIndexPosition[     24095,        657]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"cycloData", "=", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{
+     "ReadDoubleData", "[", 
+      "\"\</homes/tjakobi/PhD_Work/radialprojection/datafiles/octo.ang\>\"", 
+      "]"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+     "ReadDoubleData", "[", 
+      "\"\</homes/tjakobi/PhD_Work/radialprojection/datafiles/deca.ang\>\"", 
+      "]"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+     "ReadDoubleData", "[", 
+      "\"\</homes/tjakobi/PhD_Work/radialprojection/datafiles/dode.ang\>\"", 
+      "]"}]}], "}"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.538304500480889*^9, 3.538304524858484*^9}, {
+  3.538494903726201*^9, 3.538494913770114*^9}, {3.548686798560305*^9, 
+  3.548686806456996*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Map", "[", 
+  RowBox[{"Length", ",", "cycloData"}], "]"}]], "Input",
+ CellChangeTimes->{{3.538304546813611*^9, 3.538304556899101*^9}, 
+   3.548686811216756*^9}],
+
+Cell[BoxData[
+ RowBox[{"Map", "[", 
+  RowBox[{"ByteCount", ",", "cycloData"}], "]"}]], "Input",
+ CellChangeTimes->{{3.538304559948791*^9, 3.538304566002254*^9}, 
+   3.538304621253755*^9, 3.548686812928494*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"histos", "=", 
+   RowBox[{"Map", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"Histogram", "[", 
+       RowBox[{"#", ",", 
+        RowBox[{"{", 
+         RowBox[{"0", ",", 
+          RowBox[{"histoParams", "[", 
+           RowBox[{"[", "1", "]"}], "]"}], ",", 
+          RowBox[{"histoParams", "[", 
+           RowBox[{"[", "2", "]"}], "]"}]}], "}"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"ChartStyle", "\[Rule]", 
+         RowBox[{"Directive", "[", 
+          RowBox[{"Black", ",", 
+           RowBox[{"EdgeForm", "[", "None", "]"}]}], "]"}]}]}], "]"}], "&"}], 
+     ",", "cycloData"}], "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.538304635718097*^9, 3.538304659624274*^9}, {
+  3.548686829055345*^9, 3.548686841550514*^9}, {3.548686899949793*^9, 
+  3.548686905864509*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"histosOverlay", "=", 
+   RowBox[{"Map", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"Graphics", "[", 
+       RowBox[{"Show", "[", 
+        RowBox[{
+         RowBox[{"histos", "[", 
+          RowBox[{"[", "#", "]"}], "]"}], ",", 
+         RowBox[{"Plot", "[", 
+          RowBox[{
+           RowBox[{"densityFctSL", "[", 
+            RowBox[{"x", ",", 
+             RowBox[{
+              RowBox[{"histoParams", "[", 
+               RowBox[{"[", "2", "]"}], "]"}], "*", 
+              RowBox[{"Length", "[", 
+               RowBox[{"cycloData", "[", 
+                RowBox[{"[", "#", "]"}], "]"}], "]"}]}]}], "]"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"x", ",", "0", ",", 
+             RowBox[{"histoParams", "[", 
+              RowBox[{"[", "1", "]"}], "]"}]}], "}"}], ",", 
+           RowBox[{"PlotStyle", "->", "Red"}]}], "]"}]}], "]"}], "]"}], "&"}],
+      ",", 
+     RowBox[{"Range", "[", 
+      RowBox[{"1", ",", "3"}], "]"}]}], "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.538304460296692*^9, 3.538304464096336*^9}, {
+  3.53830470909914*^9, 3.538304709126911*^9}, {3.538304744853052*^9, 
+  3.538304750598533*^9}, {3.538304946025608*^9, 3.538304955482397*^9}, {
+  3.548686970814393*^9, 3.548686973094476*^9}}],
+
+Cell[BoxData[
+ RowBox[{"GraphicsRow", "[", "histosOverlay", "]"}]], "Input",
+ CellChangeTimes->{{3.538304055091958*^9, 3.538304079856708*^9}, {
+   3.538304110270282*^9, 3.538304117052317*^9}, {3.538304193711111*^9, 
+   3.53830420834928*^9}, {3.538304352979112*^9, 3.538304364769791*^9}, 
+   3.538304769034411*^9, {3.538304967567263*^9, 3.53830496897486*^9}, {
+   3.569069977411452*^9, 3.569069981971471*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"g", "[", 
+    RowBox[{"i_", ",", "data_"}], "]"}], ":=", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"N", "[", 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{"i", "-", "1"}], ")"}], "*", 
+       RowBox[{"histoParams", "[", 
+        RowBox[{"[", "2", "]"}], "]"}]}], "]"}], ",", 
+     RowBox[{
+      RowBox[{"envelopeData", "[", "data", "]"}], "[", 
+      RowBox[{"[", "i", "]"}], "]"}]}], "}"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"normalizeEnvData", "[", "data_", "]"}], ":=", 
+   RowBox[{"Map", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"g", "[", 
+       RowBox[{"#", ",", "data"}], "]"}], "&"}], ",", 
+     RowBox[{"Range", "[", 
+      RowBox[{"1", ",", 
+       RowBox[{"Round", "[", 
+        RowBox[{
+         RowBox[{"histoParams", "[", 
+          RowBox[{"[", "1", "]"}], "]"}], "/", 
+         RowBox[{"histoParams", "[", 
+          RowBox[{"[", "2", "]"}], "]"}]}], "]"}]}], "]"}]}], "]"}]}], 
+  ";"}]}], "Input",
+ CellChangeTimes->{{3.5692355371196623`*^9, 3.569235540255355*^9}, {
+  3.569235682980798*^9, 3.5692357642469873`*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"envelopeData", "[", "Dodecagonal", "]"}], "=", 
+   RowBox[{
+   "ReadDoubleData", "[", 
+    "\"\</homes/tjakobi/PhD_Work/radialprojection/datafiles/dode.env\>\"", 
+    "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"envelopeData", "[", "Octogonal", "]"}], "=", 
+   RowBox[{
+   "ReadDoubleData", "[", 
+    "\"\</homes/tjakobi/PhD_Work/radialprojection/datafiles/octo.env\>\"", 
+    "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"envelopeData", "[", "Tueb", "]"}], "=", 
+   RowBox[{
+   "ReadDoubleData", "[", 
+    "\"\</homes/tjakobi/PhD_Work/radialprojection/datafiles/tueb.env\>\"", 
+    "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"envelopeData", "[", "PenroseR", "]"}], "=", 
+   RowBox[{
+   "ReadDoubleData", "[", 
+    "\"\</homes/tjakobi/PhD_Work/radialprojection/datafiles/prt.env\>\"", 
+    "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"envelopeData", "[", "RhombicPenrose", "]"}], "=", 
+   RowBox[{
+   "ReadDoubleData", "[", 
+    "\"\</homes/tjakobi/PhD_Work/radialprojection/datafiles/rhmb.env\>\"", 
+    "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"envelopeData", "[", "Chair", "]"}], "=", 
+   RowBox[{
+   "ReadDoubleData", "[", 
+    "\"\</homes/tjakobi/PhD_Work/radialprojection/datafiles/chair.env\>\"", 
+    "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"envelopeData", "[", "BadChair", "]"}], "=", 
+   RowBox[{
+   "ReadDoubleData", "[", 
+    "\"\</homes/tjakobi/PhD_Work/radialprojection/datafiles/chair.bad.env\>\"\
+", "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"envelopeData", "[", "Chiral", "]"}], "=", 
+   RowBox[{
+   "ReadDoubleData", "[", 
+    "\"\</homes/tjakobi/PhD_Work/radialprojection/datafiles/chir.env\>\"", 
+    "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"envelopeData", "[", "Z2Lattice", "]"}], "=", 
+   RowBox[{
+   "ReadDoubleData", "[", 
+    "\"\</homes/tjakobi/PhD_Work/radialprojection/datafiles/z2lat.env\>\"", 
+    "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"envelopeData", "[", "Poisson", "]"}], "=", 
+   RowBox[{
+   "ReadDoubleData", "[", 
+    "\"\</homes/tjakobi/PhD_Work/radialprojection/datafiles/poisson.env\>\"", 
+    "]"}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.569079401059667*^9, 3.569079413528107*^9}, {
+   3.569080279845515*^9, 3.569080290788695*^9}, 3.569142211317814*^9, {
+   3.569151809480935*^9, 3.5691518136714*^9}, {3.569151848490527*^9, 
+   3.569151850841577*^9}, {3.569152640451519*^9, 3.569152708490425*^9}, {
+   3.569152902091272*^9, 3.569152906639334*^9}, {3.569153048477031*^9, 
+   3.569153054260152*^9}, 3.569153306314245*^9, {3.569153397928893*^9, 
+   3.569153405821173*^9}, {3.569153480564409*^9, 3.569153486241985*^9}, {
+   3.569153898328593*^9, 3.569153919639315*^9}, {3.572006394206431*^9, 
+   3.572006414681933*^9}, 3.575374590408475*^9, {3.5758895689811783`*^9, 
+   3.575889576394864*^9}, {3.575889790363782*^9, 3.575889796594509*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"envelopeData", "[", "OctoOrigin1000", "]"}], "=", 
+   RowBox[{
+   "ReadDoubleData", "[", 
+    "\"\</homes/tjakobi/PhD_Work/radialprojection/datafiles/octo_origin1000.\
+env\>\"", "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"envelopeData", "[", "OctoOrigin1100", "]"}], "=", 
+   RowBox[{
+   "ReadDoubleData", "[", 
+    "\"\</homes/tjakobi/PhD_Work/radialprojection/datafiles/octo_origin1100.\
+env\>\"", "]"}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.57536188650005*^9, 3.5753619163318863`*^9}, {
+  3.57537412459925*^9, 3.57537415298025*^9}, {3.575619204678319*^9, 
+  3.575619206711117*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"envelopeFct", "[", "Dodecagonal", "]"}], "=", 
+   RowBox[{"Interpolation", "[", 
+    RowBox[{"normalizeEnvData", "[", "Dodecagonal", "]"}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"envelopeFct", "[", "Octogonal", "]"}], "=", 
+   RowBox[{"Interpolation", "[", 
+    RowBox[{"normalizeEnvData", "[", "Octogonal", "]"}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"envelopeFct", "[", "Tueb", "]"}], "=", 
+   RowBox[{"Interpolation", "[", 
+    RowBox[{"normalizeEnvData", "[", "Tueb", "]"}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"envelopeFct", "[", "PenroseR", "]"}], "=", 
+   RowBox[{"Interpolation", "[", 
+    RowBox[{"normalizeEnvData", "[", "PenroseR", "]"}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"envelopeFct", "[", "RhombicPenrose", "]"}], "=", 
+   RowBox[{"Interpolation", "[", 
+    RowBox[{"normalizeEnvData", "[", "RhombicPenrose", "]"}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"envelopeFct", "[", "Chair", "]"}], "=", 
+   RowBox[{"Interpolation", "[", 
+    RowBox[{"normalizeEnvData", "[", "Chair", "]"}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"envelopeFct", "[", "BadChair", "]"}], "=", 
+   RowBox[{"Interpolation", "[", 
+    RowBox[{"normalizeEnvData", "[", "BadChair", "]"}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"envelopeFct", "[", "Chiral", "]"}], "=", 
+   RowBox[{"Interpolation", "[", 
+    RowBox[{"normalizeEnvData", "[", "Chiral", "]"}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"envelopeFct", "[", "Z2Lattice", "]"}], "=", 
+   RowBox[{"Interpolation", "[", 
+    RowBox[{"normalizeEnvData", "[", "Z2Lattice", "]"}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"envelopeFct", "[", "Poisson", "]"}], "=", 
+   RowBox[{"Interpolation", "[", 
+    RowBox[{"normalizeEnvData", "[", "Poisson", "]"}], "]"}]}], 
+  ";"}]}], "Input",
+ CellChangeTimes->{{3.569080424771268*^9, 3.569080439794137*^9}, {
+   3.569151815956027*^9, 3.569151846034866*^9}, {3.569152696287392*^9, 
+   3.569152706119444*^9}, {3.569152914182509*^9, 3.569152918283051*^9}, {
+   3.569153057464647*^9, 3.569153060433673*^9}, {3.569153410621936*^9, 
+   3.569153413031346*^9}, {3.569153490111916*^9, 3.569153493914475*^9}, {
+   3.569153924996622*^9, 3.569153928915151*^9}, 3.569154753696331*^9, {
+   3.569235274194993*^9, 3.569235332292694*^9}, {3.569235770124831*^9, 
+   3.569235785755982*^9}, {3.572006408732518*^9, 3.572006421481234*^9}, 
+   3.575374592103218*^9, {3.575619221723638*^9, 3.575619222012125*^9}, {
+   3.5758895889764*^9, 3.575889597117268*^9}, {3.5758897858337717`*^9, 
+   3.575889803263157*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"envelopeFct", "[", "OctoOrigin1000", "]"}], "=", 
+   RowBox[{"Interpolation", "[", 
+    RowBox[{"normalizeEnvData", "[", "OctoOrigin1000", "]"}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"envelopeFct", "[", "OctoOrigin1100", "]"}], "=", 
+   RowBox[{"Interpolation", "[", 
+    RowBox[{"normalizeEnvData", "[", "OctoOrigin1100", "]"}], "]"}]}], 
+  ";"}]}], "Input",
+ CellChangeTimes->{{3.575361926715579*^9, 3.5753619419170637`*^9}, 
+   3.575374139027725*^9, {3.5753741725920153`*^9, 3.575374180369422*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{"plotOpts", "=", 
+     RowBox[{"Sequence", "[", 
+      RowBox[{"Filling", "\[Rule]", "Axis"}], "]"}]}], ";"}], "*)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"plotOpts", ":=", 
+    RowBox[{"Sequence", "[", 
+     RowBox[{
+      RowBox[{"Filling", "->", "Axis"}], ",", 
+      RowBox[{"FillingStyle", "\[Rule]", 
+       RowBox[{"RGBColor", "[", 
+        RowBox[{"0.85", ",", "0.85", ",", "0.85"}], "]"}]}], ",", 
+      RowBox[{"PlotStyle", "\[Rule]", 
+       RowBox[{"RGBColor", "[", 
+        RowBox[{"0.35", ",", "0.35", ",", "0.35"}], "]"}]}]}], "]"}]}], 
+   ";"}]}]], "Input",
+ CellChangeTimes->{{3.589538837042721*^9, 3.589538897927009*^9}, 
+   3.589538969669798*^9, 3.589539217179699*^9, 3.589539636603099*^9}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"fplot", "[", "i_", "]"}], ":=", 
+   RowBox[{"Show", "[", 
+    RowBox[{
+     RowBox[{"Plot", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"envelopeFct", "[", "i", "]"}], "[", "t", "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"t", ",", "0", ",", "4"}], "}"}], ",", 
+       RowBox[{"Evaluate", "[", "plotOpts", "]"}]}], "]"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Graphics", "[", 
+      RowBox[{"Text", "[", 
+       RowBox[{"i", ",", 
+        RowBox[{"{", 
+         RowBox[{"2.5", ",", "0.5"}], "}"}], ",", 
+        RowBox[{"BaseStyle", "\[Rule]", 
+         RowBox[{"{", 
+          RowBox[{"FontSize", "\[Rule]", "10"}], "}"}]}]}], "]"}], "]"}]}], 
+    "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"fplot", "[", 
+    RowBox[{"i_", ",", "j_"}], "]"}], ":=", 
+   RowBox[{"Show", "[", 
+    RowBox[{
+     RowBox[{"Plot", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"envelopeFct", "[", "i", "]"}], "[", "t", "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"t", ",", "0", ",", "j"}], "}"}], ",", 
+       RowBox[{"Evaluate", "[", "plotOpts", "]"}]}], "]"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Graphics", "[", 
+      RowBox[{"Text", "[", 
+       RowBox[{"i", ",", 
+        RowBox[{"{", 
+         RowBox[{"2.5", ",", "0.5"}], "}"}], ",", 
+        RowBox[{"BaseStyle", "\[Rule]", 
+         RowBox[{"{", 
+          RowBox[{"FontSize", "\[Rule]", "10"}], "}"}]}]}], "]"}], "]"}]}], 
+    "]"}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.569845622947856*^9, 3.569845675041614*^9}, {
+  3.5698457144645557`*^9, 3.569845762694927*^9}, {3.569846049733985*^9, 
+  3.569846090343857*^9}, {3.576322840103684*^9, 3.576322848729515*^9}, {
+  3.5895389052829447`*^9, 3.589538907729847*^9}, {3.589539800007118*^9, 
+  3.5895398091753817`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"GraphicsGrid", "[", 
+  RowBox[{"{", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"fplot", "[", "Z2Lattice", "]"}], ",", 
+     RowBox[{"fplot", "[", "Poisson", "]"}]}], "}"}], "}"}], "]"}]], "Input",
+ CellChangeTimes->{{3.575889603112612*^9, 3.5758896077128887`*^9}, {
+  3.575889775942881*^9, 3.575889812247837*^9}}],
+
+Cell[BoxData[
+ RowBox[{"GraphicsGrid", "[", 
+  RowBox[{"{", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"fplot", "[", "Dodecagonal", "]"}], ",", 
+      RowBox[{"fplot", "[", "Octogonal", "]"}]}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"fplot", "[", "Tueb", "]"}], ",", 
+      RowBox[{"fplot", "[", "PenroseR", "]"}]}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"fplot", "[", "RhombicPenrose", "]"}], ",", 
+      RowBox[{"fplot", "[", "Chair", "]"}]}], "}"}]}], "}"}], "]"}]], "Input",\
+
+ CellChangeTimes->{{3.569080456482047*^9, 3.569080472264989*^9}, {
+   3.569080678871963*^9, 3.569080681960854*^9}, {3.569152731827801*^9, 
+   3.569152773524066*^9}, {3.569152863656909*^9, 3.569152930208983*^9}, {
+   3.569153065268187*^9, 3.569153068233025*^9}, {3.569153417611746*^9, 
+   3.569153429747492*^9}, {3.56915349947818*^9, 3.569153503030023*^9}, {
+   3.5692353443004503`*^9, 3.5692353547770233`*^9}, {3.569235571389629*^9, 
+   3.5692355715311003`*^9}, {3.569235790241644*^9, 3.5692358131069736`*^9}, {
+   3.569845601338626*^9, 3.569845607066061*^9}, {3.569845646237281*^9, 
+   3.569845652169188*^9}, {3.5698456825733423`*^9, 3.569845690553583*^9}, {
+   3.569846106866496*^9, 3.569846147928996*^9}, 3.5753745994582663`*^9}],
+
+Cell[BoxData[
+ RowBox[{"GraphicsGrid", "[", 
+  RowBox[{"{", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"fplot", "[", "OctoOrigin1000", "]"}], ",", 
+     RowBox[{"fplot", "[", "OctoOrigin1100", "]"}]}], "}"}], "}"}], 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.5753745027045403`*^9, 3.575374518660121*^9}, {
+  3.575374608303813*^9, 3.575374615311391*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Plot", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"envelopeFct", "[", "Octogonal", "]"}], "[", "t", "]"}], ",", 
+     RowBox[{
+      RowBox[{"envelopeFct", "[", "OctoOrigin1000", "]"}], "[", "t", "]"}]}], 
+    "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"t", ",", "0", ",", "3"}], "}"}], ",", 
+   RowBox[{"Evaluate", "[", "plotOpts", "]"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.575374620127228*^9, 3.575374621904154*^9}, 
+   3.575374848728422*^9, 3.589538913758441*^9, 3.5895398262326193`*^9}],
+
+Cell[BoxData[
+ RowBox[{"Plot", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"envelopeFct", "[", "OctoOrigin1000", "]"}], "[", "t", "]"}], 
+     ",", 
+     RowBox[{
+      RowBox[{"envelopeFct", "[", "OctoOrigin1100", "]"}], "[", "t", "]"}]}], 
+    "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"t", ",", "0", ",", "3"}], "}"}], ",", 
+   RowBox[{"Evaluate", "[", "plotOpts", "]"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.575361973241132*^9, 3.5753619797697353`*^9}, {
+   3.575362536186833*^9, 3.575362544487026*^9}, 3.5753731841430807`*^9, 
+   3.5753742302425957`*^9, {3.57537448656717*^9, 3.575374488661335*^9}, 
+   3.589538918652093*^9, 3.589539827020937*^9}],
+
+Cell[BoxData[
+ RowBox[{"Plot", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"envelopeFct", "[", "Dodecagonal", "]"}], "[", "t", "]"}], ",", 
+     
+     RowBox[{
+      RowBox[{"envelopeFct", "[", "RhombicPenrose", "]"}], "[", "t", "]"}]}], 
+    "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"t", ",", "0", ",", "3"}], "}"}], ",", 
+   RowBox[{"Evaluate", "[", "plotOpts", "]"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.569153813918306*^9, 3.569153824901312*^9}, {
+   3.569153871303286*^9, 3.569153877833707*^9}, {3.56915397142225*^9, 
+   3.569153973001423*^9}, {3.569154442816881*^9, 3.569154443007171*^9}, {
+   3.569154485921686*^9, 3.569154502718573*^9}, {3.569154801284618*^9, 
+   3.569154804530715*^9}, {3.569235803125576*^9, 3.569235822188877*^9}, {
+   3.575374549925399*^9, 3.5753745722273808`*^9}, 3.5895389236506653`*^9, 
+   3.589539827911961*^9}],
+
+Cell[BoxData[
+ RowBox[{"Show", "[", 
+  RowBox[{
+   RowBox[{"Plot", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"envelopeFct", "[", "Chiral", "]"}], "[", "t", "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"t", ",", "0", ",", "3"}], "}"}], ",", 
+     RowBox[{"Evaluate", "[", "plotOpts", "]"}], ",", 
+     RowBox[{"PlotRange", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"0", ",", "3"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"0", ",", "1"}], "}"}]}], "}"}]}]}], "]"}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"Plot", "[", 
+    RowBox[{
+     RowBox[{"ExpPDF", "[", 
+      RowBox[{"t", ",", "1", ",", "1"}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"t", ",", "0", ",", "3"}], "}"}], ",", 
+     RowBox[{"PlotStyle", "\[Rule]", "Red"}]}], "]"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.569752114021144*^9, 3.569752122837294*^9}, {
+   3.569752160011704*^9, 3.569752174136608*^9}, {3.569752204458166*^9, 
+   3.569752225337965*^9}, {3.5697523511810703`*^9, 3.5697523702361307`*^9}, {
+   3.569752492928224*^9, 3.56975249596542*^9}, {3.569752574048337*^9, 
+   3.569752620825897*^9}, {3.569752804439023*^9, 3.5697528339269323`*^9}, {
+   3.589538928031908*^9, 3.589538939040531*^9}, 3.589539830409933*^9}],
+
+Cell[BoxData[
+ RowBox[{"Show", "[", 
+  RowBox[{
+   RowBox[{"Plot", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"envelopeFct", "[", "BadChair", "]"}], "[", "t", "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"t", ",", "0", ",", "3"}], "}"}], ",", 
+     RowBox[{"Evaluate", "[", "plotOpts", "]"}], ",", 
+     RowBox[{"PlotRange", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"0", ",", "3"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"0", ",", "1.25"}], "}"}]}], "}"}]}]}], "]"}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"Plot", "[", 
+    RowBox[{
+     RowBox[{"densityFctSL", "[", 
+      RowBox[{"t", ",", "1"}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"t", ",", "0", ",", "3"}], "}"}], ",", 
+     RowBox[{"PlotStyle", "\[Rule]", "Red"}], ",", 
+     RowBox[{"Exclusions", "\[Rule]", "None"}]}], "]"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.569752814022963*^9, 3.5697528368361063`*^9}, {
+   3.569752981093528*^9, 3.569752989382893*^9}, {3.5697530743446712`*^9, 
+   3.569753079543202*^9}, {3.569846372961337*^9, 3.569846375501149*^9}, 
+   3.572004800720777*^9, {3.572004978752327*^9, 3.5720049801735277`*^9}, {
+   3.572005239714094*^9, 3.5720052444231043`*^9}, {3.5720064290274*^9, 
+   3.5720064294415627`*^9}, 3.589538941259871*^9, 3.589539831577262*^9}],
+
+Cell[BoxData[
+ RowBox[{"Show", "[", 
+  RowBox[{
+   RowBox[{"Plot", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"envelopeFct", "[", "Tueb", "]"}], "[", "t", "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"t", ",", "0", ",", "0.8"}], "}"}], ",", 
+     RowBox[{"Evaluate", "[", "plotOpts", "]"}]}], "]"}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"Graphics", "[", 
+    RowBox[{"{", 
+     RowBox[{"Red", ",", 
+      RowBox[{"PointSize", "[", "Medium", "]"}], ",", 
+      RowBox[{"Point", "[", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"0.18", ",", "0"}], "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"0.3", ",", "0"}], "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"0.5", ",", "0"}], "}"}]}], "}"}], "]"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"Line", "[", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"0.3", ",", "0"}], "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"0.3", ",", 
+           RowBox[{
+            RowBox[{"envelopeFct", "[", "Tueb", "]"}], "[", "0.3", "]"}]}], 
+          "}"}]}], "}"}], "]"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"Line", "[", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"0.5", ",", "0"}], "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"0.5", ",", 
+           RowBox[{
+            RowBox[{"envelopeFct", "[", "Tueb", "]"}], "[", "0.5", "]"}]}], 
+          "}"}]}], "}"}], "]"}]}], "}"}], "]"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.572004267343709*^9, 3.572004310532741*^9}, {
+   3.572004383464093*^9, 3.5720044382937603`*^9}, {3.572004473157002*^9, 
+   3.5720045063258953`*^9}, {3.572004554455724*^9, 3.572004627276308*^9}, 
+   3.589538949921438*^9, 3.589539849521101*^9}]
+},
+WindowSize->{1587, 1143},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+PrivateNotebookOptions->{"VersionedStylesheet"->{"Default.nb"[8.] -> False}},
+Magnification->1.5,
+FrontEndVersion->"9.0 for Linux x86 (64-bit) (January 25, 2013)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[557, 20, 734, 19, 107, "Input"],
+Cell[1294, 41, 184, 4, 46, "Input"],
+Cell[1481, 47, 209, 4, 46, "Input"],
+Cell[1693, 53, 831, 22, 77, "Input"],
+Cell[2527, 77, 1270, 32, 137, "Input"],
+Cell[3800, 111, 408, 6, 46, "Input"],
+Cell[4211, 119, 1128, 34, 77, "Input"],
+Cell[5342, 155, 3098, 80, 317, "Input"],
+Cell[8443, 237, 666, 17, 137, "Input"],
+Cell[9112, 256, 2851, 71, 317, "Input"],
+Cell[11966, 329, 587, 14, 77, "Input"],
+Cell[12556, 345, 787, 21, 107, "Input"],
+Cell[13346, 368, 1837, 50, 137, "Input"],
+Cell[15186, 420, 338, 8, 46, "Input"],
+Cell[15527, 430, 1327, 28, 107, "Input"],
+Cell[16857, 460, 353, 9, 46, "Input"],
+Cell[17213, 471, 551, 14, 46, "Input"],
+Cell[17767, 487, 687, 17, 46, "Input"],
+Cell[18457, 506, 880, 20, 46, "Input"],
+Cell[19340, 528, 1263, 30, 77, "Input"],
+Cell[20606, 560, 1319, 31, 77, "Input"],
+Cell[21928, 593, 1772, 48, 137, "Input"]
+}
+]
+*)
+
+(* End of internal cache information *)

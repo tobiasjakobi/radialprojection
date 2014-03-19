@@ -1,0 +1,177 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 9.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[      5589,        168]
+NotebookOptionsPosition[      5105,        148]
+NotebookOutlinePosition[      5465,        164]
+CellTagsIndexPosition[      5422,        161]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+  "SetDirectory", "[", "\"\</homes/tjakobi/PhD_Work/radialprojection\>\"", 
+   "]"}], ";"}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"clist", "=", 
+   RowBox[{"RunThrough", "[", 
+    RowBox[{"\"\<./griddual 10\>\"", ",", "Null"}], "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.570348913917836*^9, 3.5703489528301373`*^9}, {
+  3.5703590065187197`*^9, 3.5703590322472353`*^9}, {3.5704431966764307`*^9, 
+  3.570443197829661*^9}, {3.5704535655688066`*^9, 3.570453566049747*^9}, {
+  3.570455666782352*^9, 3.570455667212224*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"cutoff", "=", 
+   RowBox[{"Map", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"Through", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"Re", ",", "Im"}], "}"}], "[", 
+        RowBox[{"Exp", "[", 
+         RowBox[{"#", "*", "2", "*", "Pi", "*", 
+          RowBox[{"I", "/", "22"}]}], "]"}], "]"}], "]"}], "&"}], ",", 
+     RowBox[{"Range", "[", 
+      RowBox[{"0", ",", "22"}], "]"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"cutoffRot", "=", 
+   RowBox[{"Map", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"Through", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"Re", ",", "Im"}], "}"}], "[", 
+        RowBox[{"Exp", "[", 
+         RowBox[{
+          RowBox[{"#", "*", "2", "*", "Pi", "*", 
+           RowBox[{"I", "/", "22"}]}], "+", 
+          RowBox[{"2", "*", "Pi", "*", 
+           RowBox[{"I", "/", "44"}]}]}], "]"}], "]"}], "]"}], "&"}], ",", 
+     RowBox[{"Range", "[", 
+      RowBox[{"0", ",", "22"}], "]"}]}], "]"}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.570359085355751*^9, 3.5703590879886847`*^9}, {
+  3.570359246006855*^9, 3.57035925039565*^9}, {3.5703593097581377`*^9, 
+  3.5703593111808643`*^9}, {3.570359553393051*^9, 3.570359568163835*^9}, {
+  3.570442931174951*^9, 3.570442959545298*^9}, {3.570453532167665*^9, 
+  3.570453542693406*^9}, {3.5704556469372387`*^9, 3.570455655105454*^9}}],
+
+Cell[BoxData[
+ RowBox[{"periRad", "=", 
+  RowBox[{"Max", "[", 
+   RowBox[{"Map", "[", 
+    RowBox[{"Norm", ",", "clist"}], "]"}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.570443151004092*^9, 3.570443158178219*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"circRadius", "=", 
+   RowBox[{"periRad", "*", 
+    RowBox[{
+     RowBox[{"Cos", "[", 
+      RowBox[{"Pi", "/", "22"}], "]"}], "^", "4"}]}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"windowScale", "=", 
+   RowBox[{"periRad", "*", 
+    RowBox[{
+     RowBox[{"Cos", "[", 
+      RowBox[{"Pi", "/", "22"}], "]"}], "^", "3"}]}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"windowScaleRot", "=", 
+   RowBox[{"periRad", "*", 
+    RowBox[{"Cos", "[", 
+     RowBox[{"Pi", "/", "22"}], "]"}]}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.570442697492457*^9, 3.57044271698946*^9}, {
+  3.570442749678255*^9, 3.570442796991479*^9}, {3.570442831108016*^9, 
+  3.570442945753605*^9}, {3.5704431621243773`*^9, 3.570443165357448*^9}, {
+  3.570453519715179*^9, 3.570453524598187*^9}, {3.57045581838621*^9, 
+  3.570455820753724*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Show", "[", 
+  RowBox[{
+   RowBox[{"ListPlot", "[", 
+    RowBox[{"clist", ",", 
+     RowBox[{"AspectRatio", "\[Rule]", "1"}]}], "]"}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"Graphics", "[", 
+    RowBox[{"{", 
+     RowBox[{"Red", ",", 
+      RowBox[{"Line", "[", 
+       RowBox[{"windowScale", "*", "cutoff"}], "]"}], ",", 
+      RowBox[{"Circle", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"0", ",", "0"}], "}"}], ",", "circRadius"}], "]"}]}], "}"}], 
+    "]"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.5703489416140137`*^9, 3.570348944587462*^9}, {
+  3.570359018070566*^9, 3.570359021670236*^9}, {3.570359255595936*^9, 
+  3.570359344494223*^9}, {3.570359657505934*^9, 3.5703596590411873`*^9}, {
+  3.57044267366534*^9, 3.5704426788504972`*^9}, {3.5704427124973927`*^9, 
+  3.5704427128340483`*^9}, {3.570442855639908*^9, 3.570442882695834*^9}, {
+  3.570442982552277*^9, 3.570442982789735*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Show", "[", 
+  RowBox[{
+   RowBox[{"ListPlot", "[", 
+    RowBox[{"clist", ",", 
+     RowBox[{"AspectRatio", "\[Rule]", "1"}]}], "]"}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"Graphics", "[", 
+    RowBox[{"{", 
+     RowBox[{"Red", ",", 
+      RowBox[{"Line", "[", 
+       RowBox[{"windowScaleRot", "*", "cutoffRot"}], "]"}]}], "}"}], "]"}]}], 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.570359575554603*^9, 3.5703595991419287`*^9}, 
+   3.570442935269281*^9, {3.570443001155752*^9, 3.570443001622316*^9}}]
+},
+WindowSize->{1197, 1011},
+WindowMargins->{{147, Automatic}, {Automatic, 42}},
+Magnification->1.25,
+FrontEndVersion->"9.0 for Linux x86 (64-bit) (January 25, 2013)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[557, 20, 137, 4, 38, "Input"],
+Cell[697, 26, 426, 8, 38, "Input"],
+Cell[1126, 36, 1403, 37, 64, "Input"],
+Cell[2532, 75, 214, 5, 38, "Input"],
+Cell[2749, 82, 875, 24, 89, "Input"],
+Cell[3627, 108, 941, 22, 64, "Input"],
+Cell[4571, 132, 530, 14, 64, "Input"]
+}
+]
+*)
+
+(* End of internal cache information *)

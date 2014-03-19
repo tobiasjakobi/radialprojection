@@ -1,0 +1,284 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 9.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[      7794,        275]
+NotebookOptionsPosition[      6518,        224]
+NotebookOutlinePosition[      6875,        240]
+CellTagsIndexPosition[      6832,        237]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[{
+ RowBox[{"Length", "[", 
+  RowBox[{
+  "ReadDoubleData", "[", 
+   "\"\</homes/tjakobi/PhD_Work/radialprojection/datafiles/octo.ang\>\"", 
+   "]"}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"Length", "[", 
+  RowBox[{
+  "ReadDoubleData", "[", 
+   "\"\</homes/tjakobi/PhD_Work/radialprojection/datafiles/tueb.ang\>\"", 
+   "]"}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"Length", "[", 
+  RowBox[{
+  "ReadDoubleData", "[", 
+   "\"\</homes/tjakobi/PhD_Work/radialprojection/datafiles/dode.ang\>\"", 
+   "]"}], "]"}]}], "Input",
+ CellChangeTimes->{{3.573985947000855*^9, 3.573985979734919*^9}}],
+
+Cell[BoxData["1841494"], "Output",
+ CellChangeTimes->{{3.573985956932536*^9, 3.5739859806442738`*^9}}],
+
+Cell[BoxData["1517308"], "Output",
+ CellChangeTimes->{{3.573985956932536*^9, 3.573985980763639*^9}}],
+
+Cell[BoxData["3275948"], "Output",
+ CellChangeTimes->{{3.573985956932536*^9, 3.5739859809074497`*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"ComputeStats", "[", 
+  RowBox[{
+  "ReadDoubleData", "[", 
+   "\"\</homes/tjakobi/PhD_Work/radialprojection/datafiles/dode.ang\>\"", 
+   "]"}], "]"}]], "Input",
+ CellChangeTimes->{{3.573981176830995*^9, 3.573981201678883*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{
+    "1.0000769423056788`", ",", "1.7888527651357178`", ",", 
+     "96.000647216713`", ",", "27394.337870125943`"}], "}"}], ",", 
+   "0.15208949412565112`"}], "}"}]], "Output",
+ CellChangeTimes->{{3.5739811844801903`*^9, 3.5739812063685007`*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"ComputeStats", "[", 
+  RowBox[{
+  "ReadDoubleData", "[", 
+   "\"\</homes/tjakobi/PhD_Work/radialprojection/datafiles/octo.ang\>\"", 
+   "]"}], "]"}]], "Input",
+ CellChangeTimes->{
+  3.5739812022843018`*^9, {3.5739813288040667`*^9, 3.573981366079947*^9}, {
+   3.573981416754486*^9, 3.5739814172976713`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{
+    "1.0003294317673115`", ",", "2.0561298846255758`", ",", 
+     "125.01934479710451`", ",", "41040.72839816297`"}], "}"}], ",", 
+   "0.22198415225705165`"}], "}"}]], "Output",
+ CellChangeTimes->{{3.573981403373025*^9, 3.573981426711739*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"ComputeStats", "[", 
+  RowBox[{
+  "ReadDoubleData", "[", 
+   "\"\</homes/tjakobi/PhD_Work/radialprojection/datafiles/tueb.ang\>\"", 
+   "]"}], "]"}]], "Input",
+ CellChangeTimes->{{3.57398136377852*^9, 3.5739813670555468`*^9}, 
+   3.573981419221469*^9}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{
+    "1.0004242091025364`", ",", "2.071066380812825`", ",", 
+     "152.39818507285594`", ",", "57135.80339639679`"}], "}"}], ",", 
+   "0.18165312997287994`"}], "}"}]], "Output",
+ CellChangeTimes->{{3.573981404429223*^9, 3.573981428683221*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"ComputeStats", "[", 
+  RowBox[{
+  "ReadDoubleData", "[", 
+   "\"\</homes/tjakobi/PhD_Work/radialprojection/datafiles/prt.ang\>\"", 
+   "]"}], "]"}]], "Input",
+ CellChangeTimes->{{3.5739813708023653`*^9, 3.573981390031529*^9}, 
+   3.5739814201500807`*^9}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{
+    "1.0001619542815603`", ",", "1.2832021054747575`", ",", 
+     "154.1936680540255`", ",", "80385.71799770648`"}], "}"}], ",", 
+   "0.07828431393958941`"}], "}"}]], "Output",
+ CellChangeTimes->{{3.573981405319592*^9, 3.573981434572749*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"ComputeStats", "[", 
+  RowBox[{
+  "ReadDoubleData", "[", 
+   "\"\</homes/tjakobi/PhD_Work/radialprojection/datafiles/rhmb.ang\>\"", 
+   "]"}], "]"}]], "Input",
+ CellChangeTimes->{{3.5739813879549437`*^9, 3.573981390767948*^9}, 
+   3.573981420853547*^9}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{
+    "1.0002422662826436`", ",", "1.7352390268850202`", ",", 
+     "104.16419593220321`", ",", "26358.21274657351`"}], "}"}], ",", 
+   "0.11697010259997369`"}], "}"}]], "Output",
+ CellChangeTimes->{
+  3.573981406200211*^9, {3.5739814367876997`*^9, 3.573981437861423*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"ComputeStats", "[", 
+  RowBox[{
+  "ReadDoubleData", "[", 
+   "\"\</homes/tjakobi/PhD_Work/radialprojection/datafiles/chair.ang\>\"", 
+   "]"}], "]"}]], "Input",
+ CellChangeTimes->{{3.573981393058608*^9, 3.573981421736026*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{
+    "1.0002199515621941`", ",", "2.114429508127165`", ",", 
+     "142.9557770463682`", ",", "53804.639932322534`"}], "}"}], ",", 
+   "0.2536071056016239`"}], "}"}]], "Output",
+ CellChangeTimes->{3.5739814070616903`*^9, 3.573981442103168*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"ComputeStats", "[", 
+  RowBox[{
+  "ReadDoubleData", "[", 
+   "\"\</homes/tjakobi/PhD_Work/radialprojection/datafiles/chair.bad.ang\>\"",
+    "]"}], "]"}]], "Input",
+ CellChangeTimes->{{3.573981395393981*^9, 3.573981422627387*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{
+    "1.0000000760193346`", ",", "2.059609973919346`", ",", 
+     "72.55856159807985`", ",", "15106.229127606059`"}], "}"}], ",", 
+   "0.23674532879848542`"}], "}"}]], "Output",
+ CellChangeTimes->{3.573981407945334*^9, 3.5739814460482492`*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"ComputeStats", "[", 
+  RowBox[{
+  "ReadDoubleData", "[", 
+   "\"\</homes/tjakobi/PhD_Work/radialprojection/datafiles/chir.ang\>\"", 
+   "]"}], "]"}]], "Input",
+ CellChangeTimes->{{3.573981398418001*^9, 3.573981423384368*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{
+    "1.0000321440699311`", ",", "1.003449867672037`", ",", 
+     "7.335131854340672`", ",", "632.2025835579706`"}], "}"}], ",", 
+   "0.0030436083464108884`"}], "}"}]], "Output",
+ CellChangeTimes->{3.573981408933467*^9, 3.573981451111589*^9}]
+}, Open  ]]
+},
+WindowSize->{1600, 1147},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+Magnification->1.25,
+FrontEndVersion->"9.0 for Linux x86 (64-bit) (January 25, 2013)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[579, 22, 601, 16, 89, "Input"],
+Cell[1183, 40, 102, 1, 38, "Output"],
+Cell[1288, 43, 100, 1, 38, "Output"],
+Cell[1391, 46, 102, 1, 38, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[1530, 52, 249, 6, 38, "Input"],
+Cell[1782, 60, 315, 8, 38, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[2134, 73, 330, 8, 38, "Input"],
+Cell[2467, 83, 313, 8, 38, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[2817, 96, 276, 7, 38, "Input"],
+Cell[3096, 105, 312, 8, 38, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[3445, 118, 278, 7, 38, "Input"],
+Cell[3726, 127, 312, 8, 38, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[4075, 140, 277, 7, 38, "Input"],
+Cell[4355, 149, 340, 9, 38, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[4732, 163, 250, 6, 38, "Input"],
+Cell[4985, 171, 311, 8, 38, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[5333, 184, 254, 6, 38, "Input"],
+Cell[5590, 192, 312, 8, 38, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[5939, 205, 249, 6, 38, "Input"],
+Cell[6191, 213, 311, 8, 38, "Output"]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)

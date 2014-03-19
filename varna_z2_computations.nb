@@ -1,0 +1,498 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 8.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[     15824,        489]
+NotebookOptionsPosition[     14593,        451]
+NotebookOutlinePosition[     15027,        468]
+CellTagsIndexPosition[     14984,        465]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"x0", "=", 
+   RowBox[{"Flatten", "[", 
+    RowBox[{
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"x", ",", "y"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"x", ",", 
+         RowBox[{"-", "25"}], ",", "25"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"y", ",", 
+         RowBox[{"-", "25"}], ",", "25"}], "}"}]}], "]"}], ",", "1"}], 
+    "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.549275630753026*^9, 3.549275675215847*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"plot0", "=", 
+   RowBox[{"ListPlot", "[", 
+    RowBox[{"x0", ",", 
+     RowBox[{"AspectRatio", "\[Rule]", "1"}], ",", 
+     RowBox[{"Axes", "\[Rule]", "None"}], ",", 
+     RowBox[{"PlotStyle", "\[Rule]", "Black"}]}], "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.549275688681309*^9, 3.54927569275609*^9}, {
+  3.549275930723424*^9, 3.549275940022561*^9}, {3.549276036882279*^9, 
+  3.549276055672824*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Show", "[", "plot0", "]"}]], "Input",
+ CellChangeTimes->{{3.549275942428565*^9, 3.549275945653089*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Show", "[", 
+  RowBox[{"plot0", ",", "\[IndentingNewLine]", 
+   RowBox[{"Graphics", "[", 
+    RowBox[{"{", 
+     RowBox[{"Red", ",", 
+      RowBox[{"PointSize", "[", "Large", "]"}], ",", 
+      RowBox[{"Point", "[", 
+       RowBox[{"{", 
+        RowBox[{"0", ",", "0"}], "}"}], "]"}]}], "}"}], "]"}]}], 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.549275646895864*^9, 3.54927566392341*^9}, {
+  3.549275715445626*^9, 3.549275798715901*^9}, {3.549275912893559*^9, 
+  3.549275938394757*^9}, {3.549276010081049*^9, 3.549276010632753*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"v0", "=", 
+   RowBox[{"Select", "[", 
+    RowBox[{"x0", ",", 
+     RowBox[{
+      RowBox[{"CoprimeQ", "[", 
+       RowBox[{
+        RowBox[{"Part", "[", 
+         RowBox[{"#", ",", "1"}], "]"}], ",", 
+        RowBox[{"Part", "[", 
+         RowBox[{"#", ",", "2"}], "]"}]}], "]"}], "&"}]}], "]"}]}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.54927644095418*^9, 3.549276445701897*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"v0r", "=", 
+   RowBox[{"Select", "[", 
+    RowBox[{"v0", ",", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Norm", "[", "#", "]"}], "\[LessEqual]", "25"}], "&"}]}], 
+    "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.549276594325222*^9, 3.549276718973281*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"plot1", "=", 
+   RowBox[{"ListPlot", "[", 
+    RowBox[{"v0", ",", 
+     RowBox[{"AspectRatio", "\[Rule]", "1"}], ",", 
+     RowBox[{"Axes", "\[Rule]", "None"}], ",", 
+     RowBox[{"PlotStyle", "\[Rule]", "Black"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Show", "[", 
+  RowBox[{"plot1", ",", "\[IndentingNewLine]", 
+   RowBox[{"Graphics", "[", 
+    RowBox[{"{", 
+     RowBox[{"Red", ",", 
+      RowBox[{"PointSize", "[", "Large", "]"}], ",", 
+      RowBox[{"Point", "[", 
+       RowBox[{"{", 
+        RowBox[{"0", ",", "0"}], "}"}], "]"}]}], "}"}], "]"}]}], 
+  "]"}]}], "Input",
+ CellChangeTimes->{{3.549276451812786*^9, 3.549276460946503*^9}, {
+  3.549276740088748*^9, 3.549276740328684*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"Hack", ":"}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"frame0", "=", 
+    RowBox[{"Graphics", "[", 
+     RowBox[{"{", 
+      RowBox[{"White", ",", 
+       RowBox[{"Point", "[", 
+        RowBox[{"{", 
+         RowBox[{"0", ",", "25"}], "}"}], "]"}], ",", 
+       RowBox[{"Point", "[", 
+        RowBox[{"{", 
+         RowBox[{"0", ",", 
+          RowBox[{"-", "25"}]}], "}"}], "]"}], ",", 
+       RowBox[{"Point", "[", 
+        RowBox[{"{", 
+         RowBox[{"25", ",", "0"}], "}"}], "]"}], ",", 
+       RowBox[{"Point", "[", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"-", "25"}], ",", "0"}], "}"}], "]"}]}], "}"}], "]"}]}], 
+   ";"}]}]], "Input",
+ CellChangeTimes->{{3.549277484796743*^9, 3.549277505751019*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"plot2", "=", 
+   RowBox[{"ListPlot", "[", 
+    RowBox[{"v0r", ",", 
+     RowBox[{"AspectRatio", "\[Rule]", "1"}], ",", 
+     RowBox[{"Axes", "\[Rule]", "None"}], ",", 
+     RowBox[{"PlotStyle", "\[Rule]", "Black"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Show", "[", 
+  RowBox[{
+  "frame0", ",", "\[IndentingNewLine]", "plot2", ",", "\[IndentingNewLine]", 
+   RowBox[{"Graphics", "[", 
+    RowBox[{"{", 
+     RowBox[{"Red", ",", 
+      RowBox[{"PointSize", "[", "Large", "]"}], ",", 
+      RowBox[{"Point", "[", 
+       RowBox[{"{", 
+        RowBox[{"0", ",", "0"}], "}"}], "]"}]}], "}"}], "]"}]}], 
+  "\[IndentingNewLine]", "]"}]}], "Input",
+ CellChangeTimes->{{3.549276657257813*^9, 3.549276693260572*^9}, 
+   3.549276744839644*^9, {3.549277110359533*^9, 3.549277129762045*^9}, {
+   3.549277184112871*^9, 3.549277313182729*^9}, {3.549277490962762*^9, 
+   3.549277496534192*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Show", "[", 
+  RowBox[{
+  "frame0", ",", "\[IndentingNewLine]", "plot2", ",", "\[IndentingNewLine]", 
+   RowBox[{"Graphics", "[", 
+    RowBox[{"{", 
+     RowBox[{"Red", ",", 
+      RowBox[{"PointSize", "[", "Large", "]"}], ",", 
+      RowBox[{"Point", "[", 
+       RowBox[{"{", 
+        RowBox[{"0", ",", "0"}], "}"}], "]"}]}], "}"}], "]"}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"Graphics", "[", 
+    RowBox[{"{", 
+     RowBox[{"Red", ",", 
+      RowBox[{"Circle", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"0", ",", "0"}], "}"}], ",", "25"}], "]"}]}], "}"}], "]"}]}],
+   "\[IndentingNewLine]", "]"}]], "Input",
+ CellChangeTimes->{{3.549277538604541*^9, 3.549277556738814*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Length", "[", "v0r", "]"}]], "Input",
+ CellChangeTimes->{{3.54927761547722*^9, 3.549277616931739*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ang0", "=", 
+   RowBox[{"Map", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"ArcTan", "[", 
+       RowBox[{
+        RowBox[{"Part", "[", 
+         RowBox[{"#", ",", "1"}], "]"}], ",", 
+        RowBox[{"Part", "[", 
+         RowBox[{"#", ",", "2"}], "]"}]}], "]"}], "&"}], ",", "v0r"}], 
+    "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.549277618726054*^9, 3.5492776361583*^9}, {
+  3.549277671066775*^9, 3.54927771398551*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"f", "[", "phi_", "]"}], ":=", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", "z", "}"}], ",", 
+     RowBox[{
+      RowBox[{"z", "=", 
+       RowBox[{"25", "*", 
+        RowBox[{"Exp", "[", 
+         RowBox[{"I", "*", "phi"}], "]"}]}]}], ";", 
+      RowBox[{"Return", "[", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"Re", "[", "z", "]"}], ",", 
+         RowBox[{"Im", "[", "z", "]"}]}], "}"}], "]"}]}]}], "]"}]}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.549278002844634*^9, 3.549278050152969*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"oncircle0", "=", 
+   RowBox[{"Map", "[", 
+    RowBox[{"f", ",", "ang0"}], "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.549277737998372*^9, 3.549277758395544*^9}, {
+   3.549277918763079*^9, 3.549277929201006*^9}, 3.549278057920667*^9}],
+
+Cell[BoxData[
+ RowBox[{"Show", "[", 
+  RowBox[{"frame0", ",", "\[IndentingNewLine]", 
+   RowBox[{"Graphics", "[", 
+    RowBox[{"{", 
+     RowBox[{"Red", ",", 
+      RowBox[{"PointSize", "[", "Large", "]"}], ",", 
+      RowBox[{"Point", "[", 
+       RowBox[{"{", 
+        RowBox[{"0", ",", "0"}], "}"}], "]"}]}], "}"}], "]"}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"Graphics", "[", 
+    RowBox[{"{", 
+     RowBox[{"Red", ",", 
+      RowBox[{"Thickness", "[", "0.02", "]"}], ",", 
+      RowBox[{"Circle", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"0", ",", "0"}], "}"}], ",", "25"}], "]"}]}], "}"}], "]"}], 
+   ",", "\[IndentingNewLine]", 
+   RowBox[{"ListPlot", "[", 
+    RowBox[{"oncircle0", ",", 
+     RowBox[{"PlotStyle", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"Green", ",", 
+        RowBox[{"PointSize", "[", "0.008", "]"}]}], "}"}]}]}], "]"}]}], 
+  "\[IndentingNewLine]", "]"}]], "Input",
+ CellChangeTimes->{{3.549277940020194*^9, 3.549277956372179*^9}, {
+  3.54927807483337*^9, 3.549278082731261*^9}, {3.54927811697212*^9, 
+  3.549278222426614*^9}, {3.549365192465913*^9, 3.549365307560872*^9}, {
+  3.549365368020013*^9, 3.549365435564111*^9}}],
+
+Cell[BoxData[
+ RowBox[{"ListPlot", "[", 
+  RowBox[{
+   RowBox[{"Map", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"Pi", "+", "#"}], ",", "0"}], "}"}], "&"}], ",", "ang0"}], 
+    "]"}], ",", 
+   RowBox[{"PlotStyle", "\[Rule]", 
+    RowBox[{"{", 
+     RowBox[{"Green", ",", 
+      RowBox[{"PointSize", "[", "Small", "]"}]}], "}"}]}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"Axes", "\[Rule]", 
+    RowBox[{"{", 
+     RowBox[{"True", ",", "False"}], "}"}]}], ",", 
+   RowBox[{
+   "PlotLabel", "\[Rule]", "\"\<Projected angles (unnormalized)\>\""}]}], 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.549278510939351*^9, 3.549278589495114*^9}, {
+  3.549278629790001*^9, 3.549278632275656*^9}, {3.549279318475785*^9, 
+  3.549279321128139*^9}, {3.549279575828945*^9, 3.549279607687553*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Length", "[", "ang0", "]"}]], "Input",
+ CellChangeTimes->{{3.549278761316773*^9, 3.549278763013787*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ang1", "=", 
+   RowBox[{"Map", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{"#", "+", "Pi"}], ")"}], "*", 
+       RowBox[{
+        RowBox[{"Length", "[", "ang0", "]"}], "/", 
+        RowBox[{"(", 
+         RowBox[{"2", "*", "Pi"}], ")"}]}]}], "&"}], ",", "ang0"}], "]"}]}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.549278652346328*^9, 3.549278694611413*^9}, {
+  3.549279485776295*^9, 3.549279500680676*^9}}],
+
+Cell[BoxData[
+ RowBox[{"ListPlot", "[", 
+  RowBox[{
+   RowBox[{"Map", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"#", ",", "0"}], "}"}], "&"}], ",", "ang1"}], "]"}], ",", 
+   RowBox[{"PlotStyle", "\[Rule]", 
+    RowBox[{"{", 
+     RowBox[{"Green", ",", 
+      RowBox[{"PointSize", "[", "Small", "]"}]}], "}"}]}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"Axes", "\[Rule]", 
+    RowBox[{"{", 
+     RowBox[{"True", ",", "False"}], "}"}]}], ",", 
+   RowBox[{"PlotLabel", "\[Rule]", "\"\<After normalization (N=1192)\>\""}]}],
+   "]"}]], "Input",
+ CellChangeTimes->{
+  3.549278700211941*^9, {3.549279626630846*^9, 3.549279644046275*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"v0r1", "=", 
+   RowBox[{"Select", "[", 
+    RowBox[{"v0r", ",", 
+     RowBox[{
+      RowBox[{
+       RowBox[{
+        RowBox[{"Part", "[", 
+         RowBox[{"#", ",", "1"}], "]"}], "\[GreaterEqual]", "0"}], "&&", 
+       RowBox[{
+        RowBox[{"Part", "[", 
+         RowBox[{"#", ",", "2"}], "]"}], "\[GreaterEqual]", "0"}]}], "&"}]}], 
+    "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"v0r2", "=", 
+   RowBox[{"Select", "[", 
+    RowBox[{"v0r1", ",", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Part", "[", 
+        RowBox[{"#", ",", "1"}], "]"}], "<=", 
+       RowBox[{"Part", "[", 
+        RowBox[{"#", ",", "2"}], "]"}]}], "&"}]}], "]"}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.549353846975388*^9, 3.549353938209038*^9}, {
+  3.549353968798866*^9, 3.549353970154094*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"plot3", "=", 
+   RowBox[{"ListPlot", "[", 
+    RowBox[{"v0r1", ",", 
+     RowBox[{"AspectRatio", "\[Rule]", "1"}], ",", 
+     RowBox[{"Axes", "\[Rule]", "None"}], ",", 
+     RowBox[{"PlotStyle", "\[Rule]", "Black"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"plot4", "=", 
+   RowBox[{"ListPlot", "[", 
+    RowBox[{"v0r2", ",", 
+     RowBox[{"AspectRatio", "\[Rule]", "1"}], ",", 
+     RowBox[{"Axes", "\[Rule]", "None"}], ",", 
+     RowBox[{"PlotStyle", "\[Rule]", "Black"}]}], "]"}]}], ";"}]}], "Input",
+ CellChangeTimes->{
+  3.549353837710548*^9, {3.549353912031263*^9, 3.549353919814743*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Show", "[", 
+  RowBox[{
+  "frame0", ",", "\[IndentingNewLine]", "plot2", ",", "\[IndentingNewLine]", 
+   RowBox[{"Graphics", "[", 
+    RowBox[{"{", 
+     RowBox[{"Red", ",", 
+      RowBox[{"PointSize", "[", "Large", "]"}], ",", 
+      RowBox[{"Point", "[", 
+       RowBox[{"{", 
+        RowBox[{"0", ",", "0"}], "}"}], "]"}]}], "}"}], "]"}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"Graphics", "[", 
+    RowBox[{"{", 
+     RowBox[{"Red", ",", 
+      RowBox[{"Circle", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"0", ",", "0"}], "}"}], ",", "25"}], "]"}]}], "}"}], "]"}]}],
+   "\[IndentingNewLine]", "]"}]], "Input",
+ CellChangeTimes->{3.549354021355738*^9}],
+
+Cell[BoxData[
+ RowBox[{"Show", "[", 
+  RowBox[{
+  "frame0", ",", "\[IndentingNewLine]", "plot3", ",", "\[IndentingNewLine]", 
+   RowBox[{"Graphics", "[", 
+    RowBox[{"{", 
+     RowBox[{"Red", ",", 
+      RowBox[{"PointSize", "[", "Large", "]"}], ",", 
+      RowBox[{"Point", "[", 
+       RowBox[{"{", 
+        RowBox[{"0", ",", "0"}], "}"}], "]"}]}], "}"}], "]"}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"Graphics", "[", 
+    RowBox[{"{", 
+     RowBox[{"Red", ",", 
+      RowBox[{"Circle", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"0", ",", "0"}], "}"}], ",", "25"}], "]"}]}], "}"}], "]"}]}],
+   "\[IndentingNewLine]", "]"}]], "Input",
+ CellChangeTimes->{
+  3.54935383938336*^9, {3.549354014276411*^9, 3.549354014906507*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Show", "[", 
+  RowBox[{
+  "frame0", ",", "\[IndentingNewLine]", "plot4", ",", "\[IndentingNewLine]", 
+   RowBox[{"Graphics", "[", 
+    RowBox[{"{", 
+     RowBox[{"Red", ",", 
+      RowBox[{"PointSize", "[", "Large", "]"}], ",", 
+      RowBox[{"Point", "[", 
+       RowBox[{"{", 
+        RowBox[{"0", ",", "0"}], "}"}], "]"}]}], "}"}], "]"}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"Graphics", "[", 
+    RowBox[{"{", 
+     RowBox[{"Red", ",", 
+      RowBox[{"Circle", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"0", ",", "0"}], "}"}], ",", "25"}], "]"}]}], "}"}], "]"}]}],
+   "\[IndentingNewLine]", "]"}]], "Input",
+ CellChangeTimes->{{3.549353990098191*^9, 3.549353990209175*^9}, 
+   3.549354036669875*^9}]
+},
+WindowSize->{1600, 1143},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+PrivateNotebookOptions->{"VersionedStylesheet"->{"Default.nb"[8.] -> False}},
+Magnification->1.5,
+FrontEndVersion->"9.0 for Linux x86 (64-bit) (January 25, 2013)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[557, 20, 516, 16, 46, "Input"],
+Cell[1076, 38, 440, 10, 46, "Input"],
+Cell[1519, 50, 127, 2, 46, "Input"],
+Cell[1649, 54, 555, 13, 77, "Input"],
+Cell[2207, 69, 418, 13, 46, "Input"],
+Cell[2628, 84, 296, 9, 46, "Input"],
+Cell[2927, 95, 744, 20, 107, "Input"],
+Cell[3674, 117, 805, 24, 77, "Input"],
+Cell[4482, 143, 932, 23, 167, "Input"],
+Cell[5417, 168, 727, 20, 167, "Input"],
+Cell[6147, 190, 126, 2, 46, "Input"],
+Cell[6276, 194, 465, 14, 46, "Input"],
+Cell[6744, 210, 570, 18, 46, "Input"],
+Cell[7317, 230, 272, 6, 46, "Input"],
+Cell[7592, 238, 1182, 30, 167, "Input"],
+Cell[8777, 270, 822, 23, 77, "Input"],
+Cell[9602, 295, 128, 2, 46, "Input"],
+Cell[9733, 299, 483, 15, 46, "Input"],
+Cell[10219, 316, 661, 19, 77, "Input"],
+Cell[10883, 337, 832, 25, 77, "Input"],
+Cell[11718, 364, 655, 17, 77, "Input"],
+Cell[12376, 383, 703, 20, 167, "Input"],
+Cell[13082, 405, 751, 21, 167, "Input"],
+Cell[13836, 428, 753, 21, 167, "Input"]
+}
+]
+*)
+
+(* End of internal cache information *)

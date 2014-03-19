@@ -1,0 +1,600 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 8.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[     19876,        591]
+NotebookOptionsPosition[     18931,        560]
+NotebookOutlinePosition[     19287,        576]
+CellTagsIndexPosition[     19244,        573]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"Octogonal", " ", 
+    RowBox[{"case", ":"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"xi8", "=", 
+     RowBox[{"Exp", "[", 
+      RowBox[{"2", "*", "Pi", "*", 
+       RowBox[{"I", "/", "8"}]}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"smLambda", "=", 
+     RowBox[{"1", "+", 
+      RowBox[{"Sqrt", "[", "2", "]"}]}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"rOut8", "=", 
+     RowBox[{"Sqrt", "[", 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{"1", "+", "smLambda"}], ")"}], "/", "4"}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"rIn8", "=", 
+     RowBox[{"Sqrt", "[", 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"2", "*", "smLambda"}], "+", "1"}], ")"}], "/", "8"}], 
+      "]"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"shift8", "=", 
+     RowBox[{"Exp", "[", 
+      RowBox[{"2", "*", "Pi", "*", 
+       RowBox[{"I", "/", "16"}]}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"ref8", "=", 
+     RowBox[{"smLambda", "/", "Pi"}]}], ";"}]}]}]], "Input",
+ CellChangeTimes->{{3.538389107833961*^9, 3.538389173835592*^9}, {
+  3.538389617378473*^9, 3.53838965005143*^9}, {3.538390018249386*^9, 
+  3.538390029274045*^9}, {3.538390543574613*^9, 3.538390552062968*^9}, {
+  3.538390609348247*^9, 3.538390623744371*^9}, {3.538390717177336*^9, 
+  3.538390722674059*^9}, {3.538391027989221*^9, 3.538391037834963*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{"Standard", " ", "window", " ", 
+     RowBox[{"vs", ".", " ", "circular"}], " ", "window", " ", 
+     RowBox[{"(", 
+      RowBox[{"with", " ", "same", " ", "area"}], ")"}]}], ":"}], " ", "*)"}],
+   "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"windowVerts8", "=", 
+     RowBox[{"Map", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"Through", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"Re", ",", "Im"}], "}"}], "[", 
+          RowBox[{"shift8", "*", "rOut8", "*", 
+           RowBox[{"xi8", "^", "#"}]}], "]"}], "]"}], "&"}], ",", 
+       RowBox[{"Range", "[", 
+        RowBox[{"0", ",", "7"}], "]"}]}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"windows8", "=", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"Graphics", "[", 
+        RowBox[{"Line", "[", 
+         RowBox[{"Append", "[", 
+          RowBox[{"windowVerts8", ",", 
+           RowBox[{"windowVerts8", "[", 
+            RowBox[{"[", "1", "]"}], "]"}]}], "]"}], "]"}], "]"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Graphics", "[", 
+        RowBox[{"Circle", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"0", ",", "0"}], "}"}], ",", 
+          RowBox[{"Sqrt", "[", "ref8", "]"}]}], "]"}], "]"}]}], "}"}]}], 
+    ";"}], "\[IndentingNewLine]", 
+   RowBox[{"Show", "[", "windows8", "]"}]}]}]], "Input",
+ CellChangeTimes->{{3.538389185979935*^9, 3.538389233664527*^9}, {
+  3.538389291919351*^9, 3.538389293122351*^9}, {3.538389365013239*^9, 
+  3.538389373877102*^9}, {3.538390033022439*^9, 3.538390033838794*^9}, {
+  3.538390629399821*^9, 3.538390666400561*^9}, {3.538390697188621*^9, 
+  3.538390697421111*^9}, {3.538391033436183*^9, 3.538391039450208*^9}, {
+  3.538395839753219*^9, 3.538395858158819*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "Create", " ", "window", " ", "test", " ", "in", " ", "external", " ", 
+    RowBox[{"application", ":"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+    "SetDirectory", "[", "\"\</homes/tjakobi/PhD_Work/radialprojection\>\"", 
+     "]"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"wcheck8", "=", 
+     RowBox[{"RunThrough", "[", 
+      RowBox[{"\"\<./cyclotomic_radial\>\"", ",", "Null"}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"step8", "=", 
+     RowBox[{"4", "/", "500"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"f8", "[", 
+      RowBox[{"{", 
+       RowBox[{"x_", ",", "y_"}], "}"}], "]"}], ":=", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"-", "2"}], "+", 
+        RowBox[{"x", "*", "step8"}]}], ",", 
+       RowBox[{
+        RowBox[{"-", "2"}], "+", 
+        RowBox[{"y", "*", "step8"}]}]}], "}"}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"windowScan8", "=", 
+     RowBox[{"Graphics", "[", 
+      RowBox[{"ListPlot", "[", 
+       RowBox[{
+        RowBox[{"Map", "[", 
+         RowBox[{"f8", ",", "wcheck8"}], "]"}], ",", 
+        RowBox[{"AspectRatio", "\[Rule]", "1"}]}], "]"}], "]"}]}], 
+    ";"}]}]}]], "Input",
+ CellChangeTimes->{{3.538394102542651*^9, 3.538394201925286*^9}, {
+  3.538395683676308*^9, 3.53839572155933*^9}, {3.53839586226485*^9, 
+  3.538395892491636*^9}, {3.538494858170639*^9, 3.538494861269313*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "Show", " ", "window", " ", "test", " ", "overlayed", " ", "with", " ", 
+    RowBox[{"std", ".", " ", "and"}], " ", 
+    RowBox[{"circ", ".", " ", 
+     RowBox[{"window", ":"}]}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"Show", "[", 
+   RowBox[{"windowScan8", ",", "windows8"}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.538395697579018*^9, 3.538395730341343*^9}, {
+  3.538395812484212*^9, 3.538395815620032*^9}, {3.53839589774794*^9, 
+  3.538395931753778*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"Decagonal", " ", 
+    RowBox[{"case", ":"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"xi10", "=", 
+     RowBox[{"Exp", "[", 
+      RowBox[{"2", "*", "Pi", "*", 
+       RowBox[{"I", "/", "10"}]}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"tau", "=", 
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{"1", "+", 
+        RowBox[{"Sqrt", "[", "5", "]"}]}], ")"}], "/", "2"}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"rOut10", "=", 
+     RowBox[{
+      RowBox[{"tau", "^", "2"}], "/", 
+      RowBox[{"Sqrt", "[", 
+       RowBox[{
+        RowBox[{"tau", "^", "2"}], "+", "1"}], "]"}]}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"rIn10", "=", 
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{"tau", "+", "1"}], ")"}], "/", "2"}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"shift10", "=", 
+     RowBox[{"Exp", "[", 
+      RowBox[{"2", "*", "Pi", "*", 
+       RowBox[{"I", "/", "20"}]}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"ref10", "=", 
+     RowBox[{
+      RowBox[{"Sqrt", "[", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"5", "/", "4"}], ")"}], "*", 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{"11", "*", "tau"}], "+", "7"}], ")"}]}], "]"}], "/", 
+      "Pi"}]}], ";"}]}]}]], "Input",
+ CellChangeTimes->{{3.538390727714256*^9, 3.53839074901078*^9}, {
+  3.53839077930007*^9, 3.538390869924593*^9}, {3.538391041110859*^9, 
+  3.538391047497811*^9}, {3.538391219624348*^9, 3.538391228250126*^9}, {
+  3.538398536487868*^9, 3.538398592939016*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"windowVerts10", "=", 
+   RowBox[{"Map", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"Through", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"Re", ",", "Im"}], "}"}], "[", 
+        RowBox[{"shift10", "*", "rOut10", "*", 
+         RowBox[{"xi10", "^", "#"}]}], "]"}], "]"}], "&"}], ",", 
+     RowBox[{"Range", "[", 
+      RowBox[{"0", ",", "9"}], "]"}]}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"windows10", "=", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"Graphics", "[", 
+      RowBox[{"Line", "[", 
+       RowBox[{"Append", "[", 
+        RowBox[{"windowVerts10", ",", 
+         RowBox[{"windowVerts10", "[", 
+          RowBox[{"[", "1", "]"}], "]"}]}], "]"}], "]"}], "]"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Graphics", "[", 
+      RowBox[{"Circle", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"0", ",", "0"}], "}"}], ",", 
+        RowBox[{"Sqrt", "[", "ref10", "]"}]}], "]"}], "]"}]}], "}"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Show", "[", "windows10", "]"}]}], "Input",
+ CellChangeTimes->{{3.538390771893964*^9, 3.538390777260033*^9}, {
+  3.538390875856152*^9, 3.53839089572229*^9}, {3.538390925956317*^9, 
+  3.538390937804039*^9}, {3.538391046237975*^9, 3.538391050472993*^9}, {
+  3.538391209188103*^9, 3.53839121633176*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "Create", " ", "window", " ", "test", " ", "in", " ", "external", " ", 
+    RowBox[{"application", ":"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+    "SetDirectory", "[", "\"\</homes/tjakobi/PhD_Work/radialprojection\>\"", 
+     "]"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"wcheck10", "=", 
+     RowBox[{"RunThrough", "[", 
+      RowBox[{"\"\<./cyclotomic_radial\>\"", ",", "Null"}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"step10", "=", 
+     RowBox[{"4", "/", "500"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"f10", "[", 
+      RowBox[{"{", 
+       RowBox[{"x_", ",", "y_"}], "}"}], "]"}], ":=", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"-", "2"}], "+", 
+        RowBox[{"x", "*", "step10"}]}], ",", 
+       RowBox[{
+        RowBox[{"-", "2"}], "+", 
+        RowBox[{"y", "*", "step10"}]}]}], "}"}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"windowScan10", "=", 
+     RowBox[{"Graphics", "[", 
+      RowBox[{"ListPlot", "[", 
+       RowBox[{
+        RowBox[{"Map", "[", 
+         RowBox[{"f10", ",", "wcheck10"}], "]"}], ",", 
+        RowBox[{"AspectRatio", "\[Rule]", "1"}]}], "]"}], "]"}]}], 
+    ";"}]}]}]], "Input",
+ CellChangeTimes->{{3.538481587150729*^9, 3.538481621540786*^9}, 
+   3.538494866297307*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "Show", " ", "window", " ", "test", " ", "overlayed", " ", "with", " ", 
+    RowBox[{"std", ".", " ", "and"}], " ", 
+    RowBox[{"circ", ".", " ", 
+     RowBox[{"window", ":"}]}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"Show", "[", 
+   RowBox[{"windowScan10", ",", "windows10"}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.538481635249807*^9, 3.538481637405746*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"Dodecagonal", " ", 
+    RowBox[{"case", ":"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"xi12", "=", 
+     RowBox[{"Exp", "[", 
+      RowBox[{"2", "*", "Pi", "*", 
+       RowBox[{"I", "/", "12"}]}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"tau12", "=", 
+     RowBox[{"2", "+", 
+      RowBox[{"Sqrt", "[", "3", "]"}]}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"rOut12", "=", 
+     RowBox[{"Sqrt", "[", "tau12", "]"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"rIn12", "=", 
+     RowBox[{"tau12", "/", "2"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"shift12", "=", 
+     RowBox[{"Exp", "[", 
+      RowBox[{"2", "*", "Pi", "*", 
+       RowBox[{"I", "/", "24"}]}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"ref12", "=", 
+     RowBox[{"3", "*", 
+      RowBox[{"tau12", "/", "Pi"}]}]}], ";"}]}]}]], "Input",
+ CellChangeTimes->{{3.538396524399179*^9, 3.538396616324313*^9}, {
+  3.538398337902505*^9, 3.538398340118682*^9}, {3.538398394363914*^9, 
+  3.538398424025549*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"windowVerts12", "=", 
+   RowBox[{"Map", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"Through", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"Re", ",", "Im"}], "}"}], "[", 
+        RowBox[{"shift12", "*", "rOut12", "*", 
+         RowBox[{"xi12", "^", "#"}]}], "]"}], "]"}], "&"}], ",", 
+     RowBox[{"Range", "[", 
+      RowBox[{"0", ",", "11"}], "]"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"windows12", "=", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"Graphics", "[", 
+      RowBox[{"Line", "[", 
+       RowBox[{"Append", "[", 
+        RowBox[{"windowVerts12", ",", 
+         RowBox[{"windowVerts12", "[", 
+          RowBox[{"[", "1", "]"}], "]"}]}], "]"}], "]"}], "]"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Graphics", "[", 
+      RowBox[{"Circle", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"0", ",", "0"}], "}"}], ",", 
+        RowBox[{"Sqrt", "[", "ref12", "]"}]}], "]"}], "]"}]}], "}"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Show", "[", "windows12", "]"}]}], "Input",
+ CellChangeTimes->{{3.538398353073768*^9, 3.538398375694611*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "Create", " ", "window", " ", "test", " ", "in", " ", "external", " ", 
+    RowBox[{"application", ":"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+    "SetDirectory", "[", "\"\</homes/tjakobi/PhD_Work/radialprojection\>\"", 
+     "]"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"wcheck12", "=", 
+     RowBox[{"RunThrough", "[", 
+      RowBox[{"\"\<./cyclotomic_radial\>\"", ",", "Null"}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"step12", "=", 
+     RowBox[{"6", "/", "500"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"f12", "[", 
+      RowBox[{"{", 
+       RowBox[{"x_", ",", "y_"}], "}"}], "]"}], ":=", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"-", "3"}], "+", 
+        RowBox[{"x", "*", "step12"}]}], ",", 
+       RowBox[{
+        RowBox[{"-", "3"}], "+", 
+        RowBox[{"y", "*", "step12"}]}]}], "}"}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"windowScan12", "=", 
+     RowBox[{"Graphics", "[", 
+      RowBox[{"ListPlot", "[", 
+       RowBox[{
+        RowBox[{"Map", "[", 
+         RowBox[{"f12", ",", "wcheck12"}], "]"}], ",", 
+        RowBox[{"AspectRatio", "\[Rule]", "1"}]}], "]"}], "]"}]}], 
+    ";"}]}]}]], "Input",
+ CellChangeTimes->{{3.538481696296793*^9, 3.538481738985608*^9}, 
+   3.538494870099629*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "Show", " ", "window", " ", "test", " ", "overlayed", " ", "with", " ", 
+    RowBox[{"std", ".", " ", "and"}], " ", 
+    RowBox[{"circ", ".", " ", 
+     RowBox[{"window", ":"}]}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"Show", "[", 
+   RowBox[{"windowScan12", ",", "windows12"}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.538481765634814*^9, 3.538481767086092*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"f", "[", "x_", "]"}], ":=", 
+   RowBox[{"FullSimplify", "[", 
+    RowBox[{"ToRadicals", "[", 
+     RowBox[{"x", "*", 
+      RowBox[{"Tan", "[", 
+       RowBox[{"Pi", "/", "x"}], "]"}]}], "]"}], "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.538390734031967*^9, 3.538390738091139*^9}, {
+  3.538391065745053*^9, 3.538391112682825*^9}}],
+
+Cell[BoxData[
+ RowBox[{"FullSimplify", "[", 
+  RowBox[{"{", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"f", "[", "8", "]"}], "*", 
+     RowBox[{"rIn8", "^", "2"}]}], ",", 
+    RowBox[{
+     RowBox[{"f", "[", "10", "]"}], "*", 
+     RowBox[{"rIn10", "^", "2"}]}], ",", 
+    RowBox[{
+     RowBox[{"f", "[", "12", "]"}], "*", 
+     RowBox[{"rIn12", "^", "2"}]}]}], "}"}], "]"}]], "Input",
+ CellChangeTimes->{{3.538391109808707*^9, 3.538391150005121*^9}, {
+  3.538398444573053*^9, 3.538398465066064*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"Rhomic", " ", "penrose", " ", 
+    RowBox[{"case", ":"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+    "SetDirectory", "[", "\"\</homes/tjakobi/PhD_Work/radialprojection\>\"", 
+     "]"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"rhomPen", "=", 
+     RowBox[{"RunThrough", "[", 
+      RowBox[{"\"\<./cyclotomic_radial\>\"", ",", "Null"}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"stepRP", "=", 
+     RowBox[{"4", "/", "200"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"fRP", "[", 
+      RowBox[{"{", 
+       RowBox[{"x_", ",", "y_"}], "}"}], "]"}], ":=", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"-", "2"}], "+", 
+        RowBox[{"x", "*", "stepRP"}]}], ",", 
+       RowBox[{
+        RowBox[{"-", "2"}], "+", 
+        RowBox[{"y", "*", "stepRP"}]}]}], "}"}]}], ";"}]}]}]], "Input",
+ CellChangeTimes->{{3.539361169371762*^9, 3.5393612484523*^9}, {
+   3.539361301220206*^9, 3.539361307011495*^9}, {3.539361398351743*^9, 
+   3.53936142843301*^9}, 3.539420346764928*^9, {3.539420417466246*^9, 
+   3.539420419441449*^9}, 3.539420606366775*^9, {3.539421026151833*^9, 
+   3.539421027849946*^9}, {3.539424019095608*^9, 3.539424034236886*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"colors", "=", 
+   RowBox[{"{", 
+    RowBox[{"Black", ",", "Red", ",", "Green", ",", "Blue"}], "}"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"windowScanRhom", "=", 
+   RowBox[{"Map", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"Graphics", "[", 
+       RowBox[{"ListPlot", "[", 
+        RowBox[{
+         RowBox[{"Map", "[", 
+          RowBox[{"fRP", ",", 
+           RowBox[{"rhomPen", "[", 
+            RowBox[{"[", "#", "]"}], "]"}]}], "]"}], ",", 
+         RowBox[{"AspectRatio", "\[Rule]", "1"}], ",", 
+         RowBox[{"PlotStyle", "\[Rule]", 
+          RowBox[{"colors", "[", 
+           RowBox[{"[", "#", "]"}], "]"}]}]}], "]"}], "]"}], "&"}], ",", 
+     RowBox[{"Range", "[", 
+      RowBox[{"1", ",", "4"}], "]"}]}], "]"}]}], ";"}]}], "Input",
+ CellChangeTimes->{
+  3.539421031171629*^9, 3.539423595734974*^9, {3.539423641965394*^9, 
+   3.539423657770033*^9}, {3.539423809821669*^9, 3.539423832497291*^9}, {
+   3.539423866060098*^9, 3.539423872682373*^9}, {3.539424011461782*^9, 
+   3.53942403726015*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Map", "[", 
+  RowBox[{"Length", ",", "rhomPen"}], "]"}]], "Input",
+ CellChangeTimes->{{3.539423665648392*^9, 3.539423671534236*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Show", "[", 
+  RowBox[{
+   RowBox[{"windowScanRhom", "[", 
+    RowBox[{"[", "2", "]"}], "]"}], ",", 
+   RowBox[{"windowScanRhom", "[", 
+    RowBox[{"[", "4", "]"}], "]"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.539361260214684*^9, 3.539361265903575*^9}, {
+  3.539423701134307*^9, 3.539423719408314*^9}, {3.539423886404632*^9, 
+  3.539423911047057*^9}}]
+},
+WindowSize->{1600, 1178},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+Magnification->1.5,
+FrontEndVersion->"8.0 for Linux x86 (32-bit) (October 10, 2011)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[557, 20, 1536, 42, 206, "Input"],
+Cell[2096, 64, 1844, 48, 152, "Input"],
+Cell[3943, 114, 1541, 44, 179, "Input"],
+Cell[5487, 160, 530, 12, 71, "Input"],
+Cell[6020, 174, 1666, 51, 206, "Input"],
+Cell[7689, 227, 1348, 36, 125, "Input"],
+Cell[9040, 265, 1433, 43, 179, "Input"],
+Cell[10476, 310, 435, 10, 71, "Input"],
+Cell[10914, 322, 1153, 32, 206, "Input"],
+Cell[12070, 356, 1161, 34, 125, "Input"],
+Cell[13234, 392, 1433, 43, 179, "Input"],
+Cell[14670, 437, 435, 10, 71, "Input"],
+Cell[15108, 449, 381, 10, 43, "Input"],
+Cell[15492, 461, 496, 14, 43, "Input"],
+Cell[15991, 477, 1325, 35, 152, "Input"],
+Cell[17319, 514, 1068, 28, 71, "Input"],
+Cell[18390, 544, 156, 3, 43, "Input"],
+Cell[18549, 549, 378, 9, 43, "Input"]
+}
+]
+*)
+
+(* End of internal cache information *)
