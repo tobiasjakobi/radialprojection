@@ -1,0 +1,186 @@
+(***************************************************************************)
+(*                                                                         *)
+(*                                                                         *)
+(*             Constructing Aperiodic Tilings with Mathematica:            *)
+(*             ------------------------------------------------            *)
+(*                                                                         *)
+(*                           Some Example Programs                         *)
+(*                           ---------------------                         *)
+(*                                                                         *)
+(*                                                                         *)
+(*                                 Uwe Grimm                               *)
+(*                                                                         *)
+(*                       Applied Mathematics Department                    *)
+(*                            The Open University                          *)
+(*                                Walton Hall                              *)
+(*                           Milton Keynes MK7 6AA                         *)
+(*                              United Kingdom                             *)
+(*                                                                         *)
+(*                        Email: u.g.grimm@open.ac.uk                      *)
+(*                      WWW: http://mcs.open.ac.uk/ugg2/                   *)
+(*                                                                         *)
+(*                                                                         *)
+(*                  Programs are available for download at                 *)
+(*               http://mcs.open.ac.uk/ugg2/AperiodicTilings/              *)
+(*                                                                         *)
+(*                     (Version 1.05 of January 12, 2005)                  *)
+(*                                                                         *)
+(***************************************************************************)
+
+
+(***************************************************************************)
+(*                               Description                               *)
+(***************************************************************************)
+
+
+This is a collection of Mathematica packages grown from a summer school on 
+Quasicrystals (WE-Heraeus-Ferienkurs fuer Physik: Quasikristalle und ihre 
+physikalischen Eigenschaften) held at Chemnitz University of Technology, 
+Germany, in September 1997. The programs were originally developped as 
+material for the students for two afternoon sessions of the summer school. 
+Later, the programs were extended and presented at the summer school and 
+workshop ALGEBRA 2000 at the University of Alberta, Edmonton, Canada, in
+June and July 2000, and once more at a summer school in Chemnitz 
+(WE-Heraeus-Ferienkurs fuer Physik: Vom Billardtisch bis Monte Carlo -
+Spielfelder der Statistischen Physik) in September/October 2000, and at
+the Royal Society Summer Science Exhibition 2004.
+
+The description of the packages is contained in an article that will appear
+in the proceedings of the 1997 WE-Heraeus summer school:
+
+            Uwe Grimm and Michael Schreiber,
+            Aperiodic Tilings on the Computer,
+            in: 
+            Quasicrystals: An Introduction to Structure, Physical 
+            Properties, and Applications,
+            edited by J.-B. Suck, M. Schreiber and P. Haeussler,
+            Springer Verlag, Berlin (2002) pp. 49-66
+            [A preprint version cond-mat/9903010 is available at 
+             http://arxiv.org/abs/cond-mat/9903010]
+
+
+A PostScript file Tilings.ps of the preprint version is provided in this 
+package. 
+
+
+(***************************************************************************)
+(*                                 Content                                 *)
+(***************************************************************************)
+
+
+In the present version, the package contained the following files:
+      
+    -  Read.Me                [THIS FILE; CURRENT VERSION 1.05]
+    -  ChairTiling.m          [AVAILABLE; CURRENT VERSION 1.02]
+    -  FibonacciChain.m       [AVAILABLE; CURRENT VERSION 1.01]
+    -  OctagonalTiling.m      [AVAILABLE; CURRENT VERSION 1.01]
+    -  GridMethod.m           [AVAILABLE; CURRENT VERSION 1.01]
+    -  PenrosePuzzle.m        [AVAILABLE; CURRENT VERSION 1.03]
+    -  Tilings.ps.gz          [PREPRINT AVAILABLE]
+
+So all files that had been promised in the article are available, 
+and although the publication of the book had been delayed 
+considerably, it eventually appeared in 2002.
+
+For more information on the programs, please refer to the introductory
+notes contained within each file. We tried to give rather precise 
+definitions of all functions and their arguments that are defined in the 
+packages. 
+
+You may wonder why the tilings are encoded in rather different ways in
+the various programs. In fact, this was not unintentional, because it 
+was meant to give some idea of the variety of possible treatments of these
+geometric problems. Of course, part of it is also due to the fact that the
+various prgrams were originally written independently from each other, and
+therefore the representation was chosen in order to fit the specific
+problem.
+
+It is our intention to regularly add additional programs to this package,
+and  to update and to add new features to existing programs. In fact, some 
+of our programs are just lacking any useful documentation, but apart from 
+that may be suitable for general use. Thus, we encourage you - if you are 
+interested - to take a look at the archive now and then in order to see 
+whether any new parts have been added to the package.
+
+The following programs that were not discussed in the proceedings
+article have been added in the meantime:
+
+    -  SphinxTiling.m         [AVAILABLE; CURRENT VERSION 1.02]
+    -  PinwheelTiling.m       [AVAILABLE; CURRENT VERSION 1.0]
+
+In addition, some rudimentary Mathematica notebooks are now also provided,
+showing you how to use some features of the programs. These notebooks were
+used for a presentation at the Summer School "Algebra 2000" at the 
+University of Alberta, Edmonton, Canada, in July 2000. They also include a 
+short introduction to Mathematica. At present, notebooks are provided for
+the following versions of Mathematica:
+
+    -  Mathematica 3.0        [AVAILABLE]
+    -  Mathematica 4.0        [AVAILABLE]
+    -  Mathematica 5.0        [AVAILABLE]
+
+These files are contained in the sub-directories notebook3, notebook4
+and notebook 5. Note that only the most recent notebook versions will
+be updated.
+
+The notebook files are:
+
+    -  Intro.nb               [AVAILABLE; CURRENT VERSION 1.0]
+    -  ChairTiling.nb         [AVAILABLE; CURRENT VERSION 1.0]
+    -  FibonacciChain.nb      [AVAILABLE; CURRENT VERSION 1.0]
+    -  OctagonalTiling.nb     [AVAILABLE; CURRENT VERSION 1.0]
+    -  GridMethod.nb          [AVAILABLE; CURRENT VERSION 1.0]
+    -  PenrosePuzzle.nb       [AVAILABLE; CURRENT VERSION 1.0]
+    -  SphinxTiling.nb        [AVAILABLE; CURRENT VERSION 1.0]
+    -  PinwheelTiling.nb      [AVAILABLE; CURRENT VERSION 1.0]
+
+The notebooks assume that the package files, which have to be read initially,
+are located within the same directory. If this is not the case, the 
+corresponding command should be amended accordingly.
+
+
+(***************************************************************************)
+(*                             IMPORTANT NOTES                             *)
+(***************************************************************************)
+
+
+CONDITIONS OF USE: 
+------------------
+
+This package may be copied and redistributed freely by anyone, but no
+part of it may be sold commercially without explicit approval by the 
+authors. Any changes to the original code should be documented, or
+preferably suggested to the authors of this package to make useful
+changes or additions available to the community. The authors would like 
+to ask that the use of the program package is acknowledged in publications 
+when appropriate.
+
+
+DISCLAIMER: 
+-----------
+
+This packages is made avalable by the authors without any guarantee. 
+The authors assume no liablity or responsibility for the correctness of the
+programs or the results obtained by their use. So enjoy, but use at your own 
+risk!
+
+
+BUG REPORTS:
+------------
+
+If you find a bug in any of the programs, please do not hesitate do inform
+us about it. Please address bug reports to: u.grimm@physics.org
+
+
+COMMENTS & SUGGESTIONS:
+-----------------------
+
+Any comments or suggestions, concerning the programs or their documentation,
+are most welcome. 
+
+
+(***************************************************************************)
+(*                               END OF FILE                               *)
+(***************************************************************************)
+
+
