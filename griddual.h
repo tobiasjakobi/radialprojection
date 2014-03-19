@@ -8,8 +8,6 @@
 
 namespace GridDualizing {
 
-  const double pi = atan(1.0) * 4.0;
-
   typedef vector<vec2d> vec2dlist;
 
   /* n = degree of rotational symmetry                                          *
