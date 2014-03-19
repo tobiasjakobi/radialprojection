@@ -19,6 +19,14 @@ objects := cyclotomic_radial chiral_radial corner_cases \
 
 all: build;
 
+%.o: %.cpp
+	$(compiler) -c -o $@ $(flags) $<
+
+cyclotomic_radial: cyclotomic_octagonal.o cyclotomic_decagonal.o \
+                   cyclotomic_dodecagonal.o cyclotomic_rhombic_penrose.o \
+                   common.o cyclotomic_radial.o
+	$(compiler) -o $@ $(flags) $^
+	
 %: %.cpp; $(compiler) -c -o $@ $(flags) $<
 
 build: $(objects)

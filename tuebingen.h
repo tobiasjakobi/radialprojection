@@ -1,18 +1,15 @@
 #ifndef _TUEBINGEN_H_
 #define _TUEBINGEN_H_
 
-#include "radial_math.h"
-#include <limits>
-
-using namespace std;
-
-typedef unsigned char ubyte;
+#include "common.h"
+#include "visibility.h"
 
 // Namespace for both the TTT (Tübingen triangle tiling)
 // and the related PRT (Penrose-Robinson tiling)
 namespace TuebingenTri {
 
-  struct TuebingenOp {
+  /* The visibility test behaves the same for both TTT and PRT. */
+  struct VisOp {
     typedef vec4s invectype;
     static const double epsilon;
 
@@ -55,16 +52,16 @@ namespace TuebingenTri {
       // now compute:
       // c = z_a * w_b
       // d = z_b * w_a
-      RadialCoprime::multZTau(vec2i(pa[0], pa[1]),
+      Coprime::multZTau(vec2i(pa[0], pa[1]),
                               vec2i(pb[2], pb[3]), c);
-      RadialCoprime::multZTau(vec2i(pb[0], pb[1]),
+      Coprime::multZTau(vec2i(pb[0], pb[1]),
                               vec2i(pa[2], pa[3]), d);
 
       return (c == d);
     }
   };
 
-  typedef VisTest::visibleList<TuebingenOp> tuebVisList;
+  typedef VisTest::VisibleList<VisOp> VisList;
   
   class tri;
   typedef vector<tri> trilist;

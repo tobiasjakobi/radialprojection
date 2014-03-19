@@ -1,13 +1,12 @@
 #ifndef _CHIRAL_RADIAL_H_
 #define _CHIRAL_RADIAL_H_
 
-#include "radial_math.h"
-
-#include <limits>
+#include "common.h"
+#include "visibility.h"
 
 namespace ChiralLB {
 
-  struct ChiralOp {
+  struct VisOp {
     typedef vec4s invectype;
     static const double epsilon;
 
@@ -50,16 +49,16 @@ namespace ChiralLB {
       // now compute:
       // c = z_a * w_b
       // d = z_b * w_a
-      RadialCoprime::multZTau(vec2i(pa[0], pa[1]),
+      Coprime::multZTau(vec2i(pa[0], pa[1]),
                               vec2i(pb[2], pb[3]), c);
-      RadialCoprime::multZTau(vec2i(pb[0], pb[1]),
+      Coprime::multZTau(vec2i(pb[0], pb[1]),
                               vec2i(pa[2], pa[3]), d);
 
       return (c == d);
     }
   };
 
-  typedef VisTest::visibleList<ChiralOp> chiralVisList;
+  typedef VisTest::VisibleList<VisOp> VisList;
 
   class rhomb;
   typedef vector<rhomb> rhomblist;
@@ -136,7 +135,7 @@ namespace Chair2D {
 
     // constructor
     vismap(const llist& patch, uint steps) {
-      gridsize = 2 * CommonRadial::ipower(2, steps);
+      gridsize = 2 * Common::ipower(2, steps);
       bmap = new vector<blist>(2 * gridsize + 1, blist(2 * gridsize + 1, false));
 
       for (llist::const_iterator i = patch.begin(); i != patch.end(); ++i) {
@@ -167,7 +166,7 @@ namespace Chair2D {
     bool isVisible(const vec2s& v) const {
       if (v[0] == 0 && v[1] == 0) return false;
 
-      const uint agcd = abs(RadialCoprime::gcdZ(v[0], v[1]));
+      const uint agcd = abs(Coprime::gcdZ(v[0], v[1]));
       if (agcd == 1) return true;
 
       /* A single check for coprime coordinates isn't correct in this case, since the   *

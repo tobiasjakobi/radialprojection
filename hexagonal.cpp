@@ -3,6 +3,8 @@
 #include <sstream>
 
 int main(int argc, char* argv[]) {
+  using namespace Common;
+
   uint steps = 40;
   uint mode = 0;
 
@@ -38,7 +40,7 @@ int main(int argc, char* argv[]) {
 
   // restrict to 1/6-sector, select visible tiling points and convert to 2d
   for (vector<vec2i>::const_iterator i = in.begin(); i != in.end(); ++i) {
-    if (RadialCoprime::gcdZ(abs(i->x), abs(i->y)) == 1) {
+    if (Coprime::gcdZ(abs(i->x), abs(i->y)) == 1) {
       const vec2d t(i->transHexTo2D());
 
       if (t.inFirstQuadrant() &&
@@ -46,15 +48,15 @@ int main(int argc, char* argv[]) {
     }
   }*/
 
-  CommonRadial::dlist angles;
+  Common::dlist angles;
   double mean;
-  CommonRadial::radialProj(vis2d, angles, mean);
+  Common::radialProj(vis2d, angles, mean);
 
   cerr << "mean distance " << mean
        << " during radial projection of " << (angles.size() + 1)
        << " vertices.\n";
 
-  CommonRadial::writeRawConsole(angles);
+  Common::writeRawConsole(angles);
 
   //cout << vis2d;
 

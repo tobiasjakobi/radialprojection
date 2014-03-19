@@ -1,4 +1,4 @@
-#include "radial_math.h"
+#include "common.h"
 
 #include <sstream>
 
@@ -47,10 +47,10 @@ int main(int argc, char* argv[]) {
 
   if (mode == 0) {
     cerr << "Creating envelope for bulk section (output data type is 64-bit IEEE float, 8 byte alignment).\n";
-    CommonRadial::histogramEnvelope(0.0, param, stepsize);
+    Common::histogramEnvelope(0.0, param, stepsize);
   } else {
     cerr << "Creating envelope for tail section (output data type is 80-bit IEEE float, 16 byte alignment).\n";
-    CommonRadial::histoTailEnvelope(param, stepsize);
+    Common::histoTailEnvelope(param, stepsize);
   }
 
   return 0;

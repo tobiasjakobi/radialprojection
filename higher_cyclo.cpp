@@ -3,9 +3,9 @@
 #include <sstream>
 #include "level_manager.h"
 
-namespace CommonRadial {
+#include <algorithm>
 
-  const double eps = numeric_limits<double>::epsilon();
+namespace Common {
 
   typedef vector<vec6s> vec6slist;
 
@@ -14,34 +14,34 @@ namespace CommonRadial {
 
 };
 
-namespace HeptagonalRadial {
+namespace Heptagonal {
 
   // Minimal polynomial is p(x) = x^3 + x^2 - 2*x - 1
-  const double heptaLambda = 2.0 * cos(2.0 * CommonRadial::pi / 7.0);
+  const double lambda = 2.0 * cos(2.0 * Common::pi / 7.0);
 
   // Use a ball of radius R in 4-space
   const double refBallRadiusSquared = 7.25; // TODO: adjust
 
-  const double HeptagonalOp::epsilon = 2.0 * numeric_limits<double>::epsilon();
+  const double VisOp::epsilon = 2.0 * numeric_limits<double>::epsilon();
 
   bool checkProjInWindow(const vec6s& point);
   //bool checkScaledProjInWindow(const vec6s& point);
 
   void projTiling(const vec6s& initpoint, uint maxstep,
-                  CommonRadial::vec6slist& tilingpoints);
+                  Common::vec6slist& tilingpoints);
 
   void projTilingVis(const vec6s& initpoint,
                      const vec6s& origin,
                      uint maxstep, bool radialproj,
-                     CommonRadial::vec6slist& tilingpoints,
-                     CommonRadial::vec6slist& visiblepoints);
+                     Common::vec6slist& tilingpoints,
+                     Common::vec6slist& visiblepoints);
 
-  void radialProj(const CommonRadial::vec6slist& input,
-                  CommonRadial::dlist& output, double& meandist);
+  void radialProj(const Common::vec6slist& input,
+                  Common::dlist& output, double& meandist);
 
 };
 
-bool CommonRadial::locate(const vec6slist& list, const vec6s& target,
+bool Common::locate(const vec6slist& list, const vec6s& target,
                           uint i, uint j, uint range) {
   if (j < i) return false;
   assert((j - i + 1) == range);
@@ -53,8 +53,8 @@ bool CommonRadial::locate(const vec6slist& list, const vec6s& target,
   return false;
 }
 
-bool HeptagonalRadial::checkProjInWindow(const vec6s& point) {
-  using namespace CommonRadial;
+bool Heptagonal::checkProjInWindow(const vec6s& point) {
+  using namespace Common;
 
   const vec4d pt(point.toInternalL7());
   const double pt1 = pt.lengthSquared();
@@ -72,9 +72,9 @@ bool HeptagonalRadial::checkProjInWindow(const vec6s& point) {
 /*bool HeptagonalRadial::checkScaledProjInWindow(const vec6s& point) {
 }*/
 
-void HeptagonalRadial::projTiling(const vec6s& initpoint, uint maxstep, 
-                   CommonRadial::vec6slist& tilingpoints) {
-  using namespace CommonRadial;
+void Heptagonal::projTiling(const vec6s& initpoint, uint maxstep, 
+                   Common::vec6slist& tilingpoints) {
+  using namespace Common;
 
   vec6s p, pp;
   const uint numsteps = 7;
@@ -111,11 +111,11 @@ void HeptagonalRadial::projTiling(const vec6s& initpoint, uint maxstep,
        << tilingpoints.size() << " vertices.\n";
 }
 
-void HeptagonalRadial::projTilingVis(const vec6s& initpoint,
+void Heptagonal::projTilingVis(const vec6s& initpoint,
                    const vec6s& origin, uint maxstep, bool radialproj,
-                   CommonRadial::vec6slist& tilingpoints,
-                   CommonRadial::vec6slist& visiblepoints) {
-  using namespace CommonRadial;
+                   Common::vec6slist& tilingpoints,
+                   Common::vec6slist& visiblepoints) {
+  using namespace Common;
 
   vec6s p, pp;
   const uint numsteps = 7;
@@ -151,7 +151,7 @@ void HeptagonalRadial::projTilingVis(const vec6s& initpoint,
   cerr << "Constructed patch of heptagonal tiling with "
        << tilingpoints.size() << " vertices.\n";
 
-  heptagonalVisList* vlist = new heptagonalVisList;
+  VisList* vlist = new VisList;
 
   // For RP-mode with the default origin, we can apply the usual
   // sector-reduction optimization.
@@ -203,9 +203,9 @@ void HeptagonalRadial::projTilingVis(const vec6s& initpoint,
   vlist = NULL;
 }
 
-void HeptagonalRadial::radialProj(const CommonRadial::vec6slist& input,
-                  CommonRadial::dlist& output, double& meandist) {
-  using namespace CommonRadial;
+void Heptagonal::radialProj(const Common::vec6slist& input,
+                  Common::dlist& output, double& meandist) {
+  using namespace Common;
 
   output.clear();
   output.reserve(input.size());
@@ -238,7 +238,7 @@ int main(int argc, char* argv[]) {
     ss >> mode;
   }
 
-  CommonRadial::vec6slist tiling, visible;
+  Common::vec6slist tiling, visible;
 
   if (mode >= 3) {
     cerr << "Unknown mode selected:\n"
@@ -249,24 +249,24 @@ int main(int argc, char* argv[]) {
   }
 
   if (mode == 0) {
-    HeptagonalRadial::projTiling(init, steps, tiling);
+    Heptagonal::projTiling(init, steps, tiling);
     cout << tiling;
   } else
   if (mode == 1) {
-    HeptagonalRadial::projTilingVis(init, init, steps, false, tiling, visible);
+    Heptagonal::projTilingVis(init, init, steps, false, tiling, visible);
     cout << visible;
   } else {
-    CommonRadial::dlist out;
+    Common::dlist out;
     double mean;
 
-    HeptagonalRadial::projTilingVis(init, init, steps, true, tiling, visible);
-    HeptagonalRadial::radialProj(visible, out, mean);
+    Heptagonal::projTilingVis(init, init, steps, true, tiling, visible);
+    Heptagonal::radialProj(visible, out, mean);
 
     cerr << "mean distance " << mean
          << " during radial projection of " << (out.size() + 1)
          << " vertices.\n";
 
-    CommonRadial::writeRawConsole(out);
+    Common::writeRawConsole(out);
   }
 
   return 0;

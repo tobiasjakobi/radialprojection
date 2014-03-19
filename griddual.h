@@ -1,7 +1,7 @@
 #ifndef _GRIDDUAL_H_
 #define _GRIDDUAL_H_
 
-#include "radial_math.h"
+#include "common.h"
 
 #include <limits>
 #include <fstream>
@@ -27,7 +27,7 @@ namespace GridDualizing {
     // Store only first half of components when n is even.
     enum { size = ((n % 2 == 0) ? n/2 : n),
            realsize = n,
-           reducedsize = MetaRadial::eulerPhi<n>::value };
+           reducedsize = Meta::eulerPhi<n>::value };
 
     GridVertex() {}
     GridVertex(const GridVertex<n>& gv) {
@@ -103,6 +103,8 @@ namespace GridDualizing {
     }
 
     static void initRoots() {
+      using namespace Common;
+
       if (roots != NULL) return;
 
       roots = new vec2d[size];

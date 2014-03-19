@@ -1,8 +1,8 @@
 #ifndef _HIGHER_CYCLO_H_
 #define _HIGHER_CYCLO_H_
 
-#include "radial_math.h"
-
+#include "common.h"
+#include "visibility.h"
 
 class vec4d {
 private:
@@ -142,7 +142,7 @@ public:
   }
 
   vec2d toPhysicalL7() const {
-    static const double u = CommonRadial::pi / 14.0;
+    static const double u = Common::pi / 14.0;
 
     static const double v1[6] = {1.0, sin(3.0*u), -sin(u),
                                  -cos(2.0*u), -cos(2.0*u), -sin(u)};
@@ -165,13 +165,13 @@ public:
 
 };
 
-namespace CommonRadial {
+namespace Common {
 
   typedef vector<vec4d> vec4dlist;
 
 };
 
-namespace RadialCoprime {
+namespace Coprime {
 
   /* Multiply in Z[heptaLambda] (z = x1 * x2):            *
    * First 3 components of 'in' is the first factor x1,   *
@@ -188,9 +188,9 @@ namespace RadialCoprime {
 
 };
 
-namespace HeptagonalRadial {
+namespace Heptagonal {
 
-  struct HeptagonalOp {
+  struct VisOp {
     typedef vec6s invectype;
     static const double epsilon;
 
@@ -227,14 +227,14 @@ namespace HeptagonalRadial {
       c.zero(); d.zero();
 
       pa.interleave(pb);
-      RadialCoprime::multL7(pa, c);
-      RadialCoprime::multL7(pb, d);
+      Coprime::multL7(pa, c);
+      Coprime::multL7(pb, d);
 
       return (c == d);
     }
   };
 
-  typedef VisTest::visibleList<HeptagonalOp> heptagonalVisList;
+  typedef VisTest::VisibleList<VisOp> VisList;
 
 };
 

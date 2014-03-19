@@ -1,12 +1,13 @@
 #include "griddual.h"
 
 #include <sstream>
+#include <algorithm>
 
 namespace GridDualizing {
 
-  void createGammaRandom(uint n, CommonRadial::dlist& output);
-  void createGammaRandom(uint n, double sum, CommonRadial::dlist& output);
-  void createGamma(uint n, double entry, CommonRadial::dlist& output);
+  void createGammaRandom(uint n, Common::dlist& output);
+  void createGammaRandom(uint n, double sum, Common::dlist& output);
+  void createGamma(uint n, double entry, Common::dlist& output);
 
   template <typename T>
   void generate(vec2dlist& r, vec2dlist& o);
@@ -16,17 +17,17 @@ namespace GridDualizing {
 
   template <typename T>
   void fill(const vec2d& i, const vec2dlist& r,
-            const CommonRadial::dlist& g, T& out);
+            const Common::dlist& g, T& out);
 
   // Generate tiling by grid dualization method
   template <typename T>
   void dualize(const T& min, const T& max,
-               const CommonRadial::dlist& gamma, GridTiling<T>& output);
+               const Common::dlist& gamma, GridTiling<T>& output);
 
   // Generate only the tiling vertices
   template <typename T>
   void dualize(const T& min, const T& max,
-               const CommonRadial::dlist& gamma, vector<T>& output);
+               const Common::dlist& gamma, vector<T>& output);
 
   template <typename T>
   void createVertices(GridTiling<T>& gt);
@@ -48,11 +49,11 @@ namespace GridDualizing {
 
 };
 
-void GridDualizing::createGammaRandom(uint n, CommonRadial::dlist& output) {
+void GridDualizing::createGammaRandom(uint n, Common::dlist& output) {
   if (n == 0) return;
 
   double* values = new double[n];
-  CommonRadial::random(n, values);
+  Common::random(n, values);
 
   output.clear();
   output.reserve(n);
@@ -65,11 +66,11 @@ void GridDualizing::createGammaRandom(uint n, CommonRadial::dlist& output) {
   delete [] values;
 }
 
-void GridDualizing::createGammaRandom(uint n, double sum, CommonRadial::dlist& output){
+void GridDualizing::createGammaRandom(uint n, double sum, Common::dlist& output){
   if (n == 0) return;
 
   double* values = new double[n];
-  CommonRadial::random(n, values);
+  Common::random(n, values);
 
   output.clear();
   output.reserve(n);
@@ -86,7 +87,7 @@ void GridDualizing::createGammaRandom(uint n, double sum, CommonRadial::dlist& o
   output.push_back(sum - temp);
 }
 
-void GridDualizing::createGamma(uint n, double entry, CommonRadial::dlist& output){
+void GridDualizing::createGamma(uint n, double entry, Common::dlist& output){
   output.clear();
   output.reserve(n);
   for (uint i = 0; i < n; ++i) {
@@ -96,6 +97,8 @@ void GridDualizing::createGamma(uint n, double entry, CommonRadial::dlist& outpu
 
 template <typename T>
 void GridDualizing::generate(vec2dlist& r, vec2dlist& o) {
+  using namespace Common;
+
   r.resize(T::size);
   o.resize(T::size);
 
@@ -121,7 +124,7 @@ void GridDualizing::generate(vector<T>& s) {
 
 template <typename T>
 void GridDualizing::fill(const vec2d& i, const vec2dlist& r,
-               const CommonRadial::dlist& g, T& out) {
+               const Common::dlist& g, T& out) {
   for (uint k = 0; k < T::size; ++k) {
      out[k] = ceil(i.dot(r[k]) + g[k]); // K(j) = ceil(Re(z \times xi^{-j}) + gamma_j)
   }
@@ -129,7 +132,7 @@ void GridDualizing::fill(const vec2d& i, const vec2dlist& r,
 
 template <typename T>
 void GridDualizing::dualize(const T& min, const T& max,
-               const CommonRadial::dlist& gamma, GridTiling<T>& output) {
+               const Common::dlist& gamma, GridTiling<T>& output) {
   if (T::size == 0) return;
   if (gamma.size() != T::size) return;
 
@@ -193,7 +196,7 @@ void GridDualizing::dualize(const T& min, const T& max,
 
 template <typename T>
 void GridDualizing::dualize(const T& min, const T& max,
-             const CommonRadial::dlist& gamma, vector<T>& output) {
+             const Common::dlist& gamma, vector<T>& output) {
 
   // TODO: implement!
 }
@@ -276,6 +279,8 @@ double GridDualizing::outerRadius(const GridTiling<T>& gt) {
  * all grid "stripes".                                                     */
 template <typename T>
 void GridDualizing::cutVertices(const GridTiling<T>& gt, vector<T>& output) {
+  using namespace Common;
+
   if (gt.vertices.size() == 0) return;
 
   // The 0.8 factor was derived by experimentation with lower symmetries
@@ -314,7 +319,7 @@ int main(int argc, char* argv[]) {
   uint mode = 0;
   bool sector = false;
 
-  using namespace CommonRadial;
+  using namespace Common;
   
   if (argc >= 2) {
     stringstream ss(argv[1]);
@@ -334,7 +339,7 @@ int main(int argc, char* argv[]) {
   const uint symmetry = 11;
 
   // TODO: All algorithm currently only work properly for prime numbers
-  assert(MetaRadial::isprime<symmetry>());
+  assert(Meta::isprime<symmetry>());
 
   typedef GridDualizing::GridVertex<symmetry> grVtx;
   grVtx::initRoots();

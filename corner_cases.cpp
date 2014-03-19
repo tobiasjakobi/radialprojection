@@ -1,6 +1,8 @@
-#include "radial_math.h"
+#include "common.h"
 
 #include <sstream>
+#include <fstream>
+#include <algorithm>
 
 typedef unsigned long int ulong;
 
@@ -65,7 +67,7 @@ void highprecision_poisson(uint steps) {
     ++in_bin;
   }
 
-  CommonRadial::dlist envelopeData;
+  Common::dlist envelopeData;
 
   cerr << "Computing histogram with " << num_bin << " bins (interval = ["
        << 0.0 << ',' << 4.0 << "); step width = " << 0.01 << ")\n";
@@ -78,7 +80,7 @@ void highprecision_poisson(uint steps) {
   }
   delete [] bins;
 
-  CommonRadial::writeRawConsole(envelopeData);
+  Common::writeRawConsole(envelopeData);
 }
 
 int main(int argc, char* argv[]) {
@@ -97,7 +99,7 @@ int main(int argc, char* argv[]) {
 
   // Integer lattice
   if (mode == 0) {
-    using namespace CommonRadial;
+    using namespace Common;
 
     vector<vec2i> vertices;
     dlist angles, output;
@@ -111,7 +113,7 @@ int main(int argc, char* argv[]) {
       for (uint x = y; x <= steps; ++x) {
         if (x == 0 && y == 0) continue;
         if (x*x + y*y > steps*steps) continue;
-        if (RadialCoprime::gcdZ(x, y) > 1) continue;
+        if (Coprime::gcdZ(x, y) > 1) continue;
 
         vertices.push_back(vec2i(x, y));
       }
@@ -137,7 +139,7 @@ int main(int argc, char* argv[]) {
 
   // Poisson case
   if (mode == 1) {
-    using namespace CommonRadial;
+    using namespace Common;
 
     dlist angles, output;
     double meandist;

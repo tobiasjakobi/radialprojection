@@ -17,9 +17,7 @@ namespace TuebingenTri {
     return os;
   }
 
-  const double TuebingenOp::epsilon = 2.0 * numeric_limits<double>::epsilon();
-
-  typedef vector<vec4s> vec4slist;
+  const double VisOp::epsilon = 2.0 * numeric_limits<double>::epsilon();
 
   // Compute number of triangles (of type A and B)
   // after another inflation step:
@@ -51,7 +49,7 @@ namespace TuebingenTri {
    * sector = only consider a 1/10-sector of the initial patch
    * ttt = apply TTT inflation rule (vs. PRT inflation rule)
    */
-  void createVerticesVis(CommonRadial::vec2dlist& vertices, const trilist& initial,
+  void createVerticesVis(Common::vec2dlist& vertices, const trilist& initial,
                          uint steps, bool sector, bool ttt);
 
   /* Same as createVerticesVis but outputs the vertices as integer
@@ -59,7 +57,7 @@ namespace TuebingenTri {
    * invisible vertices. This of course slows down the computations,
    * so use with care!
    */
-  void createVerticesVis2(vec4slist& vertices, const trilist& initial,
+  void createVerticesVis2(Common::vec4slist& vertices, const trilist& initial,
                           uint steps, bool sector, bool ttt);
 
 };
@@ -360,7 +358,7 @@ void TuebingenTri::minmax(const trilist& patch, vec4s& min, vec4s& max) {
   }
 }
 
-void TuebingenTri::createVerticesVis(CommonRadial::vec2dlist& vertices,
+void TuebingenTri::createVerticesVis(Common::vec2dlist& vertices,
              const trilist& initial, uint steps, bool sector, bool ttt) {
   if (initial.empty())
     return;
@@ -380,7 +378,7 @@ void TuebingenTri::createVerticesVis(CommonRadial::vec2dlist& vertices,
     iterate(initial, steps, ttt, *patch);
   }
 
-  tuebVisList* vlist = new tuebVisList;
+  VisList* vlist = new VisList;
   vlist->reserve(double(numtris) * 0.4);
 
   vlist->init();
@@ -413,7 +411,7 @@ void TuebingenTri::createVerticesVis(CommonRadial::vec2dlist& vertices,
   vlist = NULL;
 }
 
-void TuebingenTri::createVerticesVis2(vec4slist& vertices, const trilist& initial,
+void TuebingenTri::createVerticesVis2(Common::vec4slist& vertices, const trilist& initial,
              uint steps, bool sector, bool ttt) {
   if (initial.empty())
     return;
@@ -433,7 +431,7 @@ void TuebingenTri::createVerticesVis2(vec4slist& vertices, const trilist& initia
     iterate(initial, steps, ttt, *patch);
   }
 
-  tuebVisList* vlist = new tuebVisList;
+  VisList* vlist = new VisList;
   vlist->reserve(double(numtris) * 0.4);
 
   vlist->init();
@@ -471,7 +469,7 @@ int main(int argc, char* argv[]) {
   uint mode = 0;
   bool sector = false;
 
-  using namespace CommonRadial;
+  using namespace Common;
   
   if (argc >= 2) {
     stringstream ss(argv[1]);
@@ -517,7 +515,7 @@ int main(int argc, char* argv[]) {
     // Vertices are output as integer 4-tuples (_not_ as double 2-tuples / cartesian)
     case 1: // fallthrough!
     case 4: {
-              TuebingenTri::vec4slist output;
+              vec4slist output;
               TuebingenTri::createVerticesVis2(output, initialTueb, steps, sector, ttt);
 
               cout << output;

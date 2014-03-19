@@ -1,6 +1,7 @@
 #include "chiral_radial.h"
 
 #include <sstream>
+#include <algorithm>
 
 namespace ChiralLB {
 
@@ -20,7 +21,7 @@ namespace ChiralLB {
     return os;
   }
 
-  const double ChiralOp::epsilon = 2.0 * numeric_limits<double>::epsilon();
+  const double VisOp::epsilon = 2.0 * numeric_limits<double>::epsilon();
 
   // Compute number of rhombs (of type A and B)
   // after another inflation step:
@@ -40,19 +41,19 @@ namespace ChiralLB {
   // is enough to store the data produced during inflation.
   void minmax(const rhomblist& patch, vec8s& min, vec8s& max);
 
-  void createVertices(CommonRadial::vec2dlist& vertices,
+  void createVertices(Common::vec2dlist& vertices,
                       const rhomblist& initial, uint steps);
-  void createVerticesVis(CommonRadial::vec2dlist& vertices, const rhomblist& initial,
+  void createVerticesVis(Common::vec2dlist& vertices, const rhomblist& initial,
                          uint steps, bool cutAndReduce);
 
   // Compute length (eA and eB) of a rhomb of type A and B
   void getLength(double& typeA, double& typeB);
 
   // Cut a sector from the patch generated from inflating the sun:
-  void cutSector(const CommonRadial::vec2dlist& input,
-                 CommonRadial::vec2dlist& output, uint steps);
+  void cutSector(const Common::vec2dlist& input,
+                 Common::vec2dlist& output, uint steps);
 
-  void radialProj(const CommonRadial::vec2dlist& input, CommonRadial::dlist& output,
+  void radialProj(const Common::vec2dlist& input, Common::dlist& output,
                   double& meandist);
 
 };
@@ -77,17 +78,17 @@ namespace Chair2D {
   void constructCross(llist& crossPatch);
   void minmax(const llist& patch, vec2s& min, vec2s& max);
 
-  void createVertices(CommonRadial::vec2dlist& vertices,
+  void createVertices(Common::vec2dlist& vertices,
                       const llist& initial, uint steps);
-  void createVerticesVis(CommonRadial::vec2dlist& vertices, const llist& initial,
+  void createVerticesVis(Common::vec2dlist& vertices, const llist& initial,
                          uint steps, bool cutAndReduce);
 
   // Cut a sector from the patch generated from inflating the cross:
-  void cutSector(const CommonRadial::vec2dlist& input,
-                 CommonRadial::vec2dlist& output, uint steps);
+  void cutSector(const Common::vec2dlist& input,
+                 Common::vec2dlist& output, uint steps);
 
-  void radialProj(const CommonRadial::vec2dlist& input,
-                  CommonRadial::dlist& output, double& meandist);
+  void radialProj(const Common::vec2dlist& input,
+                  Common::dlist& output, double& meandist);
 
 };
 
@@ -246,7 +247,7 @@ void ChiralLB::minmax(const rhomblist& patch, vec8s& min, vec8s& max) {
   }
 }
 
-void ChiralLB::createVertices(CommonRadial::vec2dlist& vertices,
+void ChiralLB::createVertices(Common::vec2dlist& vertices,
                  const rhomblist& initial, uint steps) {
   if (initial.empty())
     return;
@@ -324,7 +325,7 @@ void ChiralLB::createVertices(CommonRadial::vec2dlist& vertices,
        << "%).\n";
 }
 
-void ChiralLB::createVerticesVis(CommonRadial::vec2dlist& vertices,
+void ChiralLB::createVerticesVis(Common::vec2dlist& vertices,
                         const rhomblist& initial,
                         uint steps, bool cutAndReduce) {
   if (initial.empty())
@@ -334,7 +335,7 @@ void ChiralLB::createVerticesVis(CommonRadial::vec2dlist& vertices,
   iterate(initial, steps, *patch);
 
   // the factors 0.15 and 1.4 were derived from empirical evaluations
-  chiralVisList* vlist = new chiralVisList;
+  VisList* vlist = new VisList;
   if (cutAndReduce)
     vlist->reserve(double(countRhombs(initial, steps)) * 0.15);
   else
@@ -373,7 +374,7 @@ void ChiralLB::createVerticesVis(CommonRadial::vec2dlist& vertices,
 
   if (cutAndReduce) {
     cerr << "info: trimming the tiling into a circular area\n";
-    const double cutoff = CommonRadial::power(lambda, steps);
+    const double cutoff = Common::power(lambda, steps);
     for (rhomblist::const_iterator i = patch->begin(); i != patch->end(); ++i) {
       vec8s temp[4];
       i->getVertices(temp);
@@ -433,9 +434,9 @@ void ChiralLB::getLength(double& typeA, double& typeB) {
   typeB = sqrt((vertsB[1].transL20ToR2() - vertsB[3].transL20ToR2()).lengthSquared());
 }
 
-void ChiralLB::cutSector(const CommonRadial::vec2dlist& input,
-                   CommonRadial::vec2dlist& output, uint steps) {
-  using namespace CommonRadial;
+void ChiralLB::cutSector(const Common::vec2dlist& input,
+                   Common::vec2dlist& output, uint steps) {
+  using namespace Common;
 
   const double cutoff = power(lambda, steps);
 
@@ -523,7 +524,7 @@ void Chair2D::minmax(const llist& patch, vec2s& min, vec2s& max) {
   }
 }
 
-void Chair2D::createVertices(CommonRadial::vec2dlist& vertices,
+void Chair2D::createVertices(Common::vec2dlist& vertices,
                const llist& initial, uint steps) {
   if (initial.empty())
     return;
@@ -566,7 +567,7 @@ void Chair2D::createVertices(CommonRadial::vec2dlist& vertices,
   }
 }
 
-void Chair2D::createVerticesVis(CommonRadial::vec2dlist& vertices, const llist& initial,
+void Chair2D::createVerticesVis(Common::vec2dlist& vertices, const llist& initial,
                        uint steps, bool cutAndReduce) {
   if (initial.empty())
     return;
@@ -582,7 +583,7 @@ void Chair2D::createVerticesVis(CommonRadial::vec2dlist& vertices, const llist& 
 
   if (cutAndReduce) {
     cerr << "info: trimming the tiling into a circular area\n";
-    const double cutoff = sqrt(2.0) * CommonRadial::power(2.0, steps);
+    const double cutoff = sqrt(2.0) * Common::power(2.0, steps);
     for (llist::const_iterator i = patch->begin(); i != patch->end(); ++i) {
       vec2s temp[6];
       i->getVertices(temp);
@@ -642,9 +643,9 @@ void Chair2D::createVerticesVis(CommonRadial::vec2dlist& vertices, const llist& 
   }
 }
 
-void Chair2D::cutSector(const CommonRadial::vec2dlist& input,
-               CommonRadial::vec2dlist& output, uint steps) {
-  using namespace CommonRadial;
+void Chair2D::cutSector(const Common::vec2dlist& input,
+               Common::vec2dlist& output, uint steps) {
+  using namespace Common;
 
   const double cutoff = sqrt(2.0) * power(2.0, steps);
 
@@ -665,7 +666,7 @@ int main(int argc, char* argv[]) {
   uint mode = 0;
   bool cut = false;
 
-  using namespace CommonRadial;
+  using namespace Common;
 
   if (argc >= 2) {
     stringstream ss(argv[1]);

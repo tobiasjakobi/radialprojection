@@ -1,16 +1,9 @@
 #ifndef _HEXAGONAL_H_
 #define _HEXAGONAL_H_
 
-#include "radial_math.h"
+#include "common.h"
 
-#include <vector>
-
-typedef unsigned int uint;
-typedef unsigned short ushort;
-
-using namespace std;
-
-typedef vector<vec2i> vec2ilist;
+#include <algorithm>
 
 class triTiling {
 public:
@@ -111,7 +104,7 @@ triTiling::triTiling(uint N, const vertex& init) {
 
   cerr << "info: using " << vertices->size() << " out of " << vertices->capacity()
        << " reserved vertex elements ("
-       << CommonRadial::vectorStats(*vertices) << "%)\n";
+       << Common::vectorStats(*vertices) << "%)\n";
 }
 
 
@@ -192,7 +185,7 @@ void hexTiling::buildVertices(const vlist& a) {
       }
 
       // do visibility test if enabled
-      if (onlyvis && RadialCoprime::gcdZ(abs(t.x), abs(t.y)) != 1)
+      if (onlyvis && Coprime::gcdZ(abs(t.x), abs(t.y)) != 1)
         continue;
 
       // backward search
@@ -205,7 +198,7 @@ void hexTiling::buildVertices(const vlist& a) {
 
   cerr << "info: using " << vertices->size() << " out of " << vertices->capacity()
        << " reserved vertex elements ("
-       << CommonRadial::vectorStats(*vertices) << "%)\n";
+       << Common::vectorStats(*vertices) << "%)\n";
 }
 
 hexTiling::hexTiling(uint N, const vertex& init, bool vis,
@@ -268,7 +261,7 @@ hexTiling::hexTiling(uint N, const vertex& init, bool vis,
 
   cerr << "info: using " << midlist.size() << " out of " << midlist.capacity()
        << " reserved midpoint elements ("
-       << CommonRadial::vectorStats(midlist) << "%)\n";
+       << Common::vectorStats(midlist) << "%)\n";
 
   buildVertices(midlist);
 }

@@ -1,0 +1,72 @@
+#ifndef _CYCLOTOMIC_OCTAGONAL_H_
+#define _CYCLOTOMIC_OCTAGONAL_H_
+
+#include "common.h"
+#include "visibility.h"
+
+namespace Octogonal {
+
+  /* inflation factor of the octagonal tiling */
+  const double silverMean = 1.0 + sqrt(2.0);
+
+  /* octagon radii */
+  const double innerRadiusSquared = (2.0 * silverMean + 1.0) / 8.0;
+  const double outerRadiusSquared = (silverMean + 1.0) / 4.0;
+
+  const double refCircleRadiusSquared = silverMean / Common::pi;
+
+  bool checkProjInSector(const vec2d& orthpoint);
+  bool checkProjInWindow(const vec4i& point, bool useCircle);
+  bool checkScaledProjInWindow(const vec4i& point, bool useCircle);
+
+  /* projTiling only constructs the tiling, starting from the initpoint */
+  void projTiling(const vec4i& initpoint, uint maxstep,
+                  Common::vec4ilist& tilingpoints);
+
+  void projTilingVis(const vec4i& initpoint,
+                     const vec4i& origin,
+                     uint maxstep, bool radialproj,
+                     Common::vec4ilist& tilingpoints,
+                     Common::vec4ilist& visiblepoints);
+
+  void projTilingVisLocal(const vec4i& initpoint,
+                          uint maxstep, bool onlySector,
+                          Common::vec4ilist& tilingpoints,
+                          Common::vec4ilist& visiblepoints);
+
+  void radialProj(const Common::vec4ilist& input,
+                  Common::dlist& output,
+                  double& meandist, bool onlySector);
+
+  /* radial projection of a given input tiling, but computed from a non-default origin/radius */
+  void radialProj(const Common::vec4ilist& input,
+                  const vec4i& origin, double radius,
+                  Common::dlist& output, double& meandist);
+
+  void testWindow(Common::vec2ilist& output, uint resolution);
+
+  /* Compute inner and outer radius of tiling. */
+  void innerOuterRadius(const Common::vec4ilist& tilingpoints,
+                        double& inner, double& outer);
+
+  struct VisOp {
+    typedef vec4i invectype;
+    static const double epsilon;
+
+    static inline double angle(const invectype& a) {
+      return a.paraProjL8().angle();
+    }
+
+    static inline vec2d toR2(const invectype& a) {
+      return a.paraProjL8();
+    }
+
+    static bool rayTest(const invectype& a, const invectype& b);
+  };
+
+  typedef VisTest::VisibleList<VisOp> VisList;
+
+};
+
+#endif /* _CYCLOTOMIC_OCTAGONAL_H_ */
+

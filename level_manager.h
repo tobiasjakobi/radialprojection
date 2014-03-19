@@ -1,7 +1,7 @@
 #ifndef _LEVEL_MANAGER_H_
 #define _LEVEL_MANAGER_H_
 
-#include "radial_math.h"
+#include "common.h"
 
 /* TVLevel represents a "level" in a _T_iling _V_ertices list.         *
  * Used for constructing a tiling patch via the model set description. */
@@ -151,5 +151,5 @@ public:
 
 };
 
-#endif
+#endif /* _LEVEL_MANAGER_H_ */
 
