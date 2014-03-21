@@ -236,9 +236,10 @@ int MultiMachine::master(int argc, char* argv[]) {
 
   stringstream parser;
   vec4ilist fulltiling, tiling, origins;
-  double inner, outer;
+  double inner, outer, srad;
+
   uint steps, samples;
-  uint percentage;
+  uint percentage; /* value in the range [0, 100] */
 
   const vec4i init(0, 0, 0, 0);
 
@@ -261,9 +262,12 @@ int MultiMachine::master(int argc, char* argv[]) {
 
   RadiusSelector::radiusSq = inner * inner;
 
-  selectVertices<vec4i, RadiusSelector>(fulltiling, tiling);
-  selectOrigins<vec4i, Octogonal::LengthSelector>(tiling, origins, samples, inner, float(percentage) / 100.0f);
+  srad = inner * (double(percentage) / 100.0);
 
+  selectVertices<vec4i, RadiusSelector>(fulltiling, tiling);
+  selectOrigins<vec4i, Octogonal::LengthSelector>(tiling, origins, samples, srad, inner);
+
+  cerr << "srad: " << reinterpret_double_to_ullong(srad) << endl;
   cerr << "origins: " << origins << endl;
 
   writeRawConsole(tiling);
@@ -276,8 +280,8 @@ int MultiMachine::slave(int argc, char* argv[]) {
 
   stringstream parser;
   string token;
-  unsigned long long temp;
-  unsigned idx = 0;
+  ullong temp;
+  uint idx = 0;
 
   vec4i origin;
   vec4ilist tiling;
@@ -289,7 +293,7 @@ int MultiMachine::slave(int argc, char* argv[]) {
   parser.str(argv[1]);
   parser.clear();
   parser >> temp;
-  radius = *(reinterpret_cast<const double*>(&temp));
+  radius = reinterpret_ullong_to_double(temp);
 
   parser.str(argv[2]);
   parser.clear();
@@ -309,19 +313,22 @@ int MultiMachine::slave(int argc, char* argv[]) {
   return 0;
 }
 
-void reinterpret_double(double d) {
-  unsigned long long i;
-
-  i = *(reinterpret_cast<unsigned long long*>(&d));
-
-  cout << i << endl;
-}
-
 int main(int argc, char* argv[]) {
 
   //return SingleMachine::main(argc, argv);
 
-  //return MultiMachine::slave(argc, argv);
-  return MultiMachine::master(argc, argv);
+  if (argc >= 2) {
+    stringstream parser(argv[1]);
+    uint mode;
+    parser >> mode;
+
+    if (mode == 0) {
+      return MultiMachine::master(argc - 1, argv + 1);
+    } else {
+      if (mode == 1) {
+        return MultiMachine::slave(argc - 1, argv + 1);
+      }
+    }
+  } 
 }
 

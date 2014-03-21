@@ -29,6 +29,7 @@
 typedef unsigned int uint;
 typedef unsigned short ushort;
 typedef unsigned char ubyte;
+typedef unsigned long long ullong;
 
 using namespace std;
 
@@ -939,6 +940,14 @@ namespace Common {
   typedef vector<double> dlist;
   typedef vector<long double> eflist; // list of extended precision (80-bit IEEE) floats
 
+  static inline ullong reinterpret_double_to_ullong(const double d) {
+    return *(reinterpret_cast<const ullong*>(&d));
+  }
+
+  static inline double reinterpret_ullong_to_double(const ullong l) {
+    return *(reinterpret_cast<const double*>(&l));
+  }
+
   double checkPosition(const vec2d& a, const vec2d& b, const vec2d& c);
   bool circularCheck(double radSquared, double xSquared);
 
@@ -991,7 +1000,7 @@ namespace Common {
       return;
     }
 
-    while (samples > 0) {
+    while (samples != 0) {
 
       /* If n == RAND_MAX, RAND_MAX is already divisible by n   *
        * Else keep searching for an x in a range divisible by n */

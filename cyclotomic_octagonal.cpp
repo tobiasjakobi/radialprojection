@@ -357,9 +357,6 @@ void Octogonal::innerOuterRadius(const Common::vec4ilist& tilingpoints,
 
   outer = sqrt(out);
   inner = cos(pi / 8.0) * outer;
-
-  cerr << "debug: outer = " << outer << endl;
-  cerr << "debug: inner = " << inner << endl;
 }
 
 bool Octogonal::VisOp::rayTest(const invectype& a, const invectype& b) {
