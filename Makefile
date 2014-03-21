@@ -1,5 +1,5 @@
 compiler := g++
-flags    :=
+flags    := -I./include
 
 ifndef platform
 platform := $(shell $(compiler) -dumpmachine)
@@ -19,7 +19,7 @@ objects := cyclotomic_radial chiral_radial corner_cases \
 
 all: $(objects)
 
-%.o: %.cpp
+%.o: src/%.cpp
 	$(compiler) -c -o $@ $(flags) $<
 
 cyclotomic_radial: cyclotomic_octagonal.o cyclotomic_decagonal.o \
@@ -39,4 +39,3 @@ clean:
 
 strip:
 	strip -s $(objects)
-
