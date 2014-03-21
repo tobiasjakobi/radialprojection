@@ -24,6 +24,7 @@
 #include <iostream>
 #include <limits>
 #include <vector>
+#include <algorithm>
 
 typedef unsigned int uint;
 typedef unsigned short ushort;
@@ -120,6 +121,10 @@ public:
 
   double lengthSquared() const {
     return x * x + y * y;
+  }
+
+  double length() const {
+    return sqrt(lengthSquared());
   }
 
   bool inSectorL8() const {
@@ -960,14 +965,48 @@ namespace Common {
     }
   };
 
-  /* Select a number of origins from the tiling, based on the following conditions:   *
-   * Let R = radius * percentage, then only origins are selected, where the ball of   *
-   * radius R is still contained in the tiling (radius = radius of the tiling itself. */
+  /* Select a number of origins from the tiling, based on the following conditions: *
+   * Only origins O are selected, where the ball of radius 'sampleRadius' around O  *
+   * is still contained in the tiling (which has radius 'tilingRadius').            */
   template <typename T, typename S>
   void selectOrigins(const vector<T>& tiling, vector<T>& origins,
-                     uint samples, double radius, float percentage) {
-    // TODO: implement
+                     uint samples, double sampleRadius, double tilingRadius) {
+    if (sampleRadius >= tilingRadius) {
+      cerr << "error: sample radius has to be strictly smaller then tiling radius.\n";
+      return;
+    }
 
+    const double dist = tilingRadius - sampleRadius;
+    vector<T> verts;
+
+    for (typename vector<T>::const_iterator i = tiling.begin(); i != tiling.end(); ++i) {
+      if (S::length(*i) <= dist) verts.push_back(*i);
+    }
+
+    const uint numverts = verts.size();
+    uint index = 0;
+
+    if (samples > uint(0.1f * float(numverts))) {
+      cerr << "error: requested " << samples << " samples, but too few potential origins available.\n";
+      return;
+    }
+
+    while (samples > 0) {
+
+      /* If n == RAND_MAX, RAND_MAX is already divisible by n   *
+       * Else keep searching for an x in a range divisible by n */
+      do {
+        index = rand();
+      } while (numverts < RAND_MAX && index >= RAND_MAX - (RAND_MAX % numverts));
+
+      index %= numverts;
+
+      const T origin(tiling[index]);
+      if (find(origins.begin(), origins.end(), origin) != origins.end()) continue;
+
+      origins.push_back(origin);
+      --samples;
+    }
   }
 
   // Create n random double floats in the range [0.0, 1.0]

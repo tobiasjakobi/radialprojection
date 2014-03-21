@@ -235,7 +235,7 @@ int MultiMachine::master(int argc, char* argv[]) {
   using namespace Common;
 
   stringstream parser;
-  vec4ilist fulltiling, tiling;
+  vec4ilist fulltiling, tiling, origins;
   double inner, outer;
   uint steps, samples;
   uint percentage;
@@ -256,19 +256,15 @@ int MultiMachine::master(int argc, char* argv[]) {
   parser.clear();
   parser >> percentage;
 
-
-
   Octogonal::projTiling(init, steps, fulltiling);
   Octogonal::innerOuterRadius(fulltiling, inner, outer);
 
   RadiusSelector::radiusSq = inner * inner;
 
   selectVertices<vec4i, RadiusSelector>(fulltiling, tiling);
+  selectOrigins<vec4i, Octogonal::LengthSelector>(tiling, origins, samples, inner, float(percentage) / 100.0f);
 
-  // TODO: select points
-
-
-
+  cerr << "origins: " << origins << endl;
 
   writeRawConsole(tiling);
 
@@ -325,7 +321,7 @@ int main(int argc, char* argv[]) {
 
   //return SingleMachine::main(argc, argv);
 
-  return MultiMachine::slave(argc, argv);
-  //return MultiMachine::master(argc, argv);
+  //return MultiMachine::slave(argc, argv);
+  return MultiMachine::master(argc, argv);
 }
 
