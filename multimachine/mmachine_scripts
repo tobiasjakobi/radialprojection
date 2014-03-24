@@ -1,6 +1,7 @@
 function mmachine_hostlist {
   # only consider these hosts
-  local names="^xdf\|^hopf\|^fox\|^lie\|^ada"
+  #local names="^xdf\|^hopf\|^fox\|^lie\|^ada"
+  local names="^hopf\|^fox\|^lie"
   local mhost="hopf21"
 
   # Query DNS and only selects hosts which are alive:
@@ -45,7 +46,8 @@ function mmachine_bootstrap {
   local workdir="/var/tmp/tjakobi/mmachine"
 
   local host="${1}"
-  local data=($2)
+  local radius=$2
+  local data=($3)
   local extdata
 
   local nd=${#data[*]}
@@ -53,7 +55,7 @@ function mmachine_bootstrap {
 
   echo "starting jobs on $host"
 
-  extdata="local data=("
+  extdata="local origins=("
   while [ $idx -lt $nd ]; do
     extdata="${extdata}${data[$idx]} "
     ((idx++))
@@ -61,6 +63,7 @@ function mmachine_bootstrap {
   extdata="${extdata%?})"
 
   echo "${extdata}" > "data.bin"
+  echo "local radius=$radius" >> "data.bin"
 
   tar -c --file - parallel mmachine_scripts cyclotomic_radial data.bin work.sh | xz -z -7 -c > "data-${host}.tar.xz"
   rm -f data.bin
@@ -69,27 +72,26 @@ function mmachine_bootstrap {
   rm -f "data-${host}.tar.xz"
 
   mmachine_exec "${host}" "mkdir -p ${workdir}; cd ${workdir}; mv ../../data-${host}.tar.xz .; xz -d -c data-${host}.tar.xz | tar -x --file -; rm -f data-${host}.tar.xz"
-  mmachine_exec "${host}" "nohup ${workdir}/work.sh &"
+  mmachine_exec "${host}" "nohup ${workdir}/work.sh > /tmp/mmachine.out 2> /tmp/mmachine.err < /dev/null &"
+}
+
+function mmachine_parse {
+  grep "origins:" | cut -d':' -f2 | sed 's/},{/ /g' | sed 's/{{//g' | sed 's/}}//g'
 }
 
 function mmachine_work_sub {
-  local numblocks=$(($RANDOM % 4096))
-
-  echo -n "executing ${1}..."
-  dd if=/dev/urandom of=/dev/null bs=1M count=$numblocks status=noxfer
-  echo " done!"
-
-  return 0
+  local radius=$1
+  local origin=$2
 
   local patchdata="/var/tmp/tjakobi/mmachine/patch.bin"
   local mhost="hopf21"
 
   # radius: double casted as uint64_t
   # origin: comma separated (integer) coordinates
-  cat "${patchdata}" | nice -n19 cyclotomic_radial $radius $origin > "result_${origin}".bin" 2> "output_${origin}.log"
+  cat "${patchdata}" | nice -n19 cyclotomic_radial 1 $radius $origin > "result_${origin}.bin" 2> "output_${origin}.log"
 
-  tar -c --file - "result_${origin}".bin" "output_${origin}.log" | xz -z -5 -c > "result_${origin}.tar.xz"
-  rm -f "result_${origin}".bin" "output_${origin}.log"
+  tar -c --file - "result_${origin}.bin" "output_${origin}.log" | xz -z -5 -c > "result_${origin}.tar.xz"
+  rm -f "result_${origin}.bin" "output_${origin}.log"
 
   scp -q -c arcfour -o BatchMode=yes "result_${origin}.tar.xz" "${mhost}:/var/tmp/tjakobi/mmachine/" 
 }
@@ -97,7 +99,7 @@ function mmachine_work_sub {
 function mmachine_work {
   local maxjobs=$(($(nproc) - 1))
 
-  parallel --no-notice -j $maxjobs work.sh ::: $1
+  parallel --no-notice -j $maxjobs work.sh $1 ::: $2
 }
 
 function mmachine_master_main {
@@ -107,6 +109,8 @@ function mmachine_master_main {
   local hindex=0
   local cindex=0
 
+  local radius
+
   declare -a hlist
   declare -a data
   declare -a cdata
@@ -114,7 +118,9 @@ function mmachine_master_main {
   hlist=($(mmachine_hostlist))
   numhosts=${#hlist[*]}
 
-  data=($1)
+  radius=$1
+
+  data=($2)
   numdata=${#data[*]}
 
   jph=$((($numdata + $numhosts - 1) / $numhosts))
@@ -130,7 +136,7 @@ function mmachine_master_main {
     if [ $cindex -ge $jph ]; then
       local host=${hlist[$hindex]}
 
-      mmachine_bootstrap "${host}" "${cdata[*]}"
+      mmachine_bootstrap "${host}" $radius "${cdata[*]}"
 
       cindex=0
       unset cdata
@@ -143,7 +149,7 @@ function mmachine_master_main {
   if [ $cindex -ne 0 ]; then
     local host=${hlist[$hindex]}
 
-    mmachine_bootstrap "${host}" "${cdata[*]}"
+    mmachine_bootstrap "${host}" $radius "${cdata[*]}"
   fi
 }
 
@@ -151,34 +157,10 @@ function mmachine_slave_main {
   if [ -z $1 ]; then
     source "/var/tmp/tjakobi/mmachine/data.bin"
 
-    mmachine_work "${data[*]}"
+    mmachine_work $radius "${origins[*]}"
     mmachine_cleanup
   else
     # dummy work
-    mmachine_work_sub $1
+    mmachine_work_sub $1 $2
   fi
 }
-
-
-# procedure:
-# - master host (mhost) distributes work on slave host (shost)
-# - for each host a number of origin points is selected
-# - mhost prepares a bash script which contains this origin points
-#   the script does this:
-#     > fetch (compressed) patch data from the mhost
-#     > decompress patch data
-#     > start working on data, using N-1 cores of the machine at most
-#     > when a origin point is finished, copy result data back to mhost
-#     > when all jobs on machine are done, clean up
-
-# work on shosts is done in /var/tmp/tjakobi/mmachine/
-# patch data is called 'patch.bin'
-# script is just called 'work.sh'
-# result data is called 'result_XYZ', where 'XYZ' identifies the origin
-# (for the octogonal tiling, this would just be 4 integers, separated by '-' maybe)
-
-# important: nice the jobs!
-
-# potential format for origin data in work script
-# local origins="1-4-2-2;3-7-4-8;"
-
