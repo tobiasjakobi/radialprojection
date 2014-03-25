@@ -127,6 +127,7 @@ function mmachine_bootstrap {
 
   echo "starting jobs on $host"
 
+  # prepare origin data
   extdata="local origins=("
   while [ $idx -lt $nd ]; do
     extdata="${extdata}${data[$idx]} "
@@ -138,13 +139,36 @@ function mmachine_bootstrap {
   echo "local radius=$radius" >> "data.bin"
 
   tar -c --file - parallel mmachine_scripts "cyclotomic_radial_${hprefix}" data.bin work.sh | xz -z -7 -c > "data-${host}.tar.xz"
-  rm -f data.bin
+
+  if [ $? -ne 0 ] ; then
+    echo "error: compressing origin data failed"
+    return 1
+  else
+    rm -f data.bin
+  fi
 
   mmachine_copy "${host}" "data-${host}.tar.xz"
-  rm -f "data-${host}.tar.xz"
+
+  if [ $? -ne 0 ] ; then
+    echo "error: copying origin data (via ssh) failed"
+    return 2
+  else
+    rm -f "data-${host}.tar.xz"
+  fi
 
   mmachine_exec "${host}" "mkdir -p ${workdir}; cd ${workdir}; mv ../../data-${host}.tar.xz .; xz -d -c data-${host}.tar.xz | tar -x --file -; rm -f data-${host}.tar.xz"
+
+  if [ $? -ne 0 ] ; then
+    echo "error: unpack command on host \"${host}\" failed"
+    return 3
+  fi
+
   mmachine_exec "${host}" "nohup ${workdir}/work.sh > /tmp/mmachine.out 2> /tmp/mmachine.err < /dev/null &"
+
+  if [ $? -ne 0 ] ; then
+    echo "error: work command on host \"${host}\" failed"
+    return 4
+  fi
 }
 
 function mmachine_parse {
@@ -157,7 +181,8 @@ function mmachine_work_sub {
 
   local patchdata="/var/tmp/tjakobi/mmachine/patch.bin"
   local vtmp="/vol/tmp/tjakobi"
-  local hprefix=$(hostname | grep -o "[[:alpha:]]*")
+  local hname=$(hostname)
+  local hprefix=$(echo "${hname}" | grep -o "[[:alpha:]]*")
 
   # radius: double casted as uint64_t
   # origin: comma separated (integer) coordinates
@@ -167,6 +192,9 @@ function mmachine_work_sub {
     echo "error: cyclotomic_radial failed"
     return 1
   fi
+
+  # store hostname in output log, so we can identify which machine worked on the origin
+  echo "work on origin \"${origin}\" completed on host \"${hname}\"" >> "output_${origin}.log"
 
   tar -c --file - "result_${origin}.bin" "output_${origin}.log" | xz -z -5 -c > "result_${origin}.tar.xz"
 
