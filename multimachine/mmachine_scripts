@@ -208,7 +208,7 @@ function mmachine_work_sub {
   # trigger mounting of NFS share
   ls -l "${vtmp}/" &> /dev/null
 
-  cp "result_${origin}.tar.xz" "${vtmp}/"
+  cp "result_${origin}.tar.xz" "${vtmp}/mmachine/"
 
   if [ $? -ne 0 ]; then
     echo "error: copying results failed"
