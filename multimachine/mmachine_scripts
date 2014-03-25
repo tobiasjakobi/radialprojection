@@ -1,16 +1,46 @@
+function mmachine_sshalive {
+  local host="${1}"
+  local pid
+
+  local mhost="hopf21"
+  local stime="5s"
+
+  ssh -c arcfour -o BatchMode=yes -o StrictHostKeyChecking=no "${host}" "ping -q -c 1 ${mhost} > /dev/null" &
+  pid=$!
+
+  sleep "${stime}" && kill -s 0 $pid 2> /dev/null
+
+  if [ $? -eq 0 ]; then
+    echo "error: host ${host} is not responding" >> mmachine.host.status
+    kill -9 $pid
+    return 1
+  fi
+}
+
 function mmachine_hostlist {
   # only consider these hosts
   #local names="^xdf\|^hopf\|^fox\|^lie\|^ada"
   local names="^hopf\|^fox\|^lie"
   local mhost="hopf21"
 
+  local list
+
   # Query DNS and only selects hosts which are alive:
-  host -l math.uni-bielefeld.de | \
+  list=$(host -l math.uni-bielefeld.de | \
     grep -v "IPv6 address" | \
     grep -v "${mhost}" | \
     grep "${names}" | \
     cut -d'.' -f1 | \
-    fping -r1 -a 2> /dev/null
+    fping -r1 -a 2> /dev/null)
+
+  # Sometimes a host responds to a ping, but then hangs when
+  # executing commands over ssh. Filter these hosts:
+  echo "${list}" | while read host; do
+    mmachine_sshalive "${host}" &> /dev/null
+    if [ $? -eq 0 ]; then
+      echo "${host}"
+    fi
+  done
 }
 
 function mmachine_exec {
@@ -42,6 +72,13 @@ function mmachine_cleanup {
   rm -rf "/var/tmp/tjakobi/mmachine"
 }
 
+function mmachine_teardown {
+  mmachine_hostlist | while read host; do
+    ssh -c arcfour -o BatchMode=yes -o StrictHostKeyChecking=no "${host}" "pkill -u tjakobi"
+    ssh -c arcfour -o BatchMode=yes -o StrictHostKeyChecking=no "${host}" "rm -rf /var/tmp/tjakobi/mmachine /tmp/mmachine.out /tmp/mmachine.err"
+  done
+}
+
 function mmachine_bootstrap {
   local workdir="/var/tmp/tjakobi/mmachine"
 
@@ -51,6 +88,7 @@ function mmachine_bootstrap {
   local extdata
 
   local nd=${#data[*]}
+  local hprefix=$(echo "${host}" | grep -o "[[:alpha:]]*")
   local idx=0
 
   echo "starting jobs on $host"
@@ -65,7 +103,7 @@ function mmachine_bootstrap {
   echo "${extdata}" > "data.bin"
   echo "local radius=$radius" >> "data.bin"
 
-  tar -c --file - parallel mmachine_scripts cyclotomic_radial data.bin work.sh | xz -z -7 -c > "data-${host}.tar.xz"
+  tar -c --file - parallel mmachine_scripts "cyclotomic_radial_${hprefix}" data.bin work.sh | xz -z -7 -c > "data-${host}.tar.xz"
   rm -f data.bin
 
   mmachine_copy "${host}" "data-${host}.tar.xz"
@@ -85,10 +123,11 @@ function mmachine_work_sub {
 
   local patchdata="/var/tmp/tjakobi/mmachine/patch.bin"
   local mhost="hopf21"
+  local hprefix=$(hostname | grep -o "[[:alpha:]]*")
 
   # radius: double casted as uint64_t
   # origin: comma separated (integer) coordinates
-  cat "${patchdata}" | nice -n19 cyclotomic_radial 1 $radius $origin > "result_${origin}.bin" 2> "output_${origin}.log"
+  cat "${patchdata}" | nice -n19 "cyclotomic_radial_${hprefix}" 1 $radius $origin > "result_${origin}.bin" 2> "output_${origin}.log"
 
   tar -c --file - "result_${origin}.bin" "output_${origin}.log" | xz -z -5 -c > "result_${origin}.tar.xz"
   rm -f "result_${origin}.bin" "output_${origin}.log"
@@ -108,6 +147,12 @@ function mmachine_master_main {
   local index=0
   local hindex=0
   local cindex=0
+
+  # The slave scripts fetch the patch data from the master host as a
+  # first step, and therefore put load on the network. Wait some time
+  # until going over to the next host, so that not all slaves transfer
+  # the patch over the network at the same time.
+  local cooldown="45s"
 
   local radius
 
@@ -137,6 +182,7 @@ function mmachine_master_main {
       local host=${hlist[$hindex]}
 
       mmachine_bootstrap "${host}" $radius "${cdata[*]}"
+      sleep "${cooldown}"
 
       cindex=0
       unset cdata
