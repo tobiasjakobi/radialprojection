@@ -11,7 +11,7 @@ function mmachine_sshalive {
   sleep "${stime}" && kill -s 0 $pid 2> /dev/null
 
   if [ $? -eq 0 ]; then
-    echo "error: host ${host} is not responding" >> mmachine.host.status
+    echo "error: host \"${host}\" is not responding" >> mmachine.host-status
     kill -9 $pid
     return 1
   fi
@@ -60,23 +60,57 @@ function mmachine_copy {
 }
 
 function mmachine_fetchdata {
-  local mhost="hopf21"
-  local patchdata="/var/tmp/tjakobi/mmachine/patch.bin"
+  local patchdata="/vol/tmp/tjakobi/mmachine/patch.bin.xz"
+  local dstfile="/var/tmp/tjakobi/mmachine/patch.bin"
 
-  scp -c arcfour "${mhost}:${patchdata}.xz" "${patchdata}.xz"
-  xz -d -c "${patchdata}.xz" > "${patchdata}"
-  rm -f "${patchdata}.xz"
+  # trigger mounting of NFS share
+  ls -l /vol/tmp/tjakobi/ &> /dev/null
+
+  if [ ! -f "${patchdata}" ]; then
+    echo "error: compressed patch data not found in /vol/tmp"
+    return 1
+  fi
+
+  xz -d -c "${patchdata}" > "${dstfile}"
+
+  if [ $? -ne 0 ] ; then
+    echo "error: decompressing patch data failed"
+    return $?
+  fi
 }
 
 function mmachine_cleanup {
   rm -rf "/var/tmp/tjakobi/mmachine"
 }
 
+# Tear down mulitmachine environment on all hosts.
+# This removes the working directory and all temporary files.
 function mmachine_teardown {
+  # remove these files and directories
+  local rfiles="/var/tmp/tjakobi/mmachine /tmp/mmachine.out /tmp/mmachine.err"
+
   mmachine_hostlist | while read host; do
     ssh -c arcfour -o BatchMode=yes -o StrictHostKeyChecking=no "${host}" "pkill -u tjakobi"
-    ssh -c arcfour -o BatchMode=yes -o StrictHostKeyChecking=no "${host}" "rm -rf /var/tmp/tjakobi/mmachine /tmp/mmachine.out /tmp/mmachine.err"
+    ssh -c arcfour -o BatchMode=yes -o StrictHostKeyChecking=no "${host}" "rm -rf ${rfiles}"
   done
+}
+
+# Prepare patch data, so that slave hosts can fetch it through /vol/tmp
+function mmachine_prepare {
+  local patchdata="/vol/tmp/tjakobi/mmachine/patch.bin.xz"
+  local srcfile="patch.bin"
+
+  if [ ! -f "${srcfile}" ]; then
+    echo "error: patch source file not found"
+    return 1
+  fi
+
+  xz -z -8 -c "${srcfile}" > "${patchdata}"
+
+  if [ $? -ne 0 ] ; then
+    echo "error: compressing patch data failed"
+    return $?
+  fi
 }
 
 function mmachine_bootstrap {
@@ -122,17 +156,36 @@ function mmachine_work_sub {
   local origin=$2
 
   local patchdata="/var/tmp/tjakobi/mmachine/patch.bin"
-  local mhost="hopf21"
+  local vtmp="/vol/tmp/tjakobi"
   local hprefix=$(hostname | grep -o "[[:alpha:]]*")
 
   # radius: double casted as uint64_t
   # origin: comma separated (integer) coordinates
   cat "${patchdata}" | nice -n19 "cyclotomic_radial_${hprefix}" 1 $radius $origin > "result_${origin}.bin" 2> "output_${origin}.log"
 
-  tar -c --file - "result_${origin}.bin" "output_${origin}.log" | xz -z -5 -c > "result_${origin}.tar.xz"
-  rm -f "result_${origin}.bin" "output_${origin}.log"
+  if [ $? -ne 0 ]; then
+    echo "error: cyclotomic_radial failed"
+    return 1
+  fi
 
-  scp -q -c arcfour -o BatchMode=yes "result_${origin}.tar.xz" "${mhost}:/var/tmp/tjakobi/mmachine/" 
+  tar -c --file - "result_${origin}.bin" "output_${origin}.log" | xz -z -5 -c > "result_${origin}.tar.xz"
+
+  if [ $? -ne 0 ]; then
+    echo "error: taring results failed"
+    return 2
+  else
+    rm -f "result_${origin}.bin" "output_${origin}.log"
+  fi
+
+  # trigger mounting of NFS share
+  ls -l "${vtmp}/" &> /dev/null
+
+  cp "result_${origin}.tar.xz" "${vtmp}/"
+
+  if [ $? -ne 0 ]; then
+    echo "error: copying results failed"
+    return 3
+  fi
 }
 
 function mmachine_work {
@@ -148,10 +201,9 @@ function mmachine_master_main {
   local hindex=0
   local cindex=0
 
-  # The slave scripts fetch the patch data from the master host as a
-  # first step, and therefore put load on the network. Wait some time
-  # until going over to the next host, so that not all slaves transfer
-  # the patch over the network at the same time.
+  # The slave scripts fetch the patch data from /vol/tmp as a first. Since /vol/tmp is a
+  # NFS share, this puts load on the network. Wait some time until going over to the next
+  # host, so that not all slaves transfer the patch over the network at the same time.
   local cooldown="45s"
 
   local radius
@@ -204,7 +256,11 @@ function mmachine_slave_main {
     source "/var/tmp/tjakobi/mmachine/data.bin"
 
     mmachine_work $radius "${origins[*]}"
-    mmachine_cleanup
+    if [ $? -ne 0 ]; then
+      echo "error: work routine failed, skipping cleanup"
+    else
+      mmachine_cleanup
+    fi
   else
     # dummy work
     mmachine_work_sub $1 $2
