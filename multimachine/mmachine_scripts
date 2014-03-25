@@ -281,16 +281,31 @@ function mmachine_master_main {
 
 function mmachine_slave_main {
   if [ -z $1 ]; then
-    source "/var/tmp/tjakobi/mmachine/data.bin"
+    if [ ! -f "data.bin" ]; then
+      echo "error: origin data file is missing"
+      return 1
+    else
+      source "data.bin"
+    fi
+
+    # this fetches the compressed patch data and extracts it
+    mmachine_fetchdata
+    if [ $? -ne 0 ]; then
+      echo "error: fetching patch data failed, aborting..."
+      return 2
+    else
+      echo "status: patch data successfully fetched"
+    fi
 
     mmachine_work $radius "${origins[*]}"
     if [ $? -ne 0 ]; then
       echo "error: work routine failed, skipping cleanup"
+      return 3
     else
       mmachine_cleanup
     fi
   else
-    # dummy work
+    # call work subroutine
     mmachine_work_sub $1 $2
   fi
 }
