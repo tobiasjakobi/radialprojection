@@ -109,6 +109,23 @@ function mmachine_prepare {
   fi
 }
 
+function mmachine_status {
+  local rdir="/vol/tmp/tjakobi/mmachine"
+  local origins
+
+  if [ ! -f "${1}" ]; then
+    return 0
+  fi
+
+  origins=$(cat "${1}" | grep "origins:" | cut -d':' -f2 | sed 's/},{/ /g' | sed 's/{{//g' | sed 's/}}//g')
+
+  for arg in $origins; do
+    if [ ! -f "${rdir}/result_$arg.tar.xz" ]; then
+      echo -n " ${arg}"
+    fi
+  done
+}
+
 function mmachine_bootstrap {
   local workdir="/var/tmp/tjakobi/mmachine"
 
@@ -168,7 +185,11 @@ function mmachine_bootstrap {
 }
 
 function mmachine_parse {
-  grep "origins:" | cut -d':' -f2 | sed 's/},{/ /g' | sed 's/{{//g' | sed 's/}}//g'
+  if [ ! -f "${1}" ]; then
+    return 0
+  fi
+
+  cat "${1}" | grep "origins:" | cut -d':' -f2 | sed 's/},{/ /g' | sed 's/{{//g' | sed 's/}}//g'
 }
 
 function mmachine_work_sub {
