@@ -79,10 +79,6 @@ function mmachine_fetchdata {
   fi
 }
 
-function mmachine_cleanup {
-  rm -rf "/var/tmp/tjakobi/mmachine"
-}
-
 # Tear down mulitmachine environment on all hosts.
 # This removes the working directory and all temporary files.
 function mmachine_teardown {
@@ -302,7 +298,7 @@ function mmachine_slave_main {
       echo "error: work routine failed, skipping cleanup"
       return 3
     else
-      mmachine_cleanup
+      rm -rf "/var/tmp/tjakobi/mmachine"
     fi
   else
     # call work subroutine
