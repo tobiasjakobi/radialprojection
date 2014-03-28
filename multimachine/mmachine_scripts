@@ -192,6 +192,47 @@ function mmachine_parse {
   cat "${1}" | grep "origins:" | cut -d':' -f2 | sed 's/},{/ /g' | sed 's/{{//g' | sed 's/}}//g'
 }
 
+function mmachine_loadbalance {
+  local stime="60s"
+  local statefile="/var/tmp/tjakobi/mmachine/.balance"
+  local hprefix=$(hostname | grep -o "[[:alpha:]]*")
+  local numcores=$(nproc)
+
+  local numusers load nload
+  local active=1
+
+  while [ -f "${statefile}" ]; do
+    numusers=$(users | wc -w)
+    load=$(cat /proc/loadavg | cut -d' ' -f2)
+
+    # normalize load
+    nload=$(echo "($load * 100) / $numcores" | bc)
+
+    case $numusers in
+      1 ) active=1 ;; # noone else is currently logged in, use host to full capacity
+      2 ) if [ $nload -lt 80 ]; then
+            active=1
+          else
+            active=0
+          fi ;;
+      3 ) if [ $nload -lt 60 ]; then
+            active=1
+          else
+            active=0
+          fi ;;
+      * ) active=0 ;; # more than two other people are logged in, stop all processes for now
+    esac
+
+    if [ $active -eq 1 ]; then
+      pkill -CONT "cyclotomic_radial_${hprefix}"
+    else
+      pkill -STOP "cyclotomic_radial_${hprefix}"
+    fi
+
+    sleep "${stime}"
+  done
+}
+
 function mmachine_work_sub {
   local radius=$1
   local origin=$2
@@ -297,6 +338,8 @@ function mmachine_master_main {
 }
 
 function mmachine_slave_main {
+  local lbalance="/var/tmp/tjakobi/mmachine/.balance"
+
   if [ -z $1 ]; then
     if [ ! -f "data.bin" ]; then
       echo "error: origin data file is missing"
@@ -313,6 +356,10 @@ function mmachine_slave_main {
     else
       echo "status: patch data successfully fetched"
     fi
+ 
+    # start load balancing
+    touch "${lbalance}"
+    mmachine_loadbalance &
 
     mmachine_work $radius "${origins[*]}"
     if [ $? -ne 0 ]; then
@@ -321,6 +368,8 @@ function mmachine_slave_main {
     else
       rm -rf "/var/tmp/tjakobi/mmachine"
     fi
+
+    rm -f "${lbalance}"
   else
     # call work subroutine
     mmachine_work_sub $1 $2
