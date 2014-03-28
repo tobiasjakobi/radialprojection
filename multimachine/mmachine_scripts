@@ -234,7 +234,7 @@ function mmachine_work_sub {
 }
 
 function mmachine_work {
-  local maxjobs=$(($(nproc) - 1))
+  local maxjobs=$(($(nproc) / 2))
 
   parallel --no-notice -j $maxjobs work.sh $1 ::: $2
 }
