@@ -491,7 +491,7 @@ void Common::histogramEnvelopeLD(const double a, const double b, const double st
 
   ullong ndata = 0;
   ullong in_bin = 0;
-  uint* bins = new uint[num_bin];
+  ullong* bins = new ullong[num_bin];
 
   for (uint i = 0; i < num_bin; ++i)
     bins[i] = 0;
@@ -517,13 +517,14 @@ void Common::histogramEnvelopeLD(const double a, const double b, const double st
   cerr << "statistics: " << in_bin << " data points (from " << ndata
        << ") fall into the binning area\n";
 
-  const double scaler = 1.0 / (double(ndata) * step);
+  const __float128 scaler = __float128(1.0) / (__float128(ndata) * __float128(step));
   for (uint i = 0; i < num_bin; ++i) {
-    envelopeData.push_back(double(bins[i]) * scaler);
+    const __float128 t = __float128(bins[i]) * scaler;
+
+    envelopeData.push_back(t);
   }
   delete [] bins;
 
-  // output to console
   writeRawConsole(envelopeData);
 }
 
