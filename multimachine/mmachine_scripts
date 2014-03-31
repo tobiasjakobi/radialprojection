@@ -197,6 +197,7 @@ function mmachine_output_cat {
 
   for arg in "${rdir}"/result_*.tar.xz; do
     local bfile=$(basename "${arg}")
+    echo "writing binary content of \"${bfile}\" to stdout" 1>&2
 
     xz -d -c "${arg}" | tar -x --file - --to-stdout "${bfile/%.tar.xz/.bin}"
   done
