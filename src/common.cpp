@@ -529,7 +529,50 @@ void Common::histogramEnvelopeLD(const double a, const double b, const double st
 }
 
 void Common::histoTailEnvelopeLD(const double a, const double b, const double step) {
-  // TODO: implement
+  ullong ndata = 0;
+  ullong in_bin = 0;
+  uint lindex = 0;  
+
+  vector<ullong> bins;
+  bins.resize(1);
+
+  while (true) {
+    double data;
+
+    cin.read(reinterpret_cast<char*>(&data), sizeof(double));
+    ++ndata;
+
+    if (data >= a) {
+      const uint bindex = uint((data - a) / step);
+
+      if (bindex > lindex) {
+        bins.resize(bindex + 1);
+        lindex = bindex;
+      }
+
+      ++bins[bindex];
+      ++in_bin;
+    }
+
+    if (cin.eof()) break;
+  }
+
+  eflist envelopeData;
+
+  cerr << "Computing histogram with " << (lindex + 1) << " bins (tail beginning from "
+       << a << "; step width = " << step << ")\n";
+  cerr << "statistics: " << in_bin << " data points (from " << ndata
+       << ") fall into the binning area\n";
+  
+
+  const __float128 scaler = __float128(1.0) / (__float128(ndata) * __float128(step));
+  for (uint i = 0; i < lindex + 1; ++i) {
+    const __float128 t = __float128(bins[i]) * scaler;
+
+    envelopeData.push_back(t);
+  }
+
+  writeRawConsole(envelopeData);
 }
 
 void Common::neighbourDiff(const dlist& input, dlist& output, double& mean) {
