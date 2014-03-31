@@ -1060,6 +1060,10 @@ namespace Common {
   // Same as histogramEnvelope but processes the "tail" of the data.
   void histoTailEnvelope(const double a, const double step);
 
+  // Histogram envelope routines for large data inputs
+  void histogramEnvelopeLD(const double a, const double b, const double step);
+  void histoTailEnvelopeLD(const double a, const double b, const double step);
+
   void neighbourDiff(const dlist& input, dlist& output, double& mean);
   void normalizeAngDists(dlist& input, double mean);
   void radialProj(const vec2dlist& input,

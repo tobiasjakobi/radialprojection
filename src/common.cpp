@@ -486,6 +486,51 @@ void Common::histoTailEnvelope(const double a, const double step) {
   writeRawConsole(envelopeData);
 }
 
+void Common::histogramEnvelopeLD(const double a, const double b, const double step) {
+  const uint num_bin = uint((b - a) / step);
+
+  ullong ndata = 0;
+  ullong in_bin = 0;
+  uint* bins = new uint[num_bin];
+
+  for (uint i = 0; i < num_bin; ++i)
+    bins[i] = 0;
+
+  while (true) {
+    double data;
+
+    cin.read(reinterpret_cast<char*>(&data), sizeof(double));
+    ++ndata;
+
+    if (data >= a && data < b) {
+      ++bins[uint((data - a) / step)];
+      ++in_bin;
+    }
+
+    if (cin.eof()) break;
+  }
+
+  dlist envelopeData;
+
+  cerr << "Computing histogram with " << num_bin << " bins (interval = ["
+       << a << ',' << b << "); step width = " << step << ")\n";
+  cerr << "statistics: " << in_bin << " data points (from " << ndata
+       << ") fall into the binning area\n";
+
+  const double scaler = 1.0 / (double(ndata) * step);
+  for (uint i = 0; i < num_bin; ++i) {
+    envelopeData.push_back(double(bins[i]) * scaler);
+  }
+  delete [] bins;
+
+  // output to console
+  writeRawConsole(envelopeData);
+}
+
+void Common::histoTailEnvelopeLD(const double a, const double b, const double step) {
+  // TODO: implement
+}
+
 void Common::neighbourDiff(const dlist& input, dlist& output, double& mean) {
   assert(input.size() != 0 && input.size() != 1);
 
