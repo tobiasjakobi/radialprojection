@@ -1062,7 +1062,7 @@ namespace Common {
 
   // Histogram envelope routines for large data inputs
   void histogramEnvelopeLD(const double a, const double b, const double step);
-  void histoTailEnvelopeLD(const double a, const double b, const double step);
+  void histoTailEnvelopeLD(const double a, const double step);
 
   void neighbourDiff(const dlist& input, dlist& output, double& mean);
   void normalizeAngDists(dlist& input, double mean);

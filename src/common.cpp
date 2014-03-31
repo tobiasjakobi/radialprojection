@@ -528,7 +528,7 @@ void Common::histogramEnvelopeLD(const double a, const double b, const double st
   writeRawConsole(envelopeData);
 }
 
-void Common::histoTailEnvelopeLD(const double a, const double b, const double step) {
+void Common::histoTailEnvelopeLD(const double a, const double step) {
   ullong ndata = 0;
   ullong in_bin = 0;
   uint lindex = 0;  
