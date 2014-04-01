@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[     24875,        679]
-NotebookOptionsPosition[     23704,        643]
-NotebookOutlinePosition[     24138,        660]
-CellTagsIndexPosition[     24095,        657]
+NotebookDataLength[     27075,        737]
+NotebookOptionsPosition[     25865,        700]
+NotebookOutlinePosition[     26299,        717]
+CellTagsIndexPosition[     26256,        714]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -223,6 +223,13 @@ Cell[BoxData[{
    RowBox[{
    "ReadDoubleData", "[", 
     "\"\</homes/tjakobi/PhD_Work/radialprojection/datafiles/poisson.env\>\"", 
+    "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"envelopeData", "[", "OctogonalAvg", "]"}], "=", 
+   RowBox[{
+   "ReadDoubleData", "[", 
+    "\"\</homes/tjakobi/PhD_Work/radialprojection/datafiles/octoavg.env\>\"", 
     "]"}]}], ";"}]}], "Input",
  CellChangeTimes->{{3.569079401059667*^9, 3.569079413528107*^9}, {
    3.569080279845515*^9, 3.569080290788695*^9}, 3.569142211317814*^9, {
@@ -233,7 +240,9 @@ Cell[BoxData[{
    3.569153405821173*^9}, {3.569153480564409*^9, 3.569153486241985*^9}, {
    3.569153898328593*^9, 3.569153919639315*^9}, {3.572006394206431*^9, 
    3.572006414681933*^9}, 3.575374590408475*^9, {3.5758895689811783`*^9, 
-   3.575889576394864*^9}, {3.575889790363782*^9, 3.575889796594509*^9}}],
+   3.575889576394864*^9}, {3.575889790363782*^9, 3.575889796594509*^9}, {
+   3.605268133356079*^9, 3.605268137252263*^9}, {3.6052681711111317`*^9, 
+   3.605268180763734*^9}}],
 
 Cell[BoxData[{
  RowBox[{
@@ -314,6 +323,12 @@ Cell[BoxData[{
    RowBox[{"envelopeFct", "[", "Poisson", "]"}], "=", 
    RowBox[{"Interpolation", "[", 
     RowBox[{"normalizeEnvData", "[", "Poisson", "]"}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"envelopeFct", "[", "OctogonalAvg", "]"}], "=", 
+   RowBox[{"Interpolation", "[", 
+    RowBox[{"normalizeEnvData", "[", "OctogonalAvg", "]"}], "]"}]}], 
   ";"}]}], "Input",
  CellChangeTimes->{{3.569080424771268*^9, 3.569080439794137*^9}, {
    3.569151815956027*^9, 3.569151846034866*^9}, {3.569152696287392*^9, 
@@ -325,7 +340,7 @@ Cell[BoxData[{
    3.569235785755982*^9}, {3.572006408732518*^9, 3.572006421481234*^9}, 
    3.575374592103218*^9, {3.575619221723638*^9, 3.575619222012125*^9}, {
    3.5758895889764*^9, 3.575889597117268*^9}, {3.5758897858337717`*^9, 
-   3.575889803263157*^9}}],
+   3.575889803263157*^9}, {3.605268196549513*^9, 3.605268201378044*^9}}],
 
 Cell[BoxData[{
  RowBox[{
@@ -470,39 +485,61 @@ Cell[BoxData[
   3.575374608303813*^9, 3.575374615311391*^9}}],
 
 Cell[BoxData[
- RowBox[{"Plot", "[", 
-  RowBox[{
-   RowBox[{"{", 
-    RowBox[{
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"octagonal", " ", 
+    RowBox[{"(", 
+     RowBox[{"from", " ", "central", " ", "origin"}], ")"}], " ", 
+    RowBox[{"vs", ".", " ", "octagonal"}], " ", 
+    RowBox[{"(", 
+     RowBox[{"from", " ", "1000", " ", "origin"}], ")"}]}], " ", "*)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{"Plot", "[", 
+   RowBox[{
+    RowBox[{"{", 
      RowBox[{
-      RowBox[{"envelopeFct", "[", "Octogonal", "]"}], "[", "t", "]"}], ",", 
-     RowBox[{
-      RowBox[{"envelopeFct", "[", "OctoOrigin1000", "]"}], "[", "t", "]"}]}], 
-    "}"}], ",", 
-   RowBox[{"{", 
-    RowBox[{"t", ",", "0", ",", "3"}], "}"}], ",", 
-   RowBox[{"Evaluate", "[", "plotOpts", "]"}]}], "]"}]], "Input",
+      RowBox[{
+       RowBox[{"envelopeFct", "[", "Octogonal", "]"}], "[", "t", "]"}], ",", 
+      RowBox[{
+       RowBox[{"envelopeFct", "[", "OctoOrigin1000", "]"}], "[", "t", "]"}]}],
+      "}"}], ",", 
+    RowBox[{"{", 
+     RowBox[{"t", ",", "0", ",", "3"}], "}"}], ",", 
+    RowBox[{"Evaluate", "[", "plotOpts", "]"}]}], "]"}]}]], "Input",
  CellChangeTimes->{{3.575374620127228*^9, 3.575374621904154*^9}, 
-   3.575374848728422*^9, 3.589538913758441*^9, 3.5895398262326193`*^9}],
+   3.575374848728422*^9, 3.589538913758441*^9, 3.5895398262326193`*^9, {
+   3.605346664182913*^9, 3.6053466906840267`*^9}}],
 
 Cell[BoxData[
- RowBox[{"Plot", "[", 
-  RowBox[{
-   RowBox[{"{", 
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{"same", " ", "thing", " ", "here"}], ",", " ", 
     RowBox[{
+     RowBox[{"but", " ", "comparing", " ", "two", " ", "non"}], "-", 
+     RowBox[{"central", " ", "origins", " ", 
+      RowBox[{"(", 
+       RowBox[{
+       "also", " ", "see", " ", "below", " ", "for", " ", "the", " ", 
+        "averaging"}], ")"}]}]}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"Plot", "[", 
+   RowBox[{
+    RowBox[{"{", 
      RowBox[{
-      RowBox[{"envelopeFct", "[", "OctoOrigin1000", "]"}], "[", "t", "]"}], 
-     ",", 
-     RowBox[{
-      RowBox[{"envelopeFct", "[", "OctoOrigin1100", "]"}], "[", "t", "]"}]}], 
-    "}"}], ",", 
-   RowBox[{"{", 
-    RowBox[{"t", ",", "0", ",", "3"}], "}"}], ",", 
-   RowBox[{"Evaluate", "[", "plotOpts", "]"}]}], "]"}]], "Input",
+      RowBox[{
+       RowBox[{"envelopeFct", "[", "OctoOrigin1000", "]"}], "[", "t", "]"}], 
+      ",", 
+      RowBox[{
+       RowBox[{"envelopeFct", "[", "OctoOrigin1100", "]"}], "[", "t", "]"}]}],
+      "}"}], ",", 
+    RowBox[{"{", 
+     RowBox[{"t", ",", "0", ",", "3"}], "}"}], ",", 
+    RowBox[{"Evaluate", "[", "plotOpts", "]"}]}], "]"}]}]], "Input",
  CellChangeTimes->{{3.575361973241132*^9, 3.5753619797697353`*^9}, {
    3.575362536186833*^9, 3.575362544487026*^9}, 3.5753731841430807`*^9, 
    3.5753742302425957`*^9, {3.57537448656717*^9, 3.575374488661335*^9}, 
-   3.589538918652093*^9, 3.589539827020937*^9}],
+   3.589538918652093*^9, 3.589539827020937*^9, {3.605346700022622*^9, 
+   3.6053467248751993`*^9}}],
 
 Cell[BoxData[
  RowBox[{"Plot", "[", 
@@ -639,9 +676,29 @@ Cell[BoxData[
  CellChangeTimes->{{3.572004267343709*^9, 3.572004310532741*^9}, {
    3.572004383464093*^9, 3.5720044382937603`*^9}, {3.572004473157002*^9, 
    3.5720045063258953`*^9}, {3.572004554455724*^9, 3.572004627276308*^9}, 
-   3.589538949921438*^9, 3.589539849521101*^9}]
+   3.589538949921438*^9, 3.589539849521101*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"octagonal", " ", 
+    RowBox[{"(", 
+     RowBox[{"from", " ", "central", " ", "origin"}], ")"}], " ", 
+    RowBox[{"vs", ".", " ", "octagonal"}], " ", 
+    RowBox[{"(", 
+     RowBox[{"averaged", " ", "over", " ", "many", " ", "origins"}], ")"}]}], 
+   " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"GraphicsGrid", "[", 
+   RowBox[{"{", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"fplot", "[", "Octogonal", "]"}], ",", 
+      RowBox[{"fplot", "[", "OctogonalAvg", "]"}]}], "}"}], "}"}], 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.605340352687765*^9, 3.605340385858777*^9}, {
+  3.605346619084969*^9, 3.6053466507672443`*^9}}]
 },
-WindowSize->{1587, 1143},
+WindowSize->{1920, 1147},
 WindowMargins->{{0, Automatic}, {Automatic, 0}},
 PrivateNotebookOptions->{"VersionedStylesheet"->{"Default.nb"[8.] -> False}},
 Magnification->1.5,
@@ -666,21 +723,22 @@ Cell[1693, 53, 831, 22, 77, "Input"],
 Cell[2527, 77, 1270, 32, 137, "Input"],
 Cell[3800, 111, 408, 6, 46, "Input"],
 Cell[4211, 119, 1128, 34, 77, "Input"],
-Cell[5342, 155, 3098, 80, 317, "Input"],
-Cell[8443, 237, 666, 17, 137, "Input"],
-Cell[9112, 256, 2851, 71, 317, "Input"],
-Cell[11966, 329, 587, 14, 77, "Input"],
-Cell[12556, 345, 787, 21, 107, "Input"],
-Cell[13346, 368, 1837, 50, 137, "Input"],
-Cell[15186, 420, 338, 8, 46, "Input"],
-Cell[15527, 430, 1327, 28, 107, "Input"],
-Cell[16857, 460, 353, 9, 46, "Input"],
-Cell[17213, 471, 551, 14, 46, "Input"],
-Cell[17767, 487, 687, 17, 46, "Input"],
-Cell[18457, 506, 880, 20, 46, "Input"],
-Cell[19340, 528, 1263, 30, 77, "Input"],
-Cell[20606, 560, 1319, 31, 77, "Input"],
-Cell[21928, 593, 1772, 48, 137, "Input"]
+Cell[5342, 155, 3444, 89, 347, "Input"],
+Cell[8789, 246, 666, 17, 77, "Input"],
+Cell[9458, 265, 3115, 77, 347, "Input"],
+Cell[12576, 344, 587, 14, 77, "Input"],
+Cell[13166, 360, 787, 21, 77, "Input"],
+Cell[13956, 383, 1837, 50, 137, "Input"],
+Cell[15796, 435, 338, 8, 46, "Input"],
+Cell[16137, 445, 1327, 28, 107, "Input"],
+Cell[17467, 475, 353, 9, 46, "Input"],
+Cell[17823, 486, 931, 24, 77, "Input"],
+Cell[18757, 512, 1167, 29, 77, "Input"],
+Cell[19927, 543, 880, 20, 46, "Input"],
+Cell[20810, 565, 1263, 30, 77, "Input"],
+Cell[22076, 597, 1319, 31, 77, "Input"],
+Cell[23398, 630, 1772, 48, 137, "Input"],
+Cell[25173, 680, 688, 18, 77, "Input"]
 }
 ]
 *)
