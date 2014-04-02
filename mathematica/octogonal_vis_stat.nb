@@ -1,0 +1,80 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 9.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[      2128,         70]
+NotebookOptionsPosition[      1766,         53]
+NotebookOutlinePosition[      2122,         69]
+CellTagsIndexPosition[      2079,         66]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"octoVisStat", "=", 
+   RowBox[{
+   "<<", "\"\</homes/tjakobi/PhD_Work/radialprojection/datafiles/octoavg.\
+visibility.math\>\""}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.60542738165189*^9, 3.605427414017275*^9}, {
+  3.605433517515091*^9, 3.6054335268128757`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Length", "[", "octoVisStat", "]"}]], "Input",
+ CellChangeTimes->{{3.60542803029461*^9, 3.605428032208138*^9}, 
+   3.605433529807397*^9}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"Min", "[", "octoVisStat", "]"}], ",", 
+   RowBox[{"Max", "[", "octoVisStat", "]"}]}], "}"}]], "Input",
+ CellChangeTimes->{{3.605427592401801*^9, 3.605427607188793*^9}, {
+  3.605433531273378*^9, 3.605433532805418*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Histogram", "[", 
+  RowBox[{"octoVisStat", ",", 
+   RowBox[{"{", 
+    RowBox[{"50", ",", "80", ",", "1"}], "}"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.605427417757827*^9, 3.605427432365987*^9}, {
+   3.605427486413247*^9, 3.605427489755642*^9}, 3.605427537176751*^9, {
+   3.605427567883255*^9, 3.605427589410466*^9}, {3.605427700466503*^9, 
+   3.60542770544186*^9}, {3.605427748960574*^9, 3.6054277498079863`*^9}, 
+   3.605433533974413*^9}]
+},
+WindowSize->{1920, 1147},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+Magnification->1.5,
+FrontEndVersion->"9.0 for Linux x86 (64-bit) (January 25, 2013)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[557, 20, 300, 7, 46, "Input"],
+Cell[860, 29, 160, 3, 46, "Input"],
+Cell[1023, 34, 269, 6, 46, "Input"],
+Cell[1295, 42, 467, 9, 46, "Input"]
+}
+]
+*)
+
+(* End of internal cache information *)
+
