@@ -203,6 +203,24 @@ function mmachine_output_cat {
   done
 }
 
+function mmachine_visibility_status {
+  local rdir="/vol/tmp/tjakobi/mmachine"
+
+  for arg in "${rdir}"/result_*.tar.xz; do
+    local log full vis
+
+    local bfile=$(basename "${arg}")
+    bfile="${bfile/#result/output}"
+
+    log=$(xz -d -c "${arg}" | tar -x --file - --to-stdout "${bfile/%.tar.xz/.log}")
+
+    full=$(echo "${log}" | grep "visibility for" | cut -d' ' -f6)
+    vis=$(echo "${log}" | grep "vertices are visible" | cut -d' ' -f2)
+
+    echo "${vis} / ${full}"
+  done
+}
+
 function mmachine_loadbalance {
   local stime="60s"
   local statefile="/var/tmp/tjakobi/mmachine/.balance"
