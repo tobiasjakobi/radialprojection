@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[     16765,        460]
-NotebookOptionsPosition[     15695,        426]
-NotebookOutlinePosition[     16150,        444]
-CellTagsIndexPosition[     16107,        441]
+NotebookDataLength[     16877,        462]
+NotebookOptionsPosition[     15807,        428]
+NotebookOutlinePosition[     16262,        446]
+CellTagsIndexPosition[     16219,        443]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -29,14 +29,15 @@ Cell[BoxData[{
   RowBox[{"AppendTo", "[", 
    RowBox[{
    "$Path", ",", 
-    "\"\</homes/tjakobi/PhD_Work/radialprojection/packages\>\""}], "]"}], 
-  ";"}], "\[IndentingNewLine]", 
+    "\"\</homes/tjakobi/PhD_Work/radialprojection/mathematica/packages\>\""}],
+    "]"}], ";"}], "\[IndentingNewLine]", 
  RowBox[{"<<", "OctagonalTilingCP`"}]}], "Input",
  CellChangeTimes->{{3.53096073764026*^9, 3.530960764817952*^9}, {
    3.53096079517712*^9, 3.530960859175266*^9}, 3.5310512092367*^9, {
    3.531815414443705*^9, 3.531815416267595*^9}, {3.531817278967404*^9, 
    3.53181729195748*^9}, {3.538494931386941*^9, 3.538494933347486*^9}, {
-   3.5860917429759808`*^9, 3.586091743296139*^9}}],
+   3.5860917429759808`*^9, 3.586091743296139*^9}, {3.605603229379691*^9, 
+   3.605603231858494*^9}}],
 
 Cell[BoxData[
  RowBox[{
@@ -58,11 +59,12 @@ Cell[BoxData[
    RowBox[{"OctagonalProjectionTilingVis", "[", 
     RowBox[{
      RowBox[{"{", 
-      RowBox[{"0", ",", "0", ",", "0", ",", "0"}], "}"}], ",", "35", ",", 
+      RowBox[{"0", ",", "0", ",", "0", ",", "0"}], "}"}], ",", "45", ",", 
      "False", ",", "False"}], "]"}]}], ";"}]], "Input",
  CellChangeTimes->{{3.549635806196386*^9, 3.549635811366998*^9}, {
   3.54963586300815*^9, 3.549635864522238*^9}, {3.549635896565105*^9, 
-  3.549635918346241*^9}, {3.5860916325491962`*^9, 3.5860916347272453`*^9}}],
+  3.549635918346241*^9}, {3.5860916325491962`*^9, 3.5860916347272453`*^9}, {
+  3.605603356657563*^9, 3.605603356815609*^9}}],
 
 Cell[BoxData[
  RowBox[{"Show", "[", 
@@ -444,23 +446,23 @@ CellTagsIndex->{}
 (*NotebookFileOutline
 Notebook[{
 Cell[557, 20, 182, 4, 46, "Input"],
-Cell[742, 26, 571, 12, 77, "Input"],
-Cell[1316, 40, 584, 12, 46, "Input"],
-Cell[1903, 54, 477, 10, 46, "Input"],
-Cell[2383, 66, 699, 17, 77, "Input"],
-Cell[3085, 85, 752, 19, 77, "Input"],
-Cell[3840, 106, 654, 17, 77, "Input"],
-Cell[4497, 125, 275, 6, 46, "Input"],
-Cell[4775, 133, 1673, 43, 197, "Input"],
-Cell[6451, 178, 668, 16, 77, "Input"],
-Cell[7122, 196, 478, 11, 46, "Input"],
-Cell[7603, 209, 341, 9, 77, "Input"],
-Cell[7947, 220, 2109, 55, 167, "Input"],
-Cell[10059, 277, 443, 10, 46, "Input"],
-Cell[10505, 289, 374, 9, 46, "Input"],
-Cell[10882, 300, 1614, 38, 107, "Input"],
-Cell[12499, 340, 162, 4, 46, "Input"],
-Cell[12664, 346, 3027, 78, 347, "Input",
+Cell[742, 26, 634, 13, 77, "Input"],
+Cell[1379, 41, 584, 12, 46, "Input"],
+Cell[1966, 55, 526, 11, 46, "Input"],
+Cell[2495, 68, 699, 17, 77, "Input"],
+Cell[3197, 87, 752, 19, 77, "Input"],
+Cell[3952, 108, 654, 17, 77, "Input"],
+Cell[4609, 127, 275, 6, 46, "Input"],
+Cell[4887, 135, 1673, 43, 197, "Input"],
+Cell[6563, 180, 668, 16, 77, "Input"],
+Cell[7234, 198, 478, 11, 46, "Input"],
+Cell[7715, 211, 341, 9, 77, "Input"],
+Cell[8059, 222, 2109, 55, 167, "Input"],
+Cell[10171, 279, 443, 10, 46, "Input"],
+Cell[10617, 291, 374, 9, 46, "Input"],
+Cell[10994, 302, 1614, 38, 107, "Input"],
+Cell[12611, 342, 162, 4, 46, "Input"],
+Cell[12776, 348, 3027, 78, 347, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }
 ]
