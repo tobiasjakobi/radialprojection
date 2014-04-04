@@ -315,9 +315,9 @@ int MultiMachine::slave(int argc, char* argv[]) {
 
 int main(int argc, char* argv[]) {
 
-  //return SingleMachine::main(argc, argv);
+  return SingleMachine::main(argc, argv);
 
-  if (argc >= 2) {
+  /*if (argc >= 2) {
     stringstream parser(argv[1]);
     uint mode;
     parser >> mode;
@@ -329,6 +329,5 @@ int main(int argc, char* argv[]) {
         return MultiMachine::slave(argc - 1, argv + 1);
       }
     }
-  } 
+  }*/
 }
-
