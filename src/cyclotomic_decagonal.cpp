@@ -80,6 +80,48 @@ bool Decagonal::checkScaledProjInWindow(const vec4i& point, bool useCircle) {
   }
 }
 
+void Decagonal::projTiling(const vec4i& initpoint, uint maxstep,
+                     Common::vec4ilist& tilingpoints) {
+  using namespace Common;
+
+  /* see 'projTilingVisLocal' for comments */
+  const uint numsteps = 10;
+
+  vec4i p, pp;
+  const vec4i hyperstep[10] = {vec4i(1,0,0,0),  vec4i(0,1,0,0),
+                               vec4i(0,0,1,0),  vec4i(0,0,0,1),
+                               vec4i(1,1,1,1),  vec4i(-1,0,0,0),
+                               vec4i(0,-1,0,0), vec4i(0,0,-1,0),
+                               vec4i(0,0,0,-1), vec4i(-1,-1,-1,-1)};
+
+  tilingpoints.clear();
+  tilingpoints.push_back(initpoint);
+
+  if (!checkProjInWindow(initpoint, circularWindow)) {
+    cerr << "Initial point not in projection window.\n";
+    return;
+  }
+
+  TVLManager<vec4i> lvlman(2 + 1, tilingpoints);
+
+  for (uint n = 0; n < maxstep; ++n) {
+    for (uint i = lvlman.begin(); i < lvlman.end(); ++i) {
+      p = tilingpoints[i];
+
+      for (uint j = 0; j < numsteps; ++j) {
+        pp = p + hyperstep[j];
+
+        if (checkProjInWindow(pp, circularWindow)) lvlman.insert(pp);
+      }
+    }
+
+    lvlman.advance();
+  }
+
+  cerr << "Constructed patch of decagonal tiling with "
+       << tilingpoints.size() << " vertices.\n";
+}
+
 void Decagonal::projTilingVisLocal(const vec4i& initpoint, uint maxstep,
                      Common::vec4ilist& tilingpoints,
                      Common::vec4ilist& visiblepoints) {
