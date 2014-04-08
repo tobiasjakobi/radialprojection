@@ -177,7 +177,7 @@ int SingleMachine::main(int argc, char* argv[]) {
     break;
 
     case rhmbpenrose_tiling:
-      RhombicPenrose::projTilingAll(init, steps, tiling);
+      RhombicPenrose::projTiling(init, steps, tiling);
       if (sector) {
         Common::vec4ilist tilingSector;
 
@@ -192,7 +192,7 @@ int SingleMachine::main(int argc, char* argv[]) {
       break;
 
     case rhmbpenrose_radprj:
-      RhombicPenrose::projTilingAll(init, steps, tiling);
+      RhombicPenrose::projTiling(init, steps, tiling);
       {
         Common::vec4ilist tilingSector;
 

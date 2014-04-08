@@ -103,7 +103,7 @@ bool RhombicPenrose::checkScaledProjInWindow(const vec4i& point, uint window) {
   }
 }
 
-void RhombicPenrose::projTilingAll(const vec4i& initpoint, uint maxstep,
+void RhombicPenrose::projTiling(const vec4i& initpoint, uint maxstep,
              Common::vec4ilist& tilingpoints) {
   using namespace Common;
 

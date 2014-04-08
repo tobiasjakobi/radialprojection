@@ -56,8 +56,10 @@ namespace RhombicPenrose {
   bool checkProjInWindow(const vec4i& point, uint window);
   bool checkScaledProjInWindow(const vec4i& point, uint window);
 
-  void projTilingAll(const vec4i& initpoint, uint maxstep,
-                     Common::vec4ilist& tilingpoints);
+  /* projTiling only constructs the tiling, starting from the initpoint */
+  void projTiling(const vec4i& initpoint, uint maxstep,
+                  Common::vec4ilist& tilingpoints);
+
   void selectVisible(const Common::vec4ilist& patch,
                      Common::vec4ilist& visiblepoints, bool radialproj);
 
