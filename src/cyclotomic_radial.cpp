@@ -27,7 +27,7 @@ void SingleMachine::apply_shift(uint mode) {
 
   // The pentagon windows in the rhombic Penrose case
   // always need to be shifted into a generic position:
-  if (mode == 6 || mode == 7) {
+  if (mode == rhmbpenrose_tiling || mode == rhmbpenrose_radprj) {
     vec4i::shift.set(1.0e-4, 1.0e-4);
     return;
   }
@@ -95,13 +95,13 @@ int SingleMachine::main(int argc, char* argv[]) {
   apply_shift(mode);
 
   switch (mode) {
-    case 0: if (use_default_origin)
+    case octagonal_tiling: if (use_default_origin)
               Octogonal::projTilingVisLocal(init, steps, sector, tiling, visible);
             else
               Octogonal::projTilingVis(init, origin, steps, false, tiling, visible); // onlySector is ignored
             break;
 
-    case 1: if (use_default_origin)
+    case octagonal_radprj: if (use_default_origin)
               Octogonal::projTilingVisLocal(init, steps, sector, tiling, visible);
             else
               Octogonal::projTilingVis(init, origin, steps, true, tiling, visible); // onlySector is ignored
@@ -119,7 +119,7 @@ int SingleMachine::main(int argc, char* argv[]) {
             }
             break;
 
-    case 2: Decagonal::projTilingVisLocal(init, steps, tiling, visible);
+    case decagonal_tiling: Decagonal::projTilingVisLocal(init, steps, tiling, visible);
             if (sector) {
               Common::vec4ilist visSector;
               Decagonal::extractSector(visible, visSector);
@@ -129,7 +129,7 @@ int SingleMachine::main(int argc, char* argv[]) {
             }
             break;
 
-    case 3: Decagonal::projTilingVisLocal(init, steps, tiling, visible);
+    case decagonal_radprj: Decagonal::projTilingVisLocal(init, steps, tiling, visible);
             {
               Common::vec4ilist visSector;
               Common::dlist output;
@@ -146,7 +146,7 @@ int SingleMachine::main(int argc, char* argv[]) {
             }
             break;
 
-    case 4: {
+    case dodecagonal_tiling: {
               bool robustVisibilityTest = true;
               if (argc >= 5) {
                 stringstream ss(argv[4]);
@@ -170,7 +170,7 @@ int SingleMachine::main(int argc, char* argv[]) {
             }
             break;
 
-    case 5: Dodecagonal::projTilingVis(init, steps, true, tiling, visible);
+    case dodecagonal_radprj: Dodecagonal::projTilingVis(init, steps, true, tiling, visible);
             {
               Common::dlist output;
               double mean;
@@ -185,7 +185,7 @@ int SingleMachine::main(int argc, char* argv[]) {
             }
             break;
 
-    case 6: RhombicPenrose::projTilingAll(init, steps, tiling);
+    case rhmbpenrose_tiling: RhombicPenrose::projTilingAll(init, steps, tiling);
             if (sector) {
               Common::vec4ilist tilingSector;
               RhombicPenrose::extractSector(tiling, tilingSector);
@@ -196,7 +196,7 @@ int SingleMachine::main(int argc, char* argv[]) {
             RhombicPenrose::selectVisible(tiling, visible, false);
             break;
 
-    case 7: RhombicPenrose::projTilingAll(init, steps, tiling);
+    case rhmbpenrose_radprj: RhombicPenrose::projTilingAll(init, steps, tiling);
             {
               Common::vec4ilist tilingSector;
               Common::dlist output;
