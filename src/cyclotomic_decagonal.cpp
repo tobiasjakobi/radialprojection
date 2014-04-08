@@ -19,6 +19,8 @@
 
 #include <algorithm>
 
+const double Decagonal::VisOp::epsilon = 2.0 * numeric_limits<double>::epsilon();
+
 bool Decagonal::checkProjInSector(const vec2d& orthpoint, bool useAlt) {
   using namespace Common;
 
@@ -297,7 +299,42 @@ void Decagonal::innerOuterRadius(const Common::vec4ilist& tilingpoints,
 }
 
 bool Decagonal::VisOp::rayTest(const invectype& a, const invectype& b) {
-  // TODO: implement
-  return false;
+  // let Z<t> be Z[tau]
+  // transform into the Z<t>*1 + Z<t>*xi
+  // representation (this is a direct sum)
+  const invectype pa(a.transL5ToDirect());
+  const invectype pb(b.transL5ToDirect());
+
+  // first filter the trivial cases
+  if (pa.isFirstZero()) {
+    return pb.isFirstZero();
+  }
+
+  if (pb.isFirstZero()) {
+    return pa.isFirstZero();
+  }
+
+  if (pa.isSecondZero()) {
+    return pb.isSecondZero();
+  }
+
+  if (pb.isSecondZero()) {
+    return pa.isSecondZero();
+  }
+
+  // pa = z_a + w_a * xi
+  // pb = z_b + w_b * xi
+  // with z_a, z_b, w_a, w_b elements in Z<t>
+  vec2i c, d;
+
+  // now compute:
+  // c = z_a * w_b
+  // d = z_b * w_a
+  Coprime::multZTau(vec2i(pa[0], pa[1]),
+                    vec2i(pb[2], pb[3]), c);
+  Coprime::multZTau(vec2i(pb[0], pb[1]),
+                    vec2i(pa[2], pa[3]), d);
+
+  return (c == d);
 }
 

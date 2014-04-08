@@ -17,6 +17,7 @@
 #define _CYCLOTOMIC_DECAGONAL_H_
 
 #include "common.h"
+#include "visibility.h"
 
 namespace Decagonal {
 
