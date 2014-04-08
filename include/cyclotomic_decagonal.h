@@ -64,11 +64,15 @@ namespace Decagonal {
   void projTiling(const vec4i& initpoint, uint maxstep,
                   Common::vec4ilist& tilingpoints);
 
+  void projTilingVis(const vec4i& initpoint,
+                     const vec4i& origin,
+                     uint maxstep, bool radialproj,
+                     Common::vec4ilist& tilingpoints,
+                     Common::vec4ilist& visiblepoints);
+
   void projTilingVisLocal(const vec4i& initpoint, uint maxstep,
                           Common::vec4ilist& tilingpoints,
                           Common::vec4ilist& visiblepoints);
-
-  // TODO: add ray visibility test
 
   void extractSector(const Common::vec4ilist& input,
                      Common::vec4ilist& output);

@@ -124,6 +124,77 @@ void Decagonal::projTiling(const vec4i& initpoint, uint maxstep,
        << tilingpoints.size() << " vertices.\n";
 }
 
+void Decagonal::projTilingVis(const vec4i& initpoint,
+                     const vec4i& origin,
+                     uint maxstep, bool radialproj,
+                     Common::vec4ilist& tilingpoints,
+                     Common::vec4ilist& visiblepoints) {
+  using namespace Common;
+
+  vec4i p, pp;
+  const uint numsteps = 10;
+  const vec4i hyperstep[10] = {vec4i(1,0,0,0),  vec4i(0,1,0,0),
+                               vec4i(0,0,1,0),  vec4i(0,0,0,1),
+                               vec4i(1,1,1,1),  vec4i(-1,0,0,0),
+                               vec4i(0,-1,0,0), vec4i(0,0,-1,0),
+                               vec4i(0,0,0,-1), vec4i(-1,-1,-1,-1)};
+
+  tilingpoints.clear();
+  visiblepoints.clear();
+
+  tilingpoints.push_back(initpoint);
+
+  if (!checkProjInWindow(initpoint, circularWindow)) {
+    cerr << "Initial point not in projection window.\n";
+    return;
+  }
+
+  // We need 2 + 1 levels to avoid going "back" (into the wrong direction) when creating the patch.
+  TVLManager<vec4i> lvlman(2 + 1, tilingpoints);
+
+  for (uint n = 0; n < maxstep; ++n) {
+    for (uint i = lvlman.begin(); i < lvlman.end(); ++i) {
+      p = tilingpoints[i];
+
+      for (uint j = 0; j < numsteps; ++j) {
+        pp = p + hyperstep[j];
+
+        if (checkProjInWindow(pp, circularWindow)) lvlman.insert(pp);
+      }
+    }
+
+    lvlman.advance();
+  }
+
+  cerr << "Constructed patch of decagonal tiling with "
+       << tilingpoints.size() << " vertices.\n";
+
+  // We're not removing vertices in this case, so allocate the full amount.
+  VisList* vlist = new VisList;
+  vlist->reserve(tilingpoints.size() - 1);
+
+  vlist->init();
+
+  for (vec4ilist::const_iterator i = tilingpoints.begin(); i != tilingpoints.end(); ++i) {
+    const vec4i shifted(*i - origin);
+
+    if (shifted.isZero()) continue;
+    vlist->insertSorted(shifted);
+  }
+
+  if (radialproj)
+    vlist->removeInvisibleFast();
+  else
+    vlist->removeInvisibleProper();
+
+  visiblepoints.clear();
+  visiblepoints.reserve(vlist->size());
+  vlist->dump(visiblepoints);
+
+  delete vlist;
+  vlist = NULL;
+}
+
 void Decagonal::projTilingVisLocal(const vec4i& initpoint, uint maxstep,
                      Common::vec4ilist& tilingpoints,
                      Common::vec4ilist& visiblepoints) {
