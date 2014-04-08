@@ -29,18 +29,21 @@ void SingleMachine::apply_shift(uint mode) {
   // always need to be shifted into a generic position:
   if (mode == 6 || mode == 7) {
     vec4i::shift.set(1.0e-4, 1.0e-4);
-  } else {
-    // In the pure cyclotomic case the window can be replaced by a circle:
-    if (circularWindow) {
-      cerr << "Using (simplified) circular window with same area.\n";
-    } else {
-      // When using the decagon/dodecagon window from the book, shift it slightly.
-      // A singular patch can be constructed by omitting the shift.
-      if (windowBookOrientation && (mode >= 2 && mode <= 5)) {
-        cerr << "Using decagon/dodecagon window orientation from the book, applying slight shift to it.\n";
-        vec4i::shift.set(1.0e-4, 1.0e-4);
-      }
-    }
+    return;
+  }
+
+  // In the pure cyclotomic case the window can be replaced by a circle.
+  // This of course affects the tiling, but has only negligible impact on the radial projection.
+  if (circularWindow) {
+    cerr << "Using (simplified) circular window with same area.\n";
+    return;
+  }
+
+  // When using the decagon/dodecagon window from the book, shift it slightly.
+  // A singular patch can be constructed by omitting the shift.
+  if (windowBookOrientation && (mode >= 2 && mode <= 5)) {
+    cerr << "Using decagon/dodecagon window orientation from the book, applying slight shift to it.\n";
+    vec4i::shift.set(1.0e-4, 1.0e-4);
   }
 }
 
