@@ -22,6 +22,28 @@
 
 #include <sstream>
 
+void SingleMachine::apply_shift(uint mode) {
+  using namespace Common;
+
+  // The pentagon windows in the rhombic Penrose case
+  // always need to be shifted into a generic position:
+  if (mode == 6 || mode == 7) {
+    vec4i::shift.set(1.0e-4, 1.0e-4);
+  } else {
+    // In the pure cyclotomic case the window can be replaced by a circle:
+    if (circularWindow) {
+      cerr << "Using (simplified) circular window with same area.\n";
+    } else {
+      // When using the decagon/dodecagon window from the book, shift it slightly.
+      // A singular patch can be constructed by omitting the shift.
+      if (windowBookOrientation && (mode >= 2 && mode <= 5)) {
+        cerr << "Using decagon/dodecagon window orientation from the book, applying slight shift to it.\n";
+        vec4i::shift.set(1.0e-4, 1.0e-4);
+      }
+    }
+  }
+}
+
 int SingleMachine::main(int argc, char* argv[]) {
   const vec4i init(0, 0, 0, 0);
   uint steps = 40;
@@ -67,23 +89,7 @@ int SingleMachine::main(int argc, char* argv[]) {
     if (origin != vec4i(0, 0, 0, 0)) use_default_origin = false;
   }
 
-  // The pentagon windows in the rhombic Penrose case
-  // always need to be shifted into a generic position:
-  if (mode == 6 || mode == 7) {
-    vec4i::shift.set(1.0e-4, 1.0e-4);
-  } else {
-    // In the pure cyclotomic case the window can be replaced by a circle:
-    if (Common::circularWindow) {
-      cerr << "Using (simplified) circular window with same area.\n";
-    } else {
-      // When using the decagon/dodecagon window from the book, shift it slightly.
-      // A singular patch can be constructed by omitting the shift.
-      if (Common::windowBookOrientation && (mode >= 2 && mode <= 5)) {
-        cerr << "Using decagon/dodecagon window orientation from the book, applying slight shift to it.\n";
-        vec4i::shift.set(1.0e-4, 1.0e-4);
-      }
-    }
-  }
+  apply_shift(mode);
 
   /* mode 0 and 1 : octogonal tiling (L8 lattice)           *
    * mode 2 and 3 : decagonal tiling (L5 lattice)           *

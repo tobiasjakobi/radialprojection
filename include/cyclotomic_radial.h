@@ -16,7 +16,11 @@
 #ifndef _CYCLOTOMIC_RADIAL_H_
 #define _CYCLOTOMIC_RADIAL_H_
 
+#include "common.h"
+
 namespace SingleMachine {
+
+  void apply_shift(uint mode);
 
   /* Default main routine for single machine execution */
   int main(int argc, char* argv[]);
