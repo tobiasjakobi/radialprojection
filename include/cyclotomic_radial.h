@@ -20,6 +20,21 @@
 
 namespace SingleMachine {
 
+  // xyz_tiling processing modes create vertex in the Z4 lattice space.
+  // xyz_radprj processing modes apply radial projection and
+  // output (raw) double-precision floating point data.
+
+  enum processing_mode {
+    octagonal_tiling   = 0, /* octagonal / Ammann-Beenker tiling (L8 lattice) */
+    octagonal_radprj   = 1,
+    decagonal_tiling   = 2, /* decagonal / Tübingen triangle tiling (L5 lattice) */
+    decagonal_radprj   = 3,
+    dodecagonal_tiling = 4, /* dodecagonal / Gähler shield tiling (L12 lattice) */
+    dodecagonal_radprj = 5,
+    rhmbpenrose_tiling = 6, /* rhombic Penrose tiling (L5 with four windows) */
+    rhmbpenrose_radprj = 7
+  };
+
   void apply_shift(uint mode);
 
   /* Default main routine for single machine execution */

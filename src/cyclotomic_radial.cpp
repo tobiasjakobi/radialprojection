@@ -94,13 +94,6 @@ int SingleMachine::main(int argc, char* argv[]) {
 
   apply_shift(mode);
 
-  /* mode 0 and 1 : octogonal tiling (L8 lattice)           *
-   * mode 2 and 3 : decagonal tiling (L5 lattice)           *
-   * mode 4 and 5 : dodecagonal tiling (L12 lattice)        *
-   * mode 6 and 7 : rhombic Penrose tiling (L5 + 4 windows) *
-   * Even modes create vertex data in the Z4 lattice space. *
-   * Uneven modes are radial projection modes and           *
-   * output double-precision floating point data.           */
   switch (mode) {
     case 0: if (use_default_origin)
               Octogonal::projTilingVisLocal(init, steps, sector, tiling, visible);
