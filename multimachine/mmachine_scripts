@@ -304,7 +304,8 @@ function mmachine_work_sub {
 }
 
 function mmachine_work {
-  local maxjobs=$(($(nproc) / 2))
+  local nphycores=$(cat /proc/cpuinfo | grep "core id" | sort | uniq | wc -l)
+  local maxjobs=$(($nphycores / 2))
 
   parallel --no-notice -j $maxjobs work.sh $1 ::: $2
 }
