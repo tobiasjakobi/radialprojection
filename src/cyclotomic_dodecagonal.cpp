@@ -119,6 +119,7 @@ void Dodecagonal::projTilingVisLocal(const vec4i& initpoint, uint maxstep,
     return;
   }
 
+  // We need 2 + 1 levels to avoid going "back" (into the wrong direction) when creating the patch.
   TVLManager<vec4i> lvlman(2 + 1, tilingpoints);
 
   for (uint n = 0; n < maxstep; ++n) {
@@ -180,6 +181,7 @@ void Dodecagonal::projTilingVis(const vec4i& initpoint,
     return;
   }
 
+  // We need 2 + 1 levels to avoid going "back" (into the wrong direction) when creating the patch.
   TVLManager<vec4i> lvlman(2 + 1, tilingpoints);
 
   for (uint n = 0; n < maxstep; ++n) {
@@ -199,8 +201,7 @@ void Dodecagonal::projTilingVis(const vec4i& initpoint,
   cerr << "Constructed patch of dodecagonal tiling with "
        << tilingpoints.size() << " vertices.\n";
 
-  // TODO: Due to the shift into a non-singular position, there is no 12-star at the
-  //       origin of the tiling. Can one still reduce the tiling to a, say 1/6 sector?
+  
   VisList* vlist = new VisList;
   vlist->reserve(double(tilingpoints.size() - 1) * (radialproj ? 0.17 : 1.0));
 
@@ -304,6 +305,8 @@ void Dodecagonal::extractSector(const Common::vec4ilist& input,
 
   using namespace Common;
 
+  // Warning: Due to the shift into a non-singular position, there
+  // is no 12-star at the origin of the tiling.
   output.clear();
   output.reserve(input.size() / 6);
 
