@@ -280,6 +280,22 @@ void Decagonal::testWindow(Common::vec2ilist& output, uint resolution) {
   }
 }
 
+void Decagonal::innerOuterRadius(const Common::vec4ilist& tilingpoints,
+                        double& inner, double& outer) {
+  using namespace Common;
+
+  double out = 0.0;
+
+  for (vec4ilist::const_iterator i = tilingpoints.begin(); i != tilingpoints.end(); ++i) {
+    const double lSq = i->paraProjL5().lengthSquared();
+
+    if (lSq > out) out = lSq;
+  }
+
+  outer = sqrt(out);
+  inner = cos(pi / 10.0) * outer;
+}
+
 bool Decagonal::VisOp::rayTest(const invectype& a, const invectype& b) {
   // TODO: implement
   return false;

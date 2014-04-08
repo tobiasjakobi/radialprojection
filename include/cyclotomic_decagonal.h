@@ -83,6 +83,10 @@ namespace Decagonal {
 
   void testWindow(Common::vec2ilist& output, uint resolution);
 
+  /* Compute inner and outer radius of tiling. */
+  void innerOuterRadius(const Common::vec4ilist& tilingpoints,
+                        double& inner, double& outer);
+
   struct VisOp {
     typedef vec4i invectype;
     static const double epsilon;
