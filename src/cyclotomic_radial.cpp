@@ -92,6 +92,11 @@ int SingleMachine::main(int argc, char* argv[]) {
     if (origin != vec4i(0, 0, 0, 0)) use_default_origin = false;
   }
 
+  if (check_mode(mode)) {
+    cerr << "error: unsupported processing mode selected!\n";
+    return 1;
+  }
+
   apply_shift(mode);
 
   switch (mode) {
@@ -215,8 +220,9 @@ int SingleMachine::main(int argc, char* argv[]) {
             }
             break;
 
-    default: cerr << "error: unsupported mode selected!\n";
-             return 0;
+    default:
+      assert(false);
+      break;
   }
 
   // Don't output the tiling in radial projection mode:

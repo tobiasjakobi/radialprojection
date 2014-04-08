@@ -32,8 +32,13 @@ namespace SingleMachine {
     dodecagonal_tiling = 4, /* dodecagonal / Gähler shield tiling (L12 lattice) */
     dodecagonal_radprj = 5,
     rhmbpenrose_tiling = 6, /* rhombic Penrose tiling (L5 with four windows) */
-    rhmbpenrose_radprj = 7
+    rhmbpenrose_radprj = 7,
+    processing_mode_end
   };
+
+  bool check_mode(uint mode) {
+    return (mode >= processing_mode_end);
+  }
 
   void apply_shift(uint mode);
 
