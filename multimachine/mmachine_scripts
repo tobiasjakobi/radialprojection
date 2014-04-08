@@ -25,13 +25,17 @@ function mmachine_hostlist {
 
   local list
 
-  # Query DNS and only selects hosts which are alive:
-  list=$(host -l math.uni-bielefeld.de | \
-    grep -v "IPv6 address" | \
-    grep -v "${mhost}" | \
-    grep "${names}" | \
-    cut -d'.' -f1 | \
-    fping -r1 -a 2> /dev/null)
+  if [ -n "${use_okashis}" ]; then
+    list=$(for arg in $use_okashis; do echo "okashi${arg}"; done)
+  else
+    # Query DNS and only selects hosts which are alive:
+    list=$(host -l math.uni-bielefeld.de | \
+      grep -v "IPv6 address" | \
+      grep -v "${mhost}" | \
+      grep "${names}" | \
+      cut -d'.' -f1 | \
+      fping -r1 -a 2> /dev/null)
+  fi
 
   # Sometimes a host responds to a ping, but then hangs when
   # executing commands over ssh. Filter these hosts:
