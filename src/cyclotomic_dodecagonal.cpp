@@ -201,34 +201,22 @@ void Dodecagonal::projTilingVis(const vec4i& initpoint,
   cerr << "Constructed patch of dodecagonal tiling with "
        << tilingpoints.size() << " vertices.\n";
 
-  
   VisList* vlist = new VisList;
-  vlist->reserve(double(tilingpoints.size() - 1) * (radialproj ? 0.17 : 1.0));
+  vlist->reserve(tilingpoints.size() - 1);
 
   vlist->init();
 
-  if (radialproj) {
-    cerr << "info: processing dodecagonal tiling in RP mode (reduction to sector).\n";
+  for (vec4ilist::const_iterator i = tilingpoints.begin(); i != tilingpoints.end(); ++i) {
+    const vec4i shifted(*i - origin);
 
-    for (vec4ilist::const_iterator i = tilingpoints.begin(); i != tilingpoints.end(); ++i) {
-      if (i->isZero()) continue; // zero = reference point (not visible)
-
-      const vec2d physProj(i->paraProjL12());
-
-      if (physProj.inFirstQuadrant() && physProj.inSectorL12()) {
-        vlist->insertSorted(*i);
-      }
-    }
-
-    vlist->removeInvisibleFast();
-  } else {
-    for (vec4ilist::const_iterator i = tilingpoints.begin(); i != tilingpoints.end(); ++i) {
-      if (i->isZero()) continue;
-      vlist->insertSorted(*i);
-    }
-
-    vlist->removeInvisibleProper();
+    if (shifted.isZero()) continue; // zero = reference point (not visible)
+    vlist->insertSorted(shifted);
   }
+
+  if (radialproj)
+    vlist->removeInvisibleFast();
+  else
+    vlist->removeInvisibleProper();
 
   visiblepoints.clear();
   visiblepoints.reserve(vlist->size());
