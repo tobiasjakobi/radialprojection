@@ -40,6 +40,10 @@ namespace SingleMachine {
     return (mode >= processing_mode_end);
   }
 
+  bool is_tiling_mode(uint mode) {
+    return (mode % 2 == 0);
+  }
+
   void apply_shift(uint mode);
 
   /* Default main routine for single machine execution */
