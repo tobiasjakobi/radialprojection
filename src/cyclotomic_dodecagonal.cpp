@@ -156,8 +156,9 @@ void Dodecagonal::projTilingVisLocal(const vec4i& initpoint, uint maxstep,
        << visiblepoints.size() << " visible ones.\n";
 }
 
-void Dodecagonal::projTilingVis(const vec4i& initpoint, uint maxstep,
-                     bool radialproj,
+void Dodecagonal::projTilingVis(const vec4i& initpoint,
+                     const vec4i& origin,
+                     uint maxstep, bool radialproj,
                      Common::vec4ilist& tilingpoints,
                      Common::vec4ilist& visiblepoints) {
   using namespace Common;

@@ -77,8 +77,9 @@ namespace Dodecagonal {
    * This method is the most exact one and should be used for            *
    * reference. It is of course also vastly slower than the              *
    * local test.                                                         */
-  void projTilingVis(const vec4i& initpoint, uint maxstep,
-                     bool radialproj,
+  void projTilingVis(const vec4i& initpoint,
+                     const vec4i& origin,
+                     uint maxstep, bool radialproj,
                      Common::vec4ilist& tilingpoints,
                      Common::vec4ilist& visiblepoints);
 
