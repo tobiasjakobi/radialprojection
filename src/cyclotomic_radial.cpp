@@ -87,7 +87,6 @@ int SingleMachine::main(int argc, char* argv[]) {
     ss >> sector;
   }
 
-  // Parse (non-default) origin. Currently only the octogonal code uses this!
   if (argc >=8) {
     for (uint k = 0; k < 4; ++k) {
       stringstream ss(argv[4 + k]);
