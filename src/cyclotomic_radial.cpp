@@ -25,6 +25,11 @@
 void SingleMachine::apply_shift(uint mode) {
   using namespace Common;
 
+  // non-singular octagonal tiling doesn't need a window shift
+  if (mode == octagonal_tiling || mode == octagonal_radprj) {
+    return;
+  }
+
   // The pentagon windows in the rhombic Penrose case
   // always need to be shifted into a generic position:
   if (mode == rhmbpenrose_tiling || mode == rhmbpenrose_radprj) {
@@ -41,7 +46,7 @@ void SingleMachine::apply_shift(uint mode) {
 
   // When using the decagon/dodecagon window from the book, shift it slightly.
   // A singular patch can be constructed by omitting the shift.
-  if (windowBookOrientation && (mode >= 2 && mode <= 5)) {
+  if (windowBookOrientation) {
     cerr << "Using decagon/dodecagon window orientation from the book, applying slight shift to it.\n";
     vec4i::shift.set(1.0e-4, 1.0e-4);
   }
@@ -100,129 +105,137 @@ int SingleMachine::main(int argc, char* argv[]) {
   apply_shift(mode);
 
   switch (mode) {
-    case octagonal_tiling: if (use_default_origin)
-              Octogonal::projTilingVisLocal(init, steps, sector, tiling, visible);
-            else
-              Octogonal::projTilingVis(init, origin, steps, false, tiling, visible); // onlySector is ignored
-            break;
+    case octagonal_tiling:
+      if (use_default_origin)
+        Octogonal::projTilingVisLocal(init, steps, sector, tiling, visible);
+      else
+        Octogonal::projTilingVis(init, origin, steps, false, tiling, visible); // onlySector is ignored
+    break;
 
-    case octagonal_radprj: if (use_default_origin)
-              Octogonal::projTilingVisLocal(init, steps, sector, tiling, visible);
-            else
-              Octogonal::projTilingVis(init, origin, steps, true, tiling, visible); // onlySector is ignored
-            {
-              Common::dlist output;
-              double mean;
+    case octagonal_radprj:
+      if (use_default_origin)
+        Octogonal::projTilingVisLocal(init, steps, sector, tiling, visible);
+      else
+        Octogonal::projTilingVis(init, origin, steps, true, tiling, visible); // onlySector is ignored
+      {
+        Common::dlist output;
+        double mean;
 
-              Octogonal::radialProj(visible, output, mean, sector);
+        Octogonal::radialProj(visible, output, mean, sector);
 
-              cerr << "mean distance " << mean
-                   << " during radial projection of " << (output.size() + 1)
-                   << " vertices.\n";
+        cerr << "mean distance " << mean
+             << " during radial projection of " << (output.size() + 1)
+             << " vertices.\n";
 
-              Common::writeRawConsole(output);
-            }
-            break;
+        Common::writeRawConsole(output);
+      }
+    break;
 
-    case decagonal_tiling: Decagonal::projTilingVisLocal(init, steps, tiling, visible);
-            if (sector) {
-              Common::vec4ilist visSector;
-              Decagonal::extractSector(visible, visSector);
-              visible = visSector;
-              cerr << "Reduced visible tiling to a sector containing "
-                   << visible.size() << " vertices.\n";
-            }
-            break;
+    case decagonal_tiling:
+      Decagonal::projTilingVisLocal(init, steps, tiling, visible);
+      if (sector) {
+        Common::vec4ilist visSector;
+        Decagonal::extractSector(visible, visSector);
+        visible = visSector;
+        cerr << "Reduced visible tiling to a sector containing "
+             << visible.size() << " vertices.\n";
+      }
+    break;
 
-    case decagonal_radprj: Decagonal::projTilingVisLocal(init, steps, tiling, visible);
-            {
-              Common::vec4ilist visSector;
-              Common::dlist output;
-              double mean;
+    case decagonal_radprj:
+      Decagonal::projTilingVisLocal(init, steps, tiling, visible);
+      {
+        Common::vec4ilist visSector;
+        Common::dlist output;
+        double mean;
 
-              Decagonal::extractSector(visible, visSector);
-              Decagonal::radialProj(visSector, output, mean);
+        Decagonal::extractSector(visible, visSector);
+        Decagonal::radialProj(visSector, output, mean);
 
-              cerr << "mean distance " << mean
-                   << " during radial projection of " << visSector.size()
-                   << " vertices.\n";
+        cerr << "mean distance " << mean
+             << " during radial projection of " << visSector.size()
+             << " vertices.\n";
 
-              Common::writeRawConsole(output);
-            }
-            break;
+        Common::writeRawConsole(output);
+      }
+    break;
 
-    case dodecagonal_tiling: {
-              bool robustVisibilityTest = true;
-              if (argc >= 5) {
-                stringstream ss(argv[4]);
-                string vismode;
-                ss >> vismode;
+    case dodecagonal_tiling:
+      {
+        bool robustVisibilityTest = true;
+        if (argc >= 5) {
+          stringstream ss(argv[4]);
+          string vismode;
+          ss >> vismode;
 
-                if (vismode == "local") robustVisibilityTest = false;
-              }
-              
-              if (robustVisibilityTest)
-                Dodecagonal::projTilingVis(init, steps, false, tiling, visible);
-              else
-                Dodecagonal::projTilingVisLocal(init, steps, tiling, visible);
-            }
-            if (sector) {
-              Common::vec4ilist visSector;
-              Dodecagonal::extractSector(visible, visSector);
-              visible = visSector;
-              cerr << "Reduced visible tiling to a sector containing "
-                   << visible.size() << " vertices.\n";
-            }
-            break;
+          if (vismode == "local") robustVisibilityTest = false;
+        }
 
-    case dodecagonal_radprj: Dodecagonal::projTilingVis(init, steps, true, tiling, visible);
-            {
-              Common::dlist output;
-              double mean;
+        if (robustVisibilityTest)
+          Dodecagonal::projTilingVis(init, steps, false, tiling, visible);
+        else
+          Dodecagonal::projTilingVisLocal(init, steps, tiling, visible);
+      }
+      if (sector) {
+        Common::vec4ilist visSector;
+        Dodecagonal::extractSector(visible, visSector);
+        visible = visSector;
+        cerr << "Reduced visible tiling to a sector containing "
+             << visible.size() << " vertices.\n";
+      }
+    break;
 
-              Dodecagonal::radialProj(visible, output, mean);
+    case dodecagonal_radprj:
+      Dodecagonal::projTilingVis(init, steps, true, tiling, visible);
+      {
+        Common::dlist output;
+        double mean;
 
-              cerr << "mean distance " << mean
-                   << " during radial projection of " << visible.size()
-                   << " vertices.\n";
+        Dodecagonal::radialProj(visible, output, mean);
 
-              Common::writeRawConsole(output);
-            }
-            break;
+        cerr << "mean distance " << mean
+             << " during radial projection of " << visible.size()
+             << " vertices.\n";
 
-    case rhmbpenrose_tiling: RhombicPenrose::projTilingAll(init, steps, tiling);
-            if (sector) {
-              Common::vec4ilist tilingSector;
-              RhombicPenrose::extractSector(tiling, tilingSector);
-              tiling.swap(tilingSector);
-              cerr << "Reduced tiling to a sector containing "
-                   << tiling.size() << " vertices.\n";
-            }
-            RhombicPenrose::selectVisible(tiling, visible, false);
-            break;
+        Common::writeRawConsole(output);
+      }
+    break;
 
-    case rhmbpenrose_radprj: RhombicPenrose::projTilingAll(init, steps, tiling);
-            {
-              Common::vec4ilist tilingSector;
-              Common::dlist output;
-              double mean;
+    case rhmbpenrose_tiling:
+      RhombicPenrose::projTilingAll(init, steps, tiling);
+      if (sector) {
+        Common::vec4ilist tilingSector;
+        RhombicPenrose::extractSector(tiling, tilingSector);
+        tiling.swap(tilingSector);
+        cerr << "Reduced tiling to a sector containing "
+             << tiling.size() << " vertices.\n";
+        }
+        RhombicPenrose::selectVisible(tiling, visible, false);
+      break;
 
-              RhombicPenrose::extractSector(tiling, tilingSector);
-              RhombicPenrose::selectVisible(tilingSector, visible, true);
+    case rhmbpenrose_radprj:
+      RhombicPenrose::projTilingAll(init, steps, tiling);
+      {
+        Common::vec4ilist tilingSector;
+        Common::dlist output;
+        double mean;
 
-              RhombicPenrose::radialProj(visible, output, mean);
+        RhombicPenrose::extractSector(tiling, tilingSector);
+        RhombicPenrose::selectVisible(tilingSector, visible, true);
 
-              cerr << "mean distance " << mean
-                   << " during radial projection of " << (output.size() + 1)
-                   << " vertices.\n";
+        RhombicPenrose::radialProj(visible, output, mean);
 
-              Common::writeRawConsole(output);
-            }
-            break;
+        cerr << "mean distance " << mean
+             << " during radial projection of " << (output.size() + 1)
+             << " vertices.\n";
+
+        Common::writeRawConsole(output);
+      }
+    break;
 
     default:
       assert(false);
-      break;
+    break;
   }
 
   // Don't output the tiling in radial projection mode:
