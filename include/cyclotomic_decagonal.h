@@ -76,7 +76,29 @@ namespace Decagonal {
                   Common::dlist& output,
                   double& meandist);
 
+  /* radial projection of a given input tiling, but computed from a non-default origin/radius */
+  void radialProj(const Common::vec4ilist& input,
+                  const vec4i& origin, double radius,
+                  Common::dlist& output, double& meandist);
+
   void testWindow(Common::vec2ilist& output, uint resolution);
+
+  struct VisOp {
+    typedef vec4i invectype;
+    static const double epsilon;
+
+    static inline double angle(const invectype& a) {
+      return a.paraProjL5().angle();
+    }
+
+    static inline vec2d toR2(const invectype& a) {
+      return a.paraProjL5();
+    }
+
+    static bool rayTest(const invectype& a, const invectype& b);
+  };
+
+  typedef VisTest::VisibleList<VisOp> VisList;
 
 };
 

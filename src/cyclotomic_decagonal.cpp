@@ -215,6 +215,51 @@ void Decagonal::radialProj(const Common::vec4ilist& input,
   normalizeAngDists(output, meandist);
 }
 
+void Decagonal::radialProj(const Common::vec4ilist& input,
+                   const vec4i& origin, double radius,
+                   Common::dlist& output, double& meandist) {
+  using namespace Common;
+
+  const double rSq = radius * radius;
+  vec4ilist visiblepoints;
+  dlist angles;
+
+  VisList* vlist = new VisList;
+  vlist->reserve(input.size() - 1);
+
+  vlist->init();
+
+  for (vec4ilist::const_iterator i = input.begin(); i != input.end(); ++i) {
+    const vec4i shifted(*i - origin);
+
+    if (shifted.isZero() || shifted.paraProjL5().lengthSquared() > rSq)
+      continue;
+
+    vlist->insertSorted(shifted);
+  }
+
+  vlist->removeInvisibleFast();
+
+  visiblepoints.reserve(vlist->size());
+  vlist->dump(visiblepoints);
+
+  delete vlist;
+  vlist = NULL;
+
+  angles.reserve(visiblepoints.size());
+
+  for (vec4ilist::const_iterator i = visiblepoints.begin(); i != visiblepoints.end(); ++i) {
+    angles.push_back(i->paraProjL5().angle());
+  }
+
+  output.clear();
+  output.reserve(visiblepoints.size());
+
+  sort(angles.begin(), angles.end());
+  neighbourDiff(angles, output, meandist);
+  normalizeAngDists(output, meandist);
+}
+
 void Decagonal::testWindow(Common::vec2ilist& output, uint resolution) {
   using namespace Common;
 
@@ -233,5 +278,10 @@ void Decagonal::testWindow(Common::vec2ilist& output, uint resolution) {
       }
     }
   }
+}
+
+bool Decagonal::VisOp::rayTest(const invectype& a, const invectype& b) {
+  // TODO: implement
+  return false;
 }
 
