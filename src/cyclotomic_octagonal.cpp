@@ -392,9 +392,9 @@ bool Octogonal::VisOp::rayTest(const invectype& a, const invectype& b) {
   // c = z_a * w_b
   // d = z_b * w_a
   Coprime::multZ2(vec2i(pa[0], pa[1]),
-                        vec2i(pb[2], pb[3]), c);
+                  vec2i(pb[2], pb[3]), c);
   Coprime::multZ2(vec2i(pb[0], pb[1]),
-                        vec2i(pa[2], pa[3]), d);
+                  vec2i(pa[2], pa[3]), d);
 
   return (c == d);
 }
