@@ -131,9 +131,9 @@ int SingleMachine::main(int argc, char* argv[]) {
         Decagonal::projTilingVisLocal(init, steps, tiling, visible);
 
         if (sector) {
-          Common::vec4ilist tilingSector;
-          Decagonal::extractSector(visible, tilingSector);
-          visible.swap(tilingSector);
+          Common::vec4ilist vistilSector;
+          Decagonal::extractSector(visible, vistilSector);
+          visible.swap(vistilSector);
           cerr << "Reduced visible tiling to a sector containing "
                << visible.size() << " vertices.\n";
         }
@@ -143,11 +143,11 @@ int SingleMachine::main(int argc, char* argv[]) {
 
     case decagonal_radprj:
       if (use_default_origin) {
-        Common::vec4ilist tilingSector;
+        Common::vec4ilist vistilSector;
 
         Decagonal::projTilingVisLocal(init, steps, tiling, visible);
-        Decagonal::extractSector(visible, tilingSector);
-        Decagonal::radialProj(tilingSector, output, mean);
+        Decagonal::extractSector(visible, vistilSector);
+        Decagonal::radialProj(vistilSector, output, mean);
       } else {
         Decagonal::projTilingVis(init, origin, true, steps, tiling, visible);
         Decagonal::radialProj(visible, output, mean);
@@ -159,9 +159,9 @@ int SingleMachine::main(int argc, char* argv[]) {
         Dodecagonal::projTilingVisLocal(init, steps, tiling, visible);
 
         if (sector) {
-          Common::vec4ilist tilingSector;
-          Dodecagonal::extractSector(visible, tilingSector);
-          visible.swap(tilingSector);
+          Common::vec4ilist vistilSector;
+          Dodecagonal::extractSector(visible, vistilSector);
+          visible.swap(vistilSector);
           cerr << "Reduced visible tiling to a sector containing "
                << visible.size() << " vertices.\n";
         }
@@ -171,11 +171,11 @@ int SingleMachine::main(int argc, char* argv[]) {
 
     case dodecagonal_radprj:
       if (use_default_origin) {
-        Common::vec4ilist tilingSector;
+        Common::vec4ilist vistilSector;
 
         Dodecagonal::projTilingVisLocal(init, steps, tiling, visible);
-        Dodecagonal::extractSector(visible, tilingSector);
-        Dodecagonal::radialProj(tilingSector, output, mean);
+        Dodecagonal::extractSector(visible, vistilSector);
+        Dodecagonal::radialProj(vistilSector, output, mean);
       } else {
         Dodecagonal::projTilingVis(init, origin, true, steps, tiling, visible);
         Dodecagonal::radialProj(visible, output, mean);
