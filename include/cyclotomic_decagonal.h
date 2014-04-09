@@ -92,6 +92,12 @@ namespace Decagonal {
   void innerOuterRadius(const Common::vec4ilist& tilingpoints,
                         double& inner, double& outer);
 
+  struct LengthSelector {
+    static double length(const vec4i& x) {
+      return x.paraProjL5().length();
+    }
+  };
+
   struct VisOp {
     typedef vec4i invectype;
     static const double epsilon;
