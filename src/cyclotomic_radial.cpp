@@ -183,30 +183,20 @@ int SingleMachine::main(int argc, char* argv[]) {
     break;
 
     case rhmbpenrose_tiling:
-      RhombicPenrose::projTiling(init, steps, tiling);
-      if (sector) {
-        Common::vec4ilist tilingSector;
+      RhombicPenrose::projTilingVis(init, origin, steps, false, tiling, visible);
 
-        RhombicPenrose::extractSector(tiling, tilingSector);
-        tiling.swap(tilingSector);
-
-        cerr << "Reduced tiling to a sector containing "
-             << tiling.size() << " vertices.\n";
-        }
-
-        RhombicPenrose::selectVisible(tiling, visible, false);
-      break;
+      if (sector && use_default_origin) {
+        Common::vec4ilist vistilSector;
+        RhombicPenrose::extractSector(visible, vistilSector);
+        visible.swap(vistilSector);
+        cerr << "Reduced visible tiling to a sector containing "
+             << visible.size() << " vertices.\n";
+      }
+    break;
 
     case rhmbpenrose_radprj:
-      RhombicPenrose::projTiling(init, steps, tiling);
-      {
-        Common::vec4ilist tilingSector;
-
-        RhombicPenrose::extractSector(tiling, tilingSector);
-        RhombicPenrose::selectVisible(tilingSector, visible, true);
-
-        RhombicPenrose::radialProj(visible, output, mean);
-      }
+      RhombicPenrose::projTilingVis(init, origin, steps, true, tiling, visible);
+      RhombicPenrose::radialProj(visible, output, mean);
     break;
 
     default:

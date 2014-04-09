@@ -142,20 +142,85 @@ void RhombicPenrose::projTiling(const vec4i& initpoint, uint maxstep,
     lvlman.advance();
   }
 
-  cerr << "Constructed patch of rhombic penrose tiling with "
+  cerr << "Constructed patch of rhombic Penrose tiling with "
        << tilingpoints.size() << " vertices.\n";
 }
 
-void RhombicPenrose::selectVisible(const Common::vec4ilist& patch,
-             Common::vec4ilist& visiblepoints, bool radialproj) {
+void RhombicPenrose::projTilingVis(const vec4i& initpoint,
+             const vec4i& origin,
+             uint maxstep, bool radialproj,
+             Common::vec4ilist& tilingpoints,
+             Common::vec4ilist& visiblepoints) {
   using namespace Common;
 
+  vec4i p, pp;
+  const uint numsteps = 10;
+  const vec4i hyperstep[10] = {vec4i(1,0,0,0),  vec4i(0,1,0,0),
+                               vec4i(0,0,1,0),  vec4i(0,0,0,1),
+                               vec4i(1,1,1,1),  vec4i(-1,0,0,0),
+                               vec4i(0,-1,0,0), vec4i(0,0,-1,0),
+                               vec4i(0,0,0,-1), vec4i(-1,-1,-1,-1)};
+  const bool default_origin = origin.isZero();
+
+  if (initpoint.kappaL5() != 0) {
+    cerr << "Initial point not of zero-parity.\n";
+    return;
+  }
+
+  tilingpoints.clear();
+  visiblepoints.clear();
+
+  tilingpoints.push_back(initpoint);
+
+  // We need 2 + 1 levels to avoid going "back" (into the wrong direction) when creating the patch.
+  TVLManager<vec4i> lvlman(2 + 1, tilingpoints);
+
+  for (uint n = 0; n < maxstep; ++n) {
+    for (uint i = lvlman.begin(); i < lvlman.end(); ++i) {
+      p = tilingpoints[i];
+
+      for (uint j = 0; j < numsteps; ++j) {
+        pp = p + hyperstep[j];
+
+        const uint parity = pp.kappaL5();
+        if (parity == 0) continue;
+
+        if (checkProjInWindow(pp, parity - 1)) lvlman.insert(pp);
+      }
+    }
+
+    lvlman.advance();
+  }
+
+  cerr << "Constructed patch of rhombic penrose tiling with "
+       << tilingpoints.size() << " vertices.\n";
+
   VisList* vlist = new VisList;
-  vlist->reserve(patch.size());
+
+  if (radialproj && default_origin)
+    vlist->reserve((tilingpoints.size() - 1) / 5);
+  else
+    vlist->reserve(tilingpoints.size() - 1);
+
   vlist->init();
 
-  for (vec4ilist::const_iterator i = patch.begin(); i != patch.end(); ++i) {
-    vlist->insertSorted(*i);
+  if (radialproj && default_origin) {
+    for (vec4ilist::const_iterator i = tilingpoints.begin(); i != tilingpoints.end(); ++i) {
+      if (i->isZero()) continue;
+
+      const vec2d physProj(i->paraProjL5());
+
+      if (physProj.inFirstQuadrant() && physProj.inSectorL5()) {
+        vlist->insertSorted(*i);
+      }
+    }
+  } else {
+    for (vec4ilist::const_iterator i = tilingpoints.begin(); i != tilingpoints.end(); ++i) {
+      const vec4i shifted(*i - origin);
+
+      if (shifted.isZero()) continue;
+      vlist->insertSorted(shifted);
+    }
   }
 
   if (radialproj)
@@ -163,6 +228,7 @@ void RhombicPenrose::selectVisible(const Common::vec4ilist& patch,
   else
     vlist->removeInvisibleProper();
 
+  visiblepoints.clear();
   visiblepoints.reserve(vlist->size());
   vlist->dump(visiblepoints);
 

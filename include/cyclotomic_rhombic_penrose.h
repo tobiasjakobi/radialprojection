@@ -60,18 +60,23 @@ namespace RhombicPenrose {
   void projTiling(const vec4i& initpoint, uint maxstep,
                   Common::vec4ilist& tilingpoints);
 
-  void selectVisible(const Common::vec4ilist& patch,
-                     Common::vec4ilist& visiblepoints, bool radialproj);
+  void projTilingVis(const vec4i& initpoint,
+                     const vec4i& origin,
+                     uint maxstep, bool radialproj,
+                     Common::vec4ilist& tilingpoints,
+                     Common::vec4ilist& visiblepoints);
+
+  /* The rhombic Penrose tiling doesn't allow for a local visibility test. */
 
   void extractSector(const Common::vec4ilist& input,
                      Common::vec4ilist& output);
 
-  /* The alt(ernate) version of radialProj only projects *
-   * the vertices which come from a specific window (and *
-   * therefore have a specific "parity".                 */
   void radialProj(const Common::vec4ilist& input,
                   Common::dlist& output,
                   double& meandist);
+
+  /* This alternate version only projects the vertices which come from *
+   * a specific window (and therefore have a specific 'parity').       */
   void radialProj(const Common::vec4ilist& input,
                   Common::dlist& output,
                   double& meandist, uint window);
