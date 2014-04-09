@@ -142,12 +142,15 @@ int SingleMachine::main(int argc, char* argv[]) {
     break;
 
     case decagonal_radprj:
-      Decagonal::projTilingVisLocal(init, steps, tiling, visible);
-      {
+      if (use_default_origin) {
         Common::vec4ilist tilingSector;
 
+        Decagonal::projTilingVisLocal(init, steps, tiling, visible);
         Decagonal::extractSector(visible, tilingSector);
         Decagonal::radialProj(tilingSector, output, mean);
+      } else {
+        Decagonal::projTilingVis(init, origin, true, steps, tiling, visible);
+        Decagonal::radialProj(visible, output, mean);
       }
     break;
 
@@ -167,12 +170,15 @@ int SingleMachine::main(int argc, char* argv[]) {
     break;
 
     case dodecagonal_radprj:
-      Dodecagonal::projTilingVisLocal(init, steps, tiling, visible);
-      {
+      if (use_default_origin) {
         Common::vec4ilist tilingSector;
 
+        Dodecagonal::projTilingVisLocal(init, steps, tiling, visible);
         Dodecagonal::extractSector(visible, tilingSector);
         Dodecagonal::radialProj(tilingSector, output, mean);
+      } else {
+        Dodecagonal::projTilingVis(init, origin, true, steps, tiling, visible);
+        Dodecagonal::radialProj(visible, output, mean);
       }
     break;
 
