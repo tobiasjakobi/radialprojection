@@ -251,15 +251,16 @@ int MultiMachine::master(int argc, char* argv[]) {
   parser.clear();
   parser >> percentage;
 
-  Octogonal::projTiling(init, steps, fulltiling);
-  Octogonal::innerOuterRadius(fulltiling, inner, outer);
+  SingleMachine::apply_shift(SingleMachine::decagonal_tiling);
+  Decagonal::projTiling(init, steps, fulltiling);
+  Decagonal::innerOuterRadius(fulltiling, inner, outer);
 
   RadiusSelector::radiusSq = inner * inner;
 
   srad = inner * (double(percentage) / 100.0);
 
   selectVertices<vec4i, RadiusSelector>(fulltiling, tiling);
-  selectOrigins<vec4i, Octogonal::LengthSelector>(tiling, origins, samples, srad, inner);
+  selectOrigins<vec4i, Decagonal::LengthSelector>(tiling, origins, samples, srad, inner);
 
   cerr << "srad: " << reinterpret_double_to_ullong(srad) << endl;
   cerr << "origins: " << origins << endl;
@@ -300,7 +301,7 @@ int MultiMachine::slave(int argc, char* argv[]) {
   }
 
   readRawConsole(tiling);
-  Octogonal::radialProj(tiling, origin, radius, output, mdist);
+  Decagonal::radialProj(tiling, origin, radius, output, mdist);
 
   writeRawConsole(output);
 
