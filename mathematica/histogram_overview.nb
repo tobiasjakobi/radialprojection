@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[     27075,        737]
-NotebookOptionsPosition[     25865,        700]
-NotebookOutlinePosition[     26299,        717]
-CellTagsIndexPosition[     26256,        714]
+NotebookDataLength[     28435,        773]
+NotebookOptionsPosition[     27185,        735]
+NotebookOutlinePosition[     27619,        752]
+CellTagsIndexPosition[     27576,        749]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -230,6 +230,13 @@ Cell[BoxData[{
    RowBox[{
    "ReadDoubleData", "[", 
     "\"\</homes/tjakobi/PhD_Work/radialprojection/datafiles/octoavg.env\>\"", 
+    "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"envelopeData", "[", "TuebAvg", "]"}], "=", 
+   RowBox[{
+   "ReadDoubleData", "[", 
+    "\"\</homes/tjakobi/PhD_Work/radialprojection/datafiles/tuebavg.env\>\"", 
     "]"}]}], ";"}]}], "Input",
  CellChangeTimes->{{3.569079401059667*^9, 3.569079413528107*^9}, {
    3.569080279845515*^9, 3.569080290788695*^9}, 3.569142211317814*^9, {
@@ -242,7 +249,8 @@ Cell[BoxData[{
    3.572006414681933*^9}, 3.575374590408475*^9, {3.5758895689811783`*^9, 
    3.575889576394864*^9}, {3.575889790363782*^9, 3.575889796594509*^9}, {
    3.605268133356079*^9, 3.605268137252263*^9}, {3.6052681711111317`*^9, 
-   3.605268180763734*^9}}],
+   3.605268180763734*^9}, {3.606120030685782*^9, 3.606120062676935*^9}, {
+   3.6061202684028254`*^9, 3.606120273031439*^9}}],
 
 Cell[BoxData[{
  RowBox[{
@@ -261,7 +269,7 @@ env\>\"", "]"}]}], ";"}], "\[IndentingNewLine]",
 env\>\"", "]"}]}], ";"}]}], "Input",
  CellChangeTimes->{{3.57536188650005*^9, 3.5753619163318863`*^9}, {
   3.57537412459925*^9, 3.57537415298025*^9}, {3.575619204678319*^9, 
-  3.575619206711117*^9}}],
+  3.575619206711117*^9}, {3.606120048471936*^9, 3.606120053612968*^9}}],
 
 Cell[BoxData[{
  RowBox[{
@@ -329,6 +337,12 @@ Cell[BoxData[{
    RowBox[{"envelopeFct", "[", "OctogonalAvg", "]"}], "=", 
    RowBox[{"Interpolation", "[", 
     RowBox[{"normalizeEnvData", "[", "OctogonalAvg", "]"}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"envelopeFct", "[", "TuebAvg", "]"}], "=", 
+   RowBox[{"Interpolation", "[", 
+    RowBox[{"normalizeEnvData", "[", "TuebAvg", "]"}], "]"}]}], 
   ";"}]}], "Input",
  CellChangeTimes->{{3.569080424771268*^9, 3.569080439794137*^9}, {
    3.569151815956027*^9, 3.569151846034866*^9}, {3.569152696287392*^9, 
@@ -340,7 +354,8 @@ Cell[BoxData[{
    3.569235785755982*^9}, {3.572006408732518*^9, 3.572006421481234*^9}, 
    3.575374592103218*^9, {3.575619221723638*^9, 3.575619222012125*^9}, {
    3.5758895889764*^9, 3.575889597117268*^9}, {3.5758897858337717`*^9, 
-   3.575889803263157*^9}, {3.605268196549513*^9, 3.605268201378044*^9}}],
+   3.575889803263157*^9}, {3.605268196549513*^9, 3.605268201378044*^9}, {
+   3.60612006805227*^9, 3.606120072624186*^9}}],
 
 Cell[BoxData[{
  RowBox[{
@@ -696,7 +711,27 @@ Cell[BoxData[
       RowBox[{"fplot", "[", "OctogonalAvg", "]"}]}], "}"}], "}"}], 
    "]"}]}]], "Input",
  CellChangeTimes->{{3.605340352687765*^9, 3.605340385858777*^9}, {
-  3.605346619084969*^9, 3.6053466507672443`*^9}}]
+  3.605346619084969*^9, 3.6053466507672443`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"Tuebingen", " ", 
+    RowBox[{"(", 
+     RowBox[{"from", " ", "central", " ", "origin"}], ")"}], " ", 
+    RowBox[{"vs", ".", " ", "Tuebingen"}], " ", 
+    RowBox[{"(", 
+     RowBox[{"averaged", " ", "over", " ", "many", " ", "origins"}], ")"}]}], 
+   " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"GraphicsGrid", "[", 
+   RowBox[{"{", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"fplot", "[", "Tueb", "]"}], ",", 
+      RowBox[{"fplot", "[", "TuebAvg", "]"}]}], "}"}], "}"}], 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.606120083365211*^9, 3.6061200930126467`*^9}, {
+  3.60612021690092*^9, 3.606120221432529*^9}}]
 },
 WindowSize->{1920, 1147},
 WindowMargins->{{0, Automatic}, {Automatic, 0}},
@@ -723,22 +758,23 @@ Cell[1693, 53, 831, 22, 77, "Input"],
 Cell[2527, 77, 1270, 32, 137, "Input"],
 Cell[3800, 111, 408, 6, 46, "Input"],
 Cell[4211, 119, 1128, 34, 77, "Input"],
-Cell[5342, 155, 3444, 89, 347, "Input"],
-Cell[8789, 246, 666, 17, 77, "Input"],
-Cell[9458, 265, 3115, 77, 347, "Input"],
-Cell[12576, 344, 587, 14, 77, "Input"],
-Cell[13166, 360, 787, 21, 77, "Input"],
-Cell[13956, 383, 1837, 50, 137, "Input"],
-Cell[15796, 435, 338, 8, 46, "Input"],
-Cell[16137, 445, 1327, 28, 107, "Input"],
-Cell[17467, 475, 353, 9, 46, "Input"],
-Cell[17823, 486, 931, 24, 77, "Input"],
-Cell[18757, 512, 1167, 29, 77, "Input"],
-Cell[19927, 543, 880, 20, 46, "Input"],
-Cell[20810, 565, 1263, 30, 77, "Input"],
-Cell[22076, 597, 1319, 31, 77, "Input"],
-Cell[23398, 630, 1772, 48, 137, "Input"],
-Cell[25173, 680, 688, 18, 77, "Input"]
+Cell[5342, 155, 3781, 97, 377, "Input"],
+Cell[9126, 254, 712, 17, 77, "Input"],
+Cell[9841, 273, 3372, 84, 377, "Input"],
+Cell[13216, 359, 587, 14, 77, "Input"],
+Cell[13806, 375, 787, 21, 77, "Input"],
+Cell[14596, 398, 1837, 50, 137, "Input"],
+Cell[16436, 450, 338, 8, 46, "Input"],
+Cell[16777, 460, 1327, 28, 107, "Input"],
+Cell[18107, 490, 353, 9, 46, "Input"],
+Cell[18463, 501, 931, 24, 77, "Input"],
+Cell[19397, 527, 1167, 29, 77, "Input"],
+Cell[20567, 558, 880, 20, 46, "Input"],
+Cell[21450, 580, 1263, 30, 77, "Input"],
+Cell[22716, 612, 1319, 31, 77, "Input"],
+Cell[24038, 645, 1772, 48, 137, "Input"],
+Cell[25813, 695, 688, 18, 77, "Input"],
+Cell[26504, 715, 677, 18, 77, "Input"]
 }
 ]
 *)
