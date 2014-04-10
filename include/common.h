@@ -347,6 +347,11 @@ public:
     return (orthProjL5() * scale) - shift;
   }
 
+  /* The direction of the shift has to be inverted, when testing for visibility. */
+  vec2d orthProjShiftL5(const double scale, bool invert) const {
+    return (orthProjL5() * scale) - shift * (invert ? -1.0 : +1.0);
+  }
+
   vec2d orthProjL12() const {
     static const double v1[4] = {1.0, -0.5 * sqrt(3.0), 0.5, 0.0};
     static const double v2[4] = {0.0, 0.5, -0.5 * sqrt(3.0), 1.0};

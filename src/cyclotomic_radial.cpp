@@ -59,7 +59,7 @@ int SingleMachine::main(int argc, char* argv[]) {
   uint steps = 40;
   bool sector = false;
   uint mode = 0;
-  vec4i origin;
+  vec4i origin(0, 0, 0, 0);
 
   bool use_default_origin = true;
 
@@ -138,7 +138,7 @@ int SingleMachine::main(int argc, char* argv[]) {
                << visible.size() << " vertices.\n";
         }
       } else
-        Decagonal::projTilingVis(init, origin, false, steps, tiling, visible); // onlySector is ignored
+        Decagonal::projTilingVis(init, origin, steps, false, tiling, visible); // onlySector is ignored
     break;
 
     case decagonal_radprj:

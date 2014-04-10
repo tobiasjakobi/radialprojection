@@ -64,7 +64,7 @@ bool Decagonal::checkProjInWindow(const vec4i& point, bool useCircle) {
 bool Decagonal::checkScaledProjInWindow(const vec4i& point, bool useCircle) {
   using namespace Common;
 
-  const vec2d pt(point.orthProjShiftL5(tau));
+  const vec2d pt(point.orthProjShiftL5(tau, true)); /* invert the shift here */
   const double pt1 = pt.lengthSquared();
 
   if (useCircle) {
@@ -236,6 +236,11 @@ void Decagonal::projTilingVisLocal(const vec4i& initpoint, uint maxstep,
         if (!checkProjInWindow(pp, circularWindow)) continue;
         if (!lvlman.insert(pp)) continue;
 
+        /* Apply the local test for visibility:                                              *
+         * The test is similar to the AB one. It always again a test for coprimality of the  *
+         * coordinates (in the respective module), and a (scaled) window test. However here  *
+         * we are working with a shifted window. For the local visibility test to agree with *
+         * the generic / ray-test one, we have to invert the direction of the shift.         */
         if (!checkScaledProjInWindow(pp, circularWindow) &&
             coprimeZTau(pp.transL5ToDirect())) {
            visiblepoints.push_back(pp);
