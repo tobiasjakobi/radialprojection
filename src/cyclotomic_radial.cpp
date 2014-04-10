@@ -149,7 +149,7 @@ int SingleMachine::main(int argc, char* argv[]) {
         Decagonal::extractSector(visible, vistilSector);
         Decagonal::radialProj(vistilSector, output, mean);
       } else {
-        Decagonal::projTilingVis(init, origin, true, steps, tiling, visible);
+        Decagonal::projTilingVis(init, origin, steps, true, tiling, visible);
         Decagonal::radialProj(visible, output, mean);
       }
     break;
@@ -166,7 +166,7 @@ int SingleMachine::main(int argc, char* argv[]) {
                << visible.size() << " vertices.\n";
         }
       } else
-        Dodecagonal::projTilingVis(init, origin, false, steps, tiling, visible); // onlySector is ignored
+        Dodecagonal::projTilingVis(init, origin, steps, false, tiling, visible); // onlySector is ignored
     break;
 
     case dodecagonal_radprj:
@@ -177,7 +177,7 @@ int SingleMachine::main(int argc, char* argv[]) {
         Dodecagonal::extractSector(visible, vistilSector);
         Dodecagonal::radialProj(vistilSector, output, mean);
       } else {
-        Dodecagonal::projTilingVis(init, origin, true, steps, tiling, visible);
+        Dodecagonal::projTilingVis(init, origin, steps, true, tiling, visible);
         Dodecagonal::radialProj(visible, output, mean);
       }
     break;
