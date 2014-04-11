@@ -308,8 +308,14 @@ function mmachine_work_sub {
 }
 
 function mmachine_work {
+  # Get number of physical cores by counting the number of unique core ids.
+  # This however doesn't take into account systems with multiple physical CPU packages
+  # (on different sockets). Count the number of sockets and assume that they're
+  # both equipped with the same CPU package.
   local nphycores=$(cat /proc/cpuinfo | grep "core id" | sort | uniq | wc -l)
-  local maxjobs=$(($nphycores / 2))
+  local nphysockets=$(cat /proc/cpuinfo | grep "physical id" | sort | uniq | wc -l)
+
+  local maxjobs=$(($nphycores * $nphysockets / 2))
 
   parallel --no-notice -j $maxjobs work.sh $1 ::: $2
 }
