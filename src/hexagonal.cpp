@@ -17,11 +17,121 @@
 
 #include <sstream>
 
-int main(int argc, char* argv[]) {
+enum processing_mode {
+  triangular_tiling  = 0, /* triangular tiling */
+  triangular_radprj  = 1,
+  hexagonal_tiling   = 2, /* hexagonal tiling */
+  hexagonal_radprj   = 3,
+  processing_mode_end
+};
+
+void Triangular::tiling(const vec2i& initpoint, uint maxstep,
+              Common::vec2ilist& tilingpoints) {
+  tilingpoints.clear();
+  tilingpoints.push_back(initpoint);
+
+  const double radius = double(maxstep) * radiusFactor;
+  const int steps = maxstep;
+
+  for (int i = -steps + 1; i < steps; ++i) {
+    for (int j = -steps + 1; j < steps; ++ j) {
+      const vec2i vertex(i, j);
+
+      if (vertex.transTriToR2().length() > radius)
+        continue;
+
+      tilingpoints.push_back(initpoint + vertex);
+    }
+  }
+
+  cerr << "Constructed patch of triangular tiling with "
+       << tilingpoints.size() << " vertices.\n";
+}
+
+void Triangular::tilingVisLocal(const vec2i& initpoint, uint maxstep,
+                      Common::vec2ilist& tilingpoints,
+                      Common::vec2ilist& visiblepoints) {
+  tilingpoints.clear();
+  visiblepoints.clear();
+
+  tilingpoints.push_back(initpoint);
+
+  const double radius = double(maxstep) * radiusFactor;
+  const int steps = maxstep;
+
+  for (int i = -steps + 1; i < steps; ++i) {
+    for (int j = -steps + 1; j < steps; ++ j) {
+      const vec2i vertex(i, j);
+
+      if (vertex.transTriToR2().length() > radius)
+        continue;
+
+      tilingpoints.push_back(initpoint + vertex);
+
+      if (!vertex.isZero() && vertex.coprime())
+        visiblepoints.push_back(initpoint + vertex);
+    }
+  }
+
+  cerr << "Constructed patch of triangular tiling with "
+       << tilingpoints.size() << " vertices and "
+       << visiblepoints.size() << " visible ones.\n";
+}
+
+void Triangular::extractSector(const Common::vec2ilist& input,
+                     Common::vec2ilist& output) {
   using namespace Common;
+
+  output.clear();
+  output.reserve(input.size() / 6);
+
+  for (vec2ilist::const_iterator i = input.begin(); i != input.end(); ++i) {
+    const vec2d phys(i->transTriToR2());
+
+    if (phys.inFirstQuadrant() && phys.inSectorL3())
+      output.push_back(*i);
+  }
+}
+
+void Triangular::radialProj(const Common::vec2ilist& input,
+                     Common::dlist& output, double& meandist) {
+  using namespace Common;
+
+  output.clear();
+  output.reserve(input.size());
+
+  dlist angles;
+  angles.reserve(input.size());
+
+  for (vec2ilist::const_iterator i = input.begin(); i != input.end(); ++i) {
+    const vec2d phys(i->transTriToR2());
+    angles.push_back(phys.angle());
+  }
+
+  sort(angles.begin(), angles.end());
+  neighbourDiff(angles, output, meandist);
+  normalizeAngDists(output, meandist);
+}
+
+void Hexagonal::tiling(const vec2i& initpoint, uint maxstep,
+              Common::vec2ilist& tilingpoints) {
+
+
+  // TODO: implement
+}
+
+int main(int argc, char* argv[]) {
+  const vec2i init(0, 0);
 
   uint steps = 40;
   uint mode = 0;
+  bool sector = false;
+
+  Common::vec2ilist tiling, visible;
+  Common::dlist output;
+  double mean;
+
+  bool output_vertices = true;
 
   if (argc >= 2) {
     stringstream ss(argv[1]);
@@ -33,47 +143,82 @@ int main(int argc, char* argv[]) {
     ss >> mode;
   }
 
-  // hex-tiling case
-
-  // 1st true -> only generate visible vertices
-  // 2nd true -> only generate a 1/6-sector
-  hexTiling tiling(steps, vec2i(0, 0), true, true); 
-  const vec2ilist& in = tiling.getVertices();
-  vector<vec2d> vis2d;
-
-  // convert to 2d
-  vis2d.reserve(in.size());
-  for (vector<vec2i>::const_iterator i = in.begin(); i != in.end(); ++i) {
-    vis2d.push_back(i->transHexTo2D());
+  if (argc >= 4) {
+    stringstream ss(argv[3]);
+    ss >> sector;
   }
 
-  // tri-tiling code
+  switch (mode) {
+    case triangular_tiling:
+    {
+      Triangular::tilingVisLocal(init, steps, tiling, visible);
 
-  /*triTiling tiling(steps, vec2i(0, 0));
-  const vec2ilist& in = tiling.getVertices();
-  vector<vec2d> vis2d;
-
-  // restrict to 1/6-sector, select visible tiling points and convert to 2d
-  for (vector<vec2i>::const_iterator i = in.begin(); i != in.end(); ++i) {
-    if (Coprime::gcdZ(abs(i->x), abs(i->y)) == 1) {
-      const vec2d t(i->transHexTo2D());
-
-      if (t.inFirstQuadrant() &&
-          t.inSectorL3()) vis2d.push_back(t);
+      if (sector) {
+        Common::vec2ilist vistilSector;
+        Triangular::extractSector(visible, vistilSector);
+        visible.swap(vistilSector);
+        cerr << "Reduced visible tiling to a sector containing "
+             << visible.size() << " vertices.\n";
+      }
     }
-  }*/
+    break;
 
-  Common::dlist angles;
-  double mean;
-  Common::radialProj(vis2d, angles, mean);
+    case triangular_radprj:
+    {
+      Common::vec2ilist vistilSector;
 
-  cerr << "mean distance " << mean
-       << " during radial projection of " << (angles.size() + 1)
-       << " vertices.\n";
+      Triangular::tilingVisLocal(init, steps, tiling, visible);
+      Triangular::extractSector(visible, vistilSector);
+      Triangular::radialProj(vistilSector, output, mean);
 
-  Common::writeRawConsole(angles);
+      output_vertices = false;
+    }
+    break;
 
-  //cout << vis2d;
+    case hexagonal_tiling:
+    {
+      // TODO: rewrite this
+
+      // 1st true -> only generate visible vertices
+      // 2nd true -> only generate a 1/6-sector
+      hexTiling tiling(steps, vec2i(0, 0), true, true); 
+      const Common::vec2ilist& in = tiling.getVertices();
+      vector<vec2d> vis2d;
+
+      // convert to 2d
+      vis2d.reserve(in.size());
+      for (vector<vec2i>::const_iterator i = in.begin(); i != in.end(); ++i) {
+        vis2d.push_back(i->transTriToR2());
+      }
+    }
+    break;
+
+    case hexagonal_radprj:
+    {
+      // TODO: implement
+
+      output_vertices = false;
+    }
+    break;
+
+    default:
+      cerr << "error: unsupported processing mode selected!\n";
+      return 1;
+  }
+
+  if (output_vertices) {
+    cerr << "Size of visible point data is around "
+         << uint(double(visible.size() * sizeof(vec2i)) / 1024.0)
+         << " kilobytes.\n";
+
+    cout << visible;
+  } else {
+    cerr << "mean distance " << mean
+         << " during radial projection of " << (output.size() + 1)
+         << " vertices.\n";
+
+    Common::writeRawConsole(output);
+  }
 
   return 0;
 }

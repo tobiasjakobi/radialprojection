@@ -88,7 +88,9 @@ public:
     return atan2(double(y), double(x));
   }
 
-  vec2d transHexTo2D() const;
+  vec2d transTriToR2() const;
+
+  bool coprime() const;
 
 };
 

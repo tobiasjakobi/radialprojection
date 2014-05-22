@@ -29,12 +29,16 @@ const double vec2d::sectorL7 = tan(2.0 * Common::pi / 7.0);
 
 double Common::RadiusSelector::radiusSq = 0.0;
 
-vec2d vec2i::transHexTo2D() const {
-  static const double x1 = sqrt(3.0) * 0.5;
+vec2d vec2i::transTriToR2() const {
+  static const double factor = sqrt(3.0) * 0.5;
 
   return vec2d(
     double(x) + double(y) * 0.5,
-    double(y) * x1);
+    double(y) * factor);
+}
+
+bool vec2i::coprime() const {
+  return (Coprime::gcdZ(abs(x), abs(y)) == 1);
 }
 
 uint Coprime::gcdZ(uint u, uint v) {

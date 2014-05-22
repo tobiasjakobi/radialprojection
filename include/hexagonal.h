@@ -20,109 +20,34 @@
 
 #include <algorithm>
 
-class triTiling {
-public:
-  typedef vec2i vertex;
-  typedef vector<vertex> vlist;
-  
-private:
+namespace Triangular {
 
-  struct level {
-    uint a, b;
-  };
+  const double radiusFactor = sqrt(3.0) * 0.5;
 
-  bool locate(const level& l, const vertex& v);
+  void tiling(const vec2i& initpoint, uint maxstep,
+              Common::vec2ilist& tilingpoints);
 
-  vlist* vertices;
-  
-public:
-  triTiling(uint N, const vertex& init);
+  void tilingVisLocal(const vec2i& initpoint, uint maxstep,
+                      Common::vec2ilist& tilingpoints,
+                      Common::vec2ilist& visiblepoints);
 
-  ~triTiling() {
-    delete vertices;
-  }
+  void extractSector(const Common::vec2ilist& input,
+                     Common::vec2ilist& output);
 
-  const vlist& getVertices() const {
-    return *vertices;
-  }
+  void radialProj(const Common::vec2ilist& input,
+                  Common::dlist& output, double& meandist);
+
 };
 
-bool triTiling::locate(const level& l, const vertex& v) {
-  assert(vertices != NULL);
-  if (l.a == l.b) return false;
+/* Hexagonal tiling, also known as honeycomb structure. */
+namespace Hexagonal {
 
-  uint i = l.a;
+  void tiling(const vec2i& initpoint, uint maxstep,
+              Common::vec2ilist& tilingpoints);
 
-  while (i != l.b) {
-    if ((*vertices)[i] == v) return true;
+};
 
-    ++i;
-  }
-
-  return false;
-}
-
-triTiling::triTiling(uint N, const vertex& init) {
-  const uint numsteps = 6;
-  const vertex steps[6] = {
-    vertex(1, 0),  vertex(0, 1),  vertex(-1, 1),
-    vertex(-1, 0), vertex(0, -1), vertex(1, -1)
-  };
-
-  // list of triangle vertices
-  vertices = new vlist;
-  vertices->push_back(init);
-
-  level lvls[3];
-
-  // level 0 is empty
-  lvls[0].a = 0;
-  lvls[0].b = 0;
-
-  // level 1 only contains the init vertex
-  lvls[1].a = 0;
-  lvls[1].b = 1;
-
-  // level 2 is empty as well (new vertices are inserted here)
-  lvls[2].a = 1;
-  lvls[2].b = 1;
-
-  for (uint n = 0; n < N; ++n) {
-    for (uint i = lvls[1].a; i != lvls[1].b; ++i) {
-      const vertex p((*vertices)[i]);
-
-      for (uint j = 0; j < numsteps; ++j) {
-        const vertex pp(p + steps[j]);
-
-        // Search in all three levels...
-        if (locate(lvls[0], pp) ||
-            locate(lvls[1], pp) ||
-            locate(lvls[2], pp)) continue;
-
-        // ...before adding the point to the list:
-        vertices->push_back(pp);
-        ++lvls[2].b;
-      }
-    }
-
-    // level exhausted, shift to next:
-
-    // level 1 becomes level 0
-    // level 2 becomes level 1
-    lvls[0] = lvls[1];
-    lvls[1] = lvls[2];
-
-    // new level 2 is empty again
-    lvls[2].a = lvls[1].b;
-    lvls[2].b = lvls[1].b;
-  }
-
-  cerr << "info: using " << vertices->size() << " out of " << vertices->capacity()
-       << " reserved vertex elements ("
-       << Common::vectorStats(*vertices) << "%)\n";
-}
-
-
+// TODO: reimplement this in the style of cyclotomic_radial_xyz
 class hexTiling {
 public:
   typedef vec2i vertex;
@@ -193,7 +118,7 @@ void hexTiling::buildVertices(const vlist& a) {
 
       // do sector test if enabled
       if (onlysector) {
-        const vec2d x(t.transHexTo2D());
+        const vec2d x(t.transTriToR2());
 
         if (!x.inFirstQuadrant()) continue;
         if (!x.inSectorL3()) continue;
