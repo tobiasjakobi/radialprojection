@@ -114,9 +114,68 @@ void Triangular::radialProj(const Common::vec2ilist& input,
 }
 
 void Hexagonal::tiling(const vec2i& initpoint, uint maxstep,
-              Common::vec2ilist& tilingpoints) {
+                     Common::vec2ilist& tilingpoints) {
+  using namespace Common;
 
+  vec2ilist helper;
 
+  /* We first construct a triangular helper tiling, and then build *
+   * honeycombs around each vertex of the tiling.                  */
+
+  const double radius = double(2 * maxstep) * Triangular::radiusFactor;
+  const int steps = maxstep;
+
+  helper.push_back(initpoint);
+
+  for (int i = -steps + 1; i < steps; ++i) {
+    for (int j = -steps + 1; j < steps; ++ j) {
+      const vec2i vertex(2 * i, 2 * j);
+
+      if (vertex.transTriToR2().length() > radius)
+        continue;
+
+      helper.push_back(initpoint + vertex);
+    }
+  }
+
+  cerr << "Constructed helper patch of triangular tiling with "
+       << helper.size() << " vertices.\n";
+
+  tilingpoints.clear();
+
+  const uint numhex = 6;
+  const vec2i hexsteps[6] = {
+    vec2i(1, 0),  vec2i(0, 1),  vec2i(-1, 1),
+    vec2i(-1, 0), vec2i(0, -1), vec2i(1, -1)
+  };
+
+  for (vec2ilist::const_iterator i = helper.begin(); i != helper.end(); ++i) {
+    for (uint j = 0; j < numhex; ++j) {
+      const vec2i vertex(*i + hexsteps[j]);
+
+      if (find(tilingpoints.rbegin(), tilingpoints.rend(), vertex) == tilingpoints.rend()) {
+        tilingpoints.push_back(vertex);
+      }
+    }
+  }
+
+  cerr << "Constructed patch of hexagonal tiling with "
+       << tilingpoints.size() << " vertices.\n";
+}
+
+void Hexagonal::tilingVis(const vec2i& initpoint, uint maxstep,
+                     Common::vec2ilist& tilingpoints,
+                     Common::vec2ilist& visiblepoints) {
+  // TODO: implement
+}
+
+void Hexagonal::extractSector(const Common::vec2ilist& input,
+                     Common::vec2ilist& output) {
+  // TODO: implement
+}
+
+void Hexagonal::radialProj(const Common::vec2ilist& input,
+                     Common::dlist& output, double& meandist) {
   // TODO: implement
 }
 
@@ -177,18 +236,11 @@ int main(int argc, char* argv[]) {
 
     case hexagonal_tiling:
     {
-      // TODO: rewrite this
+      Hexagonal::tiling(init, steps, tiling);
+      visible.swap(tiling); // TODO: debug
 
-      // 1st true -> only generate visible vertices
-      // 2nd true -> only generate a 1/6-sector
-      hexTiling tiling(steps, vec2i(0, 0), true, true); 
-      const Common::vec2ilist& in = tiling.getVertices();
-      vector<vec2d> vis2d;
-
-      // convert to 2d
-      vis2d.reserve(in.size());
-      for (vector<vec2i>::const_iterator i = in.begin(); i != in.end(); ++i) {
-        vis2d.push_back(i->transTriToR2());
+      if (sector) {
+        // TODO
       }
     }
     break;

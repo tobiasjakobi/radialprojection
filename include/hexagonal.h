@@ -45,9 +45,18 @@ namespace Hexagonal {
   void tiling(const vec2i& initpoint, uint maxstep,
               Common::vec2ilist& tilingpoints);
 
+  void tilingVis(const vec2i& initpoint, uint maxstep,
+                 Common::vec2ilist& tilingpoints,
+                 Common::vec2ilist& visiblepoints);
+
+  void extractSector(const Common::vec2ilist& input,
+                     Common::vec2ilist& output);
+
+  void radialProj(const Common::vec2ilist& input,
+                  Common::dlist& output, double& meandist);
+
 };
 
-// TODO: reimplement this in the style of cyclotomic_radial_xyz
 class hexTiling {
 public:
   typedef vec2i vertex;
