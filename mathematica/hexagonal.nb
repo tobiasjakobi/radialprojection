@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[      8070,        243]
-NotebookOptionsPosition[      7431,        220]
-NotebookOutlinePosition[      7865,        237]
-CellTagsIndexPosition[      7822,        234]
+NotebookDataLength[      9975,        296]
+NotebookOptionsPosition[      9295,        272]
+NotebookOutlinePosition[      9729,        289]
+CellTagsIndexPosition[      9686,        286]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -117,6 +117,58 @@ Cell[BoxData[
   3.609835963005589*^9}, {3.6098399258423653`*^9, 3.609839979484888*^9}, {
   3.609840515614867*^9, 3.609840543452466*^9}, {3.60984088009704*^9, 
   3.609840885962667*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"latticeVector", "=", 
+   RowBox[{"{", 
+    RowBox[{"Pi", ",", 
+     RowBox[{"Exp", "[", "1", "]"}]}], "}"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"latticeTrans", "=", 
+   RowBox[{"Transpose", "[", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"1", ",", "0"}], "}"}], ",", "latticeVector"}], "}"}], "]"}]}],
+   ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"latticePhi", "=", 
+   RowBox[{"ArcTan", "[", 
+    RowBox[{
+     RowBox[{"latticeVector", "[", 
+      RowBox[{"[", "1", "]"}], "]"}], ",", 
+     RowBox[{"latticeVector", "[", 
+      RowBox[{"[", "2", "]"}], "]"}]}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Show", "[", 
+  RowBox[{
+   RowBox[{"ListPlot", "[", 
+    RowBox[{
+     RowBox[{"Map", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"latticeTrans", ".", "#"}], "&"}], ",", 
+       RowBox[{"mkGrid", "[", "10", "]"}]}], "]"}], ",", 
+     RowBox[{"AspectRatio", "\[Rule]", "Automatic"}]}], "]"}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"Graphics", "[", 
+    RowBox[{"{", 
+     RowBox[{"Red", ",", 
+      RowBox[{"Circle", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"0", ",", "0"}], "}"}], ",", 
+        RowBox[{"10", "*", 
+         RowBox[{"Sin", "[", "latticePhi", "]"}]}]}], "]"}]}], "}"}], "]"}]}],
+   "]"}]}], "Input",
+ CellChangeTimes->{{3.61044804817693*^9, 3.6104480882407312`*^9}, {
+  3.6104490311814117`*^9, 3.61044903839494*^9}, {3.610449109385222*^9, 
+  3.6104491207388487`*^9}, {3.610449184368937*^9, 3.6104491850900517`*^9}, {
+  3.610449215667302*^9, 3.6104492234266043`*^9}, {3.610449930774015*^9, 
+  3.610449983411477*^9}, {3.610450062288848*^9, 3.610450092364517*^9}, {
+  3.610450853778019*^9, 3.610450897552196*^9}, {3.6104510204535646`*^9, 
+  3.610451032075005*^9}, {3.610451062476963*^9, 3.610451069471303*^9}}],
 
 Cell[BoxData[
  RowBox[{"Show", "[", 
@@ -241,10 +293,11 @@ Cell[808, 28, 1081, 35, 77, "Input"],
 Cell[1892, 65, 302, 9, 46, "Input"],
 Cell[2197, 76, 495, 15, 46, "Input"],
 Cell[2695, 93, 948, 25, 77, "Input"],
-Cell[3646, 120, 777, 22, 77, "Input"],
-Cell[4426, 144, 229, 6, 46, "Input"],
-Cell[4658, 152, 1932, 42, 137, "Input"],
-Cell[6593, 196, 834, 22, 107, "Input"]
+Cell[3646, 120, 1861, 50, 167, "Input"],
+Cell[5510, 172, 777, 22, 77, "Input"],
+Cell[6290, 196, 229, 6, 46, "Input"],
+Cell[6522, 204, 1932, 42, 137, "Input"],
+Cell[8457, 248, 834, 22, 107, "Input"]
 }
 ]
 *)
