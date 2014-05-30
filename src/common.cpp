@@ -37,6 +37,12 @@ vec2d vec2i::transTriToR2() const {
     double(y) * factor);
 }
 
+vec2d vec2i::transGenericToR2(const vec2d& v) const {
+  return vec2d(
+    double(x) + v.x * double(y),
+    v.y * double(y));
+}
+
 bool vec2i::coprime() const {
   return (Coprime::gcdZ(abs(x), abs(y)) == 1);
 }

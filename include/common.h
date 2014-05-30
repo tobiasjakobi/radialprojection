@@ -90,6 +90,8 @@ public:
 
   vec2d transTriToR2() const;
 
+  vec2d transGenericToR2(const vec2d& v) const;
+
   bool coprime() const;
 
 };
@@ -179,6 +181,11 @@ public:
 
   double dot(const vec2d& v) const {
     return x * v.x + y * v.y;
+  }
+
+  vec2d normalize() const {
+    const double invlen = 1.0 / this->length();
+    return vec2d(x * invlen, y * invlen);
   }
 
   // a = cos(alpha), b = sin(alpha)
