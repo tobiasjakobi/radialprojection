@@ -264,6 +264,7 @@ int main(int argc, char* argv[]) {
   uint steps = 40;
   uint mode = 0;
   bool sector = false;
+  vec2d lattice;
 
   Common::vec2ilist tiling, visible;
   Common::dlist output;
@@ -284,6 +285,18 @@ int main(int argc, char* argv[]) {
   if (argc >= 4) {
     stringstream ss(argv[3]);
     ss >> sector;
+  }
+
+  /* Parse the (second) lattice vector for the generic tiling/lattice mode. */
+  if (argc >= 6) {
+    double x, y;
+    stringstream ss_x(argv[4]), ss_y(argv[5]);
+
+    ss_x >> x;
+    ss_y >> y;
+    lattice.set(x, y);
+  } else {
+    lattice.set(0.0, 1.0);
   }
 
   switch (mode) {
@@ -334,13 +347,15 @@ int main(int argc, char* argv[]) {
 
     case generic_tiling:
     {
-      // TODO: implement
+      /* The 'sector' parameter is ignored here. */
+      GenericLattice::tilingVisLocal(init, lattice, steps, tiling, visible);
     }
     break;
 
     case generic_radprj:
     {
-      // TODO: implement
+      GenericLattice::tilingVisLocal(init, lattice, steps, tiling, visible);
+      GenericLattice::radialProj(visible, lattice, output, mean);
 
       output_vertices = false;
     }
