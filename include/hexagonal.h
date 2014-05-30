@@ -22,6 +22,11 @@
 
 namespace Triangular {
 
+  /* The vertices of the triangular tiling are exactly the *
+   * elements of the triangular lattice.                   */
+
+  /* The lattice vectors are (1, 0) and (1/2, sqrt(3)/2). */
+
   const double radiusFactor = sqrt(3.0) * 0.5;
 
   void tiling(const vec2i& initpoint, uint maxstep,
@@ -54,6 +59,27 @@ namespace Hexagonal {
 
   void radialProj(const Common::vec2ilist& input,
                   Common::dlist& output, double& meandist);
+
+};
+
+namespace GenericLattice {
+
+  /* This does not really construct a tiling, but like with the *
+   * triangular tiling, it constructs a lattice.                */
+
+  /* The lattice vectors are (1, 0) and the second one *
+   * is given by the parameter 'lattice'.              */
+
+  void tiling(const vec2i& initpoint, const vec2d& lattice,
+              uint maxstep, Common::vec2ilist& tilingpoints);
+
+  void tilingVisLocal(const vec2i& initpoint, const vec2d& lattice,
+                      uint maxstep, Common::vec2ilist& tilingpoints,
+                      Common::vec2ilist& visiblepoints);
+
+  void radialProj(const Common::vec2ilist& input,
+                  const vec2d& lattice, Common::dlist& output,
+                  double& meandist);
 
 };
 

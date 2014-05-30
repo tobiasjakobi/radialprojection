@@ -22,6 +22,8 @@ enum processing_mode {
   triangular_radprj  = 1,
   hexagonal_tiling   = 2, /* hexagonal tiling */
   hexagonal_radprj   = 3,
+  generic_tiling     = 4, /* based on triangular tiling, but using generic lattice */
+  generic_radprj     = 5,
   processing_mode_end
 };
 
@@ -179,6 +181,83 @@ void Hexagonal::radialProj(const Common::vec2ilist& input,
   // TODO: implement
 }
 
+void GenericLattice::tiling(const vec2i& initpoint, const vec2d& lattice,
+                     uint maxstep, Common::vec2ilist& tilingpoints) {
+  tilingpoints.clear();
+  tilingpoints.push_back(initpoint);
+
+  const double radius = double(maxstep) * sin(lattice.angle());
+  const int steps = maxstep;
+
+  for (int i = -steps + 1; i < steps; ++i) {
+    for (int j = -steps + 1; j < steps; ++ j) {
+      const vec2i vertex(i, j);
+
+      if (vertex.transGenericToR2(lattice).length() > radius)
+        continue;
+
+      tilingpoints.push_back(initpoint + vertex);
+    }
+  }
+
+  cerr << "Constructed patch of generic tiling (lattice vector = "
+       << lattice << ") with "
+       << tilingpoints.size() << " vertices.\n";
+}
+
+void GenericLattice::tilingVisLocal(const vec2i& initpoint, const vec2d& lattice,
+                     uint maxstep, Common::vec2ilist& tilingpoints,
+                     Common::vec2ilist& visiblepoints) {
+  tilingpoints.clear();
+  visiblepoints.clear();
+
+  tilingpoints.push_back(initpoint);
+
+  const double radius = double(maxstep) * sin(lattice.angle());
+  const int steps = maxstep;
+
+  for (int i = -steps + 1; i < steps; ++i) {
+    for (int j = -steps + 1; j < steps; ++ j) {
+      const vec2i vertex(i, j);
+
+      if (vertex.transGenericToR2(lattice).length() > radius)
+        continue;
+
+      tilingpoints.push_back(initpoint + vertex);
+
+      if (!vertex.isZero() && vertex.coprime())
+        visiblepoints.push_back(initpoint + vertex);
+    }
+  }
+
+  cerr << "Constructed patch of generic tiling (lattice vector = "
+       << lattice << ") with "
+       << tilingpoints.size() << " vertices and "
+       << visiblepoints.size() << " visible ones.\n";
+}
+
+void GenericLattice::radialProj(const Common::vec2ilist& input,
+                     const vec2d& lattice, Common::dlist& output,
+                     double& meandist) {
+  using namespace Common;
+
+  output.clear();
+  output.reserve(input.size());
+
+  dlist angles;
+  angles.reserve(input.size());
+
+  for (vec2ilist::const_iterator i = input.begin(); i != input.end(); ++i) {
+    const vec2d phys(i->transGenericToR2(lattice));
+    angles.push_back(phys.angle());
+  }
+
+  sort(angles.begin(), angles.end());
+  neighbourDiff(angles, output, meandist);
+  normalizeAngDists(output, meandist);
+}
+
+
 int main(int argc, char* argv[]) {
   const vec2i init(0, 0);
 
@@ -246,6 +325,20 @@ int main(int argc, char* argv[]) {
     break;
 
     case hexagonal_radprj:
+    {
+      // TODO: implement
+
+      output_vertices = false;
+    }
+    break;
+
+    case generic_tiling:
+    {
+      // TODO: implement
+    }
+    break;
+
+    case generic_radprj:
     {
       // TODO: implement
 
