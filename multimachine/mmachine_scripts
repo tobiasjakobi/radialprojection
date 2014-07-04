@@ -317,7 +317,10 @@ function mmachine_work {
 
   local maxjobs=$(($nphycores * $nphysockets / 2))
 
-  parallel --no-notice -j $maxjobs work.sh $1 ::: $2
+  # Use /var/tmp instead of /tmp since parallel seems to have the nasty
+  # habit of temp files, deleting them afterwards while keeping the file
+  # handle open and then still writing data to them, filling the drive.
+  parallel --tmpdir /var/tmp/ --no-notice -j $maxjobs work.sh $1 ::: $2
 }
 
 function mmachine_master_main {
