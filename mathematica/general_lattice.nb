@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[      6431,        208]
-NotebookOptionsPosition[      5762,        183]
-NotebookOutlinePosition[      6119,        199]
-CellTagsIndexPosition[      6076,        196]
+NotebookDataLength[     45412,       1328]
+NotebookOptionsPosition[     43161,       1264]
+NotebookOutlinePosition[     43518,       1280]
+CellTagsIndexPosition[     43475,       1277]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -179,9 +179,1090 @@ Cell[BoxData[
  RowBox[{"Show", "[", 
   RowBox[{"P1", ",", "P2"}], "]"}]], "Input",
  CellChangeTimes->{{3.611659566005074*^9, 3.611659571635961*^9}, {
-  3.611659691448831*^9, 3.611659691783205*^9}}]
+  3.611659691448831*^9, 3.611659691783205*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"transMatrix", "[", "phi_", "]"}], ":=", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"1", ",", 
+       RowBox[{"Cos", "[", "phi", "]"}]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"0", ",", 
+       RowBox[{"Sin", "[", "phi", "]"}]}], "}"}]}], "}"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"p0", "[", "alpha_", "]"}], ":=", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"Cos", "[", "alpha", "]"}], ",", 
+     RowBox[{"Sin", "[", "alpha", "]"}]}], "}"}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.6122549172757273`*^9, 3.6122549380841618`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"transMatrix", "[", "phi", "]"}], "//", "MatrixForm"}]], "Input",
+ CellChangeTimes->{{3.6137289771772823`*^9, 3.61372898397793*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"correctionMatrix", "[", "phi_", "]"}], ":=", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"x0", ",", "y0"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"x0", "=", 
+       RowBox[{"Norm", "[", 
+        RowBox[{
+         RowBox[{"transMatrix", "[", "phi", "]"}], ".", 
+         RowBox[{"p0", "[", 
+          RowBox[{"45", "Degree"}], "]"}]}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"y0", "=", 
+       RowBox[{"Norm", "[", 
+        RowBox[{
+         RowBox[{"transMatrix", "[", "phi", "]"}], ".", 
+         RowBox[{"p0", "[", 
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{"90", "+", "45"}], ")"}], "Degree"}], "]"}]}], "]"}]}], 
+      ";", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"RotationMatrix", "[", 
+        RowBox[{"phi", "/", "2"}], "]"}], ".", 
+       RowBox[{"ScalingMatrix", "[", 
+        RowBox[{"{", 
+         RowBox[{"x0", ",", "y0"}], "}"}], "]"}]}]}]}], "]"}]}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.612264088997109*^9, 3.6122641804589233`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"alpha0", "=", 
+   RowBox[{"ArcTan", "[", 
+    RowBox[{
+     RowBox[{"-", "1"}], "/", 
+     RowBox[{"Cos", "[", 
+      RowBox[{"67", "Degree"}], "]"}]}], "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.612519342455017*^9, 3.6125193671767817`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"N", "[", 
+  RowBox[{
+   RowBox[{"transMatrix", "[", 
+    RowBox[{"67", "Degree"}], "]"}], ".", 
+   RowBox[{"p0", "[", "alpha0", "]"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.612519410953762*^9, 3.6125194118486347`*^9}, {
+   3.612519450491153*^9, 3.61251945848773*^9}, 3.612519499238596*^9, 
+   3.612519801818687*^9}],
+
+Cell[BoxData[
+ RowBox[{"Graphics", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"PointSize", "[", "Large", "]"}], ",", "Black", ",", 
+     RowBox[{"Circle", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"0", ",", "0"}], "}"}], ",", "1"}], "]"}], ",", "Red", ",", 
+     RowBox[{"GeometricTransformation", "[", 
+      RowBox[{
+       RowBox[{"Circle", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"0", ",", "0"}], "}"}], ",", "1"}], "]"}], ",", 
+       RowBox[{"transMatrix", "[", 
+        RowBox[{"67", "Degree"}], "]"}]}], "]"}], ",", "\[IndentingNewLine]", 
+     "Black", ",", 
+     RowBox[{"Point", "[", 
+      RowBox[{"p0", "[", 
+       RowBox[{"45", "Degree"}], "]"}], "]"}], ",", "Red", ",", 
+     RowBox[{"Point", "[", 
+      RowBox[{
+       RowBox[{"transMatrix", "[", 
+        RowBox[{"67", "Degree"}], "]"}], ".", 
+       RowBox[{"p0", "[", 
+        RowBox[{"45", "Degree"}], "]"}]}], "]"}], ",", "\[IndentingNewLine]", 
+     
+     RowBox[{"Point", "[", 
+      RowBox[{
+       RowBox[{"transMatrix", "[", 
+        RowBox[{"67", "Degree"}], "]"}], ".", 
+       RowBox[{"p0", "[", 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{"90", "+", "45"}], ")"}], "Degree"}], "]"}]}], "]"}], ",", 
+     "\[IndentingNewLine]", "Blue", ",", 
+     RowBox[{"GeometricTransformation", "[", 
+      RowBox[{
+       RowBox[{"Circle", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"0", ",", "0"}], "}"}], ",", "1"}], "]"}], ",", 
+       RowBox[{"correctionMatrix", "[", 
+        RowBox[{"67", "Degree"}], "]"}]}], "]"}], ",", "\[IndentingNewLine]", 
+     "Green", ",", 
+     RowBox[{"Point", "[", 
+      RowBox[{
+       RowBox[{"transMatrix", "[", 
+        RowBox[{"67", "Degree"}], "]"}], ".", 
+       RowBox[{"p0", "[", "alpha0", "]"}]}], "]"}], ",", 
+     RowBox[{"Point", "[", 
+      RowBox[{
+       RowBox[{"transMatrix", "[", 
+        RowBox[{"67", "Degree"}], "]"}], ".", 
+       RowBox[{"p0", "[", "0", "]"}]}], "]"}]}], "}"}], ",", 
+   RowBox[{"Axes", "\[Rule]", "True"}]}], "]"}]], "Input",
+ CellChangeTimes->CompressedData["
+1:eJxTTMoPSmViYGAQAWIQbRmcFHvl5StHh1lWySBaT88pE0RfLherAdEH5M1b
+QfSR97fbQLSVZ1XaNSC9ZbJAOohe8qf+LIh+df7qIxDduDhK5DqQVlNdpASi
+O3bPmwmipbafnAWiPbIv7QTRfydJ7wLR2U8mXQHR2myrnoPokB3lPDeAdNik
+uXwg2l/RRwxE1/s0gOl3gVelQHTSrv3yIPqgtNEDEL3gvfBDEG0ja5EX8uqV
+455Tj4tA9JEW44xQIL3Jek4eiP4hYl0Mop89U64B0Y8capaDaN6HXevA4vff
+xc1988rRuLYmHkRvW7loFYhu5ZRYDaI3qlRtBNFtUtfBNABGIMBD
+  "]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "At", " ", "these", " ", "positions", " ", "the", " ", "ellipse", " ", 
+    "curve", " ", "has", " ", 
+    RowBox[{"maximal", "/", "minimal"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{"distance", " ", "from", " ", "the", " ", 
+    RowBox[{"origin", "."}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"{", 
+   RowBox[{
+    RowBox[{"p0", "[", 
+     RowBox[{"45", "Degree"}], "]"}], ",", 
+    RowBox[{"p0", "[", 
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{"90", "+", "45"}], ")"}], "Degree"}], "]"}]}], 
+   "}"}]}]], "Input",
+ CellChangeTimes->{{3.61226222522058*^9, 3.612262235804557*^9}, {
+  3.6122642542272167`*^9, 3.612264258834485*^9}, {3.61391017489888*^9, 
+  3.6139102313636913`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "Show", " ", "special", " ", "points", " ", "on", " ", "the", " ", 
+    RowBox[{"ellipse", "."}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"ePos", "[", "phi_", "]"}], ":=", 
+     RowBox[{"Graphics", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"PointSize", "[", "Large", "]"}], ",", "Black", ",", 
+         RowBox[{"Circle", "[", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"0", ",", "0"}], "}"}], ",", "1"}], "]"}], ",", "Red", 
+         ",", 
+         RowBox[{"GeometricTransformation", "[", 
+          RowBox[{
+           RowBox[{"Circle", "[", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"0", ",", "0"}], "}"}], ",", "1"}], "]"}], ",", 
+           RowBox[{"transMatrix", "[", "phi", "]"}]}], "]"}], ",", 
+         "\[IndentingNewLine]", "Red", ",", 
+         RowBox[{"Point", "[", 
+          RowBox[{"p0", "[", "0", "]"}], "]"}], ",", 
+         RowBox[{"Point", "[", 
+          RowBox[{"p0", "[", 
+           RowBox[{"Pi", "/", "2"}], "]"}], "]"}], ",", "\[IndentingNewLine]",
+          "Green", ",", 
+         RowBox[{"Point", "[", 
+          RowBox[{
+           RowBox[{"transMatrix", "[", "phi", "]"}], ".", 
+           RowBox[{"p0", "[", "0", "]"}]}], "]"}], ",", 
+         RowBox[{"Point", "[", 
+          RowBox[{
+           RowBox[{"transMatrix", "[", "phi", "]"}], ".", 
+           RowBox[{"p0", "[", 
+            RowBox[{"Pi", "/", "2"}], "]"}]}], "]"}], ",", 
+         "\[IndentingNewLine]", "Yellow", ",", 
+         RowBox[{"Point", "[", 
+          RowBox[{
+           RowBox[{"transMatrix", "[", "phi", "]"}], ".", 
+           RowBox[{"p0", "[", 
+            RowBox[{"Pi", "+", 
+             RowBox[{"ArcTan", "[", 
+              RowBox[{
+               RowBox[{"-", "1"}], "/", 
+               RowBox[{"Cos", "[", "phi", "]"}]}], "]"}]}], "]"}]}], "]"}]}], 
+        "}"}], ",", 
+       RowBox[{"Axes", "\[Rule]", "True"}]}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"GraphicsRow", "[", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"ePos", "[", 
+       RowBox[{"67", "Degree"}], "]"}], ",", 
+      RowBox[{"ePos", "[", 
+       RowBox[{"48", "Degree"}], "]"}]}], "}"}], "]"}]}]}]], "Input",
+ CellChangeTimes->{{3.6137158148948708`*^9, 3.613715890926902*^9}, {
+  3.613715923602371*^9, 3.6137159584017*^9}, {3.613716036659751*^9, 
+  3.613716063031962*^9}, {3.61372493688279*^9, 3.613725049533532*^9}, {
+  3.61372509090727*^9, 3.613725162587016*^9}, {3.613725243866123*^9, 
+  3.6137252515910053`*^9}, {3.613725285190797*^9, 3.613725379556623*^9}, {
+  3.613910151805011*^9, 3.613910165692855*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "Polar", " ", "coordinate", " ", "parametrization", " ", "for", " ", "a", 
+    " ", "general", " ", 
+    RowBox[{"ellipse", ".", " ", "Parameters"}], " ", "are", " ", "given", 
+    " ", "like", " ", 
+    RowBox[{"this", ":"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{"a", ":", " ", 
+     RowBox[{"first", " ", "semiradius"}]}], ",", " ", 
+    RowBox[{"b", ":", " ", 
+     RowBox[{"second", " ", "remiradius"}]}], ",", " ", 
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{"r0", ",", " ", "theta0"}], ")"}], ":", " ", 
+     RowBox[{"center", " ", "of", " ", "the", " ", "ellipse"}]}]}], " ", 
+   "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{"phi", ":", " ", 
+    RowBox[{
+     RowBox[{
+     "rotation", " ", "of", " ", "the", " ", "ellipse", " ", "axis", " ", 
+      "relative", " ", "to", " ", "the", " ", "x"}], "-", "axis"}]}], " ", 
+   "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"EllipseP", "[", 
+      RowBox[{
+      "theta_", ",", "a_", ",", "b_", ",", "r0_", ",", "theta0_", ",", 
+       "phi_"}], "]"}], ":=", 
+     RowBox[{"r0", "*", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{"b", "^", "2"}], "-", 
+           RowBox[{"a", "^", "2"}]}], ")"}], "*", 
+         RowBox[{"Cos", "[", 
+          RowBox[{"theta", "+", "theta0", "-", 
+           RowBox[{"2", "*", "phi"}]}], "]"}]}], "+", 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{"a", "^", "2"}], "+", 
+           RowBox[{"b", "^", "2"}]}], ")"}], "*", 
+         RowBox[{"Cos", "[", 
+          RowBox[{"theta", "-", "theta0"}], "]"}]}]}], ")"}]}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"EllipseR", "[", 
+      RowBox[{"theta_", ",", "a_", ",", "b_", ",", "phi_"}], "]"}], ":=", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"b", "^", "2"}], "-", 
+         RowBox[{"a", "^", "2"}]}], ")"}], "*", 
+       RowBox[{"Cos", "[", 
+        RowBox[{
+         RowBox[{"2", "*", "theta"}], "-", 
+         RowBox[{"2", "*", "phi"}]}], "]"}]}], "+", 
+      RowBox[{"a", "^", "2"}], "+", 
+      RowBox[{"b", "^", "2"}]}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"EllipseQ", "[", 
+      RowBox[{
+      "theta_", ",", "a_", ",", "b_", ",", "r0_", ",", "theta0_", ",", 
+       "phi_"}], "]"}], ":=", 
+     RowBox[{
+      RowBox[{"Sqrt", "[", "2", "]"}], "*", "a", "*", "b", "*", 
+      RowBox[{"Sqrt", "[", 
+       RowBox[{
+        RowBox[{"EllipseR", "[", 
+         RowBox[{"theta", ",", "a", ",", "b", ",", "phi"}], "]"}], "-", 
+        RowBox[{"2", "*", 
+         RowBox[{"r0", "^", "2"}], "*", 
+         RowBox[{
+          RowBox[{"Sin", "[", 
+           RowBox[{"theta", "-", "theta0"}], "]"}], "^", "2"}]}]}], "]"}]}]}],
+     ";"}]}]}]], "Input",
+ CellChangeTimes->{
+  3.6137253799388943`*^9, {3.6137272485906982`*^9, 3.6137272828732347`*^9}, {
+   3.6137274399813833`*^9, 3.613727706823288*^9}, 3.6137284134498787`*^9, {
+   3.613909830406213*^9, 3.6139099351097097`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"EllipseRad", "[", 
+    RowBox[{
+    "theta_", ",", "a_", ",", "b_", ",", "r0_", ",", "theta0_", ",", "phi_"}],
+     "]"}], ":=", 
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"EllipseP", "[", 
+       RowBox[{
+       "theta", ",", "a", ",", "b", ",", "r0", ",", "theta0", ",", "phi"}], 
+       "]"}], "+", 
+      RowBox[{"EllipseQ", "[", 
+       RowBox[{
+       "theta", ",", "a", ",", "b", ",", "r0", ",", "theta0", ",", "phi"}], 
+       "]"}]}], ")"}], "/", 
+    RowBox[{"EllipseR", "[", 
+     RowBox[{"theta", ",", "a", ",", "b", ",", "phi"}], "]"}]}]}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.613727713489107*^9, 3.613727797545282*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Plot", "[", 
+  RowBox[{
+   RowBox[{"EllipseRad", "[", 
+    RowBox[{"t", ",", "1", ",", "2.1", ",", "0", ",", "0", ",", 
+     RowBox[{"72", "Degree"}]}], "]"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"t", ",", "0", ",", 
+     RowBox[{"2", "*", "Pi"}]}], "}"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.613728786023576*^9, 3.613728786967093*^9}}],
+
+Cell[BoxData[
+ RowBox[{"PolarPlot", "[", 
+  RowBox[{
+   RowBox[{"EllipseRad", "[", 
+    RowBox[{"t", ",", "1", ",", "2.1", ",", "0", ",", "0", ",", 
+     RowBox[{"72", "Degree"}]}], "]"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"t", ",", "0", ",", 
+     RowBox[{"2", "*", "Pi"}]}], "}"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.613727807170555*^9, 3.6137278402979517`*^9}, {
+  3.613727873189863*^9, 3.613727917059198*^9}, {3.6137279599923897`*^9, 
+  3.613727961511715*^9}, {3.613728384746985*^9, 3.613728394821897*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"areaTrans", "[", 
+    RowBox[{"k_", ",", "alpha_"}], "]"}], ":=", 
+   RowBox[{"If", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"Mod", "[", 
+       RowBox[{"k", ",", "2"}], "]"}], "\[Equal]", "0"}], ",", 
+     RowBox[{
+      RowBox[{"Pi", "*", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"k", "+", "2"}], ")"}], "/", "4"}]}], "-", "alpha"}], ",", 
+     RowBox[{"alpha", "-", 
+      RowBox[{"Pi", "*", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"k", "-", "1"}], ")"}], "/", "4"}]}]}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"areaTrans", "[", 
+    RowBox[{"k_", ",", 
+     RowBox[{"{", 
+      RowBox[{"a0_", ",", "a1_"}], "}"}]}], "]"}], ":=", 
+   RowBox[{
+    RowBox[{"areaTrans", "[", 
+     RowBox[{"k", ",", "a1"}], "]"}], "-", 
+    RowBox[{"areaTrans", "[", 
+     RowBox[{"k", ",", "a0"}], "]"}]}]}], ";"}]}], "Input",
+ CellChangeTimes->{3.614339780196168*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "Simplified", " ", "version", " ", "of", " ", "the", " ", "ellipse", " ", 
+    "polar", " ", "coordinate", " ", 
+    RowBox[{"parametrization", "."}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{"Center", " ", "is", " ", "zero"}], ",", " ", 
+    RowBox[{"and", " ", "a"}], ",", " ", 
+    RowBox[{
+    "b", " ", "and", " ", "phi", " ", "are", " ", "all", " ", "derived", " ", 
+     "from", " ", "the", " ", "one", " ", "parameter", " ", "which"}]}], " ", 
+   "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "determines", " ", "the", " ", "lattice", " ", "deformation", " ", 
+    "matrix", " ", 
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{"see", " ", "definition", " ", "of", " ", "transMatrix"}], 
+      ")"}], "."}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"EllipseSimpleRadius", "[", 
+     RowBox[{"phi_", ",", "theta_"}], "]"}], ":=", 
+    RowBox[{
+     RowBox[{"Sqrt", "[", 
+      RowBox[{"1", "-", 
+       RowBox[{
+        RowBox[{"Cos", "[", "phi", "]"}], "^", "2"}]}], "]"}], "/", 
+     RowBox[{"Sqrt", "[", 
+      RowBox[{"1", "-", 
+       RowBox[{
+        RowBox[{"Cos", "[", "phi", "]"}], "*", 
+        RowBox[{"Cos", "[", 
+         RowBox[{
+          RowBox[{"2", "*", "theta"}], "-", "phi"}], "]"}]}]}], "]"}]}]}], 
+   ";"}]}]], "Input",
+ CellChangeTimes->{{3.613729653626498*^9, 3.613729712867159*^9}, {
+   3.613734289373724*^9, 3.613734292063216*^9}, {3.613735399607326*^9, 
+   3.613735422183984*^9}, {3.6138042548225718`*^9, 3.613804311000394*^9}, {
+   3.613806767051216*^9, 3.613806771978426*^9}, {3.613806914812195*^9, 
+   3.613806936326211*^9}, {3.6138088679479437`*^9, 3.613808891047694*^9}, 
+   3.6139098201498528`*^9, {3.6139099535350323`*^9, 3.6139100466516848`*^9}, {
+   3.614338906371551*^9, 3.614338907505378*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"EllipseSimple", "[", 
+    RowBox[{"phi_", ",", "theta_"}], "]"}], ":=", 
+   RowBox[{
+    RowBox[{"EllipseSimpleRadius", "[", 
+     RowBox[{"phi", ",", "theta"}], "]"}], "*", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"Cos", "[", "theta", "]"}], ",", 
+      RowBox[{"Sin", "[", "theta", "]"}]}], "}"}]}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"EllipseSimpleT", "[", 
+   RowBox[{"phi_", ",", "theta_", ",", "k_"}], "]"}], ":=", 
+  RowBox[{
+   RowBox[{"EllipseSimpleRadius", "[", 
+    RowBox[{"phi", ",", "theta"}], "]"}], "*", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"Cos", "[", 
+      RowBox[{"areaTrans", "[", 
+       RowBox[{"k", ",", "theta"}], "]"}], "]"}], ",", 
+     RowBox[{"Sin", "[", 
+      RowBox[{"areaTrans", "[", 
+       RowBox[{"k", ",", "theta"}], "]"}], "]"}]}], 
+    "}"}]}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"EPlotRange", ":=", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"-", 
+        RowBox[{"Sqrt", "[", "2", "]"}]}], ",", 
+       RowBox[{"Sqrt", "[", "2", "]"}]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"-", 
+        RowBox[{"Sqrt", "[", "2", "]"}]}], ",", 
+       RowBox[{"Sqrt", "[", "2", "]"}]}], "}"}]}], "}"}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.614338917549436*^9, 3.614338962047846*^9}, {
+  3.6143391167606497`*^9, 3.614339170089512*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "One", " ", "can", " ", "see", " ", "that", " ", "the", " ", 
+    "parametrization", " ", "and", " ", "the", " ", "transformation", " ", 
+    "applied"}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "to", " ", "a", " ", "circle", " ", "of", " ", "unit", " ", "size", " ", 
+    "perfectly", " ", "match", " ", 
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{
+      "how", " ", "it", " ", "is", " ", "supposed", " ", "to", " ", "be"}], 
+      ")"}], "."}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"Show", "[", 
+   RowBox[{
+    RowBox[{"ParametricPlot", "[", 
+     RowBox[{
+      RowBox[{"EllipseSimple", "[", 
+       RowBox[{
+        RowBox[{"67", "Degree"}], ",", "t"}], "]"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"t", ",", "0", ",", 
+        RowBox[{"2", "*", "Pi"}]}], "}"}], ",", 
+      RowBox[{"PlotRange", "->", "EPlotRange"}]}], "]"}], ",", 
+    RowBox[{"Graphics", "[", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"PointSize", "[", "Large", "]"}], ",", "Black", ",", 
+       RowBox[{"Circle", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"0", ",", "0"}], "}"}], ",", "1"}], "]"}], ",", "Red", ",", 
+       
+       RowBox[{"GeometricTransformation", "[", 
+        RowBox[{
+         RowBox[{"Circle", "[", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"0", ",", "0"}], "}"}], ",", "1"}], "]"}], ",", 
+         RowBox[{"transMatrix", "[", 
+          RowBox[{"67", "Degree"}], "]"}]}], "]"}]}], "}"}], "]"}]}], 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.6137297170039997`*^9, 3.613729744926947*^9}, {
+  3.613734398642887*^9, 3.613734429837616*^9}, {3.6137346392979603`*^9, 
+  3.6137346438927803`*^9}, {3.61373545333654*^9, 3.6137354690921993`*^9}, {
+  3.613806795900172*^9, 3.613806817257538*^9}, {3.613808947540577*^9, 
+  3.613808953541411*^9}, {3.61381469159135*^9, 3.6138147207384768`*^9}, {
+  3.6139100799942923`*^9, 3.613910129261261*^9}, {3.6143389264543037`*^9, 
+  3.614338968584741*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"ellipsePiece", "[", 
+    RowBox[{"phi_", ",", "k_"}], "]"}], ":=", 
+   RowBox[{"ParametricPlot", "[", 
+    RowBox[{
+     RowBox[{"EllipseSimple", "[", 
+      RowBox[{"phi", ",", "t"}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"t", ",", 
+       RowBox[{"k", "*", 
+        RowBox[{"Pi", "/", "4"}]}], ",", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"k", "+", "1"}], ")"}], "*", 
+        RowBox[{"Pi", "/", "4"}]}]}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"PlotRange", "\[Rule]", "EPlotRange"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ellipsePieceT", "[", 
+    RowBox[{"phi_", ",", "k_"}], "]"}], ":=", 
+   RowBox[{"ParametricPlot", "[", 
+    RowBox[{
+     RowBox[{"EllipseSimpleT", "[", 
+      RowBox[{"phi", ",", "t", ",", "k"}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"t", ",", 
+       RowBox[{"k", "*", 
+        RowBox[{"Pi", "/", "4"}]}], ",", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"k", "+", "1"}], ")"}], "*", 
+        RowBox[{"Pi", "/", "4"}]}]}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"PlotRange", "\[Rule]", "EPlotRange"}]}], "]"}]}], 
+  ";"}]}], "Input",
+ CellChangeTimes->{{3.6139977704536943`*^9, 3.6139978415054617`*^9}, {
+  3.6139979150422688`*^9, 3.61399793203512*^9}, {3.613998196296794*^9, 
+  3.613998200364006*^9}, {3.614338765663418*^9, 3.614338768247157*^9}, {
+  3.614338840086234*^9, 3.614338894854247*^9}, {3.614338983634211*^9, 
+  3.6143390359984818`*^9}, {3.614339185439151*^9, 3.614339190082402*^9}, {
+  3.614339221704281*^9, 3.614339221927471*^9}, {3.614339263900118*^9, 
+  3.614339302565031*^9}, {3.614339446523357*^9, 3.6143394570411053`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "Cut", " ", "the", " ", "ellipse", " ", "into", " ", "eight", " ", 
+    RowBox[{"parts", "."}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"GraphicsGrid", "[", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"Map", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"ellipsePiece", "[", 
+         RowBox[{
+          RowBox[{"67", "Degree"}], ",", "#"}], "]"}], "&"}], ",", 
+       RowBox[{"Range", "[", 
+        RowBox[{"0", ",", "3"}], "]"}]}], "]"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Map", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"ellipsePiece", "[", 
+         RowBox[{
+          RowBox[{"67", "Degree"}], ",", "#"}], "]"}], "&"}], ",", 
+       RowBox[{"Range", "[", 
+        RowBox[{"4", ",", "7"}], "]"}]}], "]"}]}], "}"}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.613997817277155*^9, 3.6139978928817673`*^9}, {
+  3.614338796742654*^9, 3.614338820645574*^9}, {3.614339275493122*^9, 
+  3.614339291153077*^9}, {3.6152919251640368`*^9, 3.615291945086482*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{
+    "Now", " ", "move", " ", "all", " ", "parts", " ", "into", " ", "the", 
+     " ", "first", " ", "quadrant", " ", "with", " ", "x"}], " ", 
+    "\[LessEqual]", " ", 
+    RowBox[{"y", "."}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"GraphicsGrid", "[", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"Map", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"ellipsePieceT", "[", 
+         RowBox[{
+          RowBox[{"67", "Degree"}], ",", "#"}], "]"}], "&"}], ",", 
+       RowBox[{"Range", "[", 
+        RowBox[{"0", ",", "3"}], "]"}]}], "]"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Map", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"ellipsePieceT", "[", 
+         RowBox[{
+          RowBox[{"67", "Degree"}], ",", "#"}], "]"}], "&"}], ",", 
+       RowBox[{"Range", "[", 
+        RowBox[{"4", ",", "7"}], "]"}]}], "]"}]}], "}"}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.613997938812389*^9, 3.613997939341218*^9}, {
+  3.614339042457637*^9, 3.614339057804612*^9}, {3.614339195446303*^9, 
+  3.614339209712994*^9}, {3.6143394055377207`*^9, 3.614339417404377*^9}, {
+  3.61529195159626*^9, 3.615291968280841*^9}, {3.6152920016527557`*^9, 
+  3.615292014392106*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"generalKernelGap", "[", 
+    RowBox[{"t_", ",", "alpha_", ",", "rad_", ",", "area_"}], "]"}], ":=", 
+   RowBox[{"1", "/", "2"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"generalKernelBulk", "[", 
+    RowBox[{"t_", ",", "alpha_", ",", "rad_", ",", "area_"}], "]"}], ":=", 
+   RowBox[{
+    RowBox[{"area", "/", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"rad", "[", "alpha", "]"}], "^", "2"}], "*", "t"}], ")"}]}], 
+    "-", 
+    RowBox[{"1", "/", "2"}], "-", 
+    RowBox[{
+     RowBox[{"area", "/", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"rad", "[", "alpha", "]"}], "^", "2"}], "*", "t"}], ")"}]}], 
+     "*", 
+     RowBox[{"Log", "[", 
+      RowBox[{"area", "/", 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"rad", "[", "alpha", "]"}], "^", "2"}], "*", "t"}], ")"}]}],
+       "]"}]}]}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"generalKernelTail", "[", 
+    RowBox[{"t_", ",", "alpha_", ",", "rad_", ",", "area_"}], "]"}], ":=", 
+   RowBox[{
+    RowBox[{"area", "/", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"rad", "[", "alpha", "]"}], "^", "2"}], "*", "t"}], ")"}]}], 
+    "-", 
+    RowBox[{"1", "/", "2"}], "+", 
+    RowBox[{
+     RowBox[{"1", "/", "2"}], "*", 
+     RowBox[{"Sqrt", "[", 
+      RowBox[{"1", "-", 
+       RowBox[{"4", "*", 
+        RowBox[{"area", "/", 
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"rad", "[", "alpha", "]"}], "^", "2"}], "*", "t"}], 
+          ")"}]}]}]}], "]"}]}], "+", "\[IndentingNewLine]", 
+    RowBox[{"2", "*", 
+     RowBox[{"area", "/", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"rad", "[", "alpha", "]"}], "^", "2"}], "*", "t"}], ")"}]}], 
+     "*", 
+     RowBox[{"Log", "[", 
+      RowBox[{"2", "/", 
+       RowBox[{"(", 
+        RowBox[{"1", "+", 
+         RowBox[{"Sqrt", "[", 
+          RowBox[{"1", "-", 
+           RowBox[{"4", "*", 
+            RowBox[{"area", "/", 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"rad", "[", "alpha", "]"}], "^", "2"}], "*", "t"}], 
+              ")"}]}]}]}], "]"}]}], ")"}]}], "]"}]}]}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.613998690685458*^9, 3.6139989878691673`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"generalKernel", "[", 
+    RowBox[{"t_", ",", "alpha_", ",", "rad_", ",", "area_"}], "]"}], ":=", 
+   RowBox[{"Piecewise", "[", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"t", ">", "0"}], "&&", 
+         RowBox[{"t", "\[LessEqual]", 
+          RowBox[{"area", "/", 
+           RowBox[{
+            RowBox[{"rad", "[", "alpha", "]"}], "^", "2"}]}]}]}], ",", 
+        RowBox[{"generalKernelGap", "[", 
+         RowBox[{"t", ",", "alpha", ",", "rad", ",", "area"}], "]"}]}], "}"}],
+       ",", "\[IndentingNewLine]", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"t", ">", 
+          RowBox[{"area", "/", 
+           RowBox[{
+            RowBox[{"rad", "[", "alpha", "]"}], "^", "2"}]}]}], "&&", 
+         RowBox[{"t", "\[LessEqual]", 
+          RowBox[{"4", "*", 
+           RowBox[{"area", "/", 
+            RowBox[{
+             RowBox[{"rad", "[", "alpha", "]"}], "^", "2"}]}]}]}]}], ",", 
+        RowBox[{"generalKernelBulk", "[", 
+         RowBox[{"t", ",", "alpha", ",", "rad", ",", "area"}], "]"}]}], "}"}],
+       ",", "\[IndentingNewLine]", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"t", ">", 
+         RowBox[{"4", "*", 
+          RowBox[{"area", "/", 
+           RowBox[{
+            RowBox[{"rad", "[", "alpha", "]"}], "^", "2"}]}]}]}], ",", 
+        RowBox[{"generalKernelTail", "[", 
+         RowBox[{"t", ",", "alpha", ",", "rad", ",", "area"}], "]"}]}], 
+       "}"}]}], "}"}], "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.613999319724926*^9, 3.613999321125952*^9}, {
+  3.614000198931162*^9, 3.6140004451412973`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"Area", " ", "of", " ", "the", " ", 
+    RowBox[{"ellipse", ".", " ", "Once"}], " ", "computed", " ", 
+    "numerically", " ", "and", " ", "then", " ", "again", " ", 
+    RowBox[{"exactly", "."}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"{", 
+   RowBox[{
+    RowBox[{"NIntegrate", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"1", "/", "2"}], "*", 
+       RowBox[{
+        RowBox[{"EllipseSimpleRadius", "[", 
+         RowBox[{
+          RowBox[{"34", "Degree"}], ",", "t"}], "]"}], "^", "2"}]}], ",", 
+      RowBox[{"{", 
+       RowBox[{"t", ",", "0", ",", 
+        RowBox[{"2", "*", "Pi"}]}], "}"}]}], "]"}], ",", 
+    RowBox[{"N", "[", 
+     RowBox[{"Pi", "*", 
+      RowBox[{"Sqrt", "[", 
+       RowBox[{"1", "-", 
+        RowBox[{
+         RowBox[{"Cos", "[", 
+          RowBox[{"34", "Degree"}], "]"}], "^", "2"}]}], "]"}]}], "]"}]}], 
+   "}"}]}]], "Input",
+ CellChangeTimes->{{3.614076926615713*^9, 3.6140769554006042`*^9}, {
+  3.614077006343863*^9, 3.614077045048929*^9}, {3.614077278048326*^9, 
+  3.6140772815365*^9}, {3.614077351545857*^9, 3.614077374683818*^9}, {
+  3.614077460026553*^9, 3.6140774606803703`*^9}, {3.614080466022018*^9, 
+  3.614080498411792*^9}, {3.614339820833872*^9, 3.6143398257450123`*^9}, {
+  3.615292033909395*^9, 3.615292054917076*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"pieceAreaN", "[", 
+    RowBox[{"phi_", ",", "k_"}], "]"}], ":=", 
+   RowBox[{"NIntegrate", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"1", "/", "2"}], "*", 
+      RowBox[{
+       RowBox[{"EllipseSimpleRadius", "[", 
+        RowBox[{"phi", ",", "t"}], "]"}], "^", "2"}]}], ",", 
+     RowBox[{"{", 
+      RowBox[{"t", ",", 
+       RowBox[{"k", "*", 
+        RowBox[{"Pi", "/", "4"}]}], ",", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"k", "+", "1"}], ")"}], "*", 
+        RowBox[{"Pi", "/", "4"}]}]}], "}"}]}], "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.614340158682589*^9, 3.6143401905110188`*^9}, {
+  3.61434023081598*^9, 3.61434023107268*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Map", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"pieceAreaN", "[", 
+     RowBox[{
+      RowBox[{"34", "Degree"}], ",", "#"}], "]"}], "&"}], ",", 
+   RowBox[{"Range", "[", 
+    RowBox[{"0", ",", "3"}], "]"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.61408159555816*^9, 3.6140816053179607`*^9}, {
+  3.614081755296927*^9, 3.614081760210142*^9}, {3.6143398315018187`*^9, 
+  3.614339833005237*^9}, {3.6143401405628347`*^9, 3.614340146030336*^9}, {
+  3.61434019639898*^9, 3.614340220508532*^9}, {3.61434058924891*^9, 
+  3.614340604591145*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"EllipseSimpleInt", "[", 
+    RowBox[{"phi_", ",", "t_"}], "]"}], "=", 
+   RowBox[{"FullSimplify", "[", 
+    RowBox[{"Assuming", "[", 
+     RowBox[{
+      RowBox[{"Element", "[", 
+       RowBox[{"phi", ",", "Reals"}], "]"}], ",", 
+      RowBox[{"Integrate", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"EllipseSimpleRadius", "[", 
+          RowBox[{"phi", ",", "t"}], "]"}], "^", "2"}], ",", "t"}], "]"}]}], 
+     "]"}], "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.614337011975293*^9, 3.614337095046274*^9}, {
+  3.614337126978441*^9, 3.614337130674252*^9}, {3.614337196848559*^9, 
+  3.61433719724923*^9}, {3.614339853355653*^9, 3.614339866321012*^9}, {
+  3.615028228509555*^9, 3.61502822944963*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"EllipseSimpleRadius", "[", 
+   RowBox[{"x", ",", "y"}], "]"}], "^", "2"}]], "Input",
+ CellChangeTimes->{{3.614340948781885*^9, 3.614340953294363*^9}, {
+  3.615023106938336*^9, 3.615023107192285*^9}}],
+
+Cell[BoxData[
+ RowBox[{"ParametricPlot", "[", 
+  RowBox[{
+   RowBox[{"EllipseSimple", "[", 
+    RowBox[{
+     RowBox[{"Pi", "/", "2.9"}], ",", "t"}], "]"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"t", ",", "0", ",", 
+     RowBox[{"2", "*", "Pi"}]}], "}"}], ",", 
+   RowBox[{"PlotRange", "->", "EPlotRange"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.6144291312132607`*^9, 3.614429147515814*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Plot", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"EllipseSimpleRadius", "[", 
+     RowBox[{
+      RowBox[{"Pi", "/", "2.9"}], ",", "t"}], "]"}], "^", "2"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"t", ",", "0", ",", 
+     RowBox[{"Pi", "*", "2"}]}], "}"}], ",", 
+   RowBox[{"PlotRange", "\[Rule]", 
+    RowBox[{"{", 
+     RowBox[{"0", ",", "2.0"}], "}"}]}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.614422645380991*^9, 3.614422677971589*^9}, {
+  3.61442271109328*^9, 3.6144227449460917`*^9}, {3.614429157690982*^9, 
+  3.614429160043455*^9}}],
+
+Cell[BoxData[
+ RowBox[{"EllipseSimpleInt", "[", 
+  RowBox[{"phi", ",", "t"}], "]"}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{"Limit", "[", 
+  RowBox[{
+   RowBox[{"EllipseSimpleInt", "[", 
+    RowBox[{"phi", ",", "t"}], "]"}], ",", 
+   RowBox[{"t", "\[Rule]", "phi"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.615026020663315*^9, 3.615026060745406*^9}, {
+   3.615026112824922*^9, 3.615026122504725*^9}, 3.6150279581286592`*^9}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"step", "[", "phi_", "]"}], ":=", 
+   RowBox[{"Pi", "*", 
+    RowBox[{"Abs", "[", 
+     RowBox[{"Sin", "[", "phi", "]"}], "]"}]}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"g", "[", 
+    RowBox[{"phi_", ",", "t_"}], "]"}], ":=", 
+   RowBox[{"If", "[", 
+    RowBox[{
+     RowBox[{"t", ">", "phi"}], ",", 
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{"t", ">", 
+        RowBox[{"phi", "+", "Pi"}]}], ",", 
+       RowBox[{"2", "*", 
+        RowBox[{"step", "[", "phi", "]"}]}], ",", 
+       RowBox[{"step", "[", "phi", "]"}]}], "]"}], ",", "0"}], "]"}]}], 
+  ";"}]}], "Input",
+ CellChangeTimes->{{3.61502785382821*^9, 3.615027869268221*^9}, {
+  3.615027938639949*^9, 3.615028020833949*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Plot", "[", 
+  RowBox[{
+   RowBox[{"EllipseSimpleInt", "[", 
+    RowBox[{
+     RowBox[{"Pi", "/", "2.9"}], ",", "t"}], "]"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"t", ",", "0", ",", 
+     RowBox[{"2", "*", "Pi"}]}], "}"}]}], "]"}]], "Input",
+ CellChangeTimes->{3.61502809425128*^9}],
+
+Cell[BoxData[
+ RowBox[{"Plot", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"EllipseSimpleInt", "[", 
+     RowBox[{
+      RowBox[{"Pi", "/", "2.9"}], ",", "t"}], "]"}], "+", 
+    RowBox[{"g", "[", 
+     RowBox[{
+      RowBox[{"Pi", "/", "2.9"}], ",", "t"}], "]"}]}], ",", 
+   RowBox[{"{", 
+    RowBox[{"t", ",", "0", ",", 
+     RowBox[{"2", "*", "Pi"}]}], "}"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.615026563297655*^9, 3.6150265688853283`*^9}, {
+  3.615026864285419*^9, 3.615026864492085*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"EllipseSimpleInt", "[", 
+    RowBox[{"phi_", ",", 
+     RowBox[{"{", 
+      RowBox[{"t0_", ",", "t1_"}], "}"}]}], "]"}], ":=", 
+   RowBox[{
+    RowBox[{"EllipseSimpleInt", "[", 
+     RowBox[{"phi", ",", "t1"}], "]"}], "+", 
+    RowBox[{"g", "[", 
+     RowBox[{"phi", ",", "t1"}], "]"}], "-", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"EllipseSimpleInt", "[", 
+       RowBox[{"phi", ",", "t0"}], "]"}], "+", 
+      RowBox[{"g", "[", 
+       RowBox[{"phi", ",", "t0"}], "]"}]}], ")"}]}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.61502824911834*^9, 3.615028270744928*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"pieceArea", "[", 
+    RowBox[{"phi_", ",", "k_"}], "]"}], ":=", 
+   RowBox[{"EllipseSimpleInt", "[", 
+    RowBox[{"phi", ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"k", "*", 
+        RowBox[{"Pi", "/", "4"}]}], ",", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"k", "+", "1"}], ")"}], "*", 
+        RowBox[{"Pi", "/", "4"}]}]}], "}"}]}], "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.614337734803718*^9, 3.614337816889265*^9}, {
+  3.614339929625229*^9, 3.614339930768793*^9}, {3.6143400074655952`*^9, 
+  3.6143400085426903`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Assuming", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"phi", ">", "0"}], "&&", 
+    RowBox[{"phi", "<", 
+     RowBox[{"Pi", "/", "2"}]}]}], ",", 
+   RowBox[{"FullSimplify", "[", 
+    RowBox[{"Map", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"pieceArea", "[", 
+        RowBox[{"phi", ",", "#"}], "]"}], "&"}], ",", 
+      RowBox[{"Range", "[", 
+       RowBox[{"0", ",", "3"}], "]"}]}], "]"}], "]"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.6150293734027157`*^9, 3.6150294007764072`*^9}, {
+  3.6150298456581593`*^9, 3.61502986221509*^9}, {3.61503085085139*^9, 
+  3.6150308519943542`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"N", "[", 
+   RowBox[{"Map", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"pieceArea", "[", 
+       RowBox[{
+        RowBox[{"34", "Degree"}], ",", "#"}], "]"}], "&"}], ",", 
+     RowBox[{"Range", "[", 
+      RowBox[{"0", ",", "3"}], "]"}]}], "]"}], "]"}], "*", "0.5"}]], "Input",
+ CellChangeTimes->{{3.615292339544589*^9, 3.6152923407439547`*^9}, {
+  3.615292409895975*^9, 3.615292410936235*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Apply", "[", 
+  RowBox[{"Plus", ",", 
+   RowBox[{"Map", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"pieceArea", "[", 
+       RowBox[{
+        RowBox[{"34", "Degree"}], ",", "#"}], "]"}], "&"}], ",", 
+     RowBox[{"Range", "[", 
+      RowBox[{"0", ",", "3"}], "]"}]}], "]"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.61433779714297*^9, 3.614337841836149*^9}, {
+  3.6143378992898808`*^9, 3.614337911221911*^9}, {3.614340057189711*^9, 
+  3.6143400956199627`*^9}, {3.61434052982825*^9, 3.614340531122316*^9}, {
+  3.615029332478374*^9, 3.6150293390210743`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"N", "[", "%", "]"}]], "Input",
+ CellChangeTimes->{{3.615028280445396*^9, 3.615028303556126*^9}, {
+  3.615029354583734*^9, 3.615029355896763*^9}}]
 },
-WindowSize->{1920, 1147},
+WindowSize->{1920, 1145},
 WindowMargins->{{0, Automatic}, {Automatic, 0}},
 Magnification->1.25,
 FrontEndVersion->"9.0 for Linux x86 (64-bit) (January 25, 2013)",
@@ -209,7 +1290,46 @@ Cell[3306, 106, 767, 24, 38, "Input"],
 Cell[4076, 132, 394, 10, 38, "Input"],
 Cell[4473, 144, 272, 7, 38, "Input"],
 Cell[4748, 153, 810, 22, 38, "Input"],
-Cell[5561, 177, 197, 4, 38, "Input"]
+Cell[5561, 177, 197, 4, 38, "Input"],
+Cell[5761, 183, 641, 20, 64, "Input"],
+Cell[6405, 205, 166, 3, 38, "Input"],
+Cell[6574, 210, 1111, 32, 114, "Input"],
+Cell[7688, 244, 281, 8, 38, "Input"],
+Cell[7972, 254, 342, 8, 38, "Input"],
+Cell[8317, 264, 2465, 65, 139, "Input"],
+Cell[10785, 331, 792, 21, 89, "Input"],
+Cell[11580, 354, 2711, 68, 164, "Input"],
+Cell[14294, 424, 3191, 90, 164, "Input"],
+Cell[17488, 516, 702, 21, 38, "Input"],
+Cell[18193, 539, 364, 9, 38, "Input"],
+Cell[18560, 550, 517, 11, 38, "Input"],
+Cell[19080, 563, 976, 32, 64, "Input"],
+Cell[20059, 597, 1898, 46, 114, "Input"],
+Cell[21960, 645, 1420, 43, 89, "Input"],
+Cell[23383, 690, 2047, 51, 114, "Input"],
+Cell[25433, 743, 1720, 43, 114, "Input"],
+Cell[27156, 788, 1048, 27, 89, "Input"],
+Cell[28207, 817, 1254, 32, 89, "Input"],
+Cell[29464, 851, 2388, 75, 114, "Input"],
+Cell[31855, 928, 1676, 45, 89, "Input"],
+Cell[33534, 975, 1341, 33, 64, "Input"],
+Cell[34878, 1010, 713, 21, 38, "Input"],
+Cell[35594, 1033, 560, 13, 38, "Input"],
+Cell[36157, 1048, 761, 19, 38, "Input"],
+Cell[36921, 1069, 234, 5, 38, "Input"],
+Cell[37158, 1076, 391, 10, 38, "Input"],
+Cell[37552, 1088, 560, 15, 38, "Input"],
+Cell[38115, 1105, 94, 2, 38, "Input"],
+Cell[38212, 1109, 324, 7, 38, "Input"],
+Cell[38539, 1118, 771, 24, 64, "Input"],
+Cell[39313, 1144, 305, 9, 38, "Input"],
+Cell[39621, 1155, 494, 14, 38, "Input"],
+Cell[40118, 1171, 621, 18, 38, "Input"],
+Cell[40742, 1191, 601, 17, 38, "Input"],
+Cell[41346, 1210, 616, 17, 38, "Input"],
+Cell[41965, 1229, 433, 12, 38, "Input"],
+Cell[42401, 1243, 584, 14, 38, "Input"],
+Cell[42988, 1259, 169, 3, 38, "Input"]
 }
 ]
 *)
