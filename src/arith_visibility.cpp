@@ -14,7 +14,20 @@
  */
 
 #include "arith_visibility.h"
- 
+
+void Coprime::factorInteger(uint i, vector<uint>& factorization) {
+  factorization.clear();
+
+  for (ulong k = 2; k*k <= i; ++k) {
+    while (i % k == 0) {
+      factorization.push_back(k);
+      i /= k;
+    }
+  }
+
+  if (i > 1) factorization.push_back(i);
+}
+
 void Coprime::findTupleZ2(const int p, vec2i& out) {
   int x = ceil(sqrt(double(p)));
   int y;
@@ -35,6 +48,21 @@ bool Coprime::pCond1Z2(const int p) {
 
 bool Coprime::pCond2Z2(const int p) {
   return (((p - 3) % 8 == 0) || (((p + 3) % 8 == 0)));
+}
+
+bool Coprime::divTest2Free1(const vec2i& in, const int p) {
+  vec2i t, a1, a2;
+
+  findTupleZ2(p, t);
+
+  multZ2(in, t.squareZ2(), a1);
+  multZ2(in, t.conj().squareZ2(), a2);
+
+  return (a1.isDiv(p*p) || a2.isDiv(p*p));
+}
+
+bool Coprime::divTest2Free2(const vec2i& in , const int p) {
+  return in.isDiv(p*p);
 }
 
 int main(int argc, char* argv[]) {

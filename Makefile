@@ -15,7 +15,7 @@ endif
 
 objects := cyclotomic_radial chiral_radial corner_cases \
            griddual hexagonal higher_cyclo histogram \
-           tuebingen
+           tuebingen arith_visibility
 
 all: $(objects)
 
@@ -32,6 +32,7 @@ hexagonal: hexagonal.o common.o; $(compiler) -o $@ $(flags) $^
 higher_cyclo: higher_cyclo.o common.o; $(compiler) -o $@ $(flags) $^
 histogram: histogram.o common.o; $(compiler) -o $@ $(flags) $^
 tuebingen: tuebingen.o common.o; $(compiler) -o $@ $(flags) $^
+arith_visibility: arith_visibility.o common.o; $(compiler) -o $@ $(flags) $^
 
 clean:
 	rm -f *.o

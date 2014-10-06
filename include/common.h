@@ -88,6 +88,24 @@ public:
     return atan2(double(y), double(x));
   }
 
+  vec2i conj() const {
+    return vec2i(this->x, -this->y);
+  }
+
+  // Squaring in Z[Sqrt[2]]
+  vec2i squareZ2() const {
+	  return vec2i(x*x + 2*y*y, 2*x*y);
+  }
+
+  // Cubing in Z[Sqrt[2]]
+  vec2i cubeZ2() const {
+	  return vec2i(x*x*x + 6*x*y*y, 3*x*x*y + 2*y*y*y);
+  }
+
+  bool isDiv(const int d) const {
+    return ((x % d == 0) && (y % d == 0));
+  }
+
   vec2d transTriToR2() const;
 
   vec2d transGenericToR2(const vec2d& v) const;

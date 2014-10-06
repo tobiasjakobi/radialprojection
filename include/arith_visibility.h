@@ -19,19 +19,27 @@
 #include "common.h"
 
 namespace Coprime {
-	
+
+  // Very primitive integer factorization (should work for small numbers)
+  void factorInteger(uint i, vector<uint>& factorization);
+
   /* Assuming that p = +1 or -1 (mod 8), this finds the tuple *
    * (m,n) that solves the equation algnorm(m,n) = p.         */
   void findTupleZ2(const int p, vec2i& out);
-
-  void squareZ2(const vec2i& a, const vec2i& b, vec2i& out);
-  void cubeZ2(const vec2i& a, const vec2i& b, vec2i& out);
 
   /* The two conditions that apply to our visibility checks: *
    * p = +1 or -1 (mod 8) (first condition)                  *
    * p = +3 or -3 (mod 8) (second condition)                 */
   bool pCond1Z2(const int p);
   bool pCond2Z2(const int p);
+
+  /* Division test (square-free case) for the primes which *
+   * satisfy the first condition.                          */
+  bool divTest2Free1(const vec2i& in, const int p);
+
+  /* Division test (square-free case) for the primes which *
+   * satisfy the second condition.                         */
+  bool divTest2Free2(const vec2i& in, const int p);
 };
 
 #endif
