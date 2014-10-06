@@ -40,6 +40,11 @@ namespace Coprime {
   /* Division test (square-free case) for the primes which *
    * satisfy the second condition.                         */
   bool divTest2Free2(const vec2i& in, const int p);
+
+  // Check for square-free 'visibility' of an element of Z[Sqrt[2]]
+  bool visibility2Free(const vec2i& in);
 };
+
+void vTableZ2(const uint r, Common::vec2ilist& table);
 
 #endif

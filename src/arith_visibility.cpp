@@ -65,7 +65,58 @@ bool Coprime::divTest2Free2(const vec2i& in , const int p) {
   return in.isDiv(p*p);
 }
 
+bool Coprime::visibility2Free(const vec2i& in) {
+  if (((in.x - in.y) % 2 == 0) && (in.x % 2 == 0))
+    return false;
+
+  const int norm = in.preNormZ2(); /* the algebraic norm */
+  if (abs(norm) == 1) return true;
+
+  vector<uint> primes;
+  factorInteger(abs(norm), primes);
+
+  for (vector<uint>::const_iterator k = primes.begin(); k != primes.end(); ++k) {
+    if (pCond1Z2(*k)) {
+      if (divTest2Free1(in, *k)) return false;
+    } else {
+      if (pCond2Z2(*k)) {
+        if (divTest2Free2(in, *k)) return false;
+      }
+    }
+  }
+
+  return true;
+}
+
+void vTableZ2(const uint r, Common::vec2ilist& table) {
+  const int temp = int(ceil(double(r) / sqrt(2.0)));
+  table.clear();
+  table.reserve((r + 1) * (temp + 1));
+  
+  for (int i = -int(r); i <= int(r); ++i) {
+    for (int j = -temp; j <= temp; ++j) {
+
+      table.push_back(vec2i(i, j));
+    }
+  }
+}
+
 int main(int argc, char* argv[]) {
-  /* TODO */
+  Common::vec2ilist large_table;
+  Common::vec2ilist sqfree_table;
+
+  for (uint size = 50; size < 2000; size += 50) {
+    vTableZ2(size, large_table);
+  
+    for (Common::vec2ilist::const_iterator i = large_table.begin();
+         i != large_table.end(); ++i) {
+      if (Coprime::visibility2Free(*i)) sqfree_table.push_back(*i);
+    }
+  
+    cout << size << ": ";
+    cout << (double(sqfree_table.size()) / double(large_table.size())) << endl;
+    sqfree_table.clear();
+  }
+
   return 0;
 }
