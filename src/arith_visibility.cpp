@@ -50,10 +50,42 @@ bool Coprime::pCond2Z2(const int p) {
   return (((p - 3) % 8 == 0) || (((p + 3) % 8 == 0)));
 }
 
-bool Coprime::divTest2Free1(const vec2i& in, const int p) {
+void Coprime::factorZ2(const vec2i& in, vector<vec2i>& factorization) {
+  factorization.clear();
+
+  const int norm = in.preNormZ2();
+  if (abs(norm) == 1) return;
+
+  vector<uint> primes;
+  factorInteger(abs(norm), primes);
+
+  for (vector<uint>::const_iterator k = primes.begin(); k != primes.end(); ++k) {
+    if (*k % 2 == 0) {
+      factorization.push_back(vec2i(0, 1));
+      continue;
+    }
+
+    if (pCond2Z2(*k)) {
+      factorization.push_back(vec2i());
+      continue;
+    }
+
+    if (pCond1Z2(*k)) {
+      vec2i t;
+      Coprime::findTupleZ2(*k, t);
+
+      if (in.isDivZ2(t)) factorization.push_back(t);
+      if (in.isDivZ2(t.conj())) factorization.push_back(t.conj());
+    }
+  }
+}
+
+bool ArithVisibility::divTest2Free1(const vec2i& in, const int p) {
+  using namespace Coprime;
+
   vec2i t, a1, a2;
 
-  findTupleZ2(p, t);
+  Coprime::findTupleZ2(p, t);
 
   multZ2(in, t.squareZ2(), a1);
   multZ2(in, t.conj().squareZ2(), a2);
@@ -61,11 +93,13 @@ bool Coprime::divTest2Free1(const vec2i& in, const int p) {
   return (a1.isDiv(p*p) || a2.isDiv(p*p));
 }
 
-bool Coprime::divTest2Free2(const vec2i& in , const int p) {
+bool ArithVisibility::divTest2Free2(const vec2i& in , const int p) {
   return in.isDiv(p*p);
 }
 
-bool Coprime::visibility2Free(const vec2i& in) {
+bool ArithVisibility::visibility2Free(const vec2i& in) {
+  using namespace Coprime;
+
   if (((in.x - in.y) % 2 == 0) && (in.x % 2 == 0))
     return false;
 
@@ -75,7 +109,8 @@ bool Coprime::visibility2Free(const vec2i& in) {
   vector<uint> primes;
   factorInteger(abs(norm), primes);
 
-  for (vector<uint>::const_iterator k = primes.begin(); k != primes.end(); ++k) {
+  for (vector<uint>::const_iterator k = primes.begin();
+       k != primes.end(); ++k) {
     if (pCond1Z2(*k)) {
       if (divTest2Free1(in, *k)) return false;
     } else {
@@ -88,6 +123,34 @@ bool Coprime::visibility2Free(const vec2i& in) {
   return true;
 }
 
+vec2i ArithVisibility::denomZ2Fourier(const vec2i& in, const int in_c) {
+  const vec2i x(in.y * 4, in.x * 2);
+  const vec2i c(in_c, 0);
+  const vec2i g(Coprime::gcdZ2(c, x));
+
+  return c.divZ2(g);
+}
+
+double ArithVisibility::intensityZ2(const vec2i& denom) {
+  static const double zetaZ2 = 48.0 * sqrt(2.0) / (Common::pi *
+    Common::pi * Common::pi * Common::pi);
+
+  if (denom.isZero()) return 0.0;
+
+  vector<vec2i> primesZ2;
+  Coprime::factorZ2(denom, primesZ2);
+
+  double ret = 1.0;
+  for (vector<vec2i>::const_iterator k = primesZ2.begin();
+       k != primesZ2.end(); ++k) {
+    const int pnorm = k->preNormZ2();
+    ret *= (1.0 / (double(pnorm * pnorm) - 1.0));
+  }
+
+  ret *= (1.0 / (2.0 * sqrt(2.0) * zetaZ2));
+  return ret;
+}
+
 void vTableZ2(const uint r, Common::vec2ilist& table) {
   const int temp = int(ceil(double(r) / sqrt(2.0)));
   table.clear();
@@ -95,7 +158,6 @@ void vTableZ2(const uint r, Common::vec2ilist& table) {
   
   for (int i = -int(r); i <= int(r); ++i) {
     for (int j = -temp; j <= temp; ++j) {
-
       table.push_back(vec2i(i, j));
     }
   }
@@ -110,7 +172,7 @@ int main(int argc, char* argv[]) {
   
     for (Common::vec2ilist::const_iterator i = large_table.begin();
          i != large_table.end(); ++i) {
-      if (Coprime::visibility2Free(*i)) sqfree_table.push_back(*i);
+      if (ArithVisibility::visibility2Free(*i)) sqfree_table.push_back(*i);
     }
   
     cout << size << ": ";

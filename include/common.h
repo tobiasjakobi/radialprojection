@@ -94,17 +94,35 @@ public:
 
   // Squaring in Z[Sqrt[2]]
   vec2i squareZ2() const {
-	  return vec2i(x*x + 2*y*y, 2*x*y);
+    return vec2i(x*x + 2*y*y, 2*x*y);
   }
 
   // Cubing in Z[Sqrt[2]]
   vec2i cubeZ2() const {
-	  return vec2i(x*x*x + 6*x*y*y, 3*x*x*y + 2*y*y*y);
+    return vec2i(x*x*x + 6*x*y*y, 3*x*x*y + 2*y*y*y);
   }
 
   bool isDiv(const int d) const {
     return ((x % d == 0) && (y % d == 0));
   }
+
+  // Check if 'this' can be divided by 'd' in Z[Sqrt[2]].
+  bool isDivZ2(const vec2i& d) const {
+    const int norm = d.preNormZ2();
+    const int a = this->x * d.x - 2 * this->y * d.y;
+    const int b = d.x * this->y - this->x * d.y;
+
+    return ((a % norm == 0) && (b % norm == 0));
+  };
+
+  // Divide 'this' by 'd', assuming that this is defined.
+  vec2i divZ2(const vec2i& d) const {
+    const int norm = d.preNormZ2();
+    const int a = this->x * d.x - 2 * this->y * d.y;
+    const int b = d.x * this->y - this->x * d.y;
+
+    return vec2i(a / norm, b / norm);
+  };
 
   vec2d transTriToR2() const;
 

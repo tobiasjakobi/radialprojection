@@ -33,6 +33,13 @@ namespace Coprime {
   bool pCond1Z2(const int p);
   bool pCond2Z2(const int p);
 
+  /* Do prime factorization in Z[Sqrt[2]]. This takes 'in' as an *
+   * element of Z[Sqrt[2]] and returns a list of primes that     *
+   * divide 'in' (without mulitplicity).                         */
+  void factorZ2(const vec2i& in, vector<vec2i>& factorization);
+};
+
+namespace ArithVisibility {
   /* Division test (square-free case) for the primes which *
    * satisfy the first condition.                          */
   bool divTest2Free1(const vec2i& in, const int p);
@@ -43,6 +50,14 @@ namespace Coprime {
 
   // Check for square-free 'visibility' of an element of Z[Sqrt[2]]
   bool visibility2Free(const vec2i& in);
+
+  /* Let x = in / c, an element of Q(Sqrt[2]), then this computes    *
+   * the denominator in the Fourier module Z[Sqrt[2]] * (Sqrt[2]/4). */
+  vec2i denomZ2Fourier(const vec2i& in, const int in_c);
+
+  /* Compute the intensity of 'denom', an element of Z[Sqrt[2]].       *
+   * The input are going to be denominators of elements of Q(Sqrt[2]). */
+  double intensityZ2(const vec2i& denom);
 };
 
 void vTableZ2(const uint r, Common::vec2ilist& table);
