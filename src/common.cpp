@@ -43,6 +43,13 @@ vec2d vec2i::transGenericToR2(const vec2d& v) const {
     v.y * double(y));
 }
 
+vec2d vec2i::minkowskiZ2() const {
+  return vec2d(
+    double(x) + double(y) * sqrt(2.0),
+    double(x) - double(y) * sqrt(2.0)
+  );
+}
+
 bool vec2i::coprime() const {
   return (Coprime::gcdZ(abs(x), abs(y)) == 1);
 }

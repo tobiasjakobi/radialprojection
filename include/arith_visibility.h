@@ -48,7 +48,7 @@ namespace ArithVisibility {
    * satisfy the second condition.                         */
   bool divTest2Free2(const vec2i& in, const int p);
 
-  // Check for square-free 'visibility' of an element of Z[Sqrt[2]]
+  // Check for square-free 'visibility' of an element of Z[Sqrt[2]].
   bool visibility2Free(const vec2i& in);
 
   /* Let x = in / c, an element of Q(Sqrt[2]), then this computes    *
@@ -58,8 +58,68 @@ namespace ArithVisibility {
   /* Compute the intensity of 'denom', an element of Z[Sqrt[2]].       *
    * The input are going to be denominators of elements of Q(Sqrt[2]). */
   double intensityZ2(const vec2i& denom);
+
+  // Division tests for the primes in the cube-free case.
+  bool divTest3Free1(const vec2i& in, const int p);
+  bool divTest3Free2(const vec2i& in, const int p);
+
+  // Check for cube-free 'visibility' of an element of Z[Sqrt[2]].
+  bool visibility3Free(const vec2i& in);
+
+  class vec2iq {
+  private:
+    vec2i numerator;
+    int denominator;
+
+  public:
+    vec2iq() {}
+    vec2iq(int a, int b, int c) : numerator(a, b), denominator(c) {}
+
+    bool operator==(const vec2iq& v) const {
+      return ((numerator == v.numerator) && (denominator == v.denominator));
+    }
+
+    /* Lexicographic ordering, this is needed to use sorting *
+     * algorithms of STL containers.                         */
+    bool operator<(const vec2iq& v) const {
+      if (numerator < v.numerator) {
+        return true;
+      }
+
+      if (numerator == v.numerator) {
+        return (denominator < v.denominator);
+      }
+
+      return false;
+    }
+
+    vec2d minkowskiQ2() const {
+      const double inv = 1.0 / double(denominator);
+
+      return (numerator.minkowskiZ2() * inv);
+    }
+
+    const vec2i& getNumerator() const {
+      return numerator;
+    }
+
+    int getDenominator() const {
+      return denominator;
+    }
+  };
+
+  struct bragg {
+    vec2d position;
+    double intensity;
+  };
+
+  void diffractionZ2(const vector<vec2iq>& in, vector<bragg>& out);
 };
 
+ostream& operator<<(ostream &os, const ArithVisibility::vec2iq& v);
+
 void vTableZ2(const uint r, Common::vec2ilist& table);
+void vqTableRecipZ2(const uint r, const uint s,
+                    vector<ArithVisibility::vec2iq>& table);
 
 #endif

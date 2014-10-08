@@ -45,7 +45,21 @@ public:
   vec2i(const vec2i& v) : x(v.x), y(v.y) {}
 
   bool operator==(const vec2i& v) const {
-    return (x == v.x && y == v.y);
+    return ((x == v.x) && (y == v.y));
+  }
+
+  /* Lexicographic ordering, this is needed to use sorting *
+   * algorithms of STL containers.                         */
+  bool operator<(const vec2i& v) const {
+    if (x < v.x) {
+      return true;
+    }
+
+    if (x == v.x) {
+      return (y < v.y);
+    }
+
+    return false;
   }
 
   vec2i operator+(const vec2i& v) const {
@@ -127,6 +141,8 @@ public:
   vec2d transTriToR2() const;
 
   vec2d transGenericToR2(const vec2d& v) const;
+
+  vec2d minkowskiZ2() const;
 
   bool coprime() const;
 
@@ -1004,6 +1020,14 @@ namespace Common {
   static inline uint modulo(int input, uint mod) {
     const int temp = input % int(mod);
     return (temp < 0) ? (int(mod) + temp) : temp;
+  }
+
+  /* Only use this if you really have to (very slow!) */
+  template <typename T>
+  static inline void append_unique(vector<T>& out, const T& elem) {
+    if (find(out.begin(), out.end(), elem) == out.end()) {
+      out.push_back(elem);
+    }
   }
 
   /* Select vertices based on condition specified in 'S'. */

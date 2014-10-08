@@ -151,6 +151,70 @@ double ArithVisibility::intensityZ2(const vec2i& denom) {
   return ret;
 }
 
+bool ArithVisibility::divTest3Free1(const vec2i& in, const int p) {
+  using namespace Coprime;
+
+  vec2i t, a1, a2;
+
+  Coprime::findTupleZ2(p, t);
+
+  multZ2(in, t.cubeZ2(), a1);
+  multZ2(in, t.conj().cubeZ2(), a2);
+
+  return (a1.isDiv(p*p*p) || a2.isDiv(p*p*p));
+}
+
+bool ArithVisibility::divTest3Free2(const vec2i& in, const int p) {
+  return in.isDiv(p*p*p);
+}
+
+bool ArithVisibility::visibility3Free(const vec2i& in) {
+  using namespace Coprime;
+
+  if (in.isDivZ2(vec2i(0, 2))) return false;
+
+  const int norm = in.preNormZ2(); /* the algebraic norm */
+  if (abs(norm) == 1) return true;
+
+  vector<uint> primes;
+  factorInteger(abs(norm), primes);
+
+  for (vector<uint>::const_iterator k = primes.begin();
+       k != primes.end(); ++k) {
+    if (pCond1Z2(*k)) {
+      if (divTest3Free1(in, *k)) return false;
+    } else {
+      if (pCond2Z2(*k)) {
+        if (divTest3Free2(in, *k)) return false;
+      }
+    }
+  }
+
+  return true;
+}
+
+void ArithVisibility::diffractionZ2(const vector<vec2iq>& in, vector<bragg>& out) {
+  out.clear();
+
+  bragg temp;
+
+  for (vector<vec2iq>::const_iterator k = in.begin(); k != in.end(); ++k) {
+    const vec2i denom(denomZ2Fourier(k->getNumerator(), k->getDenominator()));
+
+    if (visibility3Free(denom)) {
+      temp.position = k->minkowskiQ2();
+      temp.intensity = intensityZ2(denom);
+
+      out.push_back(temp);
+    }
+  }
+}
+
+ostream& operator<<(ostream &os, const ArithVisibility::vec2iq& v) {
+  os << '{' << v.getNumerator() << ',' << v.getDenominator() << '}';
+  return os;
+}
+
 void vTableZ2(const uint r, Common::vec2ilist& table) {
   const int temp = int(ceil(double(r) / sqrt(2.0)));
   table.clear();
@@ -163,8 +227,42 @@ void vTableZ2(const uint r, Common::vec2ilist& table) {
   }
 }
 
+void vqTableRecipZ2(const uint r, const uint s,
+                    vector<ArithVisibility::vec2iq>& table) {
+  using namespace Coprime;
+  using namespace ArithVisibility;
+
+  table.clear();
+
+  for (uint c = 1; c <= s; ++c) {
+    for (int i = -int(r); i <= int(r); ++i) {
+      for (int j = -int(r); j <= int(r); ++j) {
+        const int g = gcdZ(uint(gcdZ(abs(2 * i), abs(j))), 4 * c);
+
+        table.push_back(vec2iq(2 * i / g, j / g, 4 * c / g));
+      }
+    }
+  }
+
+  sort(table.begin(), table.end());
+  table.erase(unique(table.begin(), table.end()), table.end());
+}
+
 int main(int argc, char* argv[]) {
-  Common::vec2ilist large_table;
+  using namespace ArithVisibility;
+
+  vector<vec2iq> large_table;
+  vector<bragg> diffraction;
+
+  vqTableRecipZ2(10, 4, large_table);
+  diffractionZ2(large_table, diffraction);
+
+  //cout << large_table.size() << endl;
+  //cout << diffraction.size() << endl;
+
+  cout << large_table;
+
+  /*Common::vec2ilist large_table;
   Common::vec2ilist sqfree_table;
 
   for (uint size = 50; size < 2000; size += 50) {
@@ -178,7 +276,7 @@ int main(int argc, char* argv[]) {
     cout << size << ": ";
     cout << (double(sqfree_table.size()) / double(large_table.size())) << endl;
     sqfree_table.clear();
-  }
+  }*/
 
   return 0;
 }
