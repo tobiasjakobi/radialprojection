@@ -193,26 +193,46 @@ bool ArithVisibility::visibility3Free(const vec2i& in) {
   return true;
 }
 
-void ArithVisibility::diffractionZ2(const vector<vec2iq>& in, vector<bragg>& out) {
+void ArithVisibility::diffractionZ2(const vector<vec2iq>& in,
+        vector<bragg>& out, clipfunc f) {
   out.clear();
 
-  bragg temp;
-
   for (vector<vec2iq>::const_iterator k = in.begin(); k != in.end(); ++k) {
+    const vec2d pos(k->minkowskiQ2());
+    if (!f(pos)) continue;
+
     const vec2i denom(denomZ2Fourier(k->getNumerator(), k->getDenominator()));
 
     if (visibility3Free(denom)) {
-      temp.position = k->minkowskiQ2();
-      temp.intensity = intensityZ2(denom);
-
-      out.push_back(temp);
+      out.push_back(bragg(pos, intensityZ2(denom)));
     }
   }
+}
+
+bool ArithVisibility::clipFundamental(const vec2d& x) {
+  using namespace Common;
+
+  static const vec2d vzero(0.0, 0.0);
+  static const vec2d vec1(0.5, 0.5);
+  static const vec2d vec2(sqrt(2.0) / 4.0, -sqrt(2.0) / 4.0);
+  static const double clipeps = 0.00001;
+
+  if (clipeps + checkPosition(vec2 + vzero, vec2 + vec1, x) < 0) return false;
+  if (clipeps + checkPosition(-vec2 + vec1, -vec2 + vzero, x) < 0) return false;
+  if (clipeps + checkPosition(-vec1 + vzero, -vec1 + vec2, x) < 0) return false;
+  if (clipeps + checkPosition(vec1 + vec2, vec1 + vzero, x) < 0) return false;
+
+  return true;
 }
 
 ostream& operator<<(ostream &os, const ArithVisibility::vec2iq& v) {
   os << '{' << v.getNumerator() << ',' << v.getDenominator() << '}';
   return os;
+}
+
+ostream& operator<<(ostream &os, const ArithVisibility::bragg& b) {
+  os << "circle((" << b.getPosition().x << ',' << b.getPosition().y << "),"
+     << b.getIntensity() << ",color='black',thickness=0.5)";
 }
 
 void vTableZ2(const uint r, Common::vec2ilist& table) {
@@ -248,19 +268,28 @@ void vqTableRecipZ2(const uint r, const uint s,
   table.erase(unique(table.begin(), table.end()), table.end());
 }
 
+double linscale(double x) {
+  return x * 0.4;
+}
+
 int main(int argc, char* argv[]) {
   using namespace ArithVisibility;
 
   vector<vec2iq> large_table;
   vector<bragg> diffraction;
 
-  vqTableRecipZ2(10, 4, large_table);
-  diffractionZ2(large_table, diffraction);
+  vqTableRecipZ2(60, 52, large_table);
+  diffractionZ2(large_table, diffraction, clipFundamental);
+
+  for (vector<bragg>::iterator k = diffraction.begin(); k != diffraction.end(); ++k) {
+    k->apply(linscale);
+  }
 
   //cout << large_table.size() << endl;
   //cout << diffraction.size() << endl;
 
-  cout << large_table;
+  //cout << large_table;
+  cout << diffraction;
 
   /*Common::vec2ilist large_table;
   Common::vec2ilist sqfree_table;

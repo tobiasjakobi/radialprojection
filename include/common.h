@@ -172,6 +172,10 @@ public:
     return *this;
   }
 
+  vec2d operator-() const {
+    return vec2d(-x, -y);
+  }
+
   void set(double a, double b) {
     x = a; y = b;
   }

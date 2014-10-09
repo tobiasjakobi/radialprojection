@@ -108,15 +108,45 @@ namespace ArithVisibility {
     }
   };
 
-  struct bragg {
+  typedef double (&scalefunc)(double);
+  typedef bool (&clipfunc)(const vec2d&);
+
+  class bragg {
+  private:
     vec2d position;
     double intensity;
+
+  public:
+    bragg() {}
+    bragg(double x, double y, double i) : position(x, y), intensity(i) {}
+    bragg(const vec2d& p, double i) : position(p), intensity(i) {}
+
+    void apply(scalefunc f) {
+      intensity = f(intensity);
+    }
+
+    const vec2d& getPosition() const {
+      return position;
+    }
+
+    double getIntensity() const {
+      return intensity;
+    }
   };
 
-  void diffractionZ2(const vector<vec2iq>& in, vector<bragg>& out);
+  void diffractionZ2(const vector<vec2iq>& in, vector<bragg>& out,
+                     clipfunc f);
+
+   /* Box clipping test that checks if the point 'x' is contained in an *
+    * arrangement of fundamental domains of the reciprocal lattice.     *
+    * Currently two times two domains (around the origin) are cut.      */
+   bool clipFundamental(const vec2d& x);
 };
 
 ostream& operator<<(ostream &os, const ArithVisibility::vec2iq& v);
+
+// Format output so that we can use it in SAGE
+ostream& operator<<(ostream &os, const ArithVisibility::bragg& b);
 
 void vTableZ2(const uint r, Common::vec2ilist& table);
 void vqTableRecipZ2(const uint r, const uint s,
