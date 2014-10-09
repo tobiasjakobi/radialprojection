@@ -111,8 +111,8 @@ int Coprime::gcdZ(int a, int b) {
 vec2i Coprime::moduloZ2(const vec2i& a, const vec2i& b) {
   const double N = 1.0 / double(b.preNormZ2());
 
-  const int alpha = round(double(a.x * b.x - 2 * a.y * b.y) * N);
-  const int beta = round(double(a.y * b.x - a.x * b.y) * N);
+  const int alpha = lround(double(a.x * b.x - 2 * a.y * b.y) * N);
+  const int beta = lround(double(a.y * b.x - a.x * b.y) * N);
 
   return vec2i(a.x - (alpha * b.x + 2 * beta * b.y),
                a.y - (alpha * b.y + beta * b.x));
@@ -144,8 +144,8 @@ void Coprime::multZ2(const vec2i& a, const vec2i& b, vec2i& out) {
 vec2i Coprime::moduloZTau(const vec2i& a, const vec2i& b) {
   const double N = 1.0 / double(b.preNormZTau());
 
-  const int alpha = round(double(a.x*b.x - a.y*b.y + a.x*b.y) * N);
-  const int beta = round(double(a.y*b.x - a.x*b.y) * N);
+  const int alpha = lround(double(a.x*b.x - a.y*b.y + a.x*b.y) * N);
+  const int beta = lround(double(a.y*b.x - a.x*b.y) * N);
 
   return vec2i(a.x - (alpha*b.x + beta*b.y),
                a.y - (alpha*b.y + beta * (b.x + b.y)));
@@ -177,8 +177,8 @@ void Coprime::multZTau(const vec2i& a, const vec2i& b, vec2i& out) {
 vec2i Coprime::moduloZ3(const vec2i& a, const vec2i& b) {
   const double N = 1.0 / double(b.preNormZ3());
 
-  const int alpha = round(double(a.x * b.x - 3 * a.y * b.y) * N);
-  const int beta = round(double(a.y * b.x - a.x * b.y) * N);
+  const int alpha = lround(double(a.x * b.x - 3 * a.y * b.y) * N);
+  const int beta = lround(double(a.y * b.x - a.x * b.y) * N);
 
   return vec2i(a.x - (alpha * b.x + 3 * beta * b.y),
                a.y - (alpha * b.y + beta * b.x));
