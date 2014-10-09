@@ -24,13 +24,12 @@ NormZ2[{a_Integer, b_Integer}] :=
 (* No error checking is done for cases like a % b with b equals 0. *)
 ModuloZ2[{a1_Integer, b1_Integer}, {a2_Integer, b2_Integer}] :=
   Module[
-     {A, x, y, r, s},
-     A := PreNormZ2[{a2, b2}];
-     x := (a1*a2 - 2*b1*b2)/A;
-     y := (b1*a2 - a1*b2)/A;
-     r = x - Round[x];
-     s = y - Round[y];
-     Return[{a2*r + 2*b2*s, a2*s + b2*r}]
+     {norm, alpha, beta},
+     norm = PreNormZ2[{a2, b2}];
+     alpha = Round[(a1*a2 - 2*b1*b2)/norm];
+     beta = Round[(b1*a2 - a1*b2)/norm];
+     Return[{a1-(alpha*a2+2*beta*b2),
+       b1-(alpha*b2+beta*a2)}];
   ];
 
 (* Simple implementation of the Euclidean algorithm in Z[Sqrt[2]]. *)
