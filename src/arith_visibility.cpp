@@ -89,7 +89,7 @@ void Coprime::factorZ2(const vec2i& in, vector<vec2i>& factorization) {
       Coprime::findTupleZ2(*k, t);
 
       if (in.isDivZ2(t)) factorization.push_back(t);
-      if (in.isDivZ2(t.conj())) factorization.push_back(t.conj());
+      if (in.isDivZ2(t.conjZ2())) factorization.push_back(t.conjZ2());
     }
   }
 }
@@ -126,7 +126,7 @@ void Coprime::factorGI(const vec2i& in, vector<vec2i>& factorization) {
   }
 }
 
-bool ArithVisibility::divTest2Free1(const vec2i& in, const int p) {
+bool ArithVisibility::divTest2Free1Z2(const vec2i& in, const int p) {
   using namespace Coprime;
 
   vec2i t, a1, a2;
@@ -134,16 +134,16 @@ bool ArithVisibility::divTest2Free1(const vec2i& in, const int p) {
   Coprime::findTupleZ2(p, t);
 
   multZ2(in, t.squareZ2(), a1);
-  multZ2(in, t.conj().squareZ2(), a2);
+  multZ2(in, t.conjZ2().squareZ2(), a2);
 
   return (a1.isDiv(p*p) || a2.isDiv(p*p));
 }
 
-bool ArithVisibility::divTest2Free2(const vec2i& in , const int p) {
+bool ArithVisibility::divTest2Free2Z2(const vec2i& in , const int p) {
   return in.isDiv(p*p);
 }
 
-bool ArithVisibility::visibility2Free(const vec2i& in) {
+bool ArithVisibility::visibility2FreeZ2(const vec2i& in) {
   using namespace Coprime;
 
   if (((in.x - in.y) % 2 == 0) && (in.x % 2 == 0))
@@ -158,10 +158,10 @@ bool ArithVisibility::visibility2Free(const vec2i& in) {
   for (vector<uint>::const_iterator k = primes.begin();
        k != primes.end(); ++k) {
     if (pCond1Z2(*k)) {
-      if (divTest2Free1(in, *k)) return false;
+      if (divTest2Free1Z2(in, *k)) return false;
     } else {
       if (pCond2Z2(*k)) {
-        if (divTest2Free2(in, *k)) return false;
+        if (divTest2Free2Z2(in, *k)) return false;
       }
     }
   }
@@ -197,7 +197,7 @@ double ArithVisibility::intensityZ2(const vec2i& denom) {
   return ret;
 }
 
-bool ArithVisibility::divTest3Free1(const vec2i& in, const int p) {
+bool ArithVisibility::divTest3Free1Z2(const vec2i& in, const int p) {
   using namespace Coprime;
 
   vec2i t, a1, a2;
@@ -205,16 +205,16 @@ bool ArithVisibility::divTest3Free1(const vec2i& in, const int p) {
   Coprime::findTupleZ2(p, t);
 
   multZ2(in, t.cubeZ2(), a1);
-  multZ2(in, t.conj().cubeZ2(), a2);
+  multZ2(in, t.conjZ2().cubeZ2(), a2);
 
   return (a1.isDiv(p*p*p) || a2.isDiv(p*p*p));
 }
 
-bool ArithVisibility::divTest3Free2(const vec2i& in, const int p) {
+bool ArithVisibility::divTest3Free2Z2(const vec2i& in, const int p) {
   return in.isDiv(p*p*p);
 }
 
-bool ArithVisibility::visibility3Free(const vec2i& in) {
+bool ArithVisibility::visibility3FreeZ2(const vec2i& in) {
   using namespace Coprime;
 
   if (in.isDivZ2(vec2i(0, 2))) return false;
@@ -228,10 +228,10 @@ bool ArithVisibility::visibility3Free(const vec2i& in) {
   for (vector<uint>::const_iterator k = primes.begin();
        k != primes.end(); ++k) {
     if (pCond1Z2(*k)) {
-      if (divTest3Free1(in, *k)) return false;
+      if (divTest3Free1Z2(in, *k)) return false;
     } else {
       if (pCond2Z2(*k)) {
-        if (divTest3Free2(in, *k)) return false;
+        if (divTest3Free2Z2(in, *k)) return false;
       }
     }
   }
@@ -249,13 +249,13 @@ void ArithVisibility::diffractionZ2(const vector<vec2iq>& in,
 
     const vec2i denom(denomZ2Fourier(k->getNumerator(), k->getDenominator()));
 
-    if (visibility3Free(denom)) {
+    if (visibility3FreeZ2(denom)) {
       out.push_back(bragg(pos, intensityZ2(denom)));
     }
   }
 }
 
-bool ArithVisibility::clipFundamental(const vec2d& x) {
+bool ArithVisibility::clipFundamentalZ2(const vec2d& x) {
   using namespace Common;
 
   static const vec2d vzero(0.0, 0.0);
@@ -325,7 +325,7 @@ int main(int argc, char* argv[]) {
   vector<bragg> diffraction;
 
   vqTableRecipZ2(60, 52, large_table);
-  diffractionZ2(large_table, diffraction, clipFundamental);
+  diffractionZ2(large_table, diffraction, clipFundamentalZ2);
 
   for (vector<bragg>::iterator k = diffraction.begin(); k != diffraction.end(); ++k) {
     k->apply(linscale);

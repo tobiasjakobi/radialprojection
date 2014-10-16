@@ -110,7 +110,7 @@ public:
     return atan2(double(y), double(x));
   }
 
-  vec2i conj() const {
+  vec2i conjZ2() const {
     return vec2i(this->x, -this->y);
   }
 
