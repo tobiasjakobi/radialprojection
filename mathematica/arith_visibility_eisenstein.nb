@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[     23984,        698]
-NotebookOptionsPosition[     22779,        660]
-NotebookOutlinePosition[     23136,        676]
-CellTagsIndexPosition[     23093,        673]
+NotebookDataLength[     46089,       1333]
+NotebookOptionsPosition[     44065,       1275]
+NotebookOutlinePosition[     44422,       1291]
+CellTagsIndexPosition[     44379,       1288]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -318,12 +318,13 @@ Cell[BoxData[
   RowBox[{
    RowBox[{"ConjES", "[", 
     RowBox[{"{", 
-     RowBox[{"a1_Integer", ",", " ", "b1_Integer"}], "}"}], "]"}], ":=", 
+     RowBox[{"a_Integer", ",", " ", "b_Integer"}], "}"}], "]"}], ":=", 
    RowBox[{"{", 
-    RowBox[{"a1", ",", 
-     RowBox[{"-", "b1"}]}], "}"}]}], ";"}]], "Input",
+    RowBox[{
+     RowBox[{"a", "-", "b"}], ",", 
+     RowBox[{"-", "b"}]}], "}"}]}], ";"}]], "Input",
  CellChangeTimes->{{3.621925659665564*^9, 3.621925668146804*^9}, 
-   3.622196906925117*^9}],
+   3.622196906925117*^9, {3.622270459823868*^9, 3.622270466581132*^9}}],
 
 Cell[BoxData[{
  RowBox[{
@@ -642,6 +643,15 @@ Cell[BoxData[
   3.622196984622628*^9}, {3.62219712183915*^9, 3.62219713230826*^9}}],
 
 Cell[BoxData[
+ RowBox[{"N", "[", 
+  RowBox[{"1", "/", 
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{"Zeta", "[", "2", "]"}], "*", 
+     RowBox[{"DirichletL", "[", 
+      RowBox[{"3", ",", "2", ",", "2"}], "]"}]}], ")"}]}], "]"}]], "Input"],
+
+Cell[BoxData[
  RowBox[{
   RowBox[{"Function", "[", 
    RowBox[{"x", ",", 
@@ -654,9 +664,614 @@ Cell[BoxData[
         "]"}], "]"}], "/", 
       RowBox[{"Length", "[", 
        RowBox[{"vTableES", "[", "x", "]"}], "]"}]}], "]"}]}], "]"}], "[", 
-  "180", "]"}]], "Input",
+  "260", "]"}]], "Input",
  CellChangeTimes->{{3.6221969919279757`*^9, 3.6221969921155243`*^9}, {
-   3.6221971358279457`*^9, 3.622197137633719*^9}, 3.622197389359005*^9}]
+   3.6221971358279457`*^9, 3.622197137633719*^9}, 3.622197389359005*^9, {
+   3.622277597844639*^9, 3.622277598899847*^9}, {3.6222793284799337`*^9, 
+   3.62227933062351*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ClearAll", "[", 
+   RowBox[{
+   "DivES", ",", "IsDivES", ",", "denomES", ",", "pTest1ES", ",", 
+    "factorES"}], "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.622291357973761*^9, 3.62229136453019*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"DivES", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"a1_Integer", ",", " ", "b1_Integer"}], "}"}], ",", " ", 
+     RowBox[{"{", 
+      RowBox[{"a2_Integer", ",", " ", "b2_Integer"}], "}"}]}], "]"}], ":=", 
+   RowBox[{"Block", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"n", ",", "x", ",", "y"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"n", "=", 
+       RowBox[{"algnormES", "[", 
+        RowBox[{"{", 
+         RowBox[{"a2", ",", "b2"}], "}"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"x", "=", 
+       RowBox[{
+        RowBox[{"a1", "*", "a2"}], "+", 
+        RowBox[{"b1", "*", "b2"}], "-", 
+        RowBox[{"a1", "*", "b2"}]}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"y", "=", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"-", "a1"}], "*", "b2"}], "+", 
+        RowBox[{"b1", "*", "a2"}]}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"Divide", "[", 
+         RowBox[{"x", ",", "n"}], "]"}], ",", 
+        RowBox[{"Divide", "[", 
+         RowBox[{"y", ",", "n"}], "]"}]}], "}"}]}]}], "\[IndentingNewLine]", 
+    "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.622291366789103*^9, 3.6222913725047617`*^9}, {
+  3.622291979329331*^9, 3.622291979724248*^9}, {3.622294021073174*^9, 
+  3.6222940358600483`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"IsDivES", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"a1_Integer", ",", " ", "b1_Integer"}], "}"}], ",", " ", 
+     RowBox[{"{", 
+      RowBox[{"a2_Integer", ",", " ", "b2_Integer"}], "}"}]}], "]"}], ":=", 
+   RowBox[{"Block", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"n", ",", "x", ",", "y"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"n", "=", 
+       RowBox[{"algnormES", "[", 
+        RowBox[{"{", 
+         RowBox[{"a2", ",", "b2"}], "}"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"x", "=", 
+       RowBox[{
+        RowBox[{"a1", "*", "a2"}], "+", 
+        RowBox[{"b1", "*", "b2"}], "-", 
+        RowBox[{"a1", "*", "b2"}]}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"y", "=", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"-", "a1"}], "*", "b2"}], "+", 
+        RowBox[{"b1", "*", "a2"}]}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"Mod", "[", 
+         RowBox[{"x", ",", "n"}], "]"}], "\[Equal]", "0"}], "&&", 
+       RowBox[{
+        RowBox[{"Mod", "[", 
+         RowBox[{"y", ",", "n"}], "]"}], "\[Equal]", "0"}]}]}]}], 
+    "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.622291983393264*^9, 3.622291999927051*^9}, {
+  3.622294044305073*^9, 3.622294047090618*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"denomES", "[", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"a_Integer", ",", "b_Integer"}], "}"}], ",", "c_Integer"}], 
+     "}"}], "]"}], ":=", 
+   RowBox[{"Block", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"x", ",", "d", ",", "g"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"x", "=", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"2", "*", "b"}], "-", "a"}], ",", 
+         RowBox[{"b", "-", 
+          RowBox[{"2", "*", "a"}]}]}], "}"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"d", "=", 
+       RowBox[{"2", "*", "c"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"g", "=", 
+       RowBox[{"GCDES", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"d", ",", "0"}], "}"}], ",", "x"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"Return", "[", 
+       RowBox[{"DivES", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"d", ",", "0"}], "}"}], ",", "g"}], "]"}], "]"}], ";"}]}], 
+    "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.622291987746256*^9, 3.6222920245917177`*^9}, {
+  3.62229207062514*^9, 3.62229207081316*^9}, {3.6223709025821342`*^9, 
+  3.622370931395831*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"pTest1ES", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"m_Integer", ",", "n_Integer"}], "}"}], ",", "p_Integer"}], 
+    "]"}], ":=", 
+   RowBox[{"Block", "[", 
+    RowBox[{
+     RowBox[{"{", "t", "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"t", "=", 
+       RowBox[{"FindTupleES", "[", "p", "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"Select", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"t", ",", 
+          RowBox[{"ConjES", "[", "t", "]"}]}], "}"}], ",", 
+        RowBox[{
+         RowBox[{"IsDivES", "[", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"m", ",", "n"}], "}"}], ",", "#"}], "]"}], "&"}]}], 
+       "]"}]}]}], "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.622291990586841*^9, 3.622291990750794*^9}, {
+  3.622292031677903*^9, 3.622292035126122*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"factorES", "[", 
+    RowBox[{"{", 
+     RowBox[{"m_Integer", ",", "n_Integer"}], "}"}], "]"}], ":=", 
+   RowBox[{"Block", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"norm", ",", "nprimes"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"norm", "=", 
+       RowBox[{"algnormES", "[", 
+        RowBox[{"{", 
+         RowBox[{"m", ",", "n"}], "}"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Abs", "[", "norm", "]"}], "\[Equal]", "1"}], ",", 
+        RowBox[{"Return", "[", 
+         RowBox[{"{", "}"}], "]"}]}], "]"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"nprimes", "=", 
+       RowBox[{"Map", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"Part", "[", 
+           RowBox[{"#", ",", "1"}], "]"}], "&"}], ",", 
+         RowBox[{"FactorInteger", "[", 
+          RowBox[{"Abs", "[", "norm", "]"}], "]"}]}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"Flatten", "[", 
+       RowBox[{
+        RowBox[{"Map", "[", 
+         RowBox[{
+          RowBox[{"Function", "[", 
+           RowBox[{"x", ",", "\[IndentingNewLine]", 
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"Mod", "[", 
+                RowBox[{"x", ",", "3"}], "]"}], "\[Equal]", "0"}], ",", 
+              RowBox[{"{", 
+               RowBox[{"{", 
+                RowBox[{"1", ",", 
+                 RowBox[{"-", "1"}]}], "}"}], "}"}], ",", " ", 
+              RowBox[{"(*", " ", 
+               RowBox[{
+                RowBox[{"if", " ", "we", " ", "encounter", " ", "the", " ", 
+                 RowBox[{"prime", " ", "'"}], 
+                 RowBox[{"3", "'"}]}], ",", " ", 
+                RowBox[{
+                "we", " ", "have", " ", "a", " ", "factor", " ", "of", " ", 
+                 RowBox[{"(", 
+                  RowBox[{"1", "-", "omega"}], ")"}]}]}], " ", "*)"}], 
+              "\[IndentingNewLine]", 
+              RowBox[{"If", "[", 
+               RowBox[{
+                RowBox[{"pCond2ES", "[", "x", "]"}], ",", 
+                RowBox[{"{", 
+                 RowBox[{"{", 
+                  RowBox[{"x", ",", "0"}], "}"}], "}"}], ",", 
+                "\[IndentingNewLine]", 
+                RowBox[{"If", "[", 
+                 RowBox[{
+                  RowBox[{"pCond1ES", "[", "x", "]"}], ",", 
+                  RowBox[{"pTest1ES", "[", 
+                   RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"m", ",", "n"}], "}"}], ",", "x"}], "]"}]}], 
+                 "]"}]}], "]"}]}], "]"}]}], "\[IndentingNewLine]", "]"}], ",",
+           "nprimes"}], "]"}], ",", "1"}], "]"}]}]}], "\[IndentingNewLine]", 
+    "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.622291991935698*^9, 3.62229199213074*^9}, {
+   3.622292039998351*^9, 3.622292054834115*^9}, 3.6223711055171223`*^9, {
+   3.622371205137163*^9, 3.622371205248087*^9}, {3.622443837348155*^9, 
+   3.622443875711907*^9}}],
+
+Cell[BoxData[
+ RowBox[{"factorES", "[", 
+  RowBox[{"{", 
+   RowBox[{"13", ",", "8"}], "}"}], "]"}]], "Input",
+ CellChangeTimes->{{3.6223711208902082`*^9, 3.6223711263437643`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ClearAll", "[", 
+   RowBox[{"intensityES", ",", "vqTableRecipES"}], "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.62237138062391*^9, 3.6223713824742393`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"intensityES", "[", 
+    RowBox[{"{", 
+     RowBox[{"m_Integer", ",", "n_Integer"}], "}"}], "]"}], ":=", 
+   RowBox[{"Block", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"f", ",", "prod"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"m", "\[Equal]", "0"}], "&&", 
+         RowBox[{"n", "\[Equal]", "0"}]}], ",", 
+        RowBox[{"Return", "[", "0", "]"}]}], "]"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"f", "=", 
+       RowBox[{
+        RowBox[{"Det", "[", "BasisES", "]"}], "/", 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{"Zeta", "[", "2", "]"}], "*", 
+          RowBox[{"DirichletL", "[", 
+           RowBox[{"3", ",", "2", ",", "2"}], "]"}]}], ")"}]}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"prod", "=", 
+       RowBox[{"Apply", "[", 
+        RowBox[{"Times", ",", 
+         RowBox[{"Map", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"1", "/", 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"algnormES", "[", "#", "]"}], "^", "2"}], "-", "1"}], 
+              ")"}]}], "&"}], ",", 
+           RowBox[{"factorES", "[", 
+            RowBox[{"{", 
+             RowBox[{"m", ",", "n"}], "}"}], "]"}]}], "]"}]}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"Return", "[", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"f", "*", "prod"}], ")"}], "^", "2"}], "]"}], ";"}]}], 
+    "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.6223712379855843`*^9, 3.622371278332347*^9}, {
+   3.622371361899747*^9, 3.622371365597156*^9}, 3.622443768244409*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"vqTableRecipES", "[", 
+    RowBox[{"r_", ",", "s_"}], "]"}], ":=", 
+   RowBox[{"Union", "[", 
+    RowBox[{"Flatten", "[", 
+     RowBox[{
+      RowBox[{"ParallelTable", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"a", ",", "b"}], "}"}], ",", "c"}], "}"}], "/", 
+         RowBox[{"GCD", "[", 
+          RowBox[{"a", ",", "b", ",", "c"}], "]"}]}], ",", 
+        RowBox[{"{", 
+         RowBox[{"c", ",", "1", ",", "s"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"a", ",", 
+          RowBox[{"-", "r"}], ",", "r"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"b", ",", 
+          RowBox[{"-", "r"}], ",", "r"}], "}"}]}], "]"}], ",", "2"}], "]"}], 
+    "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.6223713929002323`*^9, 3.622371393124539*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ClearAll", "[", 
+   RowBox[{
+   "divTest3Free1ES", ",", "divTest3Free2ES", ",", "visiblity3FreeES"}], 
+   "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.622371444915366*^9, 3.622371449007121*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"divTest3Free1ES", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"m_Integer", ",", "n_Integer"}], "}"}], ",", "p_Integer"}], 
+    "]"}], ":=", 
+   RowBox[{"Block", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"t", ",", "a1", ",", "a2", ",", "b1", ",", "b2"}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"t", "=", 
+       RowBox[{"FindTupleES", "[", "p", "]"}]}], ";", " ", 
+      RowBox[{"(*", " ", 
+       RowBox[{
+        RowBox[{"algnorm", 
+         RowBox[{"(", "t", ")"}]}], " ", "=", " ", "p"}], " ", "*)"}], 
+      "\[IndentingNewLine]", 
+      RowBox[{"a1", "=", 
+       RowBox[{"CubeES", "[", "t", "]"}]}], ";", " ", 
+      RowBox[{"(*", " ", 
+       RowBox[{"a1", " ", "=", " ", 
+        RowBox[{"t", "^", "3"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+      RowBox[{"a2", "=", 
+       RowBox[{"CubeES", "[", 
+        RowBox[{"ConjES", "[", "t", "]"}], "]"}]}], ";", " ", 
+      RowBox[{"(*", " ", 
+       RowBox[{"a2", " ", "=", " ", 
+        RowBox[{"conj", 
+         RowBox[{
+          RowBox[{"(", "t", ")"}], "^", "3"}]}]}], " ", "*)"}], 
+      "\[IndentingNewLine]", 
+      RowBox[{"b1", "=", 
+       RowBox[{"MultES", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"m", ",", "n"}], "}"}], ",", "a1"}], "]"}]}], ";", " ", 
+      RowBox[{"(*", " ", 
+       RowBox[{"b1", " ", "=", " ", 
+        RowBox[{"x", " ", "*", " ", "a1"}]}], " ", "*)"}], 
+      "\[IndentingNewLine]", 
+      RowBox[{"b2", "=", 
+       RowBox[{"MultES", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"m", ",", "n"}], "}"}], ",", "a2"}], "]"}]}], ";", " ", 
+      RowBox[{"(*", " ", 
+       RowBox[{"b2", " ", "=", " ", 
+        RowBox[{"x", " ", "*", " ", "a2"}]}], " ", "*)"}], 
+      "\[IndentingNewLine]", 
+      RowBox[{"Return", "[", 
+       RowBox[{
+        RowBox[{"IsDivComp", "[", 
+         RowBox[{"b1", ",", 
+          RowBox[{"p", "^", "3"}]}], "]"}], "||", 
+        RowBox[{"IsDivComp", "[", 
+         RowBox[{"b2", ",", 
+          RowBox[{"p", "^", "3"}]}], "]"}]}], "]"}], ";"}]}], 
+    "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.622371451734372*^9, 3.6223714661673183`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"divTest3Free2ES", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"m_Integer", ",", "n_Integer"}], "}"}], ",", "p_Integer"}], 
+    "]"}], ":=", 
+   RowBox[{"IsDivComp", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"m", ",", "n"}], "}"}], ",", 
+     RowBox[{"p", "^", "3"}]}], "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.6223714844423532`*^9, 3.622371484666808*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"visiblity3FreeES", "[", 
+    RowBox[{"{", 
+     RowBox[{"m_Integer", ",", "n_Integer"}], "}"}], "]"}], ":=", 
+   RowBox[{"Block", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"norm", ",", "primes", ",", "c"}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"IsDivES", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"m", ",", "n"}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"3", ",", "6"}], "}"}]}], "]"}], ",", 
+        RowBox[{"Return", "[", "False", "]"}]}], "]"}], ";", " ", 
+      RowBox[{"(*", " ", 
+       RowBox[{"check", " ", "if", " ", "divisible", " ", "by", " ", 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{"1", "-", "omega"}], ")"}], "^", "3"}]}], " ", "*)"}], 
+      "\[IndentingNewLine]", 
+      RowBox[{"norm", "=", 
+       RowBox[{"algnormES", "[", 
+        RowBox[{"{", 
+         RowBox[{"m", ",", "n"}], "}"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Abs", "[", "norm", "]"}], "\[Equal]", "1"}], ",", 
+        RowBox[{"Return", "[", "True", "]"}]}], "]"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"primes", "=", 
+       RowBox[{"Map", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"Part", "[", 
+           RowBox[{"#", ",", "1"}], "]"}], "&"}], ",", 
+         RowBox[{"FactorInteger", "[", 
+          RowBox[{"Abs", "[", "norm", "]"}], "]"}]}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"c", "=", 
+       RowBox[{"Catch", "[", 
+        RowBox[{"Flatten", "[", 
+         RowBox[{
+          RowBox[{"Map", "[", 
+           RowBox[{
+            RowBox[{"Function", "[", 
+             RowBox[{"t", ",", "\[IndentingNewLine]", 
+              RowBox[{"If", "[", 
+               RowBox[{
+                RowBox[{"pCond1ES", "[", "t", "]"}], ",", 
+                RowBox[{"If", "[", 
+                 RowBox[{
+                  RowBox[{"divTest3Free1ES", "[", 
+                   RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"m", ",", "n"}], "}"}], ",", "t"}], "]"}], ",", 
+                  RowBox[{"Throw", "[", "False", "]"}]}], "]"}], ",", 
+                "\[IndentingNewLine]", 
+                RowBox[{"If", "[", 
+                 RowBox[{
+                  RowBox[{"pCond2ES", "[", "t", "]"}], ",", 
+                  RowBox[{"If", "[", 
+                   RowBox[{
+                    RowBox[{"divTest3Free2ES", "[", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"m", ",", "n"}], "}"}], ",", "t"}], "]"}], ",", 
+                    RowBox[{"Throw", "[", "False", "]"}]}], "]"}]}], "]"}]}], 
+               "]"}]}], "\[IndentingNewLine]", "]"}], ",", "primes"}], "]"}], 
+          ",", "1"}], "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"c", "===", "False"}], ",", 
+        RowBox[{"Return", "[", "False", "]"}], ",", 
+        RowBox[{"Return", "[", "True", "]"}]}], "]"}], ";"}]}], 
+    "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.622371486781871*^9, 3.62237153401404*^9}, {
+  3.6223719459191313`*^9, 3.6223719478120327`*^9}, {3.622443729447434*^9, 
+  3.622443755671412*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ClearAll", "[", 
+   RowBox[{"miEmbedER", ",", "intensityPlotES", ",", "testCutES"}], "]"}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.6223715918921556`*^9, 3.622371595359708*^9}, 
+   3.622451728317725*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"miEmbedER", "[", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"a_Integer", ",", "b_Integer"}], "}"}], ",", "c_Integer"}], 
+     "}"}], "]"}], ":=", 
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{"BasisES", ".", 
+      RowBox[{"{", 
+       RowBox[{"a", ",", "b"}], "}"}]}], ")"}], "/", "c"}]}], ";"}]], "Input",\
+
+ CellChangeTimes->{{3.6223715541843863`*^9, 3.622371580123312*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"intensityPlotES", "[", 
+    RowBox[{"in_", ",", "scaleFunc_", ",", "cutFunc_"}], "]"}], ":=", 
+   RowBox[{"Block", "[", 
+    RowBox[{
+     RowBox[{"{", "temp", "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"temp", "=", 
+       RowBox[{"Map", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"#", ",", 
+            RowBox[{"denomES", "[", "#", "]"}]}], "}"}], "&"}], ",", 
+         RowBox[{"Select", "[", 
+          RowBox[{"in", ",", "cutFunc"}], "]"}]}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"Graphics", "[", "\[IndentingNewLine]", 
+       RowBox[{"Map", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"Circle", "[", 
+           RowBox[{
+            RowBox[{"N", "[", 
+             RowBox[{"miEmbedER", "[", 
+              RowBox[{"Part", "[", 
+               RowBox[{"#", ",", "1"}], "]"}], "]"}], "]"}], ",", 
+            RowBox[{"scaleFunc", "[", 
+             RowBox[{"N", "[", 
+              RowBox[{"intensityES", "[", 
+               RowBox[{"Part", "[", 
+                RowBox[{"#", ",", "2"}], "]"}], "]"}], "]"}], "]"}]}], "]"}], 
+          "&"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"Select", "[", 
+          RowBox[{"temp", ",", 
+           RowBox[{
+            RowBox[{"visiblity3FreeES", "[", 
+             RowBox[{"Part", "[", 
+              RowBox[{"#", ",", "2"}], "]"}], "]"}], "&"}]}], "]"}]}], "]"}], 
+       "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.622371589481967*^9, 3.6223716152131243`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"testCutES", "[", "x_", "]"}], ":=", 
+   RowBox[{
+    RowBox[{"Norm", "[", 
+     RowBox[{"N", "[", 
+      RowBox[{"miEmbedER", "[", "x", "]"}], "]"}], "]"}], "\[LessEqual]", 
+    "2.55"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.622371619114916*^9, 3.622371621738291*^9}, 
+   3.622372292271213*^9}],
+
+Cell[BoxData[
+ RowBox[{"Show", "[", 
+  RowBox[{
+   RowBox[{"intensityPlotES", "[", 
+    RowBox[{
+     RowBox[{"vqTableRecipES", "[", 
+      RowBox[{"30", ",", "22"}], "]"}], ",", 
+     RowBox[{
+      RowBox[{"#", "*", "0.2"}], "&"}], ",", "testCutES"}], "]"}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"Graphics", "[", 
+    RowBox[{"{", 
+     RowBox[{"Red", ",", 
+      RowBox[{"Circle", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"0", ",", "0"}], "}"}], ",", "1"}], "]"}]}], "}"}], "]"}]}], 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.6223716329868717`*^9, 3.622371662380522*^9}, {
+  3.622372101704904*^9, 3.6223721352251377`*^9}, {3.6224435173715963`*^9, 
+  3.622443519102601*^9}, {3.622449534528482*^9, 3.622449536460189*^9}}]
 },
 WindowSize->{1920, 1145},
 WindowMargins->{{0, Automatic}, {Automatic, 0}},
@@ -688,18 +1303,38 @@ Cell[9081, 262, 580, 18, 64, "Input"],
 Cell[9664, 282, 395, 11, 38, "Input"],
 Cell[10062, 295, 155, 3, 38, "Input"],
 Cell[10220, 300, 590, 13, 89, "Input"],
-Cell[10813, 315, 340, 10, 38, "Input"],
-Cell[11156, 327, 1552, 48, 89, "Input"],
-Cell[12711, 377, 2298, 63, 214, "Input"],
-Cell[15012, 442, 498, 14, 38, "Input"],
-Cell[15513, 458, 3237, 83, 289, "Input"],
-Cell[18753, 543, 319, 7, 38, "Input"],
-Cell[19075, 552, 704, 18, 89, "Input"],
-Cell[19782, 572, 401, 10, 64, "Input"],
-Cell[20186, 584, 628, 18, 38, "Input"],
-Cell[20817, 604, 646, 17, 38, "Input"],
-Cell[21466, 623, 740, 18, 64, "Input"],
-Cell[22209, 643, 566, 15, 38, "Input"]
+Cell[10813, 315, 408, 11, 38, "Input"],
+Cell[11224, 328, 1552, 48, 89, "Input"],
+Cell[12779, 378, 2298, 63, 214, "Input"],
+Cell[15080, 443, 498, 14, 38, "Input"],
+Cell[15581, 459, 3237, 83, 289, "Input"],
+Cell[18821, 544, 319, 7, 38, "Input"],
+Cell[19143, 553, 704, 18, 89, "Input"],
+Cell[19850, 573, 401, 10, 64, "Input"],
+Cell[20254, 585, 628, 18, 38, "Input"],
+Cell[20885, 605, 646, 17, 38, "Input"],
+Cell[21534, 624, 740, 18, 64, "Input"],
+Cell[22277, 644, 237, 7, 38, "Input"],
+Cell[22517, 653, 667, 17, 38, "Input"],
+Cell[23187, 672, 237, 6, 38, "Input"],
+Cell[23427, 680, 1367, 38, 164, "Input"],
+Cell[24797, 720, 1353, 38, 164, "Input"],
+Cell[26153, 760, 1283, 37, 164, "Input"],
+Cell[27439, 799, 909, 26, 114, "Input"],
+Cell[28351, 827, 3031, 76, 264, "Input"],
+Cell[31385, 905, 179, 4, 38, "Input"],
+Cell[31567, 911, 193, 4, 38, "Input"],
+Cell[31763, 917, 1742, 49, 164, "Input"],
+Cell[33508, 968, 889, 26, 38, "Input"],
+Cell[34400, 996, 230, 6, 38, "Input"],
+Cell[34633, 1004, 2227, 62, 214, "Input"],
+Cell[36863, 1068, 427, 13, 38, "Input"],
+Cell[37293, 1083, 3345, 86, 289, "Input"],
+Cell[40641, 1171, 240, 6, 38, "Input"],
+Cell[40884, 1179, 447, 15, 38, "Input"],
+Cell[41334, 1196, 1628, 43, 189, "Input"],
+Cell[42965, 1241, 345, 10, 38, "Input"],
+Cell[43313, 1253, 748, 20, 64, "Input"]
 }
 ]
 *)
