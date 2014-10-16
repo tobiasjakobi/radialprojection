@@ -42,12 +42,24 @@ void Coprime::findTupleZ2(const int p, vec2i& out) {
   out.set(x, y);
 }
 
+void Coprime::findTupleGI(const int p, vec2i& out) {
+  // TODO: implement
+}
+
 bool Coprime::pCond1Z2(const int p) {
   return (((p - 1) % 8 == 0) || (((p + 1) % 8 == 0)));
 }
 
 bool Coprime::pCond2Z2(const int p) {
   return (((p - 3) % 8 == 0) || (((p + 3) % 8 == 0)));
+}
+
+bool Coprime::pCond1GI(const int p) {
+  return ((p - 1) % 4 == 0);
+}
+
+bool Coprime::pCond2GI(const int p) {
+  return ((p - 3) % 4 == 0);
 }
 
 void Coprime::factorZ2(const vec2i& in, vector<vec2i>& factorization) {
@@ -61,6 +73,8 @@ void Coprime::factorZ2(const vec2i& in, vector<vec2i>& factorization) {
 
   for (vector<uint>::const_iterator k = primes.begin(); k != primes.end(); ++k) {
     if (*k % 2 == 0) {
+      /* If we encounter the prime '2' in our factorization of the norm, then *
+       * the factorization of the input contains the factor Sqrt[2].          */
       factorization.push_back(vec2i(0, 1));
       continue;
     }
@@ -76,6 +90,38 @@ void Coprime::factorZ2(const vec2i& in, vector<vec2i>& factorization) {
 
       if (in.isDivZ2(t)) factorization.push_back(t);
       if (in.isDivZ2(t.conj())) factorization.push_back(t.conj());
+    }
+  }
+}
+
+void Coprime::factorGI(const vec2i& in, vector<vec2i>& factorization) {
+  factorization.clear();
+
+  const int norm = in.preNormGI();
+  if (abs(norm) == 1) return;
+  
+  vector<uint> primes;
+  factorInteger(abs(norm), primes);
+
+  for (vector<uint>::const_iterator k = primes.begin(); k != primes.end(); ++k) {
+    if (*k % 2 == 0) {
+      /* If we encounter the prime '2' in our factorization of the norm, then *
+       * the factorization of the input contains the factor (1 + I).          */
+      factorization.push_back(vec2i(1, 1));
+      continue;
+    }
+
+    if (pCond2GI(*k)) {
+      factorization.push_back(vec2i(*k, 0));
+      continue;
+    }
+
+    if (pCond1GI(*k)) {
+      vec2i t;
+      Coprime::findTupleGI(*k, t);
+
+      if (in.isDivGI(t)) factorization.push_back(t);
+      if (in.isDivGI(t.conjGI())) factorization.push_back(t.conjGI());
     }
   }
 }

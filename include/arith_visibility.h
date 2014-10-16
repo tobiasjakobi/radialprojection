@@ -27,16 +27,29 @@ namespace Coprime {
    * (m,n) that solves the equation algnorm(m,n) = p.         */
   void findTupleZ2(const int p, vec2i& out);
 
-  /* The two conditions that apply to our visibility checks: *
-   * p = +1 or -1 (mod 8) (first condition)                  *
-   * p = +3 or -3 (mod 8) (second condition)                 */
+  /* Assuming that p = +1 (mod 4), this finds the tuple (m,n) *
+   * that solves the equation algnorm(m,n) = p.               */
+  void findTupleGI(const int p, vec2i& out);
+
+  /* The two conditions that apply to our visibility checks (for Z[Sqrt[2]]): *
+   * p = +1 or -1 (mod 8) (first condition)                                   *
+   * p = +3 or -3 (mod 8) (second condition)                                  */
   bool pCond1Z2(const int p);
   bool pCond2Z2(const int p);
 
+  /* The two conditions (for the Gaussian Integers):  *
+   * p = +1 (mod 4) (first condition)                 *
+   * p = +3 (mod 4) (second condition)                */
+  bool pCond1GI(const int p);
+  bool pCond2GI(const int p);
+
   /* Do prime factorization in Z[Sqrt[2]]. This takes 'in' as an *
    * element of Z[Sqrt[2]] and returns a list of primes that     *
-   * divide 'in' (without mulitplicity).                         */
+   * divide 'in' (without multiplicity).                         */
   void factorZ2(const vec2i& in, vector<vec2i>& factorization);
+
+  // Do prime factorization in the Gaussian integers.
+  void factorGI(const vec2i& in, vector<vec2i>& factorization);
 };
 
 namespace ArithVisibility {

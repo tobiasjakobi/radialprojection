@@ -74,6 +74,14 @@ public:
     return (x == 0 && y == 0);
   }
 
+  int preNormGI() const {
+    return x*x + y*y;
+  }
+
+  int normGI() const {
+    return abs(x*x + y*y);
+  }
+
   int preNormZ2() const {
     return x*x - 2*y*y;
   }
@@ -106,6 +114,10 @@ public:
     return vec2i(this->x, -this->y);
   }
 
+  vec2i conjGI() const {
+    return vec2i(this->x, -this->y);
+  }
+
   // Squaring in Z[Sqrt[2]]
   vec2i squareZ2() const {
     return vec2i(x*x + 2*y*y, 2*x*y);
@@ -129,7 +141,7 @@ public:
     return ((a % norm == 0) && (b % norm == 0));
   };
 
-  // Divide 'this' by 'd', assuming that this is defined.
+  // Divide 'this' by 'd' in Z[Sqrt[2]], assuming that this is defined.
   vec2i divZ2(const vec2i& d) const {
     const int norm = d.preNormZ2();
     const int a = this->x * d.x - 2 * this->y * d.y;
@@ -138,6 +150,24 @@ public:
     return vec2i(a / norm, b / norm);
   };
 
+  // Check if 'this' can be divided by 'd' in the Gaussian Integers.
+  bool isDivGI(const vec2i& d) const {
+    const int norm = d.preNormGI();
+    const int a = this->x * d.x + this->y * d.y;
+    const int b = this->y * d.x - this->x * d.y;
+
+    return ((a % norm == 0) && (b % norm == 0));
+  }
+
+  // Divide 'this' by 'd' in the Gaussian Integers, assuming that this is defined.
+  vec2i divGI(const vec2i& d) const {
+    const int norm = d.preNormGI();
+    const int a = this->x * d.x + this->y * d.y;
+    const int b = this->y * d.x - this->x * d.y;
+
+    return vec2i(a / norm, b / norm);
+  }
+  
   vec2d transTriToR2() const;
 
   vec2d transGenericToR2(const vec2d& v) const;
