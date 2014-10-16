@@ -80,7 +80,7 @@ void Coprime::factorZ2(const vec2i& in, vector<vec2i>& factorization) {
     }
 
     if (pCond2Z2(*k)) {
-      factorization.push_back(vec2i());
+      factorization.push_back(vec2i(*k, 0));
       continue;
     }
 
