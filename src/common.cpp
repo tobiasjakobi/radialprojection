@@ -207,6 +207,36 @@ void Coprime::multZ3(const vec2i& a, const vec2i& b, vec2i& out) {
           a.x * b.y + a.y * b.x);
 }
 
+vec2i Coprime::moduloGI(const vec2i& a, const vec2i& b) {
+  const double N = 1.0 / double(b.preNormGI());
+
+  const int alpha = lround(double(a.x * b.x + a.y * b.y) * N);
+  const int beta = lround(double(a.y * b.x - a.x * b.y) * N);
+
+  return vec2i(a.x - (alpha * b.x - beta * b.y),
+               a.y - (alpha * b.y + beta * b.x));
+}
+
+
+vec2i Coprime::gcdGI(const vec2i& a, const vec2i& b) {
+  vec2i x(a);
+  vec2i y(b);
+  vec2i z;
+
+  while (!y.isZero()) {
+    z = y;
+    y = moduloGI(x, y);
+    x = z;
+  }
+
+  return x;
+}
+
+void Coprime::multGI(const vec2i& a, const vec2i& b, vec2i& out) {
+  out.set(a.x * b.x - a.y * b.y,
+          a.x * b.y + a.y * b.x);
+}
+
 double Common::checkPosition(const vec2d& a, const vec2d& b, const vec2d& c) {
   const double pos = (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x);
   return pos;

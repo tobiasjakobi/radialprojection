@@ -128,6 +128,16 @@ public:
     return vec2i(x*x*x + 6*x*y*y, 3*x*x*y + 2*y*y*y);
   }
 
+  // Squaring in the Gaussian Integers
+  vec2i squareGI() const {
+    return vec2i(x*x - y*y, 2*x*y);
+  }
+
+  // Cubing in the Gaussian Integers
+  vec2i cubeGI() const {
+    return vec2i(x*x*x - 3*x*y*y, 3*x*x*y - y*y*y);
+  }
+
   bool isDiv(const int d) const {
     return ((x % d == 0) && (y % d == 0));
   }
@@ -184,6 +194,8 @@ public:
 
   vec2d() {}
   vec2d(double a, double b) : x(a), y(b) {}
+
+  vec2d(const vec2d& v) : x(v.x), y(v.y) {}
 
   vec2d operator*(double scale) const {
     return vec2d(scale * x, scale * y);
@@ -928,6 +940,11 @@ namespace Coprime {
   }
 
   void multZ3(const vec2i& a, const vec2i& b, vec2i& out);
+
+  // These routines are primarily used for the arithmetic visibility.
+  vec2i moduloGI(const vec2i& a, const vec2i& b);
+  vec2i gcdGI(const vec2i& a, const vec2i& b);
+  void multGI(const vec2i& a, const vec2i& b, vec2i& out);
 
 };
 

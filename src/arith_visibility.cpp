@@ -37,13 +37,23 @@ void Coprime::findTupleZ2(const int p, vec2i& out) {
 
     if (2*y*y - x*x + p == 0) break;
     ++x;
-  };
+  }
 
   out.set(x, y);
 }
 
 void Coprime::findTupleGI(const int p, vec2i& out) {
-  // TODO: implement
+  int x = ceil(sqrt(double(p)));
+  int y;
+
+  while (true) {
+    y = lround(sqrt(double(p - x*x)));
+
+    if (x*x + y*y - p == 0) break;
+    --x;
+  }
+
+  out.set(x, y);
 }
 
 bool Coprime::pCond1Z2(const int p) {
@@ -169,6 +179,49 @@ bool ArithVisibility::visibility2FreeZ2(const vec2i& in) {
   return true;
 }
 
+bool ArithVisibility::divTest2Free1GI(const vec2i& in, const int p) {
+  using namespace Coprime;
+
+  vec2i t, a1, a2;
+
+  Coprime::findTupleGI(p, t);
+
+  multGI(in, t.squareGI(), a1);
+  multGI(in, t.conjGI().squareGI(), a2);
+
+  return (a1.isDiv(p*p) || a2.isDiv(p*p));
+}
+
+bool ArithVisibility::divTest2Free2GI(const vec2i& in, const int p) {
+  return in.isDiv(p*p);
+}
+
+bool ArithVisibility::visibility2FreeGI(const vec2i& in) {
+  using namespace Coprime;
+
+  if (((in.x - in.y) % 2 == 0) && (in.x % 2 == 0))
+    return false;
+
+  const int norm = in.preNormGI(); /* the algebraic norm */
+  if (abs(norm) == 1) return true;
+
+  vector<uint> primes;
+  factorInteger(abs(norm), primes);
+
+  for (vector<uint>::const_iterator k = primes.begin();
+       k != primes.end(); ++k) {
+    if (pCond1GI(*k)) {
+      if (divTest2Free1GI(in, *k)) return false;
+    } else {
+      if (pCond2Z2(*k)) {
+        if (divTest2Free2GI(in, *k)) return false;
+      }
+    }
+  }
+
+  return true;
+}
+
 vec2i ArithVisibility::denomZ2Fourier(const vec2i& in, const int in_c) {
   const vec2i x(in.y * 4, in.x * 2);
   const vec2i c(in_c, 0);
@@ -197,6 +250,33 @@ double ArithVisibility::intensityZ2(const vec2i& denom) {
   return ret;
 }
 
+vec2i ArithVisibility::denomGIFourier(const vec2i& in, const int in_c) {
+  // This case is self-dual, so we don't need any transformation of the input.
+  const vec2i c(in_c, 0);
+  const vec2i g(Coprime::gcdGI(c, in));
+
+  return c.divGI(g);
+}
+
+double ArithVisibility::intensityGI(const vec2i& denom) {
+  static const double catalanC = 0.915965594177219015054603514932;
+
+  if (denom.isZero()) return 0.0;
+
+  vector<vec2i> primesGI;
+  Coprime::factorGI(denom, primesGI);
+
+  double ret = 1.0;
+  for (vector<vec2i>::const_iterator k = primesGI.begin();
+       k != primesGI.end(); ++k) {
+    const int pnorm = k->preNormGI();
+    ret *= (1.0 / (double(pnorm * pnorm) - 1.0));
+  }
+
+  ret *= (6.0 / (Common::pi * Common::pi * catalanC));
+  return ret;
+}
+
 bool ArithVisibility::divTest3Free1Z2(const vec2i& in, const int p) {
   using namespace Coprime;
 
@@ -217,6 +297,7 @@ bool ArithVisibility::divTest3Free2Z2(const vec2i& in, const int p) {
 bool ArithVisibility::visibility3FreeZ2(const vec2i& in) {
   using namespace Coprime;
 
+  // Check if the input is divisible by (Sqrt[2])^3 = 2*Sqrt[2].
   if (in.isDivZ2(vec2i(0, 2))) return false;
 
   const int norm = in.preNormZ2(); /* the algebraic norm */
@@ -232,6 +313,49 @@ bool ArithVisibility::visibility3FreeZ2(const vec2i& in) {
     } else {
       if (pCond2Z2(*k)) {
         if (divTest3Free2Z2(in, *k)) return false;
+      }
+    }
+  }
+
+  return true;
+}
+
+bool ArithVisibility::divTest3Free1GI(const vec2i& in, const int p) {
+  using namespace Coprime;
+
+  vec2i t, a1, a2;
+
+  Coprime::findTupleGI(p, t);
+
+  multGI(in, t.cubeGI(), a1);
+  multGI(in, t.conjGI().cubeGI(), a2);
+
+  return (a1.isDiv(p*p*p) || a2.isDiv(p*p*p));
+}
+
+bool ArithVisibility::divTest3Free2GI(const vec2i& in, const int p) {
+  return in.isDiv(p*p*p);
+}
+
+bool ArithVisibility::visibility3FreeGI(const vec2i& in) {
+  using namespace Coprime;
+
+  // Check if the input is divisible by (1-i)^3.
+  if (in.isDivGI(vec2i(2, 2))) return false;
+
+  const int norm = in.preNormGI(); /* the algebraic norm */
+  if (abs(norm) == 1) return true;
+
+  vector<uint> primes;
+  factorInteger(abs(norm), primes);
+
+  for (vector<uint>::const_iterator k = primes.begin();
+       k != primes.end(); ++k) {
+    if (pCond1GI(*k)) {
+      if (divTest3Free1GI(in, *k)) return false;
+    } else {
+      if (pCond2GI(*k)) {
+        if (divTest3Free2GI(in, *k)) return false;
       }
     }
   }
@@ -271,6 +395,38 @@ bool ArithVisibility::clipFundamentalZ2(const vec2d& x) {
   return true;
 }
 
+void ArithVisibility::diffractionGI(const vector<vec2iq>& in,
+              vector<bragg>& out, clipfunc f) {
+  out.clear();
+
+  for (vector<vec2iq>::const_iterator k = in.begin(); k != in.end(); ++k) {
+    const vec2d pos(k->minkowskiGR());
+    if (!f(pos)) continue;
+
+    const vec2i denom(denomGIFourier(k->getNumerator(), k->getDenominator()));
+
+    if (visibility3FreeGI(denom)) {
+      out.push_back(bragg(pos, intensityGI(denom)));
+    }
+  }
+}
+
+bool ArithVisibility::clipFundamentalGI(const vec2d& x) {
+  using namespace Common;
+
+  static const vec2d vzero(0.0, 0.0);
+  static const vec2d vec1(0.0, 1.0);
+  static const vec2d vec2(1.0, 0.0);
+  static const double clipeps = 0.00001;
+
+  if (clipeps + checkPosition(vec2 + vzero, vec2 + vec1, x) < 0) return false;
+  if (clipeps + checkPosition(-vec2 + vec1, -vec2 + vzero, x) < 0) return false;
+  if (clipeps + checkPosition(-vec1 + vzero, -vec1 + vec2, x) < 0) return false;
+  if (clipeps + checkPosition(vec1 + vec2, vec1 + vzero, x) < 0) return false;
+
+  return true;
+}
+
 ostream& operator<<(ostream &os, const ArithVisibility::vec2iq& v) {
   os << '{' << v.getNumerator() << ',' << v.getDenominator() << '}';
   return os;
@@ -285,7 +441,7 @@ void vTableZ2(const uint r, Common::vec2ilist& table) {
   const int temp = int(ceil(double(r) / sqrt(2.0)));
   table.clear();
   table.reserve((r + 1) * (temp + 1));
-  
+
   for (int i = -int(r); i <= int(r); ++i) {
     for (int j = -temp; j <= temp; ++j) {
       table.push_back(vec2i(i, j));
@@ -314,6 +470,121 @@ void vqTableRecipZ2(const uint r, const uint s,
   table.erase(unique(table.begin(), table.end()), table.end());
 }
 
+void vTableGI(const uint r, Common::vec2ilist& table) {
+  table.clear();
+  table.reserve((r + 1) * (r + 1));
+
+  for (int i = -int(r); i <= int(r); ++i) {
+    for (int j = -int(r); j <= int(r); ++j) {
+      table.push_back(vec2i(i, j));
+    }
+  }
+}
+
+void vqTableRecipGI(const uint r, const uint s,
+                    vector<ArithVisibility::vec2iq>& table) {
+  using namespace Coprime;
+  using namespace ArithVisibility;
+
+  table.clear();
+
+  for (uint c = 1; c <= s; ++c) {
+    for (int i = -int(r); i <= int(r); ++i) {
+      for (int j = -int(r); j <= int(r); ++j) {
+        const int g = gcdZ(uint(gcdZ(abs(i), abs(j))), c);
+
+        table.push_back(vec2iq(i / g, j / g, c / g));
+      }
+    }
+  }
+
+  sort(table.begin(), table.end());
+  table.erase(unique(table.begin(), table.end()), table.end());
+}
+
+void minmax(const vector<ArithVisibility::bragg>& input,
+            vec2d& min, vec2d& max, double& radius){
+  using namespace ArithVisibility;
+
+  if (input.empty()) return;
+
+  vector<bragg>::const_iterator k = input.begin();
+  vec2d a(k->getPosition()), b(k->getPosition());
+  double r = k->getIntensity();
+  ++k;
+
+  for (; k != input.end(); ++k) {
+    const vec2d temp(k->getPosition());
+    const double rtemp = k->getIntensity();
+
+    if (temp.x < a.x) {
+      a.x = temp.x;
+    }
+
+    if (temp.x > b.x) {
+      b.x = temp.x;
+    }
+
+    if (temp.y < a.y) {
+      a.y = temp.y;
+    }
+
+    if (temp.y > b.y) {
+      b.y = temp.y;
+    }
+
+    if (rtemp > r) r = rtemp;
+  }
+
+  min = a; max = b;
+  radius = r;
+}
+
+void toEPS(const vector<ArithVisibility::bragg>& input) {
+  using namespace ArithVisibility;
+
+  vec2d min, max;
+  double radius;
+
+  // Base width of the Postscript and offset to the borders.
+  const int basewidth = 800;
+  const int offset = 50;
+
+  if (input.empty()) return;
+
+  minmax(input, min, max, radius);
+
+  const double xfactor = std::max(abs(min.x), abs(max.x));
+  const double yfactor = std::max(abs(min.y), abs(max.y));
+
+  const int height = basewidth * lround(yfactor / xfactor);
+
+  // Write header with bounding box information
+  cout << "%!PS-Adobe-3.0 EPSF-3.0" << endl;
+  cout << "%%BoundingBox: 0 0 " << basewidth << ' ' << height << endl;
+  cout << "%%BeginProlog" << endl;
+  cout << "%%EndProlog" << endl;
+
+  // Translate origin to the middle of the page
+  cout << (basewidth / 2) << ' ' << (height / 2) << " translate" << endl;
+
+  // Apply scaling
+  cout << lround(double(basewidth - offset) / (2.0 * (xfactor + radius))) << ' '
+       << lround(double(height - offset) / (2.0 * (yfactor + radius)))
+       << " scale" << endl;
+
+  cout << "0.002 setlinewidth" << endl; // TODO: base width on min/max
+
+  for (vector<bragg>::const_iterator k = input.begin(); k != input.end(); ++k) {
+    cout << "newpath" << endl;
+    cout << k->getPosition().x << ' ' << k->getPosition().y << ' '
+         << k->getIntensity() << " 0 360 arc" << endl;
+    cout << "stroke" << endl;
+  }
+
+  cout << "%%EOF" << endl;
+}
+
 double linscale(double x) {
   return x * 0.4;
 }
@@ -324,28 +595,36 @@ int main(int argc, char* argv[]) {
   vector<vec2iq> large_table;
   vector<bragg> diffraction;
 
-  vqTableRecipZ2(60, 52, large_table);
+  vqTableRecipZ2(35, 29, large_table);
   diffractionZ2(large_table, diffraction, clipFundamentalZ2);
 
   for (vector<bragg>::iterator k = diffraction.begin(); k != diffraction.end(); ++k) {
     k->apply(linscale);
   }
 
-  //cout << large_table.size() << endl;
-  //cout << diffraction.size() << endl;
+  toEPS(diffraction);
 
-  //cout << large_table;
-  cout << diffraction;
+  /*vector<vec2iq> large_table;
+  vector<bragg> diffraction;
+
+  vqTableRecipGI(50, 47, large_table);
+  diffractionGI(large_table, diffraction, clipFundamentalGI);
+
+  for (vector<bragg>::iterator k = diffraction.begin(); k != diffraction.end(); ++k) {
+    k->apply(linscale);
+  }
+
+  toEPS(diffraction);&/
 
   /*Common::vec2ilist large_table;
   Common::vec2ilist sqfree_table;
 
   for (uint size = 50; size < 2000; size += 50) {
-    vTableZ2(size, large_table);
+    vTableGI(size, large_table);
   
     for (Common::vec2ilist::const_iterator i = large_table.begin();
          i != large_table.end(); ++i) {
-      if (ArithVisibility::visibility2Free(*i)) sqfree_table.push_back(*i);
+      if (ArithVisibility::visibility2FreeGI(*i)) sqfree_table.push_back(*i);
     }
   
     cout << size << ": ";
