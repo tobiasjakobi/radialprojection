@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[     49685,       1411]
-NotebookOptionsPosition[     47614,       1352]
-NotebookOutlinePosition[     47971,       1368]
-CellTagsIndexPosition[     47928,       1365]
+NotebookDataLength[     49736,       1412]
+NotebookOptionsPosition[     47665,       1353]
+NotebookOutlinePosition[     48022,       1369]
+CellTagsIndexPosition[     47979,       1366]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -1222,7 +1222,7 @@ Cell[BoxData[
      RowBox[{"vqTableRecipGI", "[", 
       RowBox[{"30", ",", "17"}], "]"}], ",", 
      RowBox[{
-      RowBox[{"#", "*", "0.2"}], "&"}], ",", "testCutGI"}], "]"}], ",", 
+      RowBox[{"#", "*", "0.4"}], "&"}], ",", "testCutGI"}], "]"}], ",", 
    "\[IndentingNewLine]", 
    RowBox[{"Graphics", "[", 
     RowBox[{"{", 
@@ -1236,7 +1236,8 @@ Cell[BoxData[
   3.622286625108268*^9, 3.6222866268492613`*^9}, {3.622286666202509*^9, 
   3.622286700588785*^9}, {3.622287050743154*^9, 3.622287072017173*^9}, {
   3.6222871080176783`*^9, 3.622287113566648*^9}, {3.6222872773227873`*^9, 
-  3.6222872832259398`*^9}, {3.62228982517179*^9, 3.622289827398795*^9}}],
+  3.6222872832259398`*^9}, {3.62228982517179*^9, 3.622289827398795*^9}, {
+  3.622534009458453*^9, 3.6225340096898413`*^9}}],
 
 Cell[BoxData[
  RowBox[{
@@ -1408,11 +1409,11 @@ Cell[40379, 1137, 212, 5, 38, "Input"],
 Cell[40594, 1144, 386, 12, 38, "Input"],
 Cell[40983, 1158, 1676, 44, 189, "Input"],
 Cell[42662, 1204, 370, 10, 38, "Input"],
-Cell[43035, 1216, 895, 22, 64, "Input"],
-Cell[43933, 1240, 204, 5, 38, "Input"],
-Cell[44140, 1247, 368, 10, 64, "Input"],
-Cell[44511, 1259, 2522, 71, 214, "Input"],
-Cell[47036, 1332, 574, 18, 64, "Input"]
+Cell[43035, 1216, 946, 23, 64, "Input"],
+Cell[43984, 1241, 204, 5, 38, "Input"],
+Cell[44191, 1248, 368, 10, 64, "Input"],
+Cell[44562, 1260, 2522, 71, 214, "Input"],
+Cell[47087, 1333, 574, 18, 64, "Input"]
 }
 ]
 *)
