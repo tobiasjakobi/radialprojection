@@ -276,8 +276,51 @@ bool ArithVisibility::visibility2FreeGI(const vec2i& in) {
     if (pCond1GI(*k)) {
       if (divTest2Free1GI(in, *k)) return false;
     } else {
-      if (pCond2Z2(*k)) {
+      if (pCond2GI(*k)) {
         if (divTest2Free2GI(in, *k)) return false;
+      }
+    }
+  }
+
+  return true;
+}
+
+bool ArithVisibility::divTest2Free1ES(const vec2i& in, const int p) {
+  using namespace Coprime;
+
+  vec2i t, a1, a2;
+
+  Coprime::findTupleES(p, t);
+
+  multES(in, t.squareES(), a1);
+  multES(in, t.conjES().squareES(), a2);
+
+  return (a1.isDiv(p*p) || a2.isDiv(p*p));
+}
+
+bool ArithVisibility::divTest2Free2ES(const vec2i& in, const int p) {
+  return in.isDiv(p*p);
+}
+
+bool ArithVisibility::visibility2FreeES(const vec2i& in) {
+  using namespace Coprime;
+
+  if (((in.x - in.y) % 3 == 0) && (in.x % 3 == 0))
+    return false;
+
+  const int norm = in.preNormES(); /* the algebraic norm */
+  if (abs(norm) == 1) return true;
+
+  vector<uint> primes;
+  factorInteger(abs(norm), primes);
+
+  for (vector<uint>::const_iterator k = primes.begin();
+       k != primes.end(); ++k) {
+    if (pCond1ES(*k)) {
+      if (divTest2Free1ES(in, *k)) return false;
+    } else {
+      if (pCond2ES(*k)) {
+        if (divTest2Free2ES(in, *k)) return false;
       }
     }
   }
@@ -310,7 +353,7 @@ double ArithVisibility::intensityZ2(const vec2i& denom) {
   }
 
   ret *= (1.0 / (2.0 * sqrt(2.0) * zetaZ2));
-  return ret;
+  return (ret*ret);
 }
 
 vec2i ArithVisibility::denomGIFourier(const vec2i& in, const int in_c) {
@@ -337,7 +380,34 @@ double ArithVisibility::intensityGI(const vec2i& denom) {
   }
 
   ret *= (6.0 / (Common::pi * Common::pi * catalanC));
-  return ret;
+  return (ret*ret);
+}
+
+vec2i ArithVisibility::denomESFourier(const vec2i& in, const int in_c) {
+  const vec2i x(in.y * 2 - in.x, in.y - in.x * 2);
+  const vec2i d(in_c * 2, 0);
+  const vec2i g(Coprime::gcdES(d, x));
+
+  return d.divES(g);
+}
+
+double ArithVisibility::intensityES(const vec2i& denom) {
+  static const double zetaES = 1.28519095548414940291751179870;
+
+  if (denom.isZero()) return 0.0;
+
+  vector<vec2i> primesES;
+  Coprime::factorES(denom, primesES);
+
+  double ret = 1.0;
+  for (vector<vec2i>::const_iterator k = primesES.begin();
+       k != primesES.end(); ++k) {
+    const int pnorm = k->preNormES();
+    ret *= (1.0 / (double(pnorm * pnorm) - 1.0));
+  }
+
+  ret *= (2.0 / (sqrt(3.0) * zetaES));
+  return (ret*ret);
 }
 
 bool ArithVisibility::divTest3Free1Z2(const vec2i& in, const int p) {
@@ -565,6 +635,17 @@ void vqTableRecipGI(const uint r, const uint s,
   table.erase(unique(table.begin(), table.end()), table.end());
 }
 
+void vTableES(const uint r, Common::vec2ilist& table) {
+  table.clear();
+  table.reserve((r + 1) * (r + 1));
+
+  for (int i = -int(r); i <= int(r); ++i) {
+    for (int j = -int(r); j <= int(r); ++j) {
+      table.push_back(vec2i(i, j));
+    }
+  }
+}
+
 void minmax(const vector<ArithVisibility::bragg>& input,
             vec2d& min, vec2d& max, double& radius){
   using namespace ArithVisibility;
@@ -655,7 +736,7 @@ double linscale(double x) {
 int main(int argc, char* argv[]) {
   using namespace ArithVisibility;
 
-  vector<vec2iq> large_table;
+  /*vector<vec2iq> large_table;
   vector<bragg> diffraction;
 
   vqTableRecipZ2(35, 29, large_table);
@@ -665,7 +746,7 @@ int main(int argc, char* argv[]) {
     k->apply(linscale);
   }
 
-  toEPS(diffraction);
+  toEPS(diffraction);*/
 
   /*vector<vec2iq> large_table;
   vector<bragg> diffraction;
@@ -677,23 +758,23 @@ int main(int argc, char* argv[]) {
     k->apply(linscale);
   }
 
-  toEPS(diffraction);&/
+  toEPS(diffraction);*/
 
-  /*Common::vec2ilist large_table;
+  Common::vec2ilist large_table;
   Common::vec2ilist sqfree_table;
 
   for (uint size = 50; size < 2000; size += 50) {
-    vTableGI(size, large_table);
+    vTableES(size, large_table);
   
     for (Common::vec2ilist::const_iterator i = large_table.begin();
          i != large_table.end(); ++i) {
-      if (ArithVisibility::visibility2FreeGI(*i)) sqfree_table.push_back(*i);
+      if (ArithVisibility::visibility2FreeES(*i)) sqfree_table.push_back(*i);
     }
   
     cout << size << ": ";
     cout << (double(sqfree_table.size()) / double(large_table.size())) << endl;
     sqfree_table.clear();
-  }*/
+  }
 
   return 0;
 }

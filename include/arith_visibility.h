@@ -82,6 +82,11 @@ namespace ArithVisibility {
   bool divTest2Free2GI(const vec2i& in, const int p);
   bool visibility2FreeGI(const vec2i& in);
 
+  // Check for square-free 'visibility' of an element of the Eisenstein Integers.
+  bool divTest2Free1ES(const vec2i& in, const int p);
+  bool divTest2Free2ES(const vec2i& in, const int p);
+  bool visibility2FreeES(const vec2i& in);
+
   /* Let x = in / c, an element of Q(Sqrt[2]), then this computes    *
    * the denominator in the Fourier module Z[Sqrt[2]] * (Sqrt[2]/4). */
   vec2i denomZ2Fourier(const vec2i& in, const int in_c);
@@ -93,6 +98,10 @@ namespace ArithVisibility {
   // Computation of denominator and intensity for the Gaussian Integers.
   vec2i denomGIFourier(const vec2i& in, const int in_c);
   double intensityGI(const vec2i& denom);
+
+  // Computation of denominator and intensity for the Eisenstein Integers.
+  vec2i denomESFourier(const vec2i& in, const int in_c);
+  double intensityES(const vec2i& denom);
 
   // Division tests for the primes in the cube-free case.
   bool divTest3Free1Z2(const vec2i& in, const int p);
@@ -209,6 +218,8 @@ void vqTableRecipZ2(const uint r, const uint s,
 void vTableGI(const uint r, Common::vec2ilist& table);
 void vqTableRecipGI(const uint r, const uint s,
                     vector<ArithVisibility::vec2iq>& table);
+
+void vTableES(const uint r, Common::vec2ilist& table);
 
 void minmax(const vector<ArithVisibility::bragg>& input, vec2d& min, vec2d& max);
 

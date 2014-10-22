@@ -150,6 +150,16 @@ public:
     return vec2i(x*x*x - 3*x*y*y, 3*x*x*y - y*y*y);
   }
 
+  // Squaring in the Eisenstein Integers
+  vec2i squareES() const {
+    return vec2i(x*x - y*y, 2*x*y - y*y);
+  }
+
+  // Cubing in the Eisenstein Integers
+  vec2i cubeES() const {
+    return vec2i(x*x*x - 3*x*y*y + y*y*y, 3*x*(x-y)*y);
+  }
+
   bool isDiv(const int d) const {
     return ((x % d == 0) && (y % d == 0));
   }
@@ -975,6 +985,9 @@ namespace Coprime {
   vec2i moduloGI(const vec2i& a, const vec2i& b);
   vec2i gcdGI(const vec2i& a, const vec2i& b);
   void multGI(const vec2i& a, const vec2i& b, vec2i& out);
+  vec2i moduloES(const vec2i& a, const vec2i& b);
+  vec2i gcdES(const vec2i& a, const vec2i& b);
+  void multES(const vec2i& a, const vec2i& b, vec2i& out);
 
 };
 
