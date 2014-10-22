@@ -82,6 +82,14 @@ public:
     return abs(x*x + y*y);
   }
 
+  int preNormES() const {
+    return x*x - x*y + y*y;
+  }
+
+  int normES() const {
+    return abs(x*x - x*y + y*y);
+  }
+
   int preNormZ2() const {
     return x*x - 2*y*y;
   }
@@ -116,6 +124,10 @@ public:
 
   vec2i conjGI() const {
     return vec2i(this->x, -this->y);
+  }
+
+  vec2i conjES() const {
+    return vec2i(this->x - this->y, -this->y);
   }
 
   // Squaring in Z[Sqrt[2]]
@@ -177,7 +189,25 @@ public:
 
     return vec2i(a / norm, b / norm);
   }
-  
+
+  // Check if 'this' can be divided by 'd' in the Eisenstein Integers.
+  bool isDivES(const vec2i& d) const {
+    const int norm = d.preNormES();
+    const int a = this->x * d.x + this->y * d.y - this->x * d.y;
+    const int b = this->y * d.x - this->x * d.y;
+
+    return ((a % norm == 0) && (b % norm == 0));
+  }
+
+  // Divide 'this' by 'd' in the Eisenstein Integers, assuming that this is defined.
+  vec2i divES(const vec2i& d) const {
+    const int norm = d.preNormES();
+    const int a = this->x * d.x + this->y * d.y - this->x * d.y;
+    const int b = this->y * d.x - this->x * d.y;
+
+    return vec2i(a / norm, b / norm);
+  }
+
   vec2d transTriToR2() const;
 
   vec2d transGenericToR2(const vec2d& v) const;

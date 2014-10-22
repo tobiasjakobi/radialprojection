@@ -31,6 +31,10 @@ namespace Coprime {
    * that solves the equation algnorm(m,n) = p.               */
   void findTupleGI(const int p, vec2i& out);
 
+  /* Assuming that p = +1 (mod 3), this finds the tuple (m,n) *
+   * that solves the equation algnorm(m,n) = p.               */
+  void findTupleES(const int p, vec2i& out);
+
   /* The two conditions that apply to our visibility checks (for Z[Sqrt[2]]): *
    * p = +1 or -1 (mod 8) (first condition)                                   *
    * p = +3 or -3 (mod 8) (second condition)                                  */
@@ -43,6 +47,12 @@ namespace Coprime {
   bool pCond1GI(const int p);
   bool pCond2GI(const int p);
 
+  /* The two conditions (for the Eisenstein Integers): *
+   * p = +1 (mod 3) (first condition)                  *
+   * p = +1 (mod 3) (second condition)                 */
+  bool pCond1ES(const int p);
+  bool pCond2ES(const int p);
+
   /* Do prime factorization in Z[Sqrt[2]]. This takes 'in' as an *
    * element of Z[Sqrt[2]] and returns a list of primes that     *
    * divide 'in' (without multiplicity).                         */
@@ -50,6 +60,9 @@ namespace Coprime {
 
   // Do prime factorization in the Gaussian integers.
   void factorGI(const vec2i& in, vector<vec2i>& factorization);
+
+  // Do prime factorization in the Eisenstein integers.
+  void factorES(const vec2i& in, vector<vec2i>& factorization);
 };
 
 namespace ArithVisibility {
@@ -120,12 +133,14 @@ namespace ArithVisibility {
       return false;
     }
 
+    // Minkowski embedding for Q(Sqrt[2])
     vec2d minkowskiQ2() const {
       const double inv = 1.0 / double(denominator);
 
       return (numerator.minkowskiZ2() * inv);
     }
 
+    // Minkowski embedding for the Gaussian rationals (by this we mean Q(I))
     vec2d minkowskiGR() const {
       const double inv = 1.0 / double(denominator);
 
@@ -197,6 +212,7 @@ void vqTableRecipGI(const uint r, const uint s,
 
 void minmax(const vector<ArithVisibility::bragg>& input, vec2d& min, vec2d& max);
 
+// Format output into encapsulated Postscript
 void toEPS(const vector<ArithVisibility::bragg>& input);
 
 #endif

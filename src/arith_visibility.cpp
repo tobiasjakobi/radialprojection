@@ -56,6 +56,29 @@ void Coprime::findTupleGI(const int p, vec2i& out) {
   out.set(x, y);
 }
 
+void Coprime::findTupleES(const int p, vec2i& out) {
+  int x = floor(sqrt(double(p * 4) / 3.0));
+  int y;
+
+  while (true) {
+    const int t = lround(sqrt(-3*x*x + 4*p));
+
+    if ((x + t) % 2 == 0) {
+      y = (x + t) / 2;
+      break;
+    }
+
+    if ((x - t) % 2 == 0) {
+      y = (x - t) / 2;
+      break;
+    }
+
+    --x;
+  }
+
+  out.set(x, y);
+}
+
 bool Coprime::pCond1Z2(const int p) {
   return (((p - 1) % 8 == 0) || (((p + 1) % 8 == 0)));
 }
@@ -70,6 +93,14 @@ bool Coprime::pCond1GI(const int p) {
 
 bool Coprime::pCond2GI(const int p) {
   return ((p - 3) % 4 == 0);
+}
+
+bool Coprime::pCond1ES(const int p) {
+  return ((p - 1) % 3 == 0);
+}
+
+bool Coprime::pCond2ES(const int p) {
+  return ((p - 2) % 3 == 0);
 }
 
 void Coprime::factorZ2(const vec2i& in, vector<vec2i>& factorization) {
@@ -109,7 +140,7 @@ void Coprime::factorGI(const vec2i& in, vector<vec2i>& factorization) {
 
   const int norm = in.preNormGI();
   if (abs(norm) == 1) return;
-  
+
   vector<uint> primes;
   factorInteger(abs(norm), primes);
 
@@ -132,6 +163,38 @@ void Coprime::factorGI(const vec2i& in, vector<vec2i>& factorization) {
 
       if (in.isDivGI(t)) factorization.push_back(t);
       if (in.isDivGI(t.conjGI())) factorization.push_back(t.conjGI());
+    }
+  }
+}
+
+void Coprime::factorES(const vec2i& in, vector<vec2i>& factorization) {
+  factorization.clear();
+
+  const int norm = in.preNormES();
+  if (abs(norm) == 1) return;
+
+  vector<uint> primes;
+  factorInteger(abs(norm), primes);
+
+  for (vector<uint>::const_iterator k = primes.begin(); k != primes.end(); ++k) {
+    if (*k % 3 == 0) {
+      /* If we encounter the prime '3' in our factorization of the norm, then *
+       * the factorization of the input contains the factor (1 - omega).      */
+      factorization.push_back(vec2i(1, -1));
+      continue;
+    }
+
+    if (pCond2ES(*k)) {
+      factorization.push_back(vec2i(*k, 0));
+      continue;
+    }
+
+    if (pCond1ES(*k)) {
+      vec2i t;
+      Coprime::findTupleES(*k, t);
+
+      if (in.isDivES(t)) factorization.push_back(t);
+      if (in.isDivES(t.conjES())) factorization.push_back(t.conjES());
     }
   }
 }
