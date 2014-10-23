@@ -223,6 +223,7 @@ public:
   vec2d transGenericToR2(const vec2d& v) const;
 
   vec2d minkowskiZ2() const;
+  vec2d minkowskiES() const;
 
   bool coprime() const;
 

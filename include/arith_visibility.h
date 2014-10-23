@@ -115,6 +115,11 @@ namespace ArithVisibility {
   bool divTest3Free2GI(const vec2i& in, const int p);
   bool visibility3FreeGI(const vec2i& in);
 
+  // Check for cube-free 'visibility' of an element of the Eisenstein Integers.
+  bool divTest3Free1ES(const vec2i& in, const int p);
+  bool divTest3Free2ES(const vec2i& in, const int p);
+  bool visibility3FreeES(const vec2i& in);
+
   class vec2iq {
   private:
     vec2i numerator;
@@ -154,6 +159,13 @@ namespace ArithVisibility {
       const double inv = 1.0 / double(denominator);
 
       return (vec2d(double(numerator.x), double(numerator.y)) * inv);
+    }
+
+    // Minkowski embedding for the Eisenstein rationals
+    vec2d minkowskiER() const {
+      const double inv = 1.0 / double(denominator);
+
+      return (numerator.minkowskiES() * inv);
     }
 
     const vec2i& getNumerator() const {
@@ -204,6 +216,11 @@ namespace ArithVisibility {
   void diffractionGI(const vector<vec2iq>& in, vector<bragg>& out,
                      clipfunc f);
   bool clipFundamentalGI(const vec2d& x);
+
+  // Compute the diffraction of the square-free points of the Eisenstein Integers.
+  void diffractionES(const vector<vec2iq>& in, vector<bragg>& out,
+                     clipfunc f);
+  bool clipFundamentalES(const vec2d& x);
 };
 
 ostream& operator<<(ostream &os, const ArithVisibility::vec2iq& v);
@@ -220,6 +237,8 @@ void vqTableRecipGI(const uint r, const uint s,
                     vector<ArithVisibility::vec2iq>& table);
 
 void vTableES(const uint r, Common::vec2ilist& table);
+void vqTableRecipES(const uint r, const uint s,
+                    vector<ArithVisibility::vec2iq>& table);
 
 void minmax(const vector<ArithVisibility::bragg>& input, vec2d& min, vec2d& max);
 

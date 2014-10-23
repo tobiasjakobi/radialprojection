@@ -50,6 +50,14 @@ vec2d vec2i::minkowskiZ2() const {
   );
 }
 
+vec2d vec2i::minkowskiES() const {
+  static const double factor = sqrt(3.0) * 0.5;
+
+  return vec2d(
+    double(x) - double(y) * 0.5,
+    double(y) * factor);
+}
+
 bool vec2i::coprime() const {
   return (Coprime::gcdZ(abs(x), abs(y)) == 1);
 }

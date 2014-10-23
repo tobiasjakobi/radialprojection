@@ -19,9 +19,13 @@ void Coprime::factorInteger(uint i, vector<uint>& factorization) {
   factorization.clear();
 
   for (ulong k = 2; k*k <= i; ++k) {
-    while (i % k == 0) {
+    if (i % k == 0) {
       factorization.push_back(k);
-      i /= k;
+
+      while (true) {
+        i /= k;
+        if (i % k != 0) break;
+      }
     }
   }
 
@@ -496,6 +500,49 @@ bool ArithVisibility::visibility3FreeGI(const vec2i& in) {
   return true;
 }
 
+bool ArithVisibility::divTest3Free1ES(const vec2i& in, const int p) {
+  using namespace Coprime;
+
+  vec2i t, a1, a2;
+
+  Coprime::findTupleES(p, t);
+
+  multES(in, t.cubeES(), a1);
+  multES(in, t.conjES().cubeES(), a2);
+
+  return (a1.isDiv(p*p*p) || a2.isDiv(p*p*p));
+}
+
+bool ArithVisibility::divTest3Free2ES(const vec2i& in, const int p) {
+  return in.isDiv(p*p*p);
+}
+
+bool ArithVisibility::visibility3FreeES(const vec2i& in) {
+  using namespace Coprime;
+
+  // Check if the input is divisible by (1-omega)^3.
+  if (in.isDivES(vec2i(3, 6))) return false;
+
+  const int norm = in.preNormES(); /* the algebraic norm */
+  if (abs(norm) == 1) return true;
+
+  vector<uint> primes;
+  factorInteger(abs(norm), primes);
+
+  for (vector<uint>::const_iterator k = primes.begin();
+       k != primes.end(); ++k) {
+    if (pCond1ES(*k)) {
+      if (divTest3Free1ES(in, *k)) return false;
+    } else {
+      if (pCond2ES(*k)) {
+        if (divTest3Free2ES(in, *k)) return false;
+      }
+    }
+  }
+
+  return true;
+}
+
 void ArithVisibility::diffractionZ2(const vector<vec2iq>& in,
         vector<bragg>& out, clipfunc f) {
   out.clear();
@@ -557,6 +604,28 @@ bool ArithVisibility::clipFundamentalGI(const vec2d& x) {
   if (clipeps + checkPosition(-vec1 + vzero, -vec1 + vec2, x) < 0) return false;
   if (clipeps + checkPosition(vec1 + vec2, vec1 + vzero, x) < 0) return false;
 
+  return true;
+}
+
+void ArithVisibility::diffractionES(const vector<vec2iq>& in,
+              vector<bragg>& out, clipfunc f) {
+  out.clear();
+
+  for (vector<vec2iq>::const_iterator k = in.begin(); k != in.end(); ++k) {
+    const vec2d pos(k->minkowskiER());
+    if (!f(pos)) continue;
+
+    const vec2i denom(denomESFourier(k->getNumerator(), k->getDenominator()));
+
+    if (visibility3FreeES(denom)) {
+      out.push_back(bragg(pos, intensityES(denom)));
+    }
+  }
+}
+
+bool ArithVisibility::clipFundamentalES(const vec2d& x) {
+  // TODO: implement correct clipping
+  if (x.length() > 1.55) return false;
   return true;
 }
 
@@ -646,6 +715,27 @@ void vTableES(const uint r, Common::vec2ilist& table) {
   }
 }
 
+void vqTableRecipES(const uint r, const uint s,
+                    vector<ArithVisibility::vec2iq>& table) {
+  using namespace Coprime;
+  using namespace ArithVisibility;
+
+  table.clear();
+
+  for (uint c = 1; c <= s; ++c) {
+    for (int i = -int(r); i <= int(r); ++i) {
+      for (int j = -int(r); j <= int(r); ++j) {
+        const int g = gcdZ(uint(gcdZ(abs(-2*i + 4*j), abs(-4*i + 2*j))), 3*c);
+
+        table.push_back(vec2iq((-2*i + 4*j) / g, (-4*i + 2*j) / g, 3*c / g));
+      }
+    }
+  }
+
+  sort(table.begin(), table.end());
+  table.erase(unique(table.begin(), table.end()), table.end());
+}
+
 void minmax(const vector<ArithVisibility::bragg>& input,
             vec2d& min, vec2d& max, double& radius){
   using namespace ArithVisibility;
@@ -723,7 +813,7 @@ void toEPS(const vector<ArithVisibility::bragg>& input) {
     cout << "newpath" << endl;
     cout << k->getPosition().x << ' ' << k->getPosition().y << ' '
          << k->getIntensity() << " 0 360 arc" << endl;
-    cout << "stroke" << endl;
+    cout << "fill" << endl;
   }
 
   cout << "%%EOF" << endl;
@@ -733,17 +823,34 @@ double linscale(double x) {
   return x * 0.4;
 }
 
+double rootscale(double x) {
+  return pow(x, 0.25) * 0.05;
+  //return sqrt(x) * 0.1;
+}
+
 int main(int argc, char* argv[]) {
   using namespace ArithVisibility;
+
+  vector<vec2iq> large_table;
+  vector<bragg> diffraction;
+
+  vqTableRecipES(30, 27, large_table);
+  diffractionES(large_table, diffraction, clipFundamentalES);
+
+  for (vector<bragg>::iterator k = diffraction.begin(); k != diffraction.end(); ++k) {
+    k->apply(rootscale);
+  }
+
+  toEPS(diffraction);
 
   /*vector<vec2iq> large_table;
   vector<bragg> diffraction;
 
-  vqTableRecipZ2(35, 29, large_table);
+  vqTableRecipZ2(30, 27, large_table);
   diffractionZ2(large_table, diffraction, clipFundamentalZ2);
 
   for (vector<bragg>::iterator k = diffraction.begin(); k != diffraction.end(); ++k) {
-    k->apply(linscale);
+    k->apply(rootscale);
   }
 
   toEPS(diffraction);*/
@@ -760,7 +867,7 @@ int main(int argc, char* argv[]) {
 
   toEPS(diffraction);*/
 
-  Common::vec2ilist large_table;
+  /*Common::vec2ilist large_table;
   Common::vec2ilist sqfree_table;
 
   for (uint size = 50; size < 2000; size += 50) {
@@ -774,7 +881,7 @@ int main(int argc, char* argv[]) {
     cout << size << ": ";
     cout << (double(sqfree_table.size()) / double(large_table.size())) << endl;
     sqfree_table.clear();
-  }
+  }*/
 
   return 0;
 }
