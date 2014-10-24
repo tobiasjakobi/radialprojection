@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[     48909,       1404]
-NotebookOptionsPosition[     46841,       1345]
-NotebookOutlinePosition[     47198,       1361]
-CellTagsIndexPosition[     47155,       1358]
+NotebookDataLength[     52619,       1514]
+NotebookOptionsPosition[     50426,       1452]
+NotebookOutlinePosition[     50783,       1468]
+CellTagsIndexPosition[     50740,       1465]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -1278,7 +1278,7 @@ Cell[BoxData[
    RowBox[{"intensityPlotES", "[", 
     RowBox[{
      RowBox[{"vqTableRecipES", "[", 
-      RowBox[{"10", ",", "6"}], "]"}], ",", 
+      RowBox[{"10", ",", "7"}], "]"}], ",", 
      RowBox[{
       RowBox[{
        RowBox[{"Power", "[", 
@@ -1318,7 +1318,7 @@ Cell[BoxData[
    3.6229888708199453`*^9, 3.6229888726660633`*^9}, {3.622988927772336*^9, 
    3.622988929904438*^9}, {3.622989320845763*^9, 3.6229893224798393`*^9}, {
    3.6229907854816303`*^9, 3.622990787989767*^9}, {3.6229911915486393`*^9, 
-   3.622991193561195*^9}}],
+   3.622991193561195*^9}, 3.6230601319414043`*^9}],
 
 Cell[BoxData[
  RowBox[{"Show", "[", 
@@ -1341,7 +1341,114 @@ Cell[BoxData[
  CellChangeTimes->{{3.6223716329868717`*^9, 3.622371662380522*^9}, {
   3.622372101704904*^9, 3.6223721352251377`*^9}, {3.6224435173715963`*^9, 
   3.622443519102601*^9}, {3.622449534528482*^9, 3.622449536460189*^9}, {
-  3.6229912005168343`*^9, 3.622991202371067*^9}}]
+  3.6229912005168343`*^9, 3.622991202371067*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"lvec1ES", ":=", 
+   RowBox[{"DualES", ".", 
+    RowBox[{"{", 
+     RowBox[{"0", ",", "1"}], "}"}]}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"lvec2ES", ":=", 
+   RowBox[{"DualES", ".", 
+    RowBox[{"{", 
+     RowBox[{"1", ",", "0"}], "}"}]}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.623059967484002*^9, 3.6230599777895803`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"clipCutES", "[", "x_", "]"}], ":=", 
+   RowBox[{"Block", "[", 
+    RowBox[{
+     RowBox[{"{", "y", "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"y", "=", 
+       RowBox[{"N", "[", 
+        RowBox[{"miEmbedER", "[", "x", "]"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"clipEps", "+", 
+          RowBox[{"clipLinePoint", "[", 
+           RowBox[{
+            RowBox[{"lvec2ES", "+", 
+             RowBox[{"{", 
+              RowBox[{"0", ",", "0"}], "}"}]}], ",", 
+            RowBox[{"lvec2ES", "+", "lvec1ES"}], ",", "y"}], "]"}]}], "<", 
+         "0"}], ",", 
+        RowBox[{"Return", "[", "False", "]"}]}], "]"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"clipEps", "+", 
+          RowBox[{"clipLinePoint", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"-", "lvec2ES"}], "+", "lvec1ES"}], ",", 
+            RowBox[{
+             RowBox[{"-", "lvec2ES"}], "+", 
+             RowBox[{"{", 
+              RowBox[{"0", ",", "0"}], "}"}]}], ",", "y"}], "]"}]}], "<", 
+         "0"}], ",", 
+        RowBox[{"Return", "[", "False", "]"}]}], "]"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"clipEps", "+", 
+          RowBox[{"clipLinePoint", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"-", "lvec1ES"}], "+", 
+             RowBox[{"{", 
+              RowBox[{"0", ",", "0"}], "}"}]}], ",", 
+            RowBox[{
+             RowBox[{"-", "lvec1ES"}], "+", "lvec2ES"}], ",", "y"}], "]"}]}], 
+         "<", "0"}], ",", 
+        RowBox[{"Return", "[", "False", "]"}]}], "]"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"clipEps", "+", 
+          RowBox[{"clipLinePoint", "[", 
+           RowBox[{
+            RowBox[{"lvec1ES", "+", "lvec2ES"}], ",", 
+            RowBox[{"lvec1ES", "+", 
+             RowBox[{"{", 
+              RowBox[{"0", ",", "0"}], "}"}]}], ",", "y"}], "]"}]}], "<", 
+         "0"}], ",", 
+        RowBox[{"Return", "[", "False", "]"}]}], "]"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"Return", "[", "True", "]"}], ";"}]}], "\[IndentingNewLine]", 
+    "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.6230599508314047`*^9, 3.623060025635255*^9}, {
+  3.623060073801219*^9, 3.623060074665539*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Show", "[", 
+  RowBox[{
+   RowBox[{"intensityPlotES", "[", 
+    RowBox[{
+     RowBox[{"vqTableRecipES", "[", 
+      RowBox[{"10", ",", "7"}], "]"}], ",", 
+     RowBox[{
+      RowBox[{"#", "*", "0.2"}], "&"}], ",", "clipCutES"}], "]"}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"Graphics", "[", 
+    RowBox[{"{", 
+     RowBox[{"Red", ",", 
+      RowBox[{"Circle", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"0", ",", "0"}], "}"}], ",", "1"}], "]"}]}], "}"}], "]"}]}], 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.623059993291703*^9, 3.623059997114831*^9}, {
+  3.6230601371283712`*^9, 3.623060138921565*^9}}]
 },
 WindowSize->{1920, 1145},
 WindowMargins->{{0, Automatic}, {Automatic, 0}},
@@ -1404,8 +1511,11 @@ Cell[41488, 1192, 240, 6, 38, "Input"],
 Cell[41731, 1200, 447, 15, 38, "Input"],
 Cell[42181, 1217, 1628, 43, 189, "Input"],
 Cell[43812, 1262, 369, 10, 38, "Input"],
-Cell[44184, 1274, 1852, 46, 89, "Input"],
-Cell[46039, 1322, 798, 21, 64, "Input"]
+Cell[44184, 1274, 1876, 46, 89, "Input"],
+Cell[46063, 1322, 798, 21, 64, "Input"],
+Cell[46864, 1345, 379, 11, 64, "Input"],
+Cell[47246, 1358, 2525, 71, 214, "Input"],
+Cell[49774, 1431, 648, 19, 64, "Input"]
 }
 ]
 *)
