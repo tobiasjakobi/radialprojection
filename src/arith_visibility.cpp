@@ -784,7 +784,7 @@ void minmax(const vector<ArithVisibility::bragg>& input,
   radius = r;
 }
 
-void toEPS(const vector<ArithVisibility::bragg>& input) {
+void toEPS(const vector<ArithVisibility::bragg>& input, bool fill) {
   using namespace ArithVisibility;
 
   vec2d min, max;
@@ -821,11 +821,13 @@ void toEPS(const vector<ArithVisibility::bragg>& input) {
 
   cout << "0.002 setlinewidth" << endl; // TODO: base width on min/max
 
+  const string mode = (fill ? "fill" : "stroke");
+
   for (vector<bragg>::const_iterator k = input.begin(); k != input.end(); ++k) {
     cout << "newpath" << endl;
     cout << k->getPosition().x << ' ' << k->getPosition().y << ' '
          << k->getIntensity() << " 0 360 arc" << endl;
-    cout << "fill" << endl;
+    cout << mode << endl;
   }
 
   cout << "%%EOF" << endl;
@@ -853,7 +855,7 @@ int main(int argc, char* argv[]) {
     k->apply(rootscale);
   }
 
-  toEPS(diffraction);
+  toEPS(diffraction, false);
 
   /*vector<vec2iq> large_table;
   vector<bragg> diffraction;
@@ -865,7 +867,7 @@ int main(int argc, char* argv[]) {
     k->apply(rootscale);
   }
 
-  toEPS(diffraction);*/
+  toEPS(diffraction, true);*/
 
   /*vector<vec2iq> large_table;
   vector<bragg> diffraction;
@@ -877,7 +879,7 @@ int main(int argc, char* argv[]) {
     k->apply(linscale);
   }
 
-  toEPS(diffraction);*/
+  toEPS(diffraction, true);*/
 
   /*Common::vec2ilist large_table;
   Common::vec2ilist sqfree_table;
