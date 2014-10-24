@@ -83,6 +83,30 @@ void Coprime::findTupleES(const int p, vec2i& out) {
   out.set(x, y);
 }
 
+void Coprime::findTupleGM(const int p, vec2i& out) {
+  int x;
+  int y = 0;
+
+  while (true) {
+    const int t = lround(sqrt(5*y*y + 4*p));
+
+    if ((-y + t) % 2 == 0) {
+      x = (-y + t) / 2;
+      break;
+    }
+
+    if ((-y - t) % 2 == 0) {
+      x = (-y - t) / 2;
+      break;
+    }
+
+    ++y;
+  }
+
+  out.set(x, y);
+  assert(out.preNormZTau() == p); // DEBUG
+}
+
 bool Coprime::pCond1Z2(const int p) {
   return (((p - 1) % 8 == 0) || (((p + 1) % 8 == 0)));
 }
@@ -105,6 +129,14 @@ bool Coprime::pCond1ES(const int p) {
 
 bool Coprime::pCond2ES(const int p) {
   return ((p - 2) % 3 == 0);
+}
+
+bool Coprime::pCond1GM(const int p) {
+  return (((p - 1) % 5 == 0) || (((p + 1) % 5 == 0)));
+}
+
+bool Coprime::pCond2GM(const int p) {
+  return (((p - 2) % 5 == 0) || (((p + 2) % 5 == 0)));
 }
 
 void Coprime::factorZ2(const vec2i& in, vector<vec2i>& factorization) {
@@ -199,6 +231,38 @@ void Coprime::factorES(const vec2i& in, vector<vec2i>& factorization) {
 
       if (in.isDivES(t)) factorization.push_back(t);
       if (in.isDivES(t.conjES())) factorization.push_back(t.conjES());
+    }
+  }
+}
+
+void Coprime::factorGM(const vec2i& in, vector<vec2i>& factorization) {
+  factorization.clear();
+
+  const int norm = in.preNormZTau();
+  if (abs(norm) == 1) return;
+
+  vector<uint> primes;
+  factorInteger(abs(norm), primes);
+
+  for (vector<uint>::const_iterator k = primes.begin(); k != primes.end(); ++k) {
+    if (*k % 5 == 0) {
+      /* If we encounter the prime '5' in our factorization of the norm, then *
+       * the factorization of the input contains the factor (-1 + 2*tau).     */
+      factorization.push_back(vec2i(-1, 2));
+      continue;
+    }
+
+    if (pCond2GM(*k)) {
+      factorization.push_back(vec2i(*k, 0));
+      continue;
+    }
+
+    if (pCond1GM(*k)) {
+      vec2i t;
+      Coprime::findTupleGM(*k, t);
+
+      if (in.isDivGM(t)) factorization.push_back(t);
+      if (in.isDivGM(t.conjGM())) factorization.push_back(t.conjGM());
     }
   }
 }

@@ -130,6 +130,10 @@ public:
     return vec2i(this->x - this->y, -this->y);
   }
 
+  vec2i conjGM() const {
+    return vec2i(this->x + this->y, -this->y);
+  }
+
   // Squaring in Z[Sqrt[2]]
   vec2i squareZ2() const {
     return vec2i(x*x + 2*y*y, 2*x*y);
@@ -214,6 +218,24 @@ public:
     const int norm = d.preNormES();
     const int a = this->x * d.x + this->y * d.y - this->x * d.y;
     const int b = this->y * d.x - this->x * d.y;
+
+    return vec2i(a / norm, b / norm);
+  }
+
+  // Check if 'this' can be divided by 'd' in Z[tau] (tau being the golden mean).
+  bool isDivGM(const vec2i& d) const {
+    const int norm = d.preNormZTau();
+    const int a = this->x * (d.x + d.y) - this->y * d.y;
+    const int b = d.x * this->y - this->x * d.y;
+
+    return ((a % norm == 0) && (b % norm == 0));
+  }
+
+  // Divide 'this' by 'd' in in Z[tau], assuming that this is defined.
+  vec2i divGM(const vec2i& d) const {
+    const int norm = d.preNormZTau();
+    const int a = this->x * (d.x + d.y) - this->y * d.y;
+    const int b = d.x * this->y - this->x * d.y;
 
     return vec2i(a / norm, b / norm);
   }

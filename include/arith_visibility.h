@@ -35,6 +35,10 @@ namespace Coprime {
    * that solves the equation algnorm(m,n) = p.               */
   void findTupleES(const int p, vec2i& out);
 
+  /* Assuming that p = +1 or -1 (mod 5), this finds the tuple (m,n) *
+   * that solves the equation algnorm(m,n) = p.                     */
+  void findTupleGM(const int p, vec2i& out);
+
   /* The two conditions that apply to our visibility checks (for Z[Sqrt[2]]): *
    * p = +1 or -1 (mod 8) (first condition)                                   *
    * p = +3 or -3 (mod 8) (second condition)                                  */
@@ -49,9 +53,15 @@ namespace Coprime {
 
   /* The two conditions (for the Eisenstein Integers): *
    * p = +1 (mod 3) (first condition)                  *
-   * p = +1 (mod 3) (second condition)                 */
+   * p = +2 (mod 3) (second condition)                 */
   bool pCond1ES(const int p);
   bool pCond2ES(const int p);
+
+  /* The two conditions (for the Z[tau] case): *
+   * p = +1 or -1 (mod 5) (first condition)    *
+   * p = +2 or -2 (mod 5) (second condition)   */
+  bool pCond1GM(const int p);
+  bool pCond2GM(const int p);
 
   /* Do prime factorization in Z[Sqrt[2]]. This takes 'in' as an *
    * element of Z[Sqrt[2]] and returns a list of primes that     *
@@ -63,6 +73,9 @@ namespace Coprime {
 
   // Do prime factorization in the Eisenstein integers.
   void factorES(const vec2i& in, vector<vec2i>& factorization);
+
+  // Do prime factorization in Z[tau] (tau being the golden mean).
+  void factorGM(const vec2i& in, vector<vec2i>& factorization);
 };
 
 namespace ArithVisibility {
