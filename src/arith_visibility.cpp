@@ -624,8 +624,18 @@ void ArithVisibility::diffractionES(const vector<vec2iq>& in,
 }
 
 bool ArithVisibility::clipFundamentalES(const vec2d& x) {
-  // TODO: implement correct clipping
-  if (x.length() > 1.55) return false;
+  using namespace Common;
+
+  static const vec2d vzero(0.0, 0.0);
+  static const vec2d vec1(0.0, 2.0 / sqrt(3.0));
+  static const vec2d vec2(1.0, 1.0 / sqrt(3.0));
+  static const double clipeps = 0.00001;
+
+  if (clipeps + checkPosition(vec2 + vzero, vec2 + vec1, x) < 0) return false;
+  if (clipeps + checkPosition(-vec2 + vec1, -vec2 + vzero, x) < 0) return false;
+  if (clipeps + checkPosition(-vec1 + vzero, -vec1 + vec2, x) < 0) return false;
+  if (clipeps + checkPosition(vec1 + vec2, vec1 + vzero, x) < 0) return false;
+
   return true;
 }
 
@@ -802,10 +812,12 @@ void toEPS(const vector<ArithVisibility::bragg>& input) {
   // Translate origin to the middle of the page
   cout << (basewidth / 2) << ' ' << (height / 2) << " translate" << endl;
 
+  const double scaling = std::min(
+    double(basewidth - offset) / (2.0 * (xfactor + radius)),
+    double(height - offset) / (2.0 * (yfactor + radius)));
+
   // Apply scaling
-  cout << lround(double(basewidth - offset) / (2.0 * (xfactor + radius))) << ' '
-       << lround(double(height - offset) / (2.0 * (yfactor + radius)))
-       << " scale" << endl;
+  cout << lround(scaling) << ' ' << lround(scaling) << " scale" << endl;
 
   cout << "0.002 setlinewidth" << endl; // TODO: base width on min/max
 
