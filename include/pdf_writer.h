@@ -16,6 +16,13 @@
 #ifndef _PDF_WRITER_H_
 #define _PDF_WRITER_H_
 
-// nothing here at the moment
+#include "arith_visibility.h"
+
+void importRawConsole(vector<ArithVisibility::bragg>& output,
+                      vec2d& range, double& radius);
+
+void braggToPDF(const vector<ArithVisibility::bragg>& input,
+                const vec2d& range, const double radius,
+                const string& filename);
 
 #endif

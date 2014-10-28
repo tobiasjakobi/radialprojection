@@ -33,7 +33,7 @@ higher_cyclo: higher_cyclo.o common.o; $(compiler) -o $@ $(flags) $^
 histogram: histogram.o common.o; $(compiler) -o $@ $(flags) $^
 tuebingen: tuebingen.o common.o; $(compiler) -o $@ $(flags) $^
 arith_visibility: arith_visibility.o common.o; $(compiler) -o $@ $(flags) $^
-pdf_writer: pdf_writer.o; $(compiler) -o $@ $(flags) $^ -lcairo
+pdf_writer: pdf_writer.o common.o; $(compiler) -o $@ $(flags) $^ -lcairo
 
 clean:
 	rm -f *.o
