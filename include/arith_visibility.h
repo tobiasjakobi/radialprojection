@@ -268,4 +268,9 @@ void minmax(const vector<ArithVisibility::bragg>& input, vec2d& min,
 // Format output into encapsulated Postscript
 void toEPS(const vector<ArithVisibility::bragg>& input);
 
+/* Export the diffraction pattern (which is the list of Bragg peaks) in *
+ * a raw format to the console. The data can then be used with the      *
+ * PDF writer part of the program to plot the diffraction to a PDF.     */
+void exportRawConsole(const vector<ArithVisibility::bragg>& input);
+
 #endif

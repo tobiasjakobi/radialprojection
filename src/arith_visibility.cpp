@@ -15,6 +15,8 @@
 
 #include "arith_visibility.h"
 
+#include <sstream>
+
 void Coprime::factorInteger(uint i, vector<uint>& factorization) {
   factorization.clear();
 
@@ -1002,64 +1004,111 @@ double linscale(double x) {
 }
 
 double rootscale(double x) {
-  return pow(x, 0.25) * 0.05;
-  //return sqrt(x) * 0.1;
+  //return pow(x, 0.25) * 0.05;
+  return sqrt(x) * 0.1;
 }
+
+typedef void (*tablefunc)(const uint, Common::vec2ilist&);
+typedef bool (*visfunc)(const vec2i&);
 
 int main(int argc, char* argv[]) {
   using namespace ArithVisibility;
 
-  vector<vec2iq> large_table;
+  stringstream parser;
+
+  uint mode = 0;
+  uint num_range = 30;
+  uint denom_range = 27;
+
+  vector<vec2iq> raster;
   vector<bragg> diffraction;
 
-  vqTableRecipES(30, 27, large_table);
-  diffractionES(large_table, diffraction, clipFundamentalES);
+  tablefunc tfunc = NULL;
+  visfunc vfunc = NULL;
 
-  for (vector<bragg>::iterator k = diffraction.begin(); k != diffraction.end(); ++k) {
-    k->apply(rootscale);
-  }
+  // Parse parameters passed to the application
+  if (argc >= 2) {
+    parser.str(argv[1]);
+    parser.clear();
+    parser >> mode;
 
-  exportRawConsole(diffraction);
+    if (argc >= 3) {
+      parser.str(argv[2]);
+      parser.clear();
+      parser >> num_range;
 
-  /*vector<vec2iq> large_table;
-  vector<bragg> diffraction;
-
-  vqTableRecipZ2(30, 27, large_table);
-  diffractionZ2(large_table, diffraction, clipFundamentalZ2);
-
-  for (vector<bragg>::iterator k = diffraction.begin(); k != diffraction.end(); ++k) {
-    k->apply(rootscale);
-  }
-
-  toEPS(diffraction, true);*/
-
-  /*vector<vec2iq> large_table;
-  vector<bragg> diffraction;
-
-  vqTableRecipGI(50, 47, large_table);
-  diffractionGI(large_table, diffraction, clipFundamentalGI);
-
-  for (vector<bragg>::iterator k = diffraction.begin(); k != diffraction.end(); ++k) {
-    k->apply(linscale);
-  }
-
-  toEPS(diffraction, true);*/
-
-  /*Common::vec2ilist large_table;
-  Common::vec2ilist sqfree_table;
-
-  for (uint size = 50; size < 2000; size += 50) {
-    vTableES(size, large_table);
-  
-    for (Common::vec2ilist::const_iterator i = large_table.begin();
-         i != large_table.end(); ++i) {
-      if (ArithVisibility::visibility2FreeES(*i)) sqfree_table.push_back(*i);
+      if (argc >= 4) {
+        parser.str(argv[3]);
+        parser.clear();
+        parser >> denom_range;
+      }
     }
-  
-    cout << size << ": ";
-    cout << (double(sqfree_table.size()) / double(large_table.size())) << endl;
-    sqfree_table.clear();
-  }*/
+  }
+
+  switch (mode) {
+    case 0:
+      vqTableRecipZ2(num_range, denom_range, raster);
+      diffractionZ2(raster, diffraction, clipFundamentalZ2);
+    break;
+
+    case 1:
+      tfunc = vTableZ2;
+      vfunc = visibility2FreeZ2;
+    break;
+
+    case 2:
+      vqTableRecipGI(num_range, denom_range, raster);
+      diffractionGI(raster, diffraction, clipFundamentalGI);
+    break;
+
+    case 3:
+      tfunc = vTableGI;
+      vfunc = visibility2FreeGI;
+    break;
+
+    case 4:
+      vqTableRecipES(num_range, denom_range, raster);
+      diffractionES(raster, diffraction, clipFundamentalES);
+    break;
+
+    case 5:
+      tfunc = vTableES;
+      vfunc = visibility2FreeES;
+    break;
+
+    default:
+      assert(false);
+    break;
+  }
+
+  /* Even modes are computing diffraction, so apply rescaling here *
+   * and then export the pattern to the console.                   */
+  if (mode % 2 == 0) {
+    for (vector<bragg>::iterator k = diffraction.begin();
+         k != diffraction.end(); ++k) {
+      k->apply(rootscale);
+    }
+
+    exportRawConsole(diffraction);
+  } else {
+    // Density computation mode
+    using namespace Common;
+
+    vec2ilist table;
+    vec2ilist sqfree;
+
+    for (uint size = 50; size < 1000; size += 50) {
+      tfunc(size, table);
+
+      for (vec2ilist::const_iterator i = table.begin(); i != table.end(); ++i) {
+        if (vfunc(*i)) sqfree.push_back(*i);
+      }
+
+      cout << size << ": ";
+      cout << (double(sqfree.size()) / double(table.size())) << endl;
+      sqfree.clear();
+    }
+  }
 
   return 0;
 }
