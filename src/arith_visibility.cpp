@@ -1004,8 +1004,11 @@ double linscale(double x) {
 }
 
 double rootscale(double x) {
-  //return pow(x, 0.25) * 0.05;
   return sqrt(x) * 0.1;
+}
+
+double powscale(double x) {
+  return pow(x, 0.25) * 0.05;
 }
 
 typedef void (*tablefunc)(const uint, Common::vec2ilist&);
@@ -1019,6 +1022,7 @@ int main(int argc, char* argv[]) {
   uint mode = 0;
   uint num_range = 30;
   uint denom_range = 27;
+  uint scale_idx = 0;
 
   vector<vec2iq> raster;
   vector<bragg> diffraction;
@@ -1041,9 +1045,20 @@ int main(int argc, char* argv[]) {
         parser.str(argv[3]);
         parser.clear();
         parser >> denom_range;
+
+        if (argc >= 5) {
+          parser.str(argv[4]);
+          parser.clear();
+          parser >> scale_idx;
+        }
       }
     }
   }
+
+  // Clamp scaling function index and select the appropriate scaler
+  if (scale_idx > 2) scale_idx = 2;
+  const scalefunc sfunc = (scale_idx == 0 ? linscale :
+                          (scale_idx == 1 ? rootscale : powscale));
 
   switch (mode) {
     case 0:
@@ -1086,7 +1101,7 @@ int main(int argc, char* argv[]) {
   if (mode % 2 == 0) {
     for (vector<bragg>::iterator k = diffraction.begin();
          k != diffraction.end(); ++k) {
-      k->apply(rootscale);
+      k->apply(sfunc);
     }
 
     exportRawConsole(diffraction);
