@@ -15,7 +15,9 @@
 
 #include "pdf_writer.h"
 
+#include <sstream>
 #include <cmath>
+
 #include <cairo/cairo.h>
 #include <cairo/cairo-pdf.h>
 
@@ -75,7 +77,7 @@ readfail:
 
 void braggToPDF(const vector<ArithVisibility::bragg>& input,
                 const vec2d& range, const double radius,
-                const string& filename) {
+                const string& filename, bool fill) {
   using namespace ArithVisibility;
 
   cairo_surface_t *surface;
@@ -93,24 +95,26 @@ void braggToPDF(const vector<ArithVisibility::bragg>& input,
   cairo_pdf_surface_restrict_to_version(surface, CAIRO_PDF_VERSION_1_5);
   cr = cairo_create(surface);
 
-  cairo_set_source_rgba(cr, 0.0, 0.0, 0.0, 1.0);
-  cairo_set_line_width(cr, 1.0);
-  cairo_set_fill_rule(cr, CAIRO_FILL_RULE_WINDING);
-
-  // Translate origin to the middle of the page
-  cairo_translate(cr, basewidth * 0.5, height * 0.5);
-
-  // Apply scaling
   const double scaling = std::min(
     (basewidth - offset) / (2.0 * (range.x + radius)),
     (height - offset) / (2.0 * (range.y + radius)));
+
+  // Setup cairo
+  cairo_set_source_rgba(cr, 0.0, 0.0, 0.0, 1.0);
+  cairo_set_line_width(cr, 0.5 / scaling);
+  cairo_set_fill_rule(cr, CAIRO_FILL_RULE_WINDING);
+
+  // Translate origin to the middle of the page and apply (uniform) scaling
+  cairo_translate(cr, basewidth * 0.5, height * 0.5);
   cairo_scale(cr, scaling, scaling);
 
   for (vector<bragg>::const_iterator k = input.begin(); k != input.end(); ++k) {
     cairo_arc(cr, k->getPosition().x, k->getPosition().y, k->getIntensity(),
               0.0, 2.0 * M_PI);
-    cairo_fill(cr);
-    cairo_stroke(cr);
+    if (fill)
+      cairo_fill(cr);
+    else
+      cairo_stroke(cr);
   }
 
   cairo_destroy(cr);
@@ -121,6 +125,7 @@ int main(int argc, char* argv[]) {
   using namespace ArithVisibility;
 
   string filename;
+  bool fill = false;
 
   vector<bragg> list;
   vec2d range;
@@ -128,12 +133,17 @@ int main(int argc, char* argv[]) {
 
   if (argc >= 2) {
     filename = argv[1];
+
+    if (argc >= 3) {
+      stringstream parser(argv[2]);
+      parser >> fill;
+    }
   } else {
     filename = "output.pdf";
   }
 
   importRawConsole(list, range, rad);
-  braggToPDF(list, range, rad, filename);
+  braggToPDF(list, range, rad, filename, fill);
 
   return 0;
 }
