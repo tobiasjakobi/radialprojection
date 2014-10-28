@@ -396,6 +396,49 @@ bool ArithVisibility::visibility2FreeES(const vec2i& in) {
   return true;
 }
 
+bool ArithVisibility::divTest2Free1GM(const vec2i& in, const int p) {
+  using namespace Coprime;
+
+  vec2i t, a1, a2;
+
+  Coprime::findTupleGM(p, t);
+
+  multZTau(in, t.squareGM(), a1);
+  multZTau(in, t.conjGM().squareGM(), a2);
+
+  return (a1.isDiv(p*p) || a2.isDiv(p*p));
+}
+
+bool ArithVisibility::divTest2Free2GM(const vec2i& in, const int p) {
+  return in.isDiv(p*p);
+}
+
+bool ArithVisibility::visibility2FreeGM(const vec2i& in) {
+  using namespace Coprime;
+
+  if (((in.x - in.y) % 5 == 0) && (in.x % 5 == 0))
+    return false;
+
+  const int norm = in.preNormZTau(); /* the algebraic norm */
+  if (abs(norm) == 1) return true;
+
+  vector<uint> primes;
+  factorInteger(abs(norm), primes);
+
+  for (vector<uint>::const_iterator k = primes.begin();
+       k != primes.end(); ++k) {
+    if (pCond1GM(*k)) {
+      if (divTest2Free1GM(in, *k)) return false;
+    } else {
+      if (pCond2GM(*k)) {
+        if (divTest2Free2GM(in, *k)) return false;
+      }
+    }
+  }
+
+  return true;
+}
+
 vec2i ArithVisibility::denomZ2Fourier(const vec2i& in, const int in_c) {
   const vec2i x(in.y * 4, in.x * 2);
   const vec2i c(in_c, 0);
@@ -475,6 +518,33 @@ double ArithVisibility::intensityES(const vec2i& denom) {
   }
 
   ret *= (2.0 / (sqrt(3.0) * zetaES));
+  return (ret*ret);
+}
+
+vec2i ArithVisibility::denomGMFourier(const vec2i& in, const int in_c) {
+  const vec2i x(in.y * 2 - in.x, in.x * 2 - in.y);
+  const vec2i c(in_c, 0);
+  const vec2i g(Coprime::gcdZTau(c, x));
+
+  return c.divGM(g);
+}
+
+double ArithVisibility::intensityGM(const vec2i& denom) {
+  static const double zetaGM = 1.1616711956186385497585826363320589131;
+
+  if (denom.isZero()) return 0.0;
+
+  vector<vec2i> primesGM;
+  Coprime::factorGM(denom, primesGM);
+
+  double ret = 1.0;
+  for (vector<vec2i>::const_iterator k = primesGM.begin();
+       k != primesGM.end(); ++k) {
+    const int pnorm = k->preNormZTau();
+    ret *= (1.0 / (double(pnorm * pnorm) - 1.0));
+  }
+
+  ret *= (1.0 / (sqrt(5.0) * zetaGM));
   return (ret*ret);
 }
 

@@ -164,6 +164,16 @@ public:
     return vec2i(x*x*x - 3*x*y*y + y*y*y, 3*x*(x-y)*y);
   }
 
+  // Squaring in Z[tau] (tau being the golden mean)
+  vec2i squareGM() const {
+    return vec2i(x*x + y*y, y*(2*x + y));
+  }
+
+  // Cubing in Z[tau] (tau being the golden mean)
+  vec2i cubeGM() const {
+    return vec2i(x*x*x + 3*x*y*y + y*y*y, y*(3*x*x + 3*x*y + 2*y*y));
+  }
+
   bool isDiv(const int d) const {
     return ((x % d == 0) && (y % d == 0));
   }
