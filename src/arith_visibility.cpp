@@ -967,6 +967,36 @@ void toEPS(const vector<ArithVisibility::bragg>& input, bool fill) {
   cout << "%%EOF" << endl;
 }
 
+void exportRawConsole(const vector<ArithVisibility::bragg>& input) {
+  using namespace ArithVisibility;
+
+  vec2d min, max;
+  double radius;
+
+  minmax(input, min, max, radius);
+
+  const double range[2] = {std::max(abs(min.x), abs(max.x)),
+                           std::max(abs(min.y), abs(max.y))};
+
+  unsigned out;
+  const char* data;
+
+  /* write signature first */
+
+  out = sizeof(bragg); /* element size */
+  cout.write(reinterpret_cast<const char*>(&out), sizeof(unsigned) * 1);
+
+  out = input.size();
+  cout.write(reinterpret_cast<const char*>(&out), sizeof(unsigned) * 1);
+
+  /* write range and radius */
+  cout.write(reinterpret_cast<const char*>(range), sizeof(double) * 2);
+  cout.write(reinterpret_cast<const char*>(&radius), sizeof(double) * 1);
+
+  data = reinterpret_cast<const char*>(&(*input.begin()));
+  cout.write(data, sizeof(bragg) * input.size());
+}
+
 double linscale(double x) {
   return x * 0.4;
 }
@@ -989,7 +1019,7 @@ int main(int argc, char* argv[]) {
     k->apply(rootscale);
   }
 
-  toEPS(diffraction, false);
+  exportRawConsole(diffraction);
 
   /*vector<vec2iq> large_table;
   vector<bragg> diffraction;
