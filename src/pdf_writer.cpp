@@ -109,8 +109,9 @@ void braggToPDF(const vector<ArithVisibility::bragg>& input,
   cairo_scale(cr, scaling, scaling);
 
   for (vector<bragg>::const_iterator k = input.begin(); k != input.end(); ++k) {
-    cairo_arc(cr, k->getPosition().x, k->getPosition().y, k->getIntensity(),
-              0.0, 2.0 * M_PI);
+    // Invert y here, since PDF uses a different coordinate system
+    cairo_arc(cr, k->getPosition().x, -1.0 * k->getPosition().y,
+              k->getIntensity(), 0.0, 2.0 * M_PI);
     if (fill)
       cairo_fill(cr);
     else
