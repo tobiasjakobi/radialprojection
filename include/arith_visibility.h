@@ -262,6 +262,8 @@ void vTableES(const uint r, Common::vec2ilist& table);
 void vqTableRecipES(const uint r, const uint s,
                     vector<ArithVisibility::vec2iq>& table);
 
+void vTableGM(const uint r, Common::vec2ilist& table);
+
 void minmax(const vector<ArithVisibility::bragg>& input, vec2d& min,
             vec2d& max, double& radius);
 

@@ -69,14 +69,16 @@ void Coprime::findTupleES(const int p, vec2i& out) {
   while (true) {
     const int t = lround(sqrt(-3*x*x + 4*p));
 
-    if ((x + t) % 2 == 0) {
-      y = (x + t) / 2;
-      break;
-    }
+    if (t*t + 3*x*x - 4*p == 0) {
+      if ((x + t) % 2 == 0) {
+        y = (x + t) / 2;
+        break;
+      }
 
-    if ((x - t) % 2 == 0) {
-      y = (x - t) / 2;
-      break;
+      if ((x - t) % 2 == 0) {
+        y = (x - t) / 2;
+        break;
+      }
     }
 
     --x;
@@ -92,21 +94,22 @@ void Coprime::findTupleGM(const int p, vec2i& out) {
   while (true) {
     const int t = lround(sqrt(5*y*y + 4*p));
 
-    if ((-y + t) % 2 == 0) {
-      x = (-y + t) / 2;
-      break;
-    }
+    if (t*t - 5*y*y - 4*p == 0) {
+      if ((-y + t) % 2 == 0) {
+        x = (-y + t) / 2;
+        break;
+      }
 
-    if ((-y - t) % 2 == 0) {
-      x = (-y - t) / 2;
-      break;
+      if ((-y - t) % 2 == 0) {
+        x = (-y - t) / 2;
+        break;
+      }
     }
 
     ++y;
   }
 
   out.set(x, y);
-  assert(out.preNormZTau() == p); // DEBUG
 }
 
 bool Coprime::pCond1Z2(const int p) {
@@ -882,6 +885,17 @@ void vqTableRecipES(const uint r, const uint s,
   table.erase(unique(table.begin(), table.end()), table.end());
 }
 
+void vTableGM(const uint r, Common::vec2ilist& table) {
+  table.clear();
+  table.reserve((r + 1) * (r + 1));
+
+  for (int i = -int(r); i <= int(r); ++i) {
+    for (int j = -int(r); j <= int(r); ++j) {
+      table.push_back(vec2i(i, j));
+    }
+  }
+}
+
 void minmax(const vector<ArithVisibility::bragg>& input,
             vec2d& min, vec2d& max, double& radius){
   using namespace ArithVisibility;
@@ -1089,6 +1103,16 @@ int main(int argc, char* argv[]) {
     case 5:
       tfunc = vTableES;
       vfunc = visibility2FreeES;
+    break;
+
+    case 6:
+      // TODO: implement
+      assert(false);
+    break;
+
+    case 7:
+      tfunc = vTableGM;
+      vfunc = visibility2FreeGM;
     break;
 
     default:
