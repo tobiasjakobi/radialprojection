@@ -256,6 +256,7 @@ public:
 
   vec2d minkowskiZ2() const;
   vec2d minkowskiES() const;
+  vec2d minkowskiGM() const;
 
   bool coprime() const;
 

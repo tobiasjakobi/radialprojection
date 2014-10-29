@@ -110,6 +110,7 @@ void Coprime::findTupleGM(const int p, vec2i& out) {
   }
 
   out.set(x, y);
+  assert(out.preNormZTau() == p);
 }
 
 bool Coprime::pCond1Z2(const int p) {
@@ -527,7 +528,7 @@ double ArithVisibility::intensityES(const vec2i& denom) {
 }
 
 vec2i ArithVisibility::denomGMFourier(const vec2i& in, const int in_c) {
-  const vec2i x(in.y * 2 - in.x, in.x * 2 - in.y);
+  const vec2i x(in.y * 2 - in.x, in.x * 2 + in.y);
   const vec2i c(in_c, 0);
   const vec2i g(Coprime::gcdZTau(c, x));
 
@@ -682,6 +683,49 @@ bool ArithVisibility::visibility3FreeES(const vec2i& in) {
   return true;
 }
 
+bool ArithVisibility::divTest3Free1GM(const vec2i& in, const int p) {
+  using namespace Coprime;
+
+  vec2i t, a1, a2;
+
+  Coprime::findTupleGM(p, t);
+
+  multZTau(in, t.cubeGM(), a1);
+  multZTau(in, t.conjGM().cubeGM(), a2);
+
+  return (a1.isDiv(p*p*p) || a2.isDiv(p*p*p));
+}
+
+bool ArithVisibility::divTest3Free2GM(const vec2i& in, const int p) {
+  return in.isDiv(p*p*p);
+}
+
+bool ArithVisibility::visibility3FreeGM(const vec2i& in) {
+  using namespace Coprime;
+
+  // Check if the input is divisible by (-1+2*tau)^3.
+  if (in.isDivGM(vec2i(-5, 10))) return false;
+
+  const int norm = in.preNormZTau(); /* the algebraic norm */
+  if (abs(norm) == 1) return true;
+
+  vector<uint> primes;
+  factorInteger(abs(norm), primes);
+
+  for (vector<uint>::const_iterator k = primes.begin();
+       k != primes.end(); ++k) {
+    if (pCond1GM(*k)) {
+      if (divTest3Free1GM(in, *k)) return false;
+    } else {
+      if (pCond2GM(*k)) {
+        if (divTest3Free2GM(in, *k)) return false;
+      }
+    }
+  }
+
+  return true;
+}
+
 void ArithVisibility::diffractionZ2(const vector<vec2iq>& in,
         vector<bragg>& out, clipfunc f) {
   out.clear();
@@ -775,6 +819,28 @@ bool ArithVisibility::clipFundamentalES(const vec2d& x) {
   if (clipeps + checkPosition(-vec1 + vzero, -vec1 + vec2, x) < 0) return false;
   if (clipeps + checkPosition(vec1 + vec2, vec1 + vzero, x) < 0) return false;
 
+  return true;
+}
+
+void ArithVisibility::diffractionGM(const vector<vec2iq>& in,
+              vector<bragg>& out, clipfunc f) {
+  out.clear();
+
+  for (vector<vec2iq>::const_iterator k = in.begin(); k != in.end(); ++k) {
+    const vec2d pos(k->minkowskiGMR());
+    if (!f(pos)) continue;
+
+    const vec2i denom(denomGMFourier(k->getNumerator(), k->getDenominator()));
+
+    if (visibility3FreeGM(denom)) {
+      out.push_back(bragg(pos, intensityGM(denom)));
+    }
+  }
+}
+
+bool ArithVisibility::clipFundamentalGM(const vec2d& x) {
+  if (x.length() > 1.5) return false;
+  // TODO: implement
   return true;
 }
 
@@ -894,6 +960,27 @@ void vTableGM(const uint r, Common::vec2ilist& table) {
       table.push_back(vec2i(i, j));
     }
   }
+}
+
+void vqTableRecipGM(const uint r, const uint s,
+                    vector<ArithVisibility::vec2iq>& table) {
+  using namespace Coprime;
+  using namespace ArithVisibility;
+
+  table.clear();
+
+  for (uint c = 1; c <= s; ++c) {
+    for (int i = -int(r); i <= int(r); ++i) {
+      for (int j = -int(r); j <= int(r); ++j) {
+        const int g = gcdZ(uint(gcdZ(abs(-i + 2*j), abs(2*i + j))), 5*c);
+
+        table.push_back(vec2iq((-i + 2*j) / g, (2*i + j) / g, 5*c / g));
+      }
+    }
+  }
+
+  sort(table.begin(), table.end());
+  table.erase(unique(table.begin(), table.end()), table.end());
 }
 
 void minmax(const vector<ArithVisibility::bragg>& input,
@@ -1106,8 +1193,8 @@ int main(int argc, char* argv[]) {
     break;
 
     case 6:
-      // TODO: implement
-      assert(false);
+      vqTableRecipGM(num_range, denom_range, raster);
+      diffractionGM(raster, diffraction, clipFundamentalGM);
     break;
 
     case 7:

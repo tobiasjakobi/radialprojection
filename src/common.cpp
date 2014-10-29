@@ -58,6 +58,15 @@ vec2d vec2i::minkowskiES() const {
     double(y) * factor);
 }
 
+vec2d vec2i::minkowskiGM() const {
+  static const double tau = (1.0 + sqrt(5.0)) * 0.5;
+
+  return vec2d(
+    double(x) + double(y) * tau,
+    double(x) + double(y) * (1.0 - tau)
+  );
+}
+
 bool vec2i::coprime() const {
   return (Coprime::gcdZ(abs(x), abs(y)) == 1);
 }

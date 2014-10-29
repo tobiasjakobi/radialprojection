@@ -142,6 +142,11 @@ namespace ArithVisibility {
   bool divTest3Free2ES(const vec2i& in, const int p);
   bool visibility3FreeES(const vec2i& in);
 
+  // Check for cube-free 'visibility' of an element of Z[tau].
+  bool divTest3Free1GM(const vec2i& in, const int p);
+  bool divTest3Free2GM(const vec2i& in, const int p);
+  bool visibility3FreeGM(const vec2i& in);
+
   class vec2iq {
   private:
     vec2i numerator;
@@ -188,6 +193,14 @@ namespace ArithVisibility {
       const double inv = 1.0 / double(denominator);
 
       return (numerator.minkowskiES() * inv);
+    }
+
+    // Minkowski embeeding for Q(tau) (tau being the golden mean)
+    // GMR = Golden Mean Rationals
+    vec2d minkowskiGMR() const {
+      const double inv = 1.0 / double(denominator);
+
+      return (numerator.minkowskiGM() * inv);
     }
 
     const vec2i& getNumerator() const {
@@ -243,6 +256,11 @@ namespace ArithVisibility {
   void diffractionES(const vector<vec2iq>& in, vector<bragg>& out,
                      clipfunc f);
   bool clipFundamentalES(const vec2d& x);
+
+  // Compute the diffraction of the square-free points of Z[tau].
+  void diffractionGM(const vector<vec2iq>& in, vector<bragg>& out,
+                     clipfunc f);
+  bool clipFundamentalGM(const vec2d& x);
 };
 
 ostream& operator<<(ostream &os, const ArithVisibility::vec2iq& v);
@@ -263,6 +281,8 @@ void vqTableRecipES(const uint r, const uint s,
                     vector<ArithVisibility::vec2iq>& table);
 
 void vTableGM(const uint r, Common::vec2ilist& table);
+void vqTableRecipGM(const uint r, const uint s,
+                    vector<ArithVisibility::vec2iq>& table);
 
 void minmax(const vector<ArithVisibility::bragg>& input, vec2d& min,
             vec2d& max, double& radius);
