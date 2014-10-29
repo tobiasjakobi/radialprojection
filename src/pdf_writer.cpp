@@ -84,7 +84,7 @@ void braggToPDF(const vector<ArithVisibility::bragg>& input,
   cairo_t *cr;
 
   // Base width of the PDF and offset to the borders.
-  const double basewidth = 800.0;
+  const double basewidth = 800.0; /* base width is 800 points */
   const double offset = 50.0;
 
   if (input.empty()) return;
