@@ -878,6 +878,20 @@ public:
     return (v.a[0] == a[0] && v.a[1] == a[1]);
   }
 
+  /* Lexicographic ordering, this is needed to use sorting *
+   * algorithms of STL containers.                         */
+  bool operator<(const vec2s& v) const {
+    if (a[0] < v.a[0]) {
+      return true;
+    }
+
+    if (a[0] == v.a[0]) {
+      return (a[1] < v.a[1]);
+    }
+
+    return false;
+  }
+
   void set(short x0, short x1) {
     a[0] = x0; a[1] = x1;
   }
@@ -954,12 +968,14 @@ namespace Coprime {
     return number < 0.0 ? ceil(number - 0.5) : floor(number + 0.5);
   }
 
-  uint gcdZ(uint u, uint v); /* binary gcd implementation (taken from Wikipedia article) */
+  uint gcdZFast(uint u, uint v); /* binary gcd implementation (taken from Wikipedia article) */
   int gcdZ(int a, int b);
 
   static inline bool coprimeZ(int a, int b) {
-    return (abs(gcdZ(a, b)) == 1);
+    return (gcdZFast(abs(a), abs(b)) == 1);
   }
+
+  void gcdZTest(uint count);
 
   // Used in the octogonal case:
   vec2i moduloZ2(const vec2i& a, const vec2i& b);

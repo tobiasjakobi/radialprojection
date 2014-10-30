@@ -128,7 +128,7 @@ int main(int argc, char* argv[]) {
       for (uint x = y; x <= steps; ++x) {
         if (x == 0 && y == 0) continue;
         if (x*x + y*y > steps*steps) continue;
-        if (Coprime::gcdZ(x, y) > 1) continue;
+        if (Coprime::gcdZFast(x, y) != 1) continue;
 
         vertices.push_back(vec2i(x, y));
       }

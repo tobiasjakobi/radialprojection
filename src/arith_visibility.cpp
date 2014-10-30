@@ -882,7 +882,7 @@ void vqTableRecipZ2(const uint r, const uint s,
   for (uint c = 1; c <= s; ++c) {
     for (int i = -int(r); i <= int(r); ++i) {
       for (int j = -int(r); j <= int(r); ++j) {
-        const int g = gcdZ(uint(gcdZ(abs(2 * i), abs(j))), 4 * c);
+        const int g = gcdZFast(gcdZFast(abs(2 * i), abs(j)), 4 * c);
 
         table.push_back(vec2iq(2 * i / g, j / g, 4 * c / g));
       }
@@ -914,7 +914,7 @@ void vqTableRecipGI(const uint r, const uint s,
   for (uint c = 1; c <= s; ++c) {
     for (int i = -int(r); i <= int(r); ++i) {
       for (int j = -int(r); j <= int(r); ++j) {
-        const int g = gcdZ(uint(gcdZ(abs(i), abs(j))), c);
+        const int g = gcdZFast(gcdZFast(abs(i), abs(j)), c);
 
         table.push_back(vec2iq(i / g, j / g, c / g));
       }
@@ -946,7 +946,7 @@ void vqTableRecipES(const uint r, const uint s,
   for (uint c = 1; c <= s; ++c) {
     for (int i = -int(r); i <= int(r); ++i) {
       for (int j = -int(r); j <= int(r); ++j) {
-        const int g = gcdZ(uint(gcdZ(abs(-2*i + 4*j), abs(-4*i + 2*j))), 3*c);
+        const int g = gcdZFast(gcdZFast(abs(-2*i + 4*j), abs(-4*i + 2*j)), 3*c);
 
         table.push_back(vec2iq((-2*i + 4*j) / g, (-4*i + 2*j) / g, 3*c / g));
       }
@@ -978,7 +978,7 @@ void vqTableRecipGM(const uint r, const uint s,
   for (uint c = 1; c <= s; ++c) {
     for (int i = -int(r); i <= int(r); ++i) {
       for (int j = -int(r); j <= int(r); ++j) {
-        const int g = gcdZ(uint(gcdZ(abs(-i + 2*j), abs(2*i + j))), 5*c);
+        const int g = gcdZFast(gcdZFast(abs(-i + 2*j), abs(2*i + j)), 5*c);
 
         table.push_back(vec2iq((-i + 2*j) / g, (2*i + j) / g, 5*c / g));
       }

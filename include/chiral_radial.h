@@ -181,7 +181,7 @@ namespace Chair2D {
     bool isVisible(const vec2s& v) const {
       if (v[0] == 0 && v[1] == 0) return false;
 
-      const uint agcd = abs(Coprime::gcdZ(v[0], v[1]));
+      const int agcd = Coprime::gcdZFast(abs(v[0]), abs(v[1]));
       if (agcd == 1) return true;
 
       /* A single check for coprime coordinates isn't correct in this case, since the   *
@@ -194,7 +194,7 @@ namespace Chair2D {
 
       const vec2s primitive(v[0] / agcd, v[1] / agcd);
 
-      for (uint k = 1; k < agcd; ++k) {
+      for (int k = 1; k < agcd; ++k) {
         if (access(primitive * k)) return false;
       }
 

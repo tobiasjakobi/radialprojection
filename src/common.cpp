@@ -68,10 +68,10 @@ vec2d vec2i::minkowskiGM() const {
 }
 
 bool vec2i::coprime() const {
-  return (Coprime::gcdZ(abs(x), abs(y)) == 1);
+  return (Coprime::gcdZFast(abs(x), abs(y)) == 1);
 }
 
-uint Coprime::gcdZ(uint u, uint v) {
+uint Coprime::gcdZFast(uint u, uint v) {
   uint shift;
 
   // GCD(0,v) == v; GCD(u,0) == u, GCD(0,0) == 0
@@ -123,6 +123,23 @@ int Coprime::gcdZ(int a, int b) {
   }
 
   return x;
+}
+
+void Coprime::gcdZTest(uint count) {
+  srand(time(NULL));
+
+  for (uint i = 0; i < count; ++i) {
+    const uint test[2] = {abs(rand() % 65536), abs(rand() % 65536)};
+
+    const uint ref = abs(gcdZ(int(test[0]), int(test[1])));
+    const uint fast = gcdZFast(test[0], test[1]);
+
+    if (ref != fast) {
+      cerr << "error: gcd test in Z failed:" << endl;
+      cerr << "reference = " << ref << "; fast = " << fast << endl;
+      break;
+    }
+  }
 }
 
 vec2i Coprime::moduloZ2(const vec2i& a, const vec2i& b) {

@@ -160,7 +160,7 @@ void hexTiling::buildVertices(const vlist& a) {
       }
 
       // do visibility test if enabled
-      if (onlyvis && Coprime::gcdZ(abs(t.x), abs(t.y)) != 1)
+      if (onlyvis && Coprime::gcdZFast(abs(t.x), abs(t.y)) != 1)
         continue;
 
       // backward search
