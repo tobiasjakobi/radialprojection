@@ -238,6 +238,8 @@ namespace ArithVisibility {
     }
   };
 
+  const double clipeps = 0.00001;
+
   // Compute the diffraction of the square-free points of Z[Sqrt[2]].
   void diffractionZ2(const vector<vec2iq>& in, vector<bragg>& out,
                      clipfunc f);

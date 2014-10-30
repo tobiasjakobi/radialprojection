@@ -748,7 +748,6 @@ bool ArithVisibility::clipFundamentalZ2(const vec2d& x) {
   static const vec2d vzero(0.0, 0.0);
   static const vec2d vec1(0.5, 0.5);
   static const vec2d vec2(sqrt(2.0) / 4.0, -sqrt(2.0) / 4.0);
-  static const double clipeps = 0.00001;
 
   if (clipeps + checkPosition(vec2 + vzero, vec2 + vec1, x) < 0) return false;
   if (clipeps + checkPosition(-vec2 + vec1, -vec2 + vzero, x) < 0) return false;
@@ -780,7 +779,6 @@ bool ArithVisibility::clipFundamentalGI(const vec2d& x) {
   static const vec2d vzero(0.0, 0.0);
   static const vec2d vec1(0.0, 1.0);
   static const vec2d vec2(1.0, 0.0);
-  static const double clipeps = 0.00001;
 
   if (clipeps + checkPosition(vec2 + vzero, vec2 + vec1, x) < 0) return false;
   if (clipeps + checkPosition(-vec2 + vec1, -vec2 + vzero, x) < 0) return false;
@@ -812,7 +810,6 @@ bool ArithVisibility::clipFundamentalES(const vec2d& x) {
   static const vec2d vzero(0.0, 0.0);
   static const vec2d vec1(0.0, 2.0 / sqrt(3.0));
   static const vec2d vec2(1.0, 1.0 / sqrt(3.0));
-  static const double clipeps = 0.00001;
 
   if (clipeps + checkPosition(vec2 + vzero, vec2 + vec1, x) < 0) return false;
   if (clipeps + checkPosition(-vec2 + vec1, -vec2 + vzero, x) < 0) return false;
@@ -839,8 +836,17 @@ void ArithVisibility::diffractionGM(const vector<vec2iq>& in,
 }
 
 bool ArithVisibility::clipFundamentalGM(const vec2d& x) {
-  if (x.length() > 1.5) return false;
-  // TODO: implement
+  using namespace Common;
+
+  static const vec2d vzero(0.0, 0.0);
+  static const vec2d vec1((5.0 - sqrt(5.0)) / 10.0, (5.0 + sqrt(5.0)) / 10.0);
+  static const vec2d vec2(1.0 / sqrt(5.0), -1.0 / sqrt(5.0));
+
+  if (clipeps + checkPosition(vec2 + vzero, vec2 + vec1, x) < 0) return false;
+  if (clipeps + checkPosition(-vec2 + vec1, -vec2 + vzero, x) < 0) return false;
+  if (clipeps + checkPosition(-vec1 + vzero, -vec1 + vec2, x) < 0) return false;
+  if (clipeps + checkPosition(vec1 + vec2, vec1 + vzero, x) < 0) return false;
+
   return true;
 }
 
