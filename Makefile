@@ -6,7 +6,7 @@ platform := $(shell $(compiler) -dumpmachine)
 endif
 
 ifeq (release,$(build))
-flags += -O2 -march=native
+flags += -O2 -march=native -DNDEBUG
 endif
 
 ifeq (debug,$(build))
