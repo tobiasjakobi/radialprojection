@@ -560,14 +560,13 @@ void Chair2D::createVertices(Common::vec2dlist& vertices,
     vec2s temp[6];
     i->getVertices(temp);
 
-    for (uint j = 0; j < 6; ++j) {
-      const vec2s current(temp[j]);
-
-      if (find(verts.begin(), verts.end(), current) == verts.end()) {
-        verts.push_back(current);
-      }
-    }
+    for (uint j = 0; j < 6; ++j)
+      verts.push_back(temp[j]);
   }
+
+  // Remove duplicate vertices
+  sort(verts.begin(), verts.end());
+  verts.erase(unique(verts.begin(), verts.end()), verts.end());
 
   cerr << "statistics: " << patch->size() << " L-shaped tiles reduced to "
        << verts.size() << " unique vertices" << endl;
@@ -606,8 +605,6 @@ void Chair2D::createVerticesVis(Common::vec2dlist& vertices, const llist& initia
       for (uint j = 0; j < 6; ++j) {
         const vec2s current(temp[j]);
 
-        // TODO: maybe reorder these checks
-
         // check for visibility
         if (!occupied->isVisible(current)) continue;
 
@@ -616,13 +613,8 @@ void Chair2D::createVerticesVis(Common::vec2dlist& vertices, const llist& initia
         if (phys.lengthSquared() > cutoff*cutoff) continue;
 
         // further reduce the region to remove redundant information (symmetry)
-        if (!phys.inFirstQuadrant()) continue;
-
-        // store the reduced vertex if it isn't already in our list
-        // use a reverse find since adjacent tiles are likely to be "near" in the array
-        if (find(verts.rbegin(), verts.rend(), current) == verts.rend()) {
+        if (phys.inFirstQuadrant())
           verts.push_back(current);
-        }
       }
     }
   } else {
@@ -633,14 +625,15 @@ void Chair2D::createVerticesVis(Common::vec2dlist& vertices, const llist& initia
       for (uint j = 0; j < 4; ++j) {
         const vec2s current(temp[j]);
 
-        if (!occupied->isVisible(current)) continue;
-
-        if (find(verts.rbegin(), verts.rend(), current) == verts.rend()) {
+        if (occupied->isVisible(current))
           verts.push_back(current);
-        }
       }
     }
   }
+
+  // Remove duplicate vertices
+  sort(verts.begin(), verts.end());
+  verts.erase(unique(verts.begin(), verts.end()), verts.end());
 
   delete occupied;
   occupied = NULL;
