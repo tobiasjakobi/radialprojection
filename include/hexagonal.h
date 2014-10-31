@@ -163,13 +163,13 @@ void hexTiling::buildVertices(const vlist& a) {
       if (onlyvis && Coprime::gcdZFast(abs(t.x), abs(t.y)) != 1)
         continue;
 
-      // backward search
-      // TODO: search can be optimized
-      if (find(vertices->rbegin(), vertices->rend(), t) == vertices->rend()) {
-        vertices->push_back(t);
-      }
+      vertices->push_back(t);
     }
   }
+
+  // Remove duplicate vertices
+  sort(vertices->begin(), vertices->end());
+  vertices->erase(unique(vertices->begin(), vertices->end()), vertices->end());
 
   cerr << "info: using " << vertices->size() << " out of " << vertices->capacity()
        << " reserved vertex elements ("
