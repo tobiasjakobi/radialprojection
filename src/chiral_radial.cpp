@@ -313,14 +313,13 @@ void ChiralLB::createVertices(Common::vec2dlist& vertices,
     vec8s temp[4];
     i->getVertices(temp);
 
-    for (uint j = 0; j < 4; ++j) {
-      const vec4s reduced(temp[j].reduceToL10(reducemode));
-    
-      if (find(verts.begin(), verts.end(), reduced) == verts.end()) {
-        verts.push_back(reduced);
-      }
-    }
+    for (uint j = 0; j < 4; ++j)
+      verts.push_back(temp[j].reduceToL10(reducemode));
   }
+
+  // Remove duplicate vertices
+  sort(verts.begin(), verts.end());
+  verts.erase(unique(verts.begin(), verts.end()), verts.end());
 
   cerr << "statistics: " << patch->size() << " rhombs reduced to "
        << verts.size() << " unique vertices" << endl;
@@ -351,10 +350,8 @@ void ChiralLB::createVerticesVis(Common::vec2dlist& vertices,
 
   // the factors 0.15 and 1.4 were derived from empirical evaluations
   VisList* vlist = new VisList;
-  if (cutAndReduce)
-    vlist->reserve(double(countRhombs(initial, steps)) * 0.15);
-  else
-    vlist->reserve(double(countRhombs(initial, steps)) * 1.4);
+  vlist->reserve(double(countRhombs(initial, steps)) *
+                 (cutAndReduce ? 0.15 : 1.4));
 
   vlist->init();
 
@@ -370,7 +367,7 @@ void ChiralLB::createVerticesVis(Common::vec2dlist& vertices,
       for (uint j = 0; j < 4; ++j) {
         if (!temp[j].isInL10(even, odd)) {
           cerr << "error: vector found that isn't in L10" << endl;
-        return;
+          return;
         }
       }
     }
@@ -459,9 +456,8 @@ void ChiralLB::cutSector(const Common::vec2dlist& input,
   output.reserve(double(input.size()) * 0.75);
 
   for (vec2dlist::const_iterator i = input.begin(); i != input.end(); ++i) {
-    if (i->lengthSquared() <= cutoff*cutoff) {
+    if (i->lengthSquared() <= cutoff*cutoff)
       output.push_back(*i);
-    }
   }
 
   cerr << "After cutting off procedure " << output.size() << " vertices remain.\n";
@@ -576,9 +572,8 @@ void Chair2D::createVertices(Common::vec2dlist& vertices,
 
   vertices.clear();
   vertices.reserve(verts.size());
-  for (vec2slist::const_iterator i = verts.begin(); i != verts.end(); ++i) {
+  for (vec2slist::const_iterator i = verts.begin(); i != verts.end(); ++i)
     vertices.push_back(i->transZ2ToR2());
-  }
 }
 
 void Chair2D::createVerticesVis(Common::vec2dlist& vertices, const llist& initial,
