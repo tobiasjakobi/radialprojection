@@ -46,6 +46,7 @@ void Coprime::findTupleZ2(const int p, vec2i& out) {
   }
 
   out.set(x, y);
+  assert(out.preNormZ2() == p);
 }
 
 void Coprime::findTupleGI(const int p, vec2i& out) {
@@ -60,6 +61,7 @@ void Coprime::findTupleGI(const int p, vec2i& out) {
   }
 
   out.set(x, y);
+  assert(out.preNormGI() == p);
 }
 
 void Coprime::findTupleES(const int p, vec2i& out) {
@@ -85,6 +87,7 @@ void Coprime::findTupleES(const int p, vec2i& out) {
   }
 
   out.set(x, y);
+  assert(out.preNormES() == p);
 }
 
 void Coprime::findTupleGM(const int p, vec2i& out) {
