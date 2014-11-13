@@ -339,6 +339,26 @@ void ChiralLB::createVertices(Common::vec2dlist& vertices,
        << "%).\n";
 }
 
+vec4s make_primitive(const vec4s& in) {
+  if (in.isZero()) return in;
+
+  int k;
+  
+  const vec4s direct(in.transL10ToDirect());
+  const vec2i dirA(direct[0], direct[1]);
+  const vec2i dirB(direct[2], direct[3]);
+
+  if (dirA.isZero()) return vec4s(0, 0, dirB.isPositiveGM() ? 1 : -1, 0);
+  if (dirB.isZero()) return vec4s(dirA.isPositiveGM() ? 1 : -1, 0, 0, 0);
+
+  const vec2i g(Coprime::gcdZTau(dirA, dirB).positiveGM());
+
+  const vec2i reducedA(dirA.divGM(g).reduceGM(k));
+  const vec2i reducedB(dirB.divGM(g).multUnitGM(k));
+
+  return vec4s(reducedA, reducedB);
+}
+
 void ChiralLB::createVerticesVis(Common::vec2dlist& vertices,
                         const rhomblist& initial,
                         uint steps, bool cutAndReduce) {
@@ -384,6 +404,9 @@ void ChiralLB::createVerticesVis(Common::vec2dlist& vertices,
     }
   }
 
+  vector<vec4s> tlist;
+  tlist.reserve(patch->size() * 4);
+  
   if (cutAndReduce) {
     cerr << "info: trimming the tiling into a circular area\n";
     const double cutoff = Common::power(lambda, steps);
@@ -402,7 +425,8 @@ void ChiralLB::createVerticesVis(Common::vec2dlist& vertices,
         if (!phys.inFirstQuadrant()) continue;
         if (!phys.inSectorL5()) continue;
 
-        vlist->insertSorted(reduced);
+        //vlist->insertSorted(reduced);
+        tlist.push_back(reduced);
       }
     }
   } else {
@@ -413,11 +437,25 @@ void ChiralLB::createVerticesVis(Common::vec2dlist& vertices,
       for (uint j = 0; j < 4; ++j) {
         const vec4s reduced(temp[j].reduceToL10(reducemode));
 
+        if (reduced.isZero()) continue;
+        
         vlist->insertSorted(reduced);
+        tlist.push_back(make_primitive(reduced));
       }
     }
   }
 
+  /*for (vector<vec4s>::const_iterator i = tlist.begin(); i != tlist.end(); ++i) {
+    vlist->insertSorted(*i);
+  }*/
+  
+  sort(tlist.begin(), tlist.end());
+  tlist.erase(unique(tlist.begin(), tlist.end()), tlist.end());
+  
+  cerr << "DEBUG: size = " << tlist.size() << endl;
+  //cerr << "DEBUG: tlist = " << tlist << endl;
+  
+  
   cerr << "statistics: " << patch->size() << " rhombs reduced to "
        << vlist->size() << " unique vertices." << endl;
 
@@ -428,7 +466,11 @@ void ChiralLB::createVerticesVis(Common::vec2dlist& vertices,
 
   vertices.clear();
   vertices.reserve(vlist->size());
-  vlist->toR2(vertices);
+  //vlist->toR2(vertices);
+
+  for (vector<vec4s>::const_iterator i = tlist.begin(); i != tlist.end(); ++i) {
+    vertices.push_back(i->transDirectToL10().transL10ToR2());
+  }
 
   delete vlist;
   vlist = NULL;
@@ -719,8 +761,8 @@ int main(int argc, char* argv[]) {
     case 1: {
               vec2dlist output;
 
-              //createVerticesVis(output, initialChiral, steps, cut);
-              createVertices(output, initialChiral, steps);
+              createVerticesVis(output, initialChiral, steps, cut);
+              //createVertices(output, initialChiral, steps);
               cout << output;
             }
             break;

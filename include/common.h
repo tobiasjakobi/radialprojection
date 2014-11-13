@@ -174,6 +174,20 @@ public:
     return vec2i(x*x*x + 3*x*y*y + y*y*y, y*(3*x*x + 3*x*y + 2*y*y));
   }
 
+  vec2i positiveGM() const {
+    static const double tau = (1.0 + sqrt(5.0)) * 0.5;
+
+    if (double(x) + double(y) * tau < 0)
+      return vec2i(-x, -y);
+    else
+      return vec2i(x, y);
+  }
+
+  bool isPositiveGM() const {
+    static const double tau = (1.0 + sqrt(5.0)) * 0.5;
+    return (double(x) + double(y) * tau >= 0);
+  }
+
   bool isDiv(const int d) const {
     return ((x % d == 0) && (y % d == 0));
   }
@@ -249,6 +263,14 @@ public:
 
     return vec2i(a / norm, b / norm);
   }
+
+  /* Multiply an element of Z[tau] with the unit tau^k and return the result. */
+  vec2i multUnitGM(int k) const;
+
+  /* Reduce an element of Z[tau] (tau being the golden mean) into a the     *
+   * fundamental domain [1, tau) (or (-tau, -1] if the element is negative) *
+   * by multiplication with the units tau and tau^{-1}.                     */
+  vec2i reduceGM(int& k) const;
 
   vec2d transTriToR2() const;
 
@@ -572,6 +594,11 @@ public:
     a[2] = x2; a[3] = x3;
   }
 
+  vec4s(const vec2i& x0, const vec2i& x1) {
+    a[0] = x0.x; a[1] = x0.y;
+    a[2] = x1.x; a[3] = x1.y;
+  }
+
   vec4s operator+(const vec4s& v) const {
     return vec4s(a[0] + v.a[0], a[1] + v.a[1],
                  a[2] + v.a[2], a[3] + v.a[3]);
@@ -678,9 +705,28 @@ public:
     return vec4s(b[0] - b[2] + b[3], -b[3], b[1] - b[2] + b[3], b[2] - b[3]);
   }
 
+  void transL10ToDirect(vec2i& v0, vec2i& v1) const {
+    const short b[4] = {a[0] + a[3], a[2] + a[3], a[3], a[3] - a[1]}; // L10 -> L5
+
+    v0.x = b[0] - b[2] + b[3];
+    v0.y = -b[3];
+    v1.x = b[1] - b[2] + b[3];
+    v1.y = b[2] - b[3];
+  }
+
   // Transform from L5 to direct-sum representation
   vec4s transL5ToDirect() const {
     return vec4s(a[0] - a[2] + a[3], -a[3], a[1] - a[2] + a[3], a[2] - a[3]);
+  }
+
+  // Counterpart to 'transL10ToDirect'
+  vec4s transDirectToL10() const {
+    return vec4s(a[0] + a[1], a[3], a[1] + a[2], -a[1] + a[3]);
+  }
+
+  // Counterpart to 'transL5ToDirect'
+  vec4s transDirectToL15() const {
+    return vec4s(a[0] + a[3], a[2] + a[3], -a[1] + a[3], -a[1]);
   }
 
   // Transfrom from L10 to "physical" R2 space

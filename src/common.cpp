@@ -29,6 +29,100 @@ const double vec2d::sectorL7 = tan(2.0 * Common::pi / 7.0);
 
 double Common::RadiusSelector::radiusSq = 0.0;
 
+vec2i vec2i::multUnitGM(int k) const {
+  int a = x;
+  int b = y;
+
+  if (k != 0) {
+    if (k > 0) {
+      while (k != 0) {
+        const int temp = a;
+        a = b;
+        b = temp + b;
+        --k;
+      }
+    } else {
+      while (k != 0) {
+        const int temp = a;
+        a = b - a;
+        b = temp;
+        ++k;
+      }
+    }
+  }
+
+  return vec2i(a, b);
+}
+
+vec2i vec2i::reduceGM(int& k) const {
+  static const double tau = (1.0 + sqrt(5.0)) * 0.5;
+
+  // Nothing to reduce if the element is already zero.
+  if (x == 0 && y == 0) {
+    k = 0;
+    return *this;
+  }
+
+  int a, b, t;
+  bool sign = false;
+  double z = double(x) + double(y) * tau;
+
+  if (z < 0.0) {
+    a = -x;
+    b = -y;
+    z = -z;
+    sign = true;
+  } else {
+    a = x;
+    b = y;
+  }
+
+  /* If the absolute value of the algebraic norm is one, then we're already        *
+   * dealing with a unit. In this case the log-fraction is already an integer.     *
+   * Use 'lround' instead of 'floor' in this case, to avoid numerical instability. */
+  if (this->normZTau() == 1)
+    t = lround(log(z) / log(tau));
+  else
+    t = floor(log(z) / log(tau));
+
+  assert(double(t) * log(tau) <= log(z) + 0.0001);
+  assert(log(z) < double(t+1) * log(tau));
+
+  k = -t;
+
+  /* Move the element into the interval [1, tau) through *
+   * multiplication with either tau or tau^{-1}.         */
+  if (t != 0) {
+    if (t < 0) {
+      // Multiply with tau
+      while (t != 0) {
+        const int temp = a;
+        a = b;
+        b = temp + b;
+        ++t;
+      }
+    } else {
+      // Divide by tau
+      while (t != 0) {
+        const int temp = a;
+        a = b - a;
+        b = temp;
+        --t;
+      }
+    }
+  }
+
+  assert(1.0 <= double(a) + double(b) * tau);
+  assert(double(a) + double(b) * tau < tau);
+
+  if (sign) {
+    a = -a;
+    b = -b;
+  }
+
+  return vec2i(a, b);
+}
+
 vec2d vec2i::transTriToR2() const {
   static const double factor = sqrt(3.0) * 0.5;
 
