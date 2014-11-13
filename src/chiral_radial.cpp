@@ -59,7 +59,9 @@ namespace ChiralLB {
   void createVertices(Common::vec2dlist& vertices,
                       const rhomblist& initial, uint steps);
   void createVerticesVis(Common::vec2dlist& vertices, const rhomblist& initial,
-                         uint steps, bool cutAndReduce);
+                      uint steps, bool cutAndReduce);
+  void createVerticesVisFast(Common::vec2dlist& vertices, const rhomblist& initial,
+                      uint steps, bool cutAndReduce);
 
   // Compute length (eA and eB) of a rhomb of type A and B
   void getLength(double& typeA, double& typeB);
@@ -403,9 +405,6 @@ void ChiralLB::createVerticesVis(Common::vec2dlist& vertices,
       }
     }
   }
-
-  vector<vec4s> tlist;
-  tlist.reserve(patch->size() * 4);
   
   if (cutAndReduce) {
     cerr << "info: trimming the tiling into a circular area\n";
@@ -425,8 +424,7 @@ void ChiralLB::createVerticesVis(Common::vec2dlist& vertices,
         if (!phys.inFirstQuadrant()) continue;
         if (!phys.inSectorL5()) continue;
 
-        //vlist->insertSorted(reduced);
-        tlist.push_back(reduced);
+        vlist->insertSorted(reduced);
       }
     }
   } else {
@@ -438,24 +436,12 @@ void ChiralLB::createVerticesVis(Common::vec2dlist& vertices,
         const vec4s reduced(temp[j].reduceToL10(reducemode));
 
         if (reduced.isZero()) continue;
-        
+
         vlist->insertSorted(reduced);
-        tlist.push_back(make_primitive(reduced));
       }
     }
   }
 
-  /*for (vector<vec4s>::const_iterator i = tlist.begin(); i != tlist.end(); ++i) {
-    vlist->insertSorted(*i);
-  }*/
-  
-  sort(tlist.begin(), tlist.end());
-  tlist.erase(unique(tlist.begin(), tlist.end()), tlist.end());
-  
-  cerr << "DEBUG: size = " << tlist.size() << endl;
-  //cerr << "DEBUG: tlist = " << tlist << endl;
-  
-  
   cerr << "statistics: " << patch->size() << " rhombs reduced to "
        << vlist->size() << " unique vertices." << endl;
 
@@ -466,14 +452,118 @@ void ChiralLB::createVerticesVis(Common::vec2dlist& vertices,
 
   vertices.clear();
   vertices.reserve(vlist->size());
-  //vlist->toR2(vertices);
-
-  for (vector<vec4s>::const_iterator i = tlist.begin(); i != tlist.end(); ++i) {
-    vertices.push_back(i->transDirectToL10().transL10ToR2());
-  }
+  vlist->toR2(vertices);
 
   delete vlist;
   vlist = NULL;
+}
+
+void ChiralLB::createVerticesVisFast(Common::vec2dlist& vertices,
+                        const rhomblist& initial,
+                        uint steps, bool cutAndReduce) {
+if (initial.empty())
+    return;
+
+  rhomblist* patch = new rhomblist;
+  iterate(initial, steps, *patch);
+
+  bool reducemode;
+
+  // Check if all vertices can be reduced into L10:
+  {
+    uint even = 0, odd = 0;
+    for (rhomblist::const_iterator i = patch->begin(); i != patch->end(); ++i) {
+      vec8s temp[4];
+      i->getVertices(temp);
+
+      for (uint j = 0; j < 4; ++j) {
+        if (!temp[j].isInL10(even, odd)) {
+          cerr << "error: vector found that isn't in L10" << endl;
+          return;
+        }
+      }
+    }
+
+    if (even == patch->size() * 4) {
+      reducemode = true;
+    } else {
+      if (odd == patch->size() * 4) {
+        reducemode = false;
+      } else {
+        cerr << "error: vectors can't be reduced into L10" << endl;
+        return;
+      }
+    }
+  }
+
+  vector<vec4s> vlist;
+  vlist.reserve(patch->size() * 4);
+
+  if (cutAndReduce) {
+    cerr << "info: trimming the tiling into a circular area\n";
+    const double cutoff = Common::power(lambda, steps);
+    for (rhomblist::const_iterator i = patch->begin(); i != patch->end(); ++i) {
+      vec8s temp[4];
+      i->getVertices(temp);
+
+      for (uint j = 0; j < 4; ++j) {
+        const vec4s reduced(temp[j].reduceToL10(reducemode));
+
+        // extract a circular region from the patch
+        const vec2d phys(reduced.transL10ToR2());
+        if (phys.lengthSquared() > cutoff*cutoff) continue;
+
+        // further reduce the region to remove redundant information (symmetry)
+        if (!phys.inFirstQuadrant()) continue;
+        if (!phys.inSectorL5()) continue;
+
+        vlist.push_back(reduced);
+      }
+    }
+  } else {
+    for (rhomblist::const_iterator i = patch->begin(); i != patch->end(); ++i) {
+      vec8s temp[4];
+      i->getVertices(temp);
+
+      for (uint j = 0; j < 4; ++j) {
+        const vec4s reduced(temp[j].reduceToL10(reducemode));
+
+        if (reduced.isZero()) continue;
+
+        vlist.push_back(reduced);
+      }
+    }
+  }
+
+  // First removal pass
+  sort(vlist.begin(), vlist.end());
+  vlist.erase(unique(vlist.begin(), vlist.end()), vlist.end());
+
+  cerr << "statistics: " << patch->size() << " rhombs reduced to "
+       << vlist.size() << " unique vertices." << endl;
+
+  delete patch;
+  patch = NULL;
+
+  // TODO: implement correct visibility computation
+
+  for (vector<vec4s>::iterator i = vlist.begin(); i != vlist.end(); ++i) {
+    *i = i->transL10ToDirect().directL10ToUnique();
+  }
+
+  // Second removal pass
+  sort(vlist.begin(), vlist.end());
+  vlist.erase(unique(vlist.begin(), vlist.end()), vlist.end());
+
+  cerr << "statistics: after (incorrect) visibility computation: "
+       << vlist.size() << " vertices visible." << endl;
+
+  vertices.clear();
+  vertices.reserve(vlist.size());
+
+  for (vector<vec4s>::const_iterator i = vlist.begin(); i != vlist.end(); ++i) {
+    vertices.push_back(i->directL10ToR2());
+  }
 }
 
 void ChiralLB::getLength(double& typeA, double& typeB) {
@@ -761,7 +851,7 @@ int main(int argc, char* argv[]) {
     case 1: {
               vec2dlist output;
 
-              createVerticesVis(output, initialChiral, steps, cut);
+              createVerticesVisFast(output, initialChiral, steps, cut);
               //createVertices(output, initialChiral, steps);
               cout << output;
             }

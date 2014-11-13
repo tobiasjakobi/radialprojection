@@ -750,6 +750,24 @@ public:
                  a[0] * v2[0] + a[1] * v2[1] + a[2] * v2[2] + a[3] * v2[3]);
   }
 
+  vec2d directL10ToR2() const {
+    static const double tau = (1.0 + sqrt(5.0)) * 0.5;
+    static const double zeta5[2] = {(-1.0 + sqrt(5.0)) / 4.0,
+                                    sqrt((5 + sqrt(5.0)) / 8.0)};
+
+    const double z0 = double(a[0]) + double(a[1]) * tau;
+    const double z1 = double(a[2]) + double(a[3]) * tau;
+
+    return vec2d(z0 + z1 * zeta5[0],
+                 z1 * zeta5[1]);
+  }
+
+  /* Take an element in direct-sum (L10) representation and return the           *
+   * primitive reduced version of that element. This makes the sense unique, in  *
+   * the sense that two elements lie on the same ray through zero iff after this *
+   * transformation they are equal in terms of coordinates.                      */
+  vec4s directL10ToUnique() const;
+
 };
 
 class vec8s {

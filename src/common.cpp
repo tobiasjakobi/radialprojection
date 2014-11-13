@@ -165,6 +165,29 @@ bool vec2i::coprime() const {
   return (Coprime::gcdZFast(abs(x), abs(y)) == 1);
 }
 
+vec4s vec4s::directL10ToUnique() const {
+  if (this->isZero()) return *this;
+
+  const vec2i x(a[0], a[1]);
+  const vec2i y(a[2], a[3]);
+
+  // Special case handling
+  if (x.isZero()) return vec4s(0, 0, y.isPositiveGM() ? 1 : -1, 0);
+  if (y.isZero()) return vec4s(x.isPositiveGM() ? 1 : -1, 0, 0, 0);
+
+  // Compute a positive GCD in Z[tau]
+  const vec2i g(Coprime::gcdZTau(x, y).positiveGM());
+
+  int k;
+
+  /* Divide the coordinates by g (making them primitive) *
+   * and then apply reduction, making (rx, ry) unique.   */
+  const vec2i rx(x.divGM(g).reduceGM(k));
+  const vec2i ry(y.divGM(g).multUnitGM(k));
+
+  return vec4s(rx, ry);
+}
+
 uint Coprime::gcdZFast(uint u, uint v) {
   uint shift;
 
