@@ -60,6 +60,10 @@ namespace ChiralLB {
                       const rhomblist& initial, uint steps);
   void createVerticesVis(Common::vec2dlist& vertices, const rhomblist& initial,
                       uint steps, bool cutAndReduce);
+
+  /* An optimized (and vastly faster) version of 'createVerticesVis', which also *
+   * works satisfactory for "large" inflation multipliers. Currenly only the     *
+   * "incorrect" visibility computation is implemented.                          */
   void createVerticesVisFast(Common::vec2dlist& vertices, const rhomblist& initial,
                       uint steps, bool cutAndReduce);
 
@@ -145,11 +149,10 @@ void ChiralLB::rhomb::getVertices(vec8s* list) const {
 vec8s ChiralLB::rhomb::midpoint() const {
   const vec8s scaled(ref.lambdaScale());
 
-  if (type == 0) {
+  if (type == 0)
     return scaled + (vec8s(1) + vec8s(17)).shift(rot);
-  } else {
+  else
     return scaled + (vec8s(18) + vec8s(10)).shift(rot);
-  }
 }
 
 void Chair2D::chairL::inflate(llist& list) const {
@@ -179,9 +182,8 @@ void ChiralLB::numRhombs(uint& a, uint& b) {
 }
 
 void ChiralLB::numRhombs(uint& a, uint& b, uint steps) {
-  for (uint i = 0; i < steps; ++i) {
+  for (uint i = 0; i < steps; ++i)
     numRhombs(a, b);
-  }
 }
 
 void ChiralLB::countRhombs(const rhomblist& patch, uint& a, uint& b) {
@@ -253,13 +255,11 @@ void ChiralLB::minmax(const rhomblist& patch, vec8s& min, vec8s& max) {
   for (rhomblist::const_iterator i = patch.begin(); i != patch.end(); ++i) {
     const vec8s& ref = i->ref;
     for (uint j = 0; j < 8; ++j) {
-      if (ref[j] > max[j]) {
+      if (ref[j] > max[j])
         max[j] = ref[j];
-      }
 
-      if (ref[j] < min[j]) {
+      if (ref[j] < min[j])
         min[j] = ref[j];
-      }
     }
   }
 }
@@ -547,9 +547,8 @@ if (initial.empty())
 
   // TODO: implement correct visibility computation
 
-  for (vector<vec4s>::iterator i = vlist.begin(); i != vlist.end(); ++i) {
+  for (vector<vec4s>::iterator i = vlist.begin(); i != vlist.end(); ++i)
     *i = i->transL10ToDirect().directL10ToUnique();
-  }
 
   // Second removal pass
   sort(vlist.begin(), vlist.end());
@@ -561,9 +560,8 @@ if (initial.empty())
   vertices.clear();
   vertices.reserve(vlist.size());
 
-  for (vector<vec4s>::const_iterator i = vlist.begin(); i != vlist.end(); ++i) {
+  for (vector<vec4s>::const_iterator i = vlist.begin(); i != vlist.end(); ++i)
     vertices.push_back(i->directL10ToR2());
-  }
 }
 
 void ChiralLB::getLength(double& typeA, double& typeB) {
@@ -773,9 +771,8 @@ void Chair2D::createVerticesVis(Common::vec2dlist& vertices, const llist& initia
 
   vertices.clear();
   vertices.reserve(verts.size());
-  for (vec2slist::const_iterator i = verts.begin(); i != verts.end(); ++i) {
+  for (vec2slist::const_iterator i = verts.begin(); i != verts.end(); ++i)
     vertices.push_back(i->transZ2ToR2());
-  }
 }
 
 void Chair2D::cutSector(const Common::vec2dlist& input,
@@ -788,9 +785,8 @@ void Chair2D::cutSector(const Common::vec2dlist& input,
   output.reserve(double(input.size()) * 0.6);
 
   for (vec2dlist::const_iterator i = input.begin(); i != input.end(); ++i) {
-    if (i->lengthSquared() <= cutoff*cutoff) {
+    if (i->lengthSquared() <= cutoff*cutoff)
       output.push_back(*i);
-    }
   }
 
   cerr << "After cutting off procedure " << output.size() << " vertices remain.\n";
