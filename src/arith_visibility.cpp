@@ -1079,6 +1079,59 @@ void toEPS(const vector<ArithVisibility::bragg>& input, bool fill) {
   cout << "%%EOF" << endl;
 }
 
+void toSVG(const vector<ArithVisibility::bragg>& input, bool fill) {
+  using namespace ArithVisibility;
+
+  vec2d min, max;
+  double radius;
+
+  // Base width of the SVG and offset to the borders.
+  const int basewidth = 800;
+  const int offset = 50;
+
+  if (input.empty()) return;
+
+  minmax(input, min, max, radius);
+
+  const double xfactor = std::max(abs(min.x), abs(max.x));
+  const double yfactor = std::max(abs(min.y), abs(max.y));
+
+  const int height = basewidth * lround(yfactor / xfactor);
+
+  // Write header with geometry/dimension information
+  cout << "<svg width=\"" << basewidth << "\" height=\"" << height
+       << "\" xmlns=\"http://www.w3.org/2000/svg\" "
+       << "version=\"1.1\">" << endl;
+
+  // Translate origin to the middle of the page
+  cout << "\t" << "<g transform=\"translate(" << (basewidth / 2) << ","
+       << (height / 2) << ")\">" << endl;
+
+  const double scaling = std::min(
+    double(basewidth - offset) / (2.0 * (xfactor + radius)),
+    double(height - offset) / (2.0 * (yfactor + radius)));
+
+  // Apply scaling
+  cout << "\t\t" << "<g transform=\"scale(" << lround(scaling) << ")\">" << endl;
+
+  const string strwidth = "0.0004"; // TODO: base width on min/max
+  const string fopacity = (fill ? "1.0" : "0.0");
+  const string fcolor = (fill ? "255, 255, 255" : "0, 0, 0");
+
+  for (vector<bragg>::const_iterator k = input.begin(); k != input.end(); ++k) {
+    cout << "\t\t\t" << "<circle cx=\"" << k->getPosition().x << "\" cy=\""
+         << k->getPosition().y << "\" r=\"" << k->getIntensity()
+         << "\" fill=\"rgb(" << fcolor << ")\" fill-opacity=\""
+         << fopacity << "\" stroke-width=\"" << strwidth
+         << "\" stroke=\"rgb(0, 0, 0)\" />" << endl;
+  }
+
+  cout << "\t\t" << "</g>" << endl
+       << "\t" << "</g>" << endl;
+
+  cout << "</svg>" << endl;
+}
+
 void exportRawConsole(const vector<ArithVisibility::bragg>& input) {
   using namespace ArithVisibility;
 
