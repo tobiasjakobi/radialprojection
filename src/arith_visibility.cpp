@@ -891,6 +891,9 @@ void ArithVisibility::visCircleZ2(const uint r, Common::vec2ilist& out,
   vec2ilist circleZ2;
   vCircleZ2(r, circleZ2);
 
+  cerr << "Constructed patch of the Minkowski embedding of Z[Sqrt[2]] with "
+       << circleZ2.size() << " vertices.\n";
+
   VisListZ2* vlist = new VisListZ2;
   vlist->reserve(lround(double(circleZ2.size()) * 0.71));
 
@@ -899,6 +902,8 @@ void ArithVisibility::visCircleZ2(const uint r, Common::vec2ilist& out,
   for (vec2ilist::const_iterator i = circleZ2.begin(); i != circleZ2.end(); ++i) {
     if (visibility2FreeZ2(*i)) vlist->insertSorted(*i);
   }
+
+  cerr << "Isolated " << vlist->size() << " square-free elements of the patch.\n";
 
   circleZ2.resize(0); // deallocate the initial vertices
 
@@ -918,6 +923,49 @@ void ArithVisibility::visCircleZ2Fast(const uint r,
                             Common::vec2ilist& out, bool radialproj) {
   // TODO: implement
   // use fast chiral approach here
+}
+
+void ArithVisibility::radialProjZ2(const uint r, Common::dlist& out) {
+  using namespace Common;
+
+  vec2ilist circleZ2;
+  vCircleZ2(r, circleZ2);
+
+  VisListZ2* vlist = new VisListZ2;
+  vlist->reserve(lround(double(circleZ2.size()) * 0.71));
+
+  vlist->init();
+
+  for (vec2ilist::const_iterator i = circleZ2.begin(); i != circleZ2.end(); ++i) {
+    if (visibility2FreeZ2(*i)) vlist->insertSorted(*i);
+  }
+
+  circleZ2.resize(0); // deallocate the initial vertices
+
+  vlist->removeInvisibleFast();
+
+  vec2dlist verts;
+  verts.reserve(vlist->size());
+  vlist->toR2(verts);
+
+  delete vlist;
+  vlist = NULL;
+
+  dlist angles;
+  double meandist;
+
+  angles.reserve(verts.size());
+  for (vec2dlist::const_iterator i = verts.begin(); i != verts.end(); ++i) {
+    angles.push_back(i->angle());
+  }
+
+  verts.resize(0);
+  sort(angles.begin(), angles.end());
+
+  out.clear();
+  out.reserve(angles.size() - 1);
+  neighbourDiff(angles, out, meandist);
+  normalizeAngDists(out, meandist);
 }
 
 ostream& operator<<(ostream &os, const ArithVisibility::vec2iq& v) {
@@ -1264,22 +1312,9 @@ typedef bool (*visfunc)(const vec2i&);
 int main(int argc, char* argv[]) {
   using namespace ArithVisibility;
 
-  // DEBUG (START)
-  Common::vec2ilist test1;
-  Common::dlist angles1, output1;
-  double meandist1;
-  ArithVisibility::visCircleZ2(960, test1, false);
-  angles1.reserve(test1.size());
-  for (Common::vec2ilist::const_iterator i = test1.begin(); i != test1.end(); ++i) {
-    angles1.push_back(i->minkowskiZ2().angle());
-  }
-  output1.reserve(test1.size());
-  sort(angles1.begin(), angles1.end());
-  Common::neighbourDiff(angles1, output1, meandist1);
-  Common::normalizeAngDists(output1, meandist1);
-  Common::writeRawConsole(output1);
+  Common::vec2ilist out;
+  visCircleZ2(20, out, true);
   return 0;
-  // DEBUG (END)
 
   stringstream parser;
 

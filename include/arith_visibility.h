@@ -278,6 +278,8 @@ namespace ArithVisibility {
 
   void visCircleZ2(const uint r, Common::vec2ilist& out, bool radialproj);
   void visCircleZ2Fast(const uint r, Common::vec2ilist& out, bool radialproj);
+
+  void radialProjZ2(const uint r, Common::dlist& out);
 };
 
 ostream& operator<<(ostream &os, const ArithVisibility::vec2iq& v);
