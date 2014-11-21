@@ -17,6 +17,9 @@
 
 #include <sstream>
 
+const double ArithVisibility::VisOpZ2::epsilon =
+  2.0 * numeric_limits<double>::epsilon();
+
 void Coprime::factorInteger(uint i, vector<uint>& factorization) {
   factorization.clear();
 
@@ -853,6 +856,70 @@ bool ArithVisibility::clipFundamentalGM(const vec2d& x) {
   return true;
 }
 
+double ArithVisibility::VisOpZ2::angle(const invectype& a) {
+  return a.minkowskiZ2().angle();
+}
+
+vec2d ArithVisibility::VisOpZ2::toR2(const invectype& a) {
+  return a.minkowskiZ2();
+}
+
+bool ArithVisibility::VisOpZ2::rayTest(const invectype& a, const invectype& b) {
+  if (a.x == 0) {
+    return (b.x == 0);
+  }
+
+  if (b.x == 0) {
+    return (a.x == 0);
+  }
+
+  if (a.y == 0) {
+    return (b.y == 0);
+  }
+
+  if (b.y == 0) {
+    return (a.y == 0);
+  }
+
+  return (b.x * a.y == b.y * a.x);
+}
+
+void ArithVisibility::visCircleZ2(const uint r, Common::vec2ilist& out,
+                            bool radialproj) {
+  using namespace Common;
+
+  vec2ilist circleZ2;
+  vCircleZ2(r, circleZ2);
+
+  VisListZ2* vlist = new VisListZ2;
+  vlist->reserve(lround(double(circleZ2.size()) * 0.71));
+
+  vlist->init();
+
+  for (vec2ilist::const_iterator i = circleZ2.begin(); i != circleZ2.end(); ++i) {
+    if (visibility2FreeZ2(*i)) vlist->insertSorted(*i);
+  }
+
+  circleZ2.resize(0); // deallocate the initial vertices
+
+  if (radialproj)
+    vlist->removeInvisibleFast();
+  else
+    vlist->removeInvisibleProper();
+
+  out.clear();
+  out.reserve(vlist->size());
+  vlist->dump(out);
+
+  delete vlist;
+}
+
+void ArithVisibility::visCircleZ2Fast(const uint r,
+                            Common::vec2ilist& out, bool radialproj) {
+  // TODO: implement
+  // use fast chiral approach here
+}
+
 ostream& operator<<(ostream &os, const ArithVisibility::vec2iq& v) {
   os << '{' << v.getNumerator() << ',' << v.getDenominator() << '}';
   return os;
@@ -990,6 +1057,23 @@ void vqTableRecipGM(const uint r, const uint s,
 
   sort(table.begin(), table.end());
   table.erase(unique(table.begin(), table.end()), table.end());
+}
+
+void vCircleZ2(const uint r, Common::vec2ilist& table) {
+  const int temp = int(ceil(double(r) / sqrt(2.0)));
+  table.clear();
+  table.reserve((r + 1) * (temp + 1));
+
+  const double cradSq = double(r * r) * 2.0;
+
+  for (int i = -int(r); i <= int(r); ++i) {
+    for (int j = -temp; j <= temp; ++j) {
+      const vec2i vtx(i, j);
+
+      if (vtx.minkowskiZ2().lengthSquared() <= cradSq)
+        table.push_back(vtx);
+    }
+  }
 }
 
 void minmax(const vector<ArithVisibility::bragg>& input,
@@ -1179,6 +1263,23 @@ typedef bool (*visfunc)(const vec2i&);
 
 int main(int argc, char* argv[]) {
   using namespace ArithVisibility;
+
+  // DEBUG (START)
+  Common::vec2ilist test1;
+  Common::dlist angles1, output1;
+  double meandist1;
+  ArithVisibility::visCircleZ2(960, test1, false);
+  angles1.reserve(test1.size());
+  for (Common::vec2ilist::const_iterator i = test1.begin(); i != test1.end(); ++i) {
+    angles1.push_back(i->minkowskiZ2().angle());
+  }
+  output1.reserve(test1.size());
+  sort(angles1.begin(), angles1.end());
+  Common::neighbourDiff(angles1, output1, meandist1);
+  Common::normalizeAngDists(output1, meandist1);
+  Common::writeRawConsole(output1);
+  return 0;
+  // DEBUG (END)
 
   stringstream parser;
 

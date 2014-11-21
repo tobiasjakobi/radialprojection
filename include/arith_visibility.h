@@ -17,6 +17,7 @@
 #define _ARITH_VISIBILITY_H_
 
 #include "common.h"
+#include "visibility.h"
 
 namespace Coprime {
 
@@ -263,6 +264,20 @@ namespace ArithVisibility {
   void diffractionGM(const vector<vec2iq>& in, vector<bragg>& out,
                      clipfunc f);
   bool clipFundamentalGM(const vec2d& x);
+
+  struct VisOpZ2 {
+    typedef vec2i invectype;
+    static const double epsilon;
+
+    static double angle(const invectype& a);
+    static vec2d toR2(const invectype& a);
+    static bool rayTest(const invectype& a, const invectype& b);
+  };
+
+  typedef VisTest::VisibleList<VisOpZ2> VisListZ2;
+
+  void visCircleZ2(const uint r, Common::vec2ilist& out, bool radialproj);
+  void visCircleZ2Fast(const uint r, Common::vec2ilist& out, bool radialproj);
 };
 
 ostream& operator<<(ostream &os, const ArithVisibility::vec2iq& v);
@@ -285,6 +300,8 @@ void vqTableRecipES(const uint r, const uint s,
 void vTableGM(const uint r, Common::vec2ilist& table);
 void vqTableRecipGM(const uint r, const uint s,
                     vector<ArithVisibility::vec2iq>& table);
+
+void vCircleZ2(const uint r, Common::vec2ilist& table);
 
 void minmax(const vector<ArithVisibility::bragg>& input, vec2d& min,
             vec2d& max, double& radius);
