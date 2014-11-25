@@ -1309,12 +1309,10 @@ double powscale(double x) {
 typedef void (*tablefunc)(const uint, Common::vec2ilist&);
 typedef bool (*visfunc)(const vec2i&);
 
-int main(int argc, char* argv[]) {
+int main_diffraction(int argc, char* argv[]) {
   using namespace ArithVisibility;
 
-  Common::vec2ilist out;
-  visCircleZ2(20, out, true);
-  return 0;
+  cerr << "info: diffraction main mode selected." << endl;
 
   stringstream parser;
 
@@ -1358,6 +1356,11 @@ int main(int argc, char* argv[]) {
   if (scale_idx > 2) scale_idx = 2;
   const scalefunc sfunc = (scale_idx == 0 ? linscale :
                           (scale_idx == 1 ? rootscale : powscale));
+
+  if (mode > 7) {
+    cerr << "error: unknown mode (" << mode <<  ") selected.\n";
+    return 1;
+  }
 
   switch (mode) {
     case 0:
@@ -1418,8 +1421,7 @@ int main(int argc, char* argv[]) {
     // Density computation mode
     using namespace Common;
 
-    vec2ilist table;
-    vec2ilist sqfree;
+    vec2ilist table, sqfree;
 
     for (uint size = 50; size < 1000; size += 50) {
       tfunc(size, table);
@@ -1435,4 +1437,50 @@ int main(int argc, char* argv[]) {
   }
 
   return 0;
+}
+
+int main_radialproj(int argc, char* argv[]) {
+  cerr << "info: radial projection main mode selected." << endl;
+
+  /*Common::vec2ilist out;
+  visCircleZ2(20, out, true);
+  return 0;*/
+
+  return 0;
+}
+
+void print_usage() {
+  cerr << "arithmetic visibility: usage:" << endl;
+
+  cerr << "arith_visibility --diffraction: selects diffraction main mode" << endl;
+  cerr << "\t\tparameter 1: mode (even = diffraction; odd = density)" << endl;
+    cerr << "\t\t\t" << "0/1 = Z[Sqrt[2]]; 2/3 = Gaussian Integers;" << endl;
+    cerr << "\t\t\t" << "4/5 = Eisenstein Integers; 6/7 = Z[tau] (golden mean)" << endl;
+  cerr << "\t\tparameter 2: numerator range" << endl;
+  cerr << "\t\tparameter 3: denominator range" << endl;
+  cerr << "\t\tparameter 4: scaling function "
+       << "(0 = linear; 1 = square root; 2 = power)" << endl;
+
+  cerr << "arith_visibility --radialproj: selects radial projection main mode" << endl;
+}
+
+int main(int argc, char* argv[]) {
+  stringstream parser;
+  string main_mode;
+  int ret = 0;
+
+  if (argc >= 2) {
+    parser.str(argv[1]);
+    parser.clear();
+    parser >> main_mode;
+  }
+
+  if (main_mode == "--diffraction")
+    ret = main_diffraction(argc - 1, argv + 1);
+  else if (main_mode == "--radialproj")
+    ret = main_radialproj(argc - 1, argv + 1);
+  else
+    print_usage();
+
+  return ret;
 }
