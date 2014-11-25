@@ -20,6 +20,9 @@
 const double ArithVisibility::VisOpZ2::epsilon =
   2.0 * numeric_limits<double>::epsilon();
 
+const double ArithVisibility::VisOpGI::epsilon =
+  2.0 * numeric_limits<double>::epsilon();
+
 void Coprime::factorInteger(uint i, vector<uint>& factorization) {
   factorization.clear();
 
@@ -884,6 +887,34 @@ bool ArithVisibility::VisOpZ2::rayTest(const invectype& a, const invectype& b) {
   return (b.x * a.y == b.y * a.x);
 }
 
+double ArithVisibility::VisOpGI::angle(const invectype& a) {
+  return vec2d(double(a.x), double(a.y)).angle();
+}
+
+vec2d ArithVisibility::VisOpGI::toR2(const invectype& a) {
+  return vec2d(double(a.x), double(a.y));
+}
+
+bool ArithVisibility::VisOpGI::rayTest(const invectype& a, const invectype& b) {
+  if (a.x == 0) {
+    return (b.x == 0);
+  }
+
+  if (b.x == 0) {
+    return (a.x == 0);
+  }
+
+  if (a.y == 0) {
+    return (b.y == 0);
+  }
+
+  if (b.y == 0) {
+    return (a.y == 0);
+  }
+
+  return (b.x * a.y == b.y * a.x);
+}
+
 void ArithVisibility::visCircleZ2(const uint r, Common::vec2ilist& out,
                             bool radialproj) {
   using namespace Common;
@@ -925,6 +956,46 @@ void ArithVisibility::visCircleZ2Fast(const uint r,
   // use fast chiral approach here
 }
 
+void ArithVisibility::visCircleGI(const uint r, Common::vec2ilist& out,
+                            bool radialproj) {
+  using namespace Common;
+
+  vec2ilist circleGI;
+  vCircleGI(r, circleGI);
+
+  cerr << "Constructed patch of the Gaussian Integers with "
+       << circleGI.size() << " vertices.\n";
+
+  VisListGI* vlist = new VisListGI;
+  vlist->reserve(lround(double(circleGI.size()) * 0.69));
+
+  vlist->init();
+
+  for (vec2ilist::const_iterator i = circleGI.begin(); i != circleGI.end(); ++i) {
+    if (visibility2FreeGI(*i)) vlist->insertSorted(*i);
+  }
+
+  cerr << "Isolated " << vlist->size() << " square-free elements of the patch.\n";
+
+  circleGI.resize(0); // deallocate the initial vertices
+
+  if (radialproj)
+    vlist->removeInvisibleFast();
+  else
+    vlist->removeInvisibleProper();
+
+  out.clear();
+  out.reserve(vlist->size());
+  vlist->dump(out);
+
+  delete vlist;
+}
+
+void ArithVisibility::visCircleGIFast(const uint r,
+                            Common::vec2ilist& out, bool radialproj) {
+  // TODO: implement
+}
+
 void ArithVisibility::radialProjZ2(const uint r, Common::dlist& out) {
   using namespace Common;
 
@@ -941,6 +1012,49 @@ void ArithVisibility::radialProjZ2(const uint r, Common::dlist& out) {
   }
 
   circleZ2.resize(0); // deallocate the initial vertices
+
+  vlist->removeInvisibleFast();
+
+  vec2dlist verts;
+  verts.reserve(vlist->size());
+  vlist->toR2(verts);
+
+  delete vlist;
+  vlist = NULL;
+
+  dlist angles;
+  double meandist;
+
+  angles.reserve(verts.size());
+  for (vec2dlist::const_iterator i = verts.begin(); i != verts.end(); ++i) {
+    angles.push_back(i->angle());
+  }
+
+  verts.resize(0);
+  sort(angles.begin(), angles.end());
+
+  out.clear();
+  out.reserve(angles.size() - 1);
+  neighbourDiff(angles, out, meandist);
+  normalizeAngDists(out, meandist);
+}
+
+void ArithVisibility::radialProjGI(const uint r, Common::dlist& out) {
+  using namespace Common;
+
+  vec2ilist circleGI;
+  vCircleGI(r, circleGI);
+
+  VisListGI* vlist = new VisListGI;
+  vlist->reserve(lround(double(circleGI.size()) * 0.69));
+
+  vlist->init();
+
+  for (vec2ilist::const_iterator i = circleGI.begin(); i != circleGI.end(); ++i) {
+    if (visibility2FreeGI(*i)) vlist->insertSorted(*i);
+  }
+
+  circleGI.resize(0); // deallocate the initial vertices
 
   vlist->removeInvisibleFast();
 
@@ -1120,6 +1234,20 @@ void vCircleZ2(const uint r, Common::vec2ilist& table) {
 
       if (vtx.minkowskiZ2().lengthSquared() <= cradSq)
         table.push_back(vtx);
+    }
+  }
+}
+
+void vCircleGI(const uint r, Common::vec2ilist& table) {
+  table.clear();
+  table.reserve((r + 1) * (r + 1));
+
+  const double cradSq = double(r * r);
+
+  for (int i = -int(r); i <= int(r); ++i) {
+    for (int j = -int(r); j <= int(r); ++j) {
+      if (vec2d(double(i), double(j)).lengthSquared() <= cradSq)
+        table.push_back(vec2i(i, j));
     }
   }
 }
@@ -1440,11 +1568,63 @@ int main_diffraction(int argc, char* argv[]) {
 }
 
 int main_radialproj(int argc, char* argv[]) {
+  using namespace ArithVisibility;
+
   cerr << "info: radial projection main mode selected." << endl;
 
-  /*Common::vec2ilist out;
-  visCircleZ2(20, out, true);
-  return 0;*/
+  stringstream parser;
+
+  uint mode = 0;
+  uint range = 30;
+
+  Common::vec2ilist patch;
+  Common::dlist spacings;
+
+  // Parse parameters passed to the application
+  if (argc >= 2) {
+    parser.str(argv[1]);
+    parser.clear();
+    parser >> mode;
+
+    if (argc >= 3) {
+      parser.str(argv[2]);
+      parser.clear();
+      parser >> range;
+    }
+  }
+
+  if (mode > 3) {
+    cerr << "error: unknown mode (" << mode <<  ") selected.\n";
+    return 1;
+  }
+
+  switch (mode) {
+    case 0:
+      visCircleZ2(range, patch, false);
+    break;
+
+    case 1:
+      radialProjZ2(range, spacings);
+    break;
+
+    case 2:
+      visCircleGI(range, patch, false);
+    break;
+
+    case 3:
+      radialProjGI(range, spacings);
+    break;
+
+    default:
+      assert(false);
+    break;
+  }
+
+  if (mode % 2 == 0) {
+    cout << patch << endl;
+  } else {
+    Common::writeRawConsole(spacings);
+  }
 
   return 0;
 }
