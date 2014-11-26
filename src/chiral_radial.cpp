@@ -341,26 +341,6 @@ void ChiralLB::createVertices(Common::vec2dlist& vertices,
        << "%).\n";
 }
 
-vec4s make_primitive(const vec4s& in) {
-  if (in.isZero()) return in;
-
-  int k;
-  
-  const vec4s direct(in.transL10ToDirect());
-  const vec2i dirA(direct[0], direct[1]);
-  const vec2i dirB(direct[2], direct[3]);
-
-  if (dirA.isZero()) return vec4s(0, 0, dirB.isPositiveGM() ? 1 : -1, 0);
-  if (dirB.isZero()) return vec4s(dirA.isPositiveGM() ? 1 : -1, 0, 0, 0);
-
-  const vec2i g(Coprime::gcdZTau(dirA, dirB).positiveGM());
-
-  const vec2i reducedA(dirA.divGM(g).reduceGM(k));
-  const vec2i reducedB(dirB.divGM(g).multUnitGM(k));
-
-  return vec4s(reducedA, reducedB);
-}
-
 void ChiralLB::createVerticesVis(Common::vec2dlist& vertices,
                         const rhomblist& initial,
                         uint steps, bool cutAndReduce) {
