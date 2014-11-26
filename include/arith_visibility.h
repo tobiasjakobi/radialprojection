@@ -283,8 +283,28 @@ namespace ArithVisibility {
     static bool rayTest(const invectype& a, const invectype& b);
   };
 
+  struct VisOpES {
+    typedef vec2i invectype;
+    static const double epsilon;
+
+    static double angle(const invectype& a);
+    static vec2d toR2(const invectype& a);
+    static bool rayTest(const invectype& a, const invectype& b);
+  };
+
+  struct VisOpGM {
+    typedef vec2i invectype;
+    static const double epsilon;
+
+    static double angle(const invectype& a);
+    static vec2d toR2(const invectype& a);
+    static bool rayTest(const invectype& a, const invectype& b);
+  };
+
   typedef VisTest::VisibleList<VisOpZ2> VisListZ2;
   typedef VisTest::VisibleList<VisOpGI> VisListGI;
+  typedef VisTest::VisibleList<VisOpES> VisListES;
+  typedef VisTest::VisibleList<VisOpGM> VisListGM;
 
   void visCircleZ2(const uint r, Common::vec2ilist& out, bool radialproj);
   void visCircleZ2Fast(const uint r, Common::vec2ilist& out, bool radialproj);
@@ -292,8 +312,16 @@ namespace ArithVisibility {
   void visCircleGI(const uint r, Common::vec2ilist& out, bool radialproj);
   void visCircleGIFast(const uint r, Common::vec2ilist& out, bool radialproj);
 
+  void visCircleES(const uint r, Common::vec2ilist& out, bool radialproj);
+  void visCircleESFast(const uint r, Common::vec2ilist& out, bool radialproj);
+
+  void visCircleGM(const uint r, Common::vec2ilist& out, bool radialproj);
+  void visCircleGMFast(const uint r, Common::vec2ilist& out, bool radialproj);
+
   void radialProjZ2(const uint r, Common::dlist& out);
   void radialProjGI(const uint r, Common::dlist& out);
+  void radialProjES(const uint r, Common::dlist& out);
+  void radialProjGM(const uint r, Common::dlist& out);
 };
 
 ostream& operator<<(ostream &os, const ArithVisibility::vec2iq& v);
@@ -319,6 +347,8 @@ void vqTableRecipGM(const uint r, const uint s,
 
 void vCircleZ2(const uint r, Common::vec2ilist& table);
 void vCircleGI(const uint r, Common::vec2ilist& table);
+void vCircleES(const uint r, Common::vec2ilist& table);
+void vCircleGM(const uint r, Common::vec2ilist& table);
 
 void minmax(const vector<ArithVisibility::bragg>& input, vec2d& min,
             vec2d& max, double& radius);

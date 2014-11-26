@@ -23,6 +23,12 @@ const double ArithVisibility::VisOpZ2::epsilon =
 const double ArithVisibility::VisOpGI::epsilon =
   2.0 * numeric_limits<double>::epsilon();
 
+const double ArithVisibility::VisOpES::epsilon =
+  2.0 * numeric_limits<double>::epsilon();
+
+const double ArithVisibility::VisOpGM::epsilon =
+  2.0 * numeric_limits<double>::epsilon();
+
 void Coprime::factorInteger(uint i, vector<uint>& factorization) {
   factorization.clear();
 
@@ -915,6 +921,62 @@ bool ArithVisibility::VisOpGI::rayTest(const invectype& a, const invectype& b) {
   return (b.x * a.y == b.y * a.x);
 }
 
+double ArithVisibility::VisOpES::angle(const invectype& a) {
+  return a.minkowskiES().angle();
+}
+
+vec2d ArithVisibility::VisOpES::toR2(const invectype& a) {
+  return a.minkowskiES();
+}
+
+bool ArithVisibility::VisOpES::rayTest(const invectype& a, const invectype& b) {
+  if (a.x == 0) {
+    return (b.x == 0);
+  }
+
+  if (b.x == 0) {
+    return (a.x == 0);
+  }
+
+  if (a.y == 0) {
+    return (b.y == 0);
+  }
+
+  if (b.y == 0) {
+    return (a.y == 0);
+  }
+
+  return (b.x * a.y == b.y * a.x);
+}
+
+double ArithVisibility::VisOpGM::angle(const invectype& a) {
+  return a.minkowskiGM().angle();
+}
+
+vec2d ArithVisibility::VisOpGM::toR2(const invectype& a) {
+  return a.minkowskiGM();
+}
+
+bool ArithVisibility::VisOpGM::rayTest(const invectype& a, const invectype& b) {
+  if (a.x == 0) {
+    return (b.x == 0);
+  }
+
+  if (b.x == 0) {
+    return (a.x == 0);
+  }
+
+  if (a.y == 0) {
+    return (b.y == 0);
+  }
+
+  if (b.y == 0) {
+    return (a.y == 0);
+  }
+
+  return (b.x * a.y == b.y * a.x);
+}
+
 void ArithVisibility::visCircleZ2(const uint r, Common::vec2ilist& out,
                             bool radialproj) {
   using namespace Common;
@@ -996,6 +1058,87 @@ void ArithVisibility::visCircleGIFast(const uint r,
   // TODO: implement
 }
 
+void ArithVisibility::visCircleES(const uint r, Common::vec2ilist& out,
+                            bool radialproj) {
+  using namespace Common;
+
+  vec2ilist circleES;
+  vCircleES(r, circleES);
+
+  cerr << "Constructed patch of the Eisenstein Integers with "
+       << circleES.size() << " vertices.\n";
+
+  VisListES* vlist = new VisListES;
+  vlist->reserve(lround(double(circleES.size()) * 0.8));
+
+  vlist->init();
+
+  for (vec2ilist::const_iterator i = circleES.begin(); i != circleES.end(); ++i) {
+    if (visibility2FreeES(*i)) vlist->insertSorted(*i);
+  }
+
+  cerr << "Isolated " << vlist->size() << " square-free elements of the patch.\n";
+
+  circleES.resize(0); // deallocate the initial vertices
+
+  if (radialproj)
+    vlist->removeInvisibleFast();
+  else
+    vlist->removeInvisibleProper();
+
+  out.clear();
+  out.reserve(vlist->size());
+  vlist->dump(out);
+
+  delete vlist;
+}
+
+void ArithVisibility::visCircleESFast(const uint r,
+                            Common::vec2ilist& out, bool radialproj) {
+  // TODO: implement
+}
+
+void ArithVisibility::visCircleGM(const uint r, Common::vec2ilist& out,
+                            bool radialproj) {
+  using namespace Common;
+
+  vec2ilist circleGM;
+  vCircleGM(r, circleGM);
+
+  cerr << "Constructed patch of the Minkowski embedding of Z[tau] "
+       << "(tau the golden mean) with " << circleGM.size()
+       << " vertices.\n";
+
+  VisListGM* vlist = new VisListGM;
+  vlist->reserve(lround(double(circleGM.size()) * 0.89));
+
+  vlist->init();
+
+  for (vec2ilist::const_iterator i = circleGM.begin(); i != circleGM.end(); ++i) {
+    if (visibility2FreeGM(*i)) vlist->insertSorted(*i);
+  }
+
+  cerr << "Isolated " << vlist->size() << " square-free elements of the patch.\n";
+
+  circleGM.resize(0); // deallocate the initial vertices
+
+  if (radialproj)
+    vlist->removeInvisibleFast();
+  else
+    vlist->removeInvisibleProper();
+
+  out.clear();
+  out.reserve(vlist->size());
+  vlist->dump(out);
+
+  delete vlist;
+}
+
+void ArithVisibility::visCircleGMFast(const uint r,
+                            Common::vec2ilist& out, bool radialproj) {
+  // TODO: implement
+}
+
 void ArithVisibility::radialProjZ2(const uint r, Common::dlist& out) {
   using namespace Common;
 
@@ -1055,6 +1198,92 @@ void ArithVisibility::radialProjGI(const uint r, Common::dlist& out) {
   }
 
   circleGI.resize(0); // deallocate the initial vertices
+
+  vlist->removeInvisibleFast();
+
+  vec2dlist verts;
+  verts.reserve(vlist->size());
+  vlist->toR2(verts);
+
+  delete vlist;
+  vlist = NULL;
+
+  dlist angles;
+  double meandist;
+
+  angles.reserve(verts.size());
+  for (vec2dlist::const_iterator i = verts.begin(); i != verts.end(); ++i) {
+    angles.push_back(i->angle());
+  }
+
+  verts.resize(0);
+  sort(angles.begin(), angles.end());
+
+  out.clear();
+  out.reserve(angles.size() - 1);
+  neighbourDiff(angles, out, meandist);
+  normalizeAngDists(out, meandist);
+}
+
+void ArithVisibility::radialProjES(const uint r, Common::dlist& out) {
+  using namespace Common;
+
+  vec2ilist circleES;
+  vCircleES(r, circleES);
+
+  VisListES* vlist = new VisListES;
+  vlist->reserve(lround(double(circleES.size()) * 0.8));
+
+  vlist->init();
+
+  for (vec2ilist::const_iterator i = circleES.begin(); i != circleES.end(); ++i) {
+    if (visibility2FreeES(*i)) vlist->insertSorted(*i);
+  }
+
+  circleES.resize(0); // deallocate the initial vertices
+
+  vlist->removeInvisibleFast();
+
+  vec2dlist verts;
+  verts.reserve(vlist->size());
+  vlist->toR2(verts);
+
+  delete vlist;
+  vlist = NULL;
+
+  dlist angles;
+  double meandist;
+
+  angles.reserve(verts.size());
+  for (vec2dlist::const_iterator i = verts.begin(); i != verts.end(); ++i) {
+    angles.push_back(i->angle());
+  }
+
+  verts.resize(0);
+  sort(angles.begin(), angles.end());
+
+  out.clear();
+  out.reserve(angles.size() - 1);
+  neighbourDiff(angles, out, meandist);
+  normalizeAngDists(out, meandist);
+}
+
+void ArithVisibility::radialProjGM(const uint r, Common::dlist& out) {
+  using namespace Common;
+
+  vec2ilist circleGM;
+  vCircleGM(r, circleGM);
+
+  VisListGM* vlist = new VisListGM;
+  vlist->reserve(lround(double(circleGM.size()) * 0.89));
+
+  vlist->init();
+
+  for (vec2ilist::const_iterator i = circleGM.begin(); i != circleGM.end(); ++i) {
+    if (visibility2FreeGM(*i)) vlist->insertSorted(*i);
+  }
+
+  circleGM.resize(0); // deallocate the initial vertices
 
   vlist->removeInvisibleFast();
 
@@ -1248,6 +1477,43 @@ void vCircleGI(const uint r, Common::vec2ilist& table) {
     for (int j = -int(r); j <= int(r); ++j) {
       if (vec2d(double(i), double(j)).lengthSquared() <= cradSq)
         table.push_back(vec2i(i, j));
+    }
+  }
+}
+
+void vCircleES(const uint r, Common::vec2ilist& table) {
+  table.clear();
+  table.reserve((r + 1) * (r + 1));
+
+  const double cradSq = double(r * r) * 0.75;
+
+  for (int i = -int(r); i <= int(r); ++i) {
+    for (int j = -int(r); j <= int(r); ++j) {
+      const vec2i vtx(i, j);
+
+      if (vtx.minkowskiES().lengthSquared() <= cradSq)
+        table.push_back(vtx);
+    }
+  }
+}
+
+void vCircleGM(const uint r, Common::vec2ilist& table) {
+  table.clear();
+  table.reserve((r + 1) * (r + 1));
+
+  /* Computation of the cut-off radius (geometry in parallelogram): *
+   * R_max = Cos[ArcTan[1, 1] + ArcTan[tau, 1 - tau]] * Sqrt[2]     *
+   * ArcTan[1, 1]: slope of first basis vector.                     *
+   * ArcTan[tau, 1 - tau]: slope of second basis vector.            *
+   * Sqrt[2]: length of first basis vector.                         */
+  const double cradSq = double(r * r) * (5.0 / 3.0);
+
+  for (int i = -int(r); i <= int(r); ++i) {
+    for (int j = -int(r); j <= int(r); ++j) {
+      const vec2i vtx(i, j);
+
+      if (vtx.minkowskiGM().lengthSquared() <= cradSq)
+        table.push_back(vtx);
     }
   }
 }
@@ -1593,7 +1859,7 @@ int main_radialproj(int argc, char* argv[]) {
     }
   }
 
-  if (mode > 3) {
+  if (mode > 7) {
     cerr << "error: unknown mode (" << mode <<  ") selected.\n";
     return 1;
   }
@@ -1613,6 +1879,22 @@ int main_radialproj(int argc, char* argv[]) {
 
     case 3:
       radialProjGI(range, spacings);
+    break;
+
+    case 4:
+      visCircleES(range, patch, false);
+    break;
+
+    case 5:
+      radialProjES(range, spacings);
+    break;
+
+    case 6:
+      visCircleGM(range, patch, false);
+    break;
+
+    case 7:
+      radialProjGM(range, spacings);
     break;
 
     default:
@@ -1642,6 +1924,8 @@ void print_usage() {
        << "(0 = linear; 1 = square root; 2 = power)" << endl;
 
   cerr << "arith_visibility --radialproj: selects radial projection main mode" << endl;
+  cerr << "\t\tparameter 1: mode (even = visible square-free; odd = radial projection)" << endl;
+  cerr << "\t\tparameter 2: range (number of vertices depends on mode)" << endl;
 }
 
 int main(int argc, char* argv[]) {
