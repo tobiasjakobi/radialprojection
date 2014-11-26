@@ -165,6 +165,12 @@ bool vec2i::coprime() const {
   return (Coprime::gcdZFast(abs(x), abs(y)) == 1);
 }
 
+vec2i vec2i::primitive() const {
+  const int g = Coprime::gcdZFast(abs(x), abs(y));
+
+  return vec2i(x / g, y / g);
+}
+
 vec4s vec4s::directL10ToUnique() const {
   if (this->isZero()) return *this;
 

@@ -306,6 +306,21 @@ namespace ArithVisibility {
   typedef VisTest::VisibleList<VisOpES> VisListES;
   typedef VisTest::VisibleList<VisOpGM> VisListGM;
 
+  class vec2iExt {
+  public:
+    vec2iExt(const vec2i& in);
+    vec2iExt(const vec2iExt& c);
+
+    bool operator==(const vec2iExt& rhs) const;
+    bool operator<(const vec2iExt& rhs) const;
+
+    operator vec2i() const;
+
+  private:
+    vec2i v;
+    int e;
+  };
+
   void visCircleZ2(const uint r, Common::vec2ilist& out, bool radialproj);
   void visCircleZ2Fast(const uint r, Common::vec2ilist& out, bool radialproj);
 

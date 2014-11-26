@@ -282,6 +282,10 @@ public:
 
   bool coprime() const;
 
+  /* Return primitive version of the element, by dividing *
+   * the coordinates by the (positive) GCD.               */
+  vec2i primitive() const;
+
 };
 
 class vec2d {

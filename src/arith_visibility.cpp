@@ -977,6 +977,29 @@ bool ArithVisibility::VisOpGM::rayTest(const invectype& a, const invectype& b) {
   return (b.x * a.y == b.y * a.x);
 }
 
+ArithVisibility::vec2iExt::vec2iExt(const vec2i& in) {
+  e = Coprime::gcdZFast(abs(in.x), abs(in.y));
+  v.x = in.x / e;
+  v.y = in.y / e;
+}
+
+ArithVisibility::vec2iExt::vec2iExt(const vec2iExt& c) {
+  v = c.v;
+  e = c.e;
+}
+
+bool ArithVisibility::vec2iExt::operator==(const vec2iExt& rhs) const {
+  return (v == rhs.v);
+}
+
+bool ArithVisibility::vec2iExt::operator<(const vec2iExt& rhs) const {
+  return (v < rhs.v);
+}
+
+ArithVisibility::vec2iExt::operator vec2i() const {
+  return vec2i(v.x * e, v.y * e);
+}
+
 void ArithVisibility::visCircleZ2(const uint r, Common::vec2ilist& out,
                             bool radialproj) {
   using namespace Common;
@@ -1014,8 +1037,55 @@ void ArithVisibility::visCircleZ2(const uint r, Common::vec2ilist& out,
 
 void ArithVisibility::visCircleZ2Fast(const uint r,
                             Common::vec2ilist& out, bool radialproj) {
-  // TODO: implement
-  // use fast chiral approach here
+  using namespace Common;
+
+  vec2ilist circleZ2;
+  vCircleZ2(r, circleZ2);
+
+  cerr << "Constructed patch of the Minkowski embedding of Z[Sqrt[2]] with "
+       << circleZ2.size() << " vertices.\n";
+
+  vector<vec2iExt> ext;
+  uint num_sqfree;
+
+  // estimated number of square-free elements
+  const uint est_sqfree = lround(double(circleZ2.size()) * 0.71);
+
+  out.clear();
+  out.reserve(est_sqfree);
+
+  if (radialproj) {
+    // write directly into the output container
+    for (vec2ilist::const_iterator i = circleZ2.begin(); i != circleZ2.end(); ++i)
+      if (visibility2FreeZ2(*i)) out.push_back(i->primitive());
+
+    num_sqfree = out.size();
+  } else {
+    ext.reserve(est_sqfree);
+
+    for (vec2ilist::const_iterator i = circleZ2.begin(); i != circleZ2.end(); ++i)
+      if (visibility2FreeZ2(*i)) ext.push_back(*i);
+
+    num_sqfree = ext.size();
+  }
+
+  cerr << "Isolated " << num_sqfree << " square-free elements of the patch.\n";
+
+  circleZ2.resize(0);
+
+  if (radialproj) {
+    sort(out.begin(), out.end());
+    out.erase(unique(out.begin(), out.end()), out.end());
+  } else {
+    sort(ext.begin(), ext.end());
+    // TODO: this doesn't suffice!
+    ext.erase(unique(ext.begin(), ext.end()), ext.end());
+
+    for (vector<vec2iExt>::const_iterator i = ext.begin(); i != ext.end(); ++i)
+      out.push_back(*i);
+  }
+
+  cerr << "info: " << out.size() << " elements are visible.\n";
 }
 
 void ArithVisibility::visCircleGI(const uint r, Common::vec2ilist& out,
@@ -1866,7 +1936,8 @@ int main_radialproj(int argc, char* argv[]) {
 
   switch (mode) {
     case 0:
-      visCircleZ2(range, patch, false);
+      //visCircleZ2(range, patch, false);
+      visCircleZ2Fast(range, patch, false);
     break;
 
     case 1:
