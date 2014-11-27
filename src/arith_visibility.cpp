@@ -1162,7 +1162,55 @@ void ArithVisibility::visCircleGI(const uint r, Common::vec2ilist& out,
 
 void ArithVisibility::visCircleGIFast(const uint r,
                             Common::vec2ilist& out, bool radialproj) {
-  // TODO: implement
+  using namespace Common;
+
+  vec2ilist circleGI;
+  vCircleGI(r, circleGI);
+
+  cerr << "Constructed patch of the Gaussian Integers with "
+       << circleGI.size() << " vertices.\n";
+
+  vector<vec2iExt> ext;
+  uint num_sqfree;
+
+  // estimated number of square-free elements
+  const uint est_sqfree = lround(double(circleGI.size()) * 0.69);
+
+  out.clear();
+  out.reserve(est_sqfree);
+
+  if (radialproj) {
+    // write directly into the output container
+    for (vec2ilist::const_iterator i = circleGI.begin(); i != circleGI.end(); ++i)
+      if (visibility2FreeGI(*i)) out.push_back(i->primitive());
+
+    num_sqfree = out.size();
+  } else {
+    ext.reserve(est_sqfree);
+
+    for (vec2ilist::const_iterator i = circleGI.begin(); i != circleGI.end(); ++i)
+      if (visibility2FreeGI(*i)) ext.push_back(*i);
+
+    num_sqfree = ext.size();
+  }
+
+  cerr << "Isolated " << num_sqfree << " square-free elements of the patch.\n";
+
+  circleGI.resize(0);
+
+  if (radialproj) {
+    sort(out.begin(), out.end());
+    out.erase(unique(out.begin(), out.end()), out.end());
+  } else {
+    sort(ext.begin(), ext.end());
+    normalize(ext);
+    ext.erase(unique(ext.begin(), ext.end()), ext.end());
+
+    for (vector<vec2iExt>::const_iterator i = ext.begin(); i != ext.end(); ++i)
+      out.push_back(*i);
+  }
+
+  cerr << "info: " << out.size() << " elements are visible.\n";
 }
 
 void ArithVisibility::visCircleES(const uint r, Common::vec2ilist& out,
@@ -1202,7 +1250,55 @@ void ArithVisibility::visCircleES(const uint r, Common::vec2ilist& out,
 
 void ArithVisibility::visCircleESFast(const uint r,
                             Common::vec2ilist& out, bool radialproj) {
-  // TODO: implement
+  using namespace Common;
+
+  vec2ilist circleES;
+  vCircleES(r, circleES);
+
+  cerr << "Constructed patch of the Eisenstein Integers with "
+       << circleES.size() << " vertices.\n";
+
+  vector<vec2iExt> ext;
+  uint num_sqfree;
+
+  // estimated number of square-free elements
+  const uint est_sqfree = lround(double(circleES.size()) * 0.8);
+
+  out.clear();
+  out.reserve(est_sqfree);
+
+  if (radialproj) {
+    // write directly into the output container
+    for (vec2ilist::const_iterator i = circleES.begin(); i != circleES.end(); ++i)
+      if (visibility2FreeES(*i)) out.push_back(i->primitive());
+
+    num_sqfree = out.size();
+  } else {
+    ext.reserve(est_sqfree);
+
+    for (vec2ilist::const_iterator i = circleES.begin(); i != circleES.end(); ++i)
+      if (visibility2FreeES(*i)) ext.push_back(*i);
+
+    num_sqfree = ext.size();
+  }
+
+  cerr << "Isolated " << num_sqfree << " square-free elements of the patch.\n";
+
+  circleES.resize(0);
+
+  if (radialproj) {
+    sort(out.begin(), out.end());
+    out.erase(unique(out.begin(), out.end()), out.end());
+  } else {
+    sort(ext.begin(), ext.end());
+    normalize(ext);
+    ext.erase(unique(ext.begin(), ext.end()), ext.end());
+
+    for (vector<vec2iExt>::const_iterator i = ext.begin(); i != ext.end(); ++i)
+      out.push_back(*i);
+  }
+
+  cerr << "info: " << out.size() << " elements are visible.\n";
 }
 
 void ArithVisibility::visCircleGM(const uint r, Common::vec2ilist& out,
@@ -1243,7 +1339,55 @@ void ArithVisibility::visCircleGM(const uint r, Common::vec2ilist& out,
 
 void ArithVisibility::visCircleGMFast(const uint r,
                             Common::vec2ilist& out, bool radialproj) {
-  // TODO: implement
+  using namespace Common;
+
+  vec2ilist circleGM;
+  vCircleGM(r, circleGM);
+
+  cerr << "Constructed patch of the Minkowski embedding of Z[tau] with "
+       << circleGM.size() << " vertices.\n";
+
+  vector<vec2iExt> ext;
+  uint num_sqfree;
+
+  // estimated number of square-free elements
+  const uint est_sqfree = lround(double(circleGM.size()) * 0.89);
+
+  out.clear();
+  out.reserve(est_sqfree);
+
+  if (radialproj) {
+    // write directly into the output container
+    for (vec2ilist::const_iterator i = circleGM.begin(); i != circleGM.end(); ++i)
+      if (visibility2FreeGM(*i)) out.push_back(i->primitive());
+
+    num_sqfree = out.size();
+  } else {
+    ext.reserve(est_sqfree);
+
+    for (vec2ilist::const_iterator i = circleGM.begin(); i != circleGM.end(); ++i)
+      if (visibility2FreeGM(*i)) ext.push_back(*i);
+
+    num_sqfree = ext.size();
+  }
+
+  cerr << "Isolated " << num_sqfree << " square-free elements of the patch.\n";
+
+  circleGM.resize(0);
+
+  if (radialproj) {
+    sort(out.begin(), out.end());
+    out.erase(unique(out.begin(), out.end()), out.end());
+  } else {
+    sort(ext.begin(), ext.end());
+    normalize(ext);
+    ext.erase(unique(ext.begin(), ext.end()), ext.end());
+
+    for (vector<vec2iExt>::const_iterator i = ext.begin(); i != ext.end(); ++i)
+      out.push_back(*i);
+  }
+
+  cerr << "info: " << out.size() << " elements are visible.\n";
 }
 
 void ArithVisibility::radialProjZ2(const uint r, Common::dlist& out) {
@@ -1985,7 +2129,7 @@ int main_radialproj(int argc, char* argv[]) {
     break;
 
     case 2:
-      visCircleGI(range, patch, false);
+      visCircleGIFast(range, patch, false);
     break;
 
     case 3:
@@ -1993,7 +2137,7 @@ int main_radialproj(int argc, char* argv[]) {
     break;
 
     case 4:
-      visCircleES(range, patch, false);
+      visCircleESFast(range, patch, false);
     break;
 
     case 5:
@@ -2001,7 +2145,7 @@ int main_radialproj(int argc, char* argv[]) {
     break;
 
     case 6:
-      visCircleGM(range, patch, false);
+      visCircleGMFast(range, patch, false);
     break;
 
     case 7:
