@@ -1000,6 +1000,43 @@ ArithVisibility::vec2iExt::operator vec2i() const {
   return vec2i(v.x * e, v.y * e);
 }
 
+ArithVisibility::vec2iExt::operator int() const {
+  return e;
+}
+
+void ArithVisibility::normalize(vec2ielist& in) {
+  if (in.size() < 2) return;
+
+  vec2ielist::iterator i = in.begin();
+  vec2ielist::iterator j = i;
+  ++i;
+
+  bool seq = false;
+  int min = *j;
+
+  for (; i != in.end(); ++i) {
+    if (*i == *j) {
+      seq = true;
+      if (*i < min) min = *i;
+
+      continue;
+    }
+
+    if (seq) {
+      while (true) {
+        j->set(min);
+
+        ++j;
+        if (j == i) break;
+      }
+    }
+
+    j = i;
+    min = *j;
+    seq = false;
+  }
+}
+
 void ArithVisibility::visCircleZ2(const uint r, Common::vec2ilist& out,
                             bool radialproj) {
   using namespace Common;
@@ -1078,7 +1115,7 @@ void ArithVisibility::visCircleZ2Fast(const uint r,
     out.erase(unique(out.begin(), out.end()), out.end());
   } else {
     sort(ext.begin(), ext.end());
-    // TODO: this doesn't suffice!
+    normalize(ext);
     ext.erase(unique(ext.begin(), ext.end()), ext.end());
 
     for (vector<vec2iExt>::const_iterator i = ext.begin(); i != ext.end(); ++i)
@@ -1379,6 +1416,10 @@ void ArithVisibility::radialProjGM(const uint r, Common::dlist& out) {
   out.reserve(angles.size() - 1);
   neighbourDiff(angles, out, meandist);
   normalizeAngDists(out, meandist);
+}
+
+ostream& operator<<(ostream &os, const ArithVisibility::vec2iExt& rhs) {
+  os << '{' << rhs.get() << ',' << (int)rhs << '}';
 }
 
 ostream& operator<<(ostream &os, const ArithVisibility::vec2iq& v) {
@@ -1936,7 +1977,6 @@ int main_radialproj(int argc, char* argv[]) {
 
   switch (mode) {
     case 0:
-      //visCircleZ2(range, patch, false);
       visCircleZ2Fast(range, patch, false);
     break;
 

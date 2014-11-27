@@ -315,11 +315,19 @@ namespace ArithVisibility {
     bool operator<(const vec2iExt& rhs) const;
 
     operator vec2i() const;
+    operator int() const;
+
+    void set(int x) {e = x;}
+    const vec2i& get() const {return v;}
 
   private:
     vec2i v;
     int e;
   };
+
+  typedef vector<vec2iExt> vec2ielist;
+
+  void normalize(vec2ielist& in);
 
   void visCircleZ2(const uint r, Common::vec2ilist& out, bool radialproj);
   void visCircleZ2Fast(const uint r, Common::vec2ilist& out, bool radialproj);
@@ -338,6 +346,8 @@ namespace ArithVisibility {
   void radialProjES(const uint r, Common::dlist& out);
   void radialProjGM(const uint r, Common::dlist& out);
 };
+
+ostream& operator<<(ostream &os, const ArithVisibility::vec2iExt& rhs);
 
 ostream& operator<<(ostream &os, const ArithVisibility::vec2iq& v);
 
