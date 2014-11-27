@@ -1393,38 +1393,35 @@ void ArithVisibility::visCircleGMFast(const uint r,
 void ArithVisibility::radialProjZ2(const uint r, Common::dlist& out) {
   using namespace Common;
 
-  vec2ilist circleZ2;
+  vec2ilist circleZ2, sqfreeZ2;
   vCircleZ2(r, circleZ2);
 
-  VisListZ2* vlist = new VisListZ2;
-  vlist->reserve(lround(double(circleZ2.size()) * 0.71));
+  cerr << "Constructed patch of the Minkowski embedding of Z[tau] with "
+       << circleZ2.size() << " vertices.\n";
 
-  vlist->init();
+  sqfreeZ2.reserve(lround(double(circleZ2.size()) * 0.71));
 
-  for (vec2ilist::const_iterator i = circleZ2.begin(); i != circleZ2.end(); ++i) {
-    if (visibility2FreeZ2(*i)) vlist->insertSorted(*i);
-  }
+  for (vec2ilist::const_iterator i = circleZ2.begin(); i != circleZ2.end(); ++i)
+    if (visibility2FreeZ2(*i)) sqfreeZ2.push_back(i->primitive());
+
+  cerr << "Isolated " << sqfreeZ2.size()
+       << " square-free elements of the patch.\n";
 
   circleZ2.resize(0); // deallocate the initial vertices
 
-  vlist->removeInvisibleFast();
+  sort(sqfreeZ2.begin(), sqfreeZ2.end());
+  sqfreeZ2.erase(unique(sqfreeZ2.begin(), sqfreeZ2.end()), sqfreeZ2.end());
 
-  vec2dlist verts;
-  verts.reserve(vlist->size());
-  vlist->toR2(verts);
-
-  delete vlist;
-  vlist = NULL;
+  cerr << "info: applying radial projection to " << sqfreeZ2.size()
+       << " visible elements.\n";
 
   dlist angles;
   double meandist;
 
-  angles.reserve(verts.size());
-  for (vec2dlist::const_iterator i = verts.begin(); i != verts.end(); ++i) {
-    angles.push_back(i->angle());
-  }
+  angles.reserve(sqfreeZ2.size());
+  for (vec2ilist::const_iterator i = sqfreeZ2.begin(); i != sqfreeZ2.end(); ++i)
+    angles.push_back(i->minkowskiZ2().angle());
 
-  verts.resize(0);
   sort(angles.begin(), angles.end());
 
   out.clear();
@@ -1436,38 +1433,35 @@ void ArithVisibility::radialProjZ2(const uint r, Common::dlist& out) {
 void ArithVisibility::radialProjGI(const uint r, Common::dlist& out) {
   using namespace Common;
 
-  vec2ilist circleGI;
+  vec2ilist circleGI, sqfreeGI;
   vCircleGI(r, circleGI);
 
-  VisListGI* vlist = new VisListGI;
-  vlist->reserve(lround(double(circleGI.size()) * 0.69));
+  cerr << "Constructed patch of the Gaussian Integers with "
+       << circleGI.size() << " vertices.\n";
 
-  vlist->init();
+  sqfreeGI.reserve(lround(double(circleGI.size()) * 0.69));
 
-  for (vec2ilist::const_iterator i = circleGI.begin(); i != circleGI.end(); ++i) {
-    if (visibility2FreeGI(*i)) vlist->insertSorted(*i);
-  }
+  for (vec2ilist::const_iterator i = circleGI.begin(); i != circleGI.end(); ++i)
+    if (visibility2FreeGI(*i)) sqfreeGI.push_back(i->primitive());
+
+  cerr << "Isolated " << sqfreeGI.size()
+       << " square-free elements of the patch.\n";
 
   circleGI.resize(0); // deallocate the initial vertices
 
-  vlist->removeInvisibleFast();
+  sort(sqfreeGI.begin(), sqfreeGI.end());
+  sqfreeGI.erase(unique(sqfreeGI.begin(), sqfreeGI.end()), sqfreeGI.end());
 
-  vec2dlist verts;
-  verts.reserve(vlist->size());
-  vlist->toR2(verts);
-
-  delete vlist;
-  vlist = NULL;
+  cerr << "info: applying radial projection to " << sqfreeGI.size()
+       << " visible elements.\n";
 
   dlist angles;
   double meandist;
 
-  angles.reserve(verts.size());
-  for (vec2dlist::const_iterator i = verts.begin(); i != verts.end(); ++i) {
-    angles.push_back(i->angle());
-  }
+  angles.reserve(sqfreeGI.size());
+  for (vec2ilist::const_iterator i = sqfreeGI.begin(); i != sqfreeGI.end(); ++i)
+    angles.push_back(vec2d(double(i->x), double(i->y)).angle());
 
-  verts.resize(0);
   sort(angles.begin(), angles.end());
 
   out.clear();
@@ -1479,38 +1473,35 @@ void ArithVisibility::radialProjGI(const uint r, Common::dlist& out) {
 void ArithVisibility::radialProjES(const uint r, Common::dlist& out) {
   using namespace Common;
 
-  vec2ilist circleES;
+  vec2ilist circleES, sqfreeES;
   vCircleES(r, circleES);
 
-  VisListES* vlist = new VisListES;
-  vlist->reserve(lround(double(circleES.size()) * 0.8));
+  cerr << "Constructed patch of the Eisenstein Integers with "
+       << circleES.size() << " vertices.\n";
 
-  vlist->init();
+  sqfreeES.reserve(lround(double(circleES.size()) * 0.8));
 
-  for (vec2ilist::const_iterator i = circleES.begin(); i != circleES.end(); ++i) {
-    if (visibility2FreeES(*i)) vlist->insertSorted(*i);
-  }
+  for (vec2ilist::const_iterator i = circleES.begin(); i != circleES.end(); ++i)
+    if (visibility2FreeES(*i)) sqfreeES.push_back(i->primitive());
+
+  cerr << "Isolated " << sqfreeES.size()
+       << " square-free elements of the patch.\n";
 
   circleES.resize(0); // deallocate the initial vertices
 
-  vlist->removeInvisibleFast();
+  sort(sqfreeES.begin(), sqfreeES.end());
+  sqfreeES.erase(unique(sqfreeES.begin(), sqfreeES.end()), sqfreeES.end());
 
-  vec2dlist verts;
-  verts.reserve(vlist->size());
-  vlist->toR2(verts);
-
-  delete vlist;
-  vlist = NULL;
+  cerr << "info: applying radial projection to " << sqfreeES.size()
+       << " visible elements.\n";
 
   dlist angles;
   double meandist;
 
-  angles.reserve(verts.size());
-  for (vec2dlist::const_iterator i = verts.begin(); i != verts.end(); ++i) {
-    angles.push_back(i->angle());
-  }
+  angles.reserve(sqfreeES.size());
+  for (vec2ilist::const_iterator i = sqfreeES.begin(); i != sqfreeES.end(); ++i)
+    angles.push_back(i->minkowskiES().angle());
 
-  verts.resize(0);
   sort(angles.begin(), angles.end());
 
   out.clear();
@@ -1522,38 +1513,35 @@ void ArithVisibility::radialProjES(const uint r, Common::dlist& out) {
 void ArithVisibility::radialProjGM(const uint r, Common::dlist& out) {
   using namespace Common;
 
-  vec2ilist circleGM;
+  vec2ilist circleGM, sqfreeGM;
   vCircleGM(r, circleGM);
 
-  VisListGM* vlist = new VisListGM;
-  vlist->reserve(lround(double(circleGM.size()) * 0.89));
+  cerr << "Constructed patch of the Minkowski embedding of Z[tau] with "
+       << circleGM.size() << " vertices.\n";
 
-  vlist->init();
+  sqfreeGM.reserve(lround(double(circleGM.size()) * 0.89));
 
-  for (vec2ilist::const_iterator i = circleGM.begin(); i != circleGM.end(); ++i) {
-    if (visibility2FreeGM(*i)) vlist->insertSorted(*i);
-  }
+  for (vec2ilist::const_iterator i = circleGM.begin(); i != circleGM.end(); ++i)
+    if (visibility2FreeGM(*i)) sqfreeGM.push_back(i->primitive());
+
+  cerr << "Isolated " << sqfreeGM.size()
+       << " square-free elements of the patch.\n";
 
   circleGM.resize(0); // deallocate the initial vertices
 
-  vlist->removeInvisibleFast();
+  sort(sqfreeGM.begin(), sqfreeGM.end());
+  sqfreeGM.erase(unique(sqfreeGM.begin(), sqfreeGM.end()), sqfreeGM.end());
 
-  vec2dlist verts;
-  verts.reserve(vlist->size());
-  vlist->toR2(verts);
-
-  delete vlist;
-  vlist = NULL;
+  cerr << "info: applying radial projection to " << sqfreeGM.size()
+       << " visible elements.\n";
 
   dlist angles;
   double meandist;
 
-  angles.reserve(verts.size());
-  for (vec2dlist::const_iterator i = verts.begin(); i != verts.end(); ++i) {
-    angles.push_back(i->angle());
-  }
+  angles.reserve(sqfreeGM.size());
+  for (vec2ilist::const_iterator i = sqfreeGM.begin(); i != sqfreeGM.end(); ++i)
+    angles.push_back(i->minkowskiGM().angle());
 
-  verts.resize(0);
   sort(angles.begin(), angles.end());
 
   out.clear();
