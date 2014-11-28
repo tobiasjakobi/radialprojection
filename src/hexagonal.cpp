@@ -35,14 +35,12 @@ void Triangular::tiling(const vec2i& initpoint, uint maxstep,
   const double radius = double(maxstep) * radiusFactor;
   const int steps = maxstep;
 
-  for (int i = -steps + 1; i < steps; ++i) {
-    for (int j = -steps + 1; j < steps; ++ j) {
+  for (int i = -steps; i < steps; ++i) {
+    for (int j = -steps; j < steps; ++ j) {
       const vec2i vertex(i, j);
 
-      if (vertex.transTriToR2().length() > radius)
-        continue;
-
-      tilingpoints.push_back(initpoint + vertex);
+      if (vertex.transTriToR2().length() <= radius)
+        tilingpoints.push_back(initpoint + vertex);
     }
   }
 
@@ -61,17 +59,16 @@ void Triangular::tilingVisLocal(const vec2i& initpoint, uint maxstep,
   const double radius = double(maxstep) * radiusFactor;
   const int steps = maxstep;
 
-  for (int i = -steps + 1; i < steps; ++i) {
-    for (int j = -steps + 1; j < steps; ++ j) {
+  for (int i = -steps; i < steps; ++i) {
+    for (int j = -steps; j < steps; ++ j) {
       const vec2i vertex(i, j);
 
-      if (vertex.transTriToR2().length() > radius)
-        continue;
+      if (vertex.transTriToR2().length() <= radius) {
+        tilingpoints.push_back(initpoint + vertex);
 
-      tilingpoints.push_back(initpoint + vertex);
-
-      if (!vertex.isZero() && vertex.coprime())
-        visiblepoints.push_back(initpoint + vertex);
+        if (!vertex.isZero() && vertex.coprime())
+          visiblepoints.push_back(initpoint + vertex);
+      }
     }
   }
 
@@ -99,16 +96,14 @@ void Triangular::radialProj(const Common::vec2ilist& input,
                      Common::dlist& output, double& meandist) {
   using namespace Common;
 
-  output.clear();
-  output.reserve(input.size());
-
   dlist angles;
   angles.reserve(input.size());
 
-  for (vec2ilist::const_iterator i = input.begin(); i != input.end(); ++i) {
-    const vec2d phys(i->transTriToR2());
-    angles.push_back(phys.angle());
-  }
+  for (vec2ilist::const_iterator i = input.begin(); i != input.end(); ++i)
+    angles.push_back(i->transTriToR2().angle());
+
+  output.clear();
+  output.reserve(input.size() - 1);
 
   sort(angles.begin(), angles.end());
   neighbourDiff(angles, output, meandist);
@@ -129,14 +124,12 @@ void Hexagonal::tiling(const vec2i& initpoint, uint maxstep,
 
   helper.push_back(initpoint);
 
-  for (int i = -steps + 1; i < steps; ++i) {
-    for (int j = -steps + 1; j < steps; ++ j) {
+  for (int i = -steps; i < steps; ++i) {
+    for (int j = -steps; j < steps; ++ j) {
       const vec2i vertex(2 * i, 2 * j);
 
-      if (vertex.transTriToR2().length() > radius)
-        continue;
-
-      helper.push_back(initpoint + vertex);
+      if (vertex.transTriToR2().length() <= radius)
+        helper.push_back(initpoint + vertex);
     }
   }
 
@@ -155,6 +148,7 @@ void Hexagonal::tiling(const vec2i& initpoint, uint maxstep,
     for (uint j = 0; j < numhex; ++j) {
       const vec2i vertex(*i + hexsteps[j]);
 
+      // TODO: optimize this!
       if (find(tilingpoints.rbegin(), tilingpoints.rend(), vertex) == tilingpoints.rend()) {
         tilingpoints.push_back(vertex);
       }
@@ -189,14 +183,12 @@ void GenericLattice::tiling(const vec2i& initpoint, const vec2d& lattice,
   const double radius = double(maxstep) * sin(lattice.angle());
   const int steps = maxstep;
 
-  for (int i = -steps + 1; i < steps; ++i) {
-    for (int j = -steps + 1; j < steps; ++ j) {
+  for (int i = -steps; i < steps; ++i) {
+    for (int j = -steps; j < steps; ++ j) {
       const vec2i vertex(i, j);
 
-      if (vertex.transGenericToR2(lattice).length() > radius)
-        continue;
-
-      tilingpoints.push_back(initpoint + vertex);
+      if (vertex.transGenericToR2(lattice).length() <= radius)
+        tilingpoints.push_back(initpoint + vertex);
     }
   }
 
@@ -216,17 +208,16 @@ void GenericLattice::tilingVisLocal(const vec2i& initpoint, const vec2d& lattice
   const double radius = double(maxstep) * sin(lattice.angle());
   const int steps = maxstep;
 
-  for (int i = -steps + 1; i < steps; ++i) {
-    for (int j = -steps + 1; j < steps; ++ j) {
+  for (int i = -steps; i < steps; ++i) {
+    for (int j = -steps; j < steps; ++ j) {
       const vec2i vertex(i, j);
 
-      if (vertex.transGenericToR2(lattice).length() > radius)
-        continue;
+      if (vertex.transGenericToR2(lattice).length() <= radius) {
+        tilingpoints.push_back(initpoint + vertex);
 
-      tilingpoints.push_back(initpoint + vertex);
-
-      if (!vertex.isZero() && vertex.coprime())
-        visiblepoints.push_back(initpoint + vertex);
+        if (!vertex.isZero() && vertex.coprime())
+          visiblepoints.push_back(initpoint + vertex);
+      }
     }
   }
 
@@ -241,16 +232,14 @@ void GenericLattice::radialProj(const Common::vec2ilist& input,
                      double& meandist) {
   using namespace Common;
 
-  output.clear();
-  output.reserve(input.size());
-
   dlist angles;
   angles.reserve(input.size());
 
-  for (vec2ilist::const_iterator i = input.begin(); i != input.end(); ++i) {
-    const vec2d phys(i->transGenericToR2(lattice));
-    angles.push_back(phys.angle());
-  }
+  for (vec2ilist::const_iterator i = input.begin(); i != input.end(); ++i)
+    angles.push_back(i->transGenericToR2(lattice).angle());
+
+  output.clear();
+  output.reserve(input.size() - 1);
 
   sort(angles.begin(), angles.end());
   neighbourDiff(angles, output, meandist);
@@ -261,6 +250,8 @@ void GenericLattice::radialProj(const Common::vec2ilist& input,
 int main(int argc, char* argv[]) {
   const vec2i init(0, 0);
 
+  stringstream parser;
+
   uint steps = 40;
   uint mode = 0;
   bool sector = false;
@@ -270,112 +261,101 @@ int main(int argc, char* argv[]) {
   Common::dlist output;
   double mean;
 
-  bool output_vertices = true;
-
   if (argc >= 2) {
-    stringstream ss(argv[1]);
-    ss >> steps;
-  }
+    parser.str(argv[1]);
+    parser.clear();
+    parser >> steps;
 
-  if (argc >= 3) {
-    stringstream ss(argv[2]);
-    ss >> mode;
-  }
+     if (argc >= 3) {
+      parser.str(argv[2]);
+      parser.clear();
+      parser >> mode;
 
-  if (argc >= 4) {
-    stringstream ss(argv[3]);
-    ss >> sector;
+      if (argc >= 4) {
+        parser.str(argv[3]);
+        parser.clear();
+        parser >> sector;
+      }
+    }
   }
 
   /* Parse the (second) lattice vector for the generic tiling/lattice mode. */
   if (argc >= 6) {
     double x, y;
-    stringstream ss_x(argv[4]), ss_y(argv[5]);
 
-    ss_x >> x;
-    ss_y >> y;
+    parser.str(argv[4]);
+    parser.clear();
+    parser >> x;
+
+    parser.str(argv[5]);
+    parser.clear();
+    parser >> y;
+
     lattice.set(x, y);
   } else {
     lattice.set(0.0, 1.0);
   }
 
+  if (mode >= processing_mode_end) {
+    cerr << "error: unsupported processing mode selected!\n";
+    return 1;
+  }
+
   switch (mode) {
     case triangular_tiling:
-    {
       Triangular::tilingVisLocal(init, steps, tiling, visible);
 
       if (sector) {
-        Common::vec2ilist vistilSector;
-        Triangular::extractSector(visible, vistilSector);
-        visible.swap(vistilSector);
+        Triangular::extractSector(visible, tiling);
+        visible.swap(tiling);
         cerr << "Reduced visible tiling to a sector containing "
              << visible.size() << " vertices.\n";
       }
-    }
     break;
 
     case triangular_radprj:
-    {
-      Common::vec2ilist vistilSector;
-
       Triangular::tilingVisLocal(init, steps, tiling, visible);
-      Triangular::extractSector(visible, vistilSector);
-      Triangular::radialProj(vistilSector, output, mean);
-
-      output_vertices = false;
-    }
+      Triangular::extractSector(visible, tiling);
+      Triangular::radialProj(tiling, output, mean);
     break;
 
     case hexagonal_tiling:
-    {
       Hexagonal::tiling(init, steps, tiling);
       visible.swap(tiling); // TODO: debug
 
       if (sector) {
         // TODO
       }
-    }
     break;
 
     case hexagonal_radprj:
-    {
       // TODO: implement
-
-      output_vertices = false;
-    }
     break;
 
     case generic_tiling:
-    {
       /* The 'sector' parameter is ignored here. */
       GenericLattice::tilingVisLocal(init, lattice, steps, tiling, visible);
-    }
     break;
 
     case generic_radprj:
-    {
       GenericLattice::tilingVisLocal(init, lattice, steps, tiling, visible);
       GenericLattice::radialProj(visible, lattice, output, mean);
-
-      output_vertices = false;
-    }
     break;
 
     default:
-      cerr << "error: unsupported processing mode selected!\n";
-      return 1;
+      assert(false);
+    break;
   }
 
-  if (output_vertices) {
+  if (mode % 2 == 0) {
     cerr << "Size of visible point data is around "
          << uint(double(visible.size() * sizeof(vec2i)) / 1024.0)
          << " kilobytes.\n";
 
     cout << visible;
   } else {
-    cerr << "mean distance " << mean
-         << " during radial projection of " << (output.size() + 1)
-         << " vertices.\n";
+    cerr << "mean distance " << mean << " during radial projection of "
+         << (output.size() + 1) << " vertices.\n";
 
     Common::writeRawConsole(output);
   }
