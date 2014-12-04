@@ -1022,7 +1022,7 @@ void ArithVisibility::visCircleZ2Fast(const uint r,
   cerr << "Constructed patch of the Minkowski embedding of Z[Sqrt[2]] with "
        << circleZ2.size() << " vertices.\n";
 
-  vector<vec2iExt> ext;
+  vec2ielist ext;
   uint num_sqfree;
 
   // estimated number of square-free elements
@@ -1058,7 +1058,7 @@ void ArithVisibility::visCircleZ2Fast(const uint r,
     normalize(ext);
     ext.erase(unique(ext.begin(), ext.end()), ext.end());
 
-    for (vector<vec2iExt>::const_iterator i = ext.begin(); i != ext.end(); ++i)
+    for (vec2ielist::const_iterator i = ext.begin(); i != ext.end(); ++i)
       out.push_back(*i);
   }
 
@@ -1110,7 +1110,7 @@ void ArithVisibility::visCircleGIFast(const uint r,
   cerr << "Constructed patch of the Gaussian Integers with "
        << circleGI.size() << " vertices.\n";
 
-  vector<vec2iExt> ext;
+  vec2ielist ext;
   uint num_sqfree;
 
   // estimated number of square-free elements
@@ -1146,7 +1146,7 @@ void ArithVisibility::visCircleGIFast(const uint r,
     normalize(ext);
     ext.erase(unique(ext.begin(), ext.end()), ext.end());
 
-    for (vector<vec2iExt>::const_iterator i = ext.begin(); i != ext.end(); ++i)
+    for (vec2ielist::const_iterator i = ext.begin(); i != ext.end(); ++i)
       out.push_back(*i);
   }
 
@@ -1198,7 +1198,7 @@ void ArithVisibility::visCircleESFast(const uint r,
   cerr << "Constructed patch of the Eisenstein Integers with "
        << circleES.size() << " vertices.\n";
 
-  vector<vec2iExt> ext;
+  vec2ielist ext;
   uint num_sqfree;
 
   // estimated number of square-free elements
@@ -1234,7 +1234,7 @@ void ArithVisibility::visCircleESFast(const uint r,
     normalize(ext);
     ext.erase(unique(ext.begin(), ext.end()), ext.end());
 
-    for (vector<vec2iExt>::const_iterator i = ext.begin(); i != ext.end(); ++i)
+    for (vec2ielist::const_iterator i = ext.begin(); i != ext.end(); ++i)
       out.push_back(*i);
   }
 
@@ -1287,7 +1287,7 @@ void ArithVisibility::visCircleGMFast(const uint r,
   cerr << "Constructed patch of the Minkowski embedding of Z[tau] with "
        << circleGM.size() << " vertices.\n";
 
-  vector<vec2iExt> ext;
+  vec2ielist ext;
   uint num_sqfree;
 
   // estimated number of square-free elements
@@ -1323,7 +1323,7 @@ void ArithVisibility::visCircleGMFast(const uint r,
     normalize(ext);
     ext.erase(unique(ext.begin(), ext.end()), ext.end());
 
-    for (vector<vec2iExt>::const_iterator i = ext.begin(); i != ext.end(); ++i)
+    for (vec2ielist::const_iterator i = ext.begin(); i != ext.end(); ++i)
       out.push_back(*i);
   }
 
