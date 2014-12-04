@@ -145,15 +145,14 @@ void Hexagonal::tiling(const vec2i& initpoint, uint maxstep,
   };
 
   for (vec2ilist::const_iterator i = helper.begin(); i != helper.end(); ++i) {
-    for (uint j = 0; j < numhex; ++j) {
-      const vec2i vertex(*i + hexsteps[j]);
-
-      // TODO: optimize this!
-      if (find(tilingpoints.rbegin(), tilingpoints.rend(), vertex) == tilingpoints.rend()) {
-        tilingpoints.push_back(vertex);
-      }
-    }
+    for (uint j = 0; j < numhex; ++j)
+      tilingpoints.push_back(*i + hexsteps[j]);
   }
+
+  // Remove duplicate vertices
+  sort(tilingpoints.begin(), tilingpoints.end());
+  tilingpoints.erase(unique(tilingpoints.begin(),
+                            tilingpoints.end()), tilingpoints.end());
 
   cerr << "Constructed patch of hexagonal tiling with "
        << tilingpoints.size() << " vertices.\n";
