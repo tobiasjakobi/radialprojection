@@ -120,18 +120,12 @@ void Hexagonal::tiling(const vec2i& initpoint, uint maxstep,
    * honeycombs around each vertex of the tiling.                  */
 
   const double radius = double(2 * maxstep) * Triangular::radiusFactor;
-  const int steps = maxstep;
 
-  helper.push_back(initpoint);
+  helper.reserve((maxstep + 1) * (maxstep + 1));
 
-  for (int i = -steps; i < steps; ++i) {
-    for (int j = -steps; j < steps; ++ j) {
-      const vec2i vertex(2 * i, 2 * j);
-
-      if (vertex.transTriToR2().length() <= radius)
-        helper.push_back(initpoint + vertex);
-    }
-  }
+  for (int i = -int(maxstep); i < int(maxstep); ++i)
+    for (int j = -int(maxstep); j < int(maxstep); ++ j)
+      helper.push_back(initpoint + vec2i(2 * i, 2 * j));
 
   cerr << "Constructed helper patch of triangular tiling with "
        << helper.size() << " vertices.\n";
@@ -145,8 +139,12 @@ void Hexagonal::tiling(const vec2i& initpoint, uint maxstep,
   };
 
   for (vec2ilist::const_iterator i = helper.begin(); i != helper.end(); ++i) {
-    for (uint j = 0; j < numhex; ++j)
-      tilingpoints.push_back(*i + hexsteps[j]);
+    for (uint j = 0; j < numhex; ++j) {
+      const vec2i vertex(*i + hexsteps[j]);
+
+      if (vertex.transTriToR2().length() <= radius)
+        tilingpoints.push_back(vertex);
+    }
   }
 
   // Remove duplicate vertices
@@ -161,17 +159,67 @@ void Hexagonal::tiling(const vec2i& initpoint, uint maxstep,
 void Hexagonal::tilingVis(const vec2i& initpoint, uint maxstep,
                      Common::vec2ilist& tilingpoints,
                      Common::vec2ilist& visiblepoints) {
-  // TODO: implement
+  using namespace Common;
+
+  vec2ilist helper;
+  vec2ielist ext;
+
+  const double radius = double(2 * maxstep) * Triangular::radiusFactor;
+
+  helper.reserve((maxstep + 1) * (maxstep + 1));
+
+  for (int i = -int(maxstep); i < int(maxstep); ++i)
+    for (int j = -int(maxstep); j < int(maxstep); ++ j)
+      helper.push_back(initpoint + vec2i(2 * i, 2 * j));
+
+  cerr << "Constructed helper patch of triangular tiling with "
+       << helper.size() << " vertices.\n";
+
+  const uint numhex = 6;
+  const vec2i hexsteps[6] = {
+    vec2i(1, 0),  vec2i(0, 1),  vec2i(-1, 1),
+    vec2i(-1, 0), vec2i(0, -1), vec2i(1, -1)
+  };
+
+  tilingpoints.clear();
+
+  for (vec2ilist::const_iterator i = helper.begin(); i != helper.end(); ++i) {
+    for (uint j = 0; j < numhex; ++j) {
+      const vec2i vertex(*i + hexsteps[j]);
+      
+      if (vertex.transTriToR2().length() <= radius) {
+        tilingpoints.push_back(vertex);
+        ext.push_back(vertex);
+      }
+    }
+  }
+
+  helper.resize(0);
+
+  sort(ext.begin(), ext.end());
+  normalize(ext);
+  ext.erase(unique(ext.begin(), ext.end()), ext.end());
+
+  visiblepoints.clear();
+  visiblepoints.reserve(ext.size());
+
+  for (vec2ielist::const_iterator i = ext.begin(); i != ext.end(); ++i)
+    visiblepoints.push_back(*i);
+
+  cerr << "Constructed patch of hexagonal tiling with "
+       << tilingpoints.size() << " vertices and "
+       << visiblepoints.size() << " visible ones.\n";
 }
 
 void Hexagonal::extractSector(const Common::vec2ilist& input,
                      Common::vec2ilist& output) {
-  // TODO: implement
+  /* hexagonal and triangular tiling have the same symmetry */
+  Triangular::extractSector(input, output);
 }
 
 void Hexagonal::radialProj(const Common::vec2ilist& input,
                      Common::dlist& output, double& meandist) {
-  // TODO: implement
+  Triangular::radialProj(input, output, meandist);
 }
 
 void GenericLattice::tiling(const vec2i& initpoint, const vec2d& lattice,
@@ -319,16 +367,20 @@ int main(int argc, char* argv[]) {
     break;
 
     case hexagonal_tiling:
-      Hexagonal::tiling(init, steps, tiling);
-      visible.swap(tiling); // TODO: debug
+      Hexagonal::tilingVis(init, steps, tiling, visible);
 
       if (sector) {
-        // TODO
+        Hexagonal::extractSector(visible, tiling);
+        visible.swap(tiling);
+        cerr << "Reduced visible tiling to a sector containing "
+             << visible.size() << " vertices.\n";
       }
     break;
 
     case hexagonal_radprj:
-      // TODO: implement
+      Hexagonal::tilingVis(init, steps, tiling, visible);
+      Hexagonal::extractSector(visible, tiling);
+      Hexagonal::radialProj(tiling, output, mean);
     break;
 
     case generic_tiling:
