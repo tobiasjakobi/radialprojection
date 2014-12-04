@@ -124,7 +124,7 @@ void Hexagonal::tiling(const vec2i& initpoint, uint maxstep,
   helper.reserve((maxstep + 1) * (maxstep + 1));
 
   for (int i = -int(maxstep); i < int(maxstep); ++i)
-    for (int j = -int(maxstep); j < int(maxstep); ++ j)
+    for (int j = -int(maxstep); j < int(maxstep); ++j)
       helper.push_back(initpoint + vec2i(2 * i, 2 * j));
 
   cerr << "Constructed helper patch of triangular tiling with "
@@ -186,7 +186,8 @@ void Hexagonal::tilingVis(const vec2i& initpoint, uint maxstep,
   for (vec2ilist::const_iterator i = helper.begin(); i != helper.end(); ++i) {
     for (uint j = 0; j < numhex; ++j) {
       const vec2i vertex(*i + hexsteps[j]);
-      
+
+      /* we don't need to test for zero here (zero is part of the helper patch) */
       if (vertex.transTriToR2().length() <= radius) {
         tilingpoints.push_back(vertex);
         ext.push_back(vertex);
