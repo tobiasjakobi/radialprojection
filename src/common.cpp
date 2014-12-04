@@ -194,6 +194,33 @@ vec4s vec4s::directL10ToUnique() const {
   return vec4s(rx, ry);
 }
 
+vec2iExt::vec2iExt(const vec2i& in) {
+  e = Coprime::gcdZFast(abs(in.x), abs(in.y));
+  v.x = in.x / e;
+  v.y = in.y / e;
+}
+
+vec2iExt::vec2iExt(const vec2iExt& c) {
+  v = c.v;
+  e = c.e;
+}
+
+bool vec2iExt::operator==(const vec2iExt& rhs) const {
+  return (v == rhs.v);
+}
+
+bool vec2iExt::operator<(const vec2iExt& rhs) const {
+  return (v < rhs.v);
+}
+
+vec2iExt::operator vec2i() const {
+  return vec2i(v.x * e, v.y * e);
+}
+
+vec2iExt::operator int() const {
+  return e;
+}
+
 uint Coprime::gcdZFast(uint u, uint v) {
   uint shift;
 
@@ -421,6 +448,39 @@ vec2i Coprime::gcdES(const vec2i& a, const vec2i& b) {
 void Coprime::multES(const vec2i& a, const vec2i& b, vec2i& out) {
   out.set(a.x * b.x - a.y * b.y,
           a.x * b.y + a.y * (b.x - b.y));
+}
+
+void Common::normalize(vec2ielist& in) {
+  if (in.size() < 2) return;
+
+  vec2ielist::iterator i = in.begin();
+  vec2ielist::iterator j = i;
+  ++i;
+
+  bool seq = false;
+  int min = *j;
+
+  for (; i != in.end(); ++i) {
+    if (*i == *j) {
+      seq = true;
+      if (*i < min) min = *i;
+
+      continue;
+    }
+
+    if (seq) {
+      while (true) {
+        j->set(min);
+
+        ++j;
+        if (j == i) break;
+      }
+    }
+
+    j = i;
+    min = *j;
+    seq = false;
+  }
 }
 
 double Common::checkPosition(const vec2d& a, const vec2d& b, const vec2d& c) {
@@ -897,6 +957,10 @@ ostream& operator<<(ostream &os, const vec2s& v)
      << ',' << int(v[1]) << '}';
 
   return os;
+}
+
+ostream& operator<<(ostream &os, const vec2iExt& rhs) {
+  os << '{' << rhs.get() << ',' << (int)rhs << '}';
 }
 
 ostream& operator<<(ostream &os, const tilingEdge& e)

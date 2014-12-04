@@ -1020,6 +1020,25 @@ public:
 
 };
 
+class vec2iExt {
+public:
+  vec2iExt(const vec2i& in);
+  vec2iExt(const vec2iExt& c);
+
+  bool operator==(const vec2iExt& rhs) const;
+  bool operator<(const vec2iExt& rhs) const;
+
+  operator vec2i() const;
+  operator int() const;
+
+  void set(int x) {e = x;}
+  const vec2i& get() const {return v;}
+
+private:
+  vec2i v;
+  int e;
+};
+
 class tilingEdge {
 private:
   int a[2];
@@ -1233,10 +1252,13 @@ namespace Common {
   typedef vector<vec4i> vec4ilist;
   typedef vector<vec4s> vec4slist;
   typedef vector<vec2i> vec2ilist;
+  typedef vector<vec2iExt> vec2ielist;
   typedef vector<tilingEdge> edgelist;
 
   typedef vector<double> dlist;
   typedef vector<long double> eflist; // list of extended precision (80-bit IEEE) floats
+
+  void normalize(vec2ielist& in);
 
   static inline ullong reinterpret_double_to_ullong(const double d) {
     return *(reinterpret_cast<const ullong*>(&d));
@@ -1387,6 +1409,7 @@ ostream& operator<<(ostream &os, const vec4i& v);
 ostream& operator<<(ostream &os, const vec8s& v);
 ostream& operator<<(ostream &os, const vec4s& v);
 ostream& operator<<(ostream &os, const vec2s& v);
+ostream& operator<<(ostream &os, const vec2iExt& rhs);
 ostream& operator<<(ostream &os, const tilingEdge& e);
 
 template <class T>

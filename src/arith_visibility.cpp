@@ -977,66 +977,6 @@ bool ArithVisibility::VisOpGM::rayTest(const invectype& a, const invectype& b) {
   return (b.x * a.y == b.y * a.x);
 }
 
-ArithVisibility::vec2iExt::vec2iExt(const vec2i& in) {
-  e = Coprime::gcdZFast(abs(in.x), abs(in.y));
-  v.x = in.x / e;
-  v.y = in.y / e;
-}
-
-ArithVisibility::vec2iExt::vec2iExt(const vec2iExt& c) {
-  v = c.v;
-  e = c.e;
-}
-
-bool ArithVisibility::vec2iExt::operator==(const vec2iExt& rhs) const {
-  return (v == rhs.v);
-}
-
-bool ArithVisibility::vec2iExt::operator<(const vec2iExt& rhs) const {
-  return (v < rhs.v);
-}
-
-ArithVisibility::vec2iExt::operator vec2i() const {
-  return vec2i(v.x * e, v.y * e);
-}
-
-ArithVisibility::vec2iExt::operator int() const {
-  return e;
-}
-
-void ArithVisibility::normalize(vec2ielist& in) {
-  if (in.size() < 2) return;
-
-  vec2ielist::iterator i = in.begin();
-  vec2ielist::iterator j = i;
-  ++i;
-
-  bool seq = false;
-  int min = *j;
-
-  for (; i != in.end(); ++i) {
-    if (*i == *j) {
-      seq = true;
-      if (*i < min) min = *i;
-
-      continue;
-    }
-
-    if (seq) {
-      while (true) {
-        j->set(min);
-
-        ++j;
-        if (j == i) break;
-      }
-    }
-
-    j = i;
-    min = *j;
-    seq = false;
-  }
-}
-
 void ArithVisibility::visCircleZ2(const uint r, Common::vec2ilist& out,
                             bool radialproj) {
   using namespace Common;
@@ -1548,10 +1488,6 @@ void ArithVisibility::radialProjGM(const uint r, Common::dlist& out) {
   out.reserve(angles.size() - 1);
   neighbourDiff(angles, out, meandist);
   normalizeAngDists(out, meandist);
-}
-
-ostream& operator<<(ostream &os, const ArithVisibility::vec2iExt& rhs) {
-  os << '{' << rhs.get() << ',' << (int)rhs << '}';
 }
 
 ostream& operator<<(ostream &os, const ArithVisibility::vec2iq& v) {
