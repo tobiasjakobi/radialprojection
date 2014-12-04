@@ -910,27 +910,23 @@ void Common::radialProj(const vec2dlist& input,
   normalizeAngDists(output, meandist);
 }
 
-ostream& operator<<(ostream &os, const vec2i& v)
-{
+ostream& operator<<(ostream &os, const vec2i& v) {
   os << '{' << v.x << ',' << v.y << '}';
   return os;
 }
 
-ostream& operator<<(ostream &os, const vec2d& v)
-{
+ostream& operator<<(ostream &os, const vec2d& v) {
   os << '{' << fixed << setprecision(3)
      << v.x << ',' << v.y << '}';
   return os;
 }
 
-ostream& operator<<(ostream &os, const vec4i& v)
-{
+ostream& operator<<(ostream &os, const vec4i& v) {
   os << '{' << v[0] << ',' << v[1] << ',' << v[2] << ',' << v[3] << '}';
   return os;
 }
 
-ostream& operator<<(ostream &os, const vec8s& v)
-{
+ostream& operator<<(ostream &os, const vec8s& v) {
   os << '{' << int(v[0]);
 
   for (uint i = 1; i < 8; ++i) {
@@ -942,8 +938,7 @@ ostream& operator<<(ostream &os, const vec8s& v)
   return os;
 }
 
-ostream& operator<<(ostream &os, const vec4s& v)
-{
+ostream& operator<<(ostream &os, const vec4s& v) {
   os << '{' << int(v[0]) << ',' << int(v[1])
      << ',' << int(v[2]) << ',' << int(v[3])
      << '}';
@@ -951,8 +946,7 @@ ostream& operator<<(ostream &os, const vec4s& v)
   return os;
 }
 
-ostream& operator<<(ostream &os, const vec2s& v)
-{
+ostream& operator<<(ostream &os, const vec2s& v) {
   os << '{' << int(v[0])
      << ',' << int(v[1]) << '}';
 
@@ -963,8 +957,7 @@ ostream& operator<<(ostream &os, const vec2iExt& rhs) {
   os << '{' << rhs.get() << ',' << (int)rhs << '}';
 }
 
-ostream& operator<<(ostream &os, const tilingEdge& e)
-{
+ostream& operator<<(ostream &os, const tilingEdge& e) {
   os << '{' << e[0]
      << ',' << e[1] << '}';
 
