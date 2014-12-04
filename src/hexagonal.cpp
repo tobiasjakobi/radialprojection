@@ -299,8 +299,8 @@ int main(int argc, char* argv[]) {
 
   stringstream parser;
 
-  uint steps = 40;
   uint mode = 0;
+  uint steps = 40;
   bool sector = false;
   vec2d lattice;
 
@@ -311,12 +311,12 @@ int main(int argc, char* argv[]) {
   if (argc >= 2) {
     parser.str(argv[1]);
     parser.clear();
-    parser >> steps;
+    parser >> mode;
 
      if (argc >= 3) {
       parser.str(argv[2]);
       parser.clear();
-      parser >> mode;
+      parser >> steps;
 
       if (argc >= 4) {
         parser.str(argv[3]);
@@ -378,6 +378,9 @@ int main(int argc, char* argv[]) {
     break;
 
     case hexagonal_radprj:
+      /* radial projection is the same as for the triangular tiling, since *
+       * the missing points (the center of the hexagons) are all invisible *
+       * points (they all have coordinates of the type 2 * (i,j)).         */
       Hexagonal::tilingVis(init, steps, tiling, visible);
       Hexagonal::extractSector(visible, tiling);
       Hexagonal::radialProj(tiling, output, mean);
