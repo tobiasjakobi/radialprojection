@@ -21,7 +21,7 @@ endif
 
 objects := cyclotomic_radial chiral_radial corner_cases \
            griddual hexagonal higher_cyclo histogram \
-           tuebingen arith_visibility pdf_writer
+           tuebingen arith_visibility pdf_writer random
 
 all: $(objects)
 
@@ -40,6 +40,7 @@ histogram: histogram.o common.o; $(compiler) -o $@ $(ldflags) $^
 tuebingen: tuebingen.o common.o; $(compiler) -o $@ $(ldflags) $^
 arith_visibility: arith_visibility.o common.o; $(compiler) -o $@ $(ldflags) $^
 pdf_writer: pdf_writer.o common.o; $(compiler) -o $@ $(ldflags) $^ -lcairo
+random: random.o common.o; $(compiler) -o $@ $(ldflags) $^
 
 clean:
 	rm -f *.o

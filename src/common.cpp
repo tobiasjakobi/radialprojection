@@ -499,6 +499,16 @@ bool Common::circularCheck(double radSquared, double xSquared) {
   return false;
 }
 
+void Common::srandExt() {
+  uint seed;
+
+  ifstream urandom("/dev/urandom", ios::in|ios::binary);
+  urandom.read(reinterpret_cast<char*>(&seed), sizeof(uint));
+  urandom.close();
+
+  srand(seed);
+}
+
 // Create n random double floats in the range [0.0, 1.0]
 // Warning: This call is slow and not suited for large amount of random numbers.
 //          Better use srand and rand in this context!

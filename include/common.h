@@ -1346,6 +1346,9 @@ namespace Common {
     }
   }
 
+  // Initialize RNG with external (system) random number
+  void srandExt();
+
   // Create n random double floats in the range [0.0, 1.0]
   // Warning: This call is slow and not suited for large amount of random numbers.
   //          Better use srand and rand in this context!
