@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[    993533,      16744]
-NotebookOptionsPosition[    992741,      16713]
-NotebookOutlinePosition[    993098,      16729]
-CellTagsIndexPosition[    993055,      16726]
+NotebookDataLength[    994574,      16776]
+NotebookOptionsPosition[    993662,      16741]
+NotebookOutlinePosition[    994019,      16757]
+CellTagsIndexPosition[    993976,      16754]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -16704,11 +16704,39 @@ Cell[BoxData[
  RowBox[{"{", 
   RowBox[{
    AnimatorBox[Dynamic[$CellContext`x], {0.05, 0.95, 0.05},
-    PausedTime->0.], ",", 
+    PausedTime->4.7368421052631575`], ",", 
    DynamicBox[ToBoxes[
      $CellContext`DynamicEnv["random/visrnd", $CellContext`x], StandardForm],
-    ImageSizeCache->{225., {70., 78.}}]}], "}"}]], "Output",
+    ImageSizeCache->{225., {66., 74.}}]}], "}"}]], "Output",
  CellChangeTimes->{3.626781791996729*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"Animator", "[", 
+    RowBox[{
+     RowBox[{"Dynamic", "[", "y", "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"0.05", ",", "0.95", ",", "0.05"}], "}"}], ",", 
+     RowBox[{"AnimationRunning", "\[Rule]", "False"}]}], "]"}], ",", 
+   RowBox[{"Dynamic", "[", 
+    RowBox[{"DynamicEnv", "[", 
+     RowBox[{"\"\<random/rndvis\>\"", ",", "y"}], "]"}], "]"}]}], 
+  "}"}]], "Input",
+ CellChangeTimes->{{3.626784690225793*^9, 3.626784712636127*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   AnimatorBox[Dynamic[$CellContext`y], {0.05, 0.95, 0.05},
+    PausedTime->0.2631578947368421], ",", 
+   DynamicBox[ToBoxes[
+     $CellContext`DynamicEnv["random/rndvis", $CellContext`y], StandardForm],
+    ImageSizeCache->{225., {68., 75.}}]}], "}"}]], "Output",
+ CellChangeTimes->{{3.6267846939683113`*^9, 3.626784715012679*^9}}]
 }, Open  ]]
 },
 WindowSize->{1920, 1145},
@@ -16744,11 +16772,14 @@ Cell[601409, 10178, 389251, 6471, 294, "Output"]
 Cell[990675, 16652, 1266, 32, 189, "Input"],
 Cell[CellGroupData[{
 Cell[991966, 16688, 426, 12, 38, "Input"],
-Cell[992395, 16702, 330, 8, 168, "Output"]
+Cell[992395, 16702, 347, 8, 160, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[992779, 16715, 492, 13, 38, "Input"],
+Cell[993274, 16730, 372, 8, 163, "Output"]
 }, Open  ]]
 }
 ]
 *)
 
 (* End of internal cache information *)
-
