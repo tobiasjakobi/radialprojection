@@ -894,7 +894,7 @@ bool ArithVisibility::VisOpZ2::rayTest(const invectype& a, const invectype& b) {
 }
 
 double ArithVisibility::VisOpGI::angle(const invectype& a) {
-  return vec2d(double(a.x), double(a.y)).angle();
+  return a.angle();
 }
 
 vec2d ArithVisibility::VisOpGI::toR2(const invectype& a) {
@@ -1400,7 +1400,7 @@ void ArithVisibility::radialProjGI(const uint r, Common::dlist& out) {
 
   angles.reserve(sqfreeGI.size());
   for (vec2ilist::const_iterator i = sqfreeGI.begin(); i != sqfreeGI.end(); ++i)
-    angles.push_back(vec2d(double(i->x), double(i->y)).angle());
+    angles.push_back(i->angle());
 
   sort(angles.begin(), angles.end());
 
