@@ -13,31 +13,20 @@
  *  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "common.h"
+#include "random.h"
 
 #include <sstream>
 
-int main(int argc, char* argv[]) {
-  stringstream parser;
+/* First compute visible points, then randomize the set. */
+void RandomVis::visible_random(uint steps, double prob, Common::vec2ilist& out) {
+  using namespace Common;
+
+  assert((prob >= 0.0) && (prob <= 1.0));
 
   const double rndNorm = 1.0 / double(RAND_MAX);
 
-  uint steps = 100;
-  double prob = 0.5;
-
-  if (argc >= 2) {
-    parser.str(argv[1]);
-    parser.clear();
-    parser >> steps;
-
-    if (argc >= 3) {
-      parser.str(argv[2]);
-      parser.clear();
-      parser >> prob;
-    }
-  }
-
-  Common::vec2ilist vertices, randomized;
+  vec2ilist vertices;
+  vertices.reserve(((steps + 1) * (steps + 1)) / 2);
 
   for (uint y = 0; y <= steps; ++y) {
     for (uint x = y; x <= steps; ++x) {
@@ -48,14 +37,120 @@ int main(int argc, char* argv[]) {
     }
   }
 
-  Common::srandExt();
+  srandExt();
 
-  for (Common::vec2ilist::const_iterator i = vertices.begin(); i != vertices.end(); ++i) {
+  out.clear();
+  out.reserve(lround(double(vertices.size()) * (1.0 - prob)));
+
+  for (vec2ilist::const_iterator i = vertices.begin(); i != vertices.end(); ++i) {
     const double p = double(rand()) * rndNorm;
-    if (p >= prob) randomized.push_back(*i);
+    if (p >= prob) out.push_back(*i);
+  }
+}
+
+/* First randomize the set, then compute visible points. Here of *
+ * course the default Z2 visibility test doesn't hold anymore.  */
+void RandomVis::random_visible(uint steps, double prob, Common::vec2ilist& out) {
+  using namespace Common;
+
+  assert((prob >= 0.0) && (prob <= 1.0));
+
+  const double rndNorm = 1.0 / double(RAND_MAX);
+  const uint est_vertices = lround(double(((steps + 1) * (steps + 1)) / 2) * (1.0 - prob));
+
+  vec2ilist vertices;
+  vertices.reserve(est_vertices);
+
+  srandExt();
+
+  for (uint y = 0; y <= steps; ++y) {
+    for (uint x = y; x <= steps; ++x) {
+      if (x == 0 && y == 0) continue;
+      if (x*x + y*y > steps*steps) continue;
+
+      const double p = double(rand()) * rndNorm;
+      if (p >= prob) vertices.push_back(vec2i(x, y));
+    }
   }
 
-  cout << randomized << endl;
+  vec2ielist ext;
+
+  for (vec2ilist::const_iterator i = vertices.begin(); i != vertices.end(); ++i)
+    ext.push_back(*i);
+
+  sort(ext.begin(), ext.end());
+  normalize(ext);
+  ext.erase(unique(ext.begin(), ext.end()), ext.end());
+
+  for (vec2ielist::const_iterator i = ext.begin(); i != ext.end(); ++i)
+    out.push_back(*i);
+}
+
+int main(int argc, char* argv[]) {
+  stringstream parser;
+
+  uint mode = 0;
+  uint steps = 100;
+  double prob = 0.5;
+
+  if (argc >= 2) {
+    parser.str(argv[1]);
+    parser.clear();
+    parser >> mode;
+
+    if (argc >= 3) {
+      parser.str(argv[2]);
+      parser.clear();
+      parser >> steps;
+
+      if (argc >= 4) {
+        parser.str(argv[3]);
+        parser.clear();
+        parser >> prob;
+      }
+    }
+  }
+
+  Common::vec2ilist randomized;
+  Common::dlist spacings;
+
+  if ((prob < 0.0) || (prob > 1.0)) {
+    cerr << "error: probability value " << prob << " not in [0,1].\n";
+    return 1;
+  }
+
+  if (mode > 3) {
+    cerr << "error: unknown mode (" << mode <<  ") selected.\n";
+    return 1;
+  }
+
+  switch (mode) {
+  case 0:
+    RandomVis::visible_random(steps, prob, randomized);
+  break;
+
+  case 1:
+    // TODO: implement
+  break;
+
+  case 2:
+    RandomVis::random_visible(steps, prob, randomized);
+  break;
+
+  case 3:
+    // TODO: implement
+  break;
+
+  default:
+    assert(false);
+  break;
+  }
+
+  if (mode % 2 == 0) {
+    cout << randomized << endl;
+  } else {
+    Common::writeRawConsole(spacings);
+  }
 
   return 0;
 }
