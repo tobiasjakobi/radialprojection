@@ -17,8 +17,7 @@
 
 #include <sstream>
 
-/* First compute visible points, then randomize the set. */
-void RandomVis::visible_random(uint steps, double prob, Common::vec2ilist& out) {
+void RandomVis::vVisibleRandom(uint steps, double prob, Common::vec2ilist& out) {
   using namespace Common;
 
   assert((prob >= 0.0) && (prob <= 1.0));
@@ -48,9 +47,7 @@ void RandomVis::visible_random(uint steps, double prob, Common::vec2ilist& out) 
   }
 }
 
-/* First randomize the set, then compute visible points. Here of *
- * course the default Z2 visibility test doesn't hold anymore.  */
-void RandomVis::random_visible(uint steps, double prob, Common::vec2ilist& out) {
+void RandomVis::vRandomVisible(uint steps, double prob, Common::vec2ilist& out) {
   using namespace Common;
 
   assert((prob >= 0.0) && (prob <= 1.0));
@@ -82,8 +79,101 @@ void RandomVis::random_visible(uint steps, double prob, Common::vec2ilist& out) 
   normalize(ext);
   ext.erase(unique(ext.begin(), ext.end()), ext.end());
 
+  out.clear();
+  out.reserve(ext.size());
+
   for (vec2ielist::const_iterator i = ext.begin(); i != ext.end(); ++i)
     out.push_back(*i);
+}
+
+void RandomVis::radialProjVisRnd(uint steps, double prob, Common::dlist& out) {
+  using namespace Common;
+
+  assert((prob >= 0.0) && (prob <= 1.0));
+
+  const double rndNorm = 1.0 / double(RAND_MAX);
+
+  vec2ilist vertices;
+  vertices.reserve(((steps + 1) * (steps + 1)) / 2);
+
+  for (uint y = 0; y <= steps; ++y) {
+    for (uint x = y; x <= steps; ++x) {
+      if (x*x + y*y > steps*steps) continue;
+      if (Coprime::gcdZFast(x, y) != 1) continue;
+
+      vertices.push_back(vec2i(x, y));
+    }
+  }
+
+  srandExt();
+
+  dlist angles;
+  double meandist;
+
+  angles.reserve(lround(double(vertices.size()) * (1.0 - prob)));
+  for (vec2ilist::const_iterator i = vertices.begin(); i != vertices.end(); ++i) {
+    const double p = double(rand()) * rndNorm;
+    if (p >= prob) angles.push_back(i->angle());
+  }
+
+  sort(angles.begin(), angles.end());
+
+  out.clear();
+  out.reserve(angles.size() - 1);
+  neighbourDiff(angles, out, meandist);
+  normalizeAngDists(out, meandist);
+}
+
+void RandomVis::radialProjRndVis(uint steps, double prob, Common::dlist& out) {
+  using namespace Common;
+
+  assert((prob >= 0.0) && (prob <= 1.0));
+
+  const double rndNorm = 1.0 / double(RAND_MAX);
+  const uint est_vertices = lround(double(((steps + 1) * (steps + 1)) / 2) * (1.0 - prob));
+
+  vec2ilist vertices;
+  vertices.reserve(est_vertices);
+
+  srandExt();
+
+  for (uint y = 0; y <= steps; ++y) {
+    for (uint x = y; x <= steps; ++x) {
+      if (x == 0 && y == 0) continue;
+      if (x*x + y*y > steps*steps) continue;
+
+      const double p = double(rand()) * rndNorm;
+      if (p >= prob) vertices.push_back(vec2i(x, y));
+    }
+  }
+
+  vec2ilist visible;
+  visible.reserve(vertices.size());
+
+  for (vec2ilist::const_iterator i = vertices.begin(); i != vertices.end(); ++i)
+    visible.push_back(i->primitive());
+
+  vertices.resize(0);
+
+  sort(visible.begin(), visible.end());
+  visible.erase(unique(visible.begin(), visible.end()), visible.end());
+
+  dlist angles;
+  double meandist;
+
+  angles.reserve(visible.size());
+
+  for (vec2ilist::const_iterator i = visible.begin(); i != visible.end(); ++i)
+    angles.push_back(i->angle());
+
+  visible.resize(0);
+
+  sort(angles.begin(), angles.end());
+
+  out.clear();
+  out.reserve(angles.size() - 1);
+  neighbourDiff(angles, out, meandist);
+  normalizeAngDists(out, meandist);
 }
 
 int main(int argc, char* argv[]) {
@@ -126,19 +216,19 @@ int main(int argc, char* argv[]) {
 
   switch (mode) {
   case 0:
-    RandomVis::visible_random(steps, prob, randomized);
+    RandomVis::vVisibleRandom(steps, prob, randomized);
   break;
 
   case 1:
-    // TODO: implement
+    RandomVis::radialProjVisRnd(steps, prob, spacings);
   break;
 
   case 2:
-    RandomVis::random_visible(steps, prob, randomized);
+    RandomVis::vRandomVisible(steps, prob, randomized);
   break;
 
   case 3:
-    // TODO: implement
+    RandomVis::radialProjRndVis(steps, prob, spacings);
   break;
 
   default:

@@ -20,8 +20,15 @@
 
 namespace RandomVis {
 
-  void visible_random(uint steps, double prob, Common::vec2ilist& out);
-  void random_visible(uint steps, double prob, Common::vec2ilist& out);
+  /* First compute visible points, then randomize the set. */
+  void vVisibleRandom(uint steps, double prob, Common::vec2ilist& out);
+
+  /* First randomize the set, then compute visible points. Here of *
+   * course the default Z2 visibility test doesn't hold anymore.   */
+  void vRandomVisible(uint steps, double prob, Common::vec2ilist& out);
+
+  void radialProjVisRnd(uint steps, double prob, Common::dlist& out);
+  void radialProjRndVis(uint steps, double prob, Common::dlist& out);
 
 };
 
