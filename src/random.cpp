@@ -144,6 +144,8 @@ void RandomVis::radialProjVisRnd(uint steps, double prob, Common::dlist& out) {
   out.reserve(angles.size() - 1);
   neighbourDiff(angles, out, meandist);
   normalizeAngDists(out, meandist);
+
+  cerr << "info: mean distance = " << meandist << endl;
 }
 
 void RandomVis::radialProjRndVis(uint steps, double prob, Common::dlist& out) {
@@ -203,6 +205,8 @@ void RandomVis::radialProjRndVis(uint steps, double prob, Common::dlist& out) {
   out.reserve(angles.size() - 1);
   neighbourDiff(angles, out, meandist);
   normalizeAngDists(out, meandist);
+
+  cerr << "info: mean distance = " << meandist << endl;
 }
 
 int main(int argc, char* argv[]) {
