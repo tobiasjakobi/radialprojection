@@ -20,6 +20,8 @@
 void RandomVis::vVisibleRandom(uint steps, double prob, Common::vec2ilist& out) {
   using namespace Common;
 
+  cerr << "info: creating vertices in visible/random mode.\n";
+
   assert((prob >= 0.0) && (prob <= 1.0));
 
   const double rndNorm = 1.0 / double(RAND_MAX);
@@ -36,6 +38,9 @@ void RandomVis::vVisibleRandom(uint steps, double prob, Common::vec2ilist& out) 
     }
   }
 
+  cerr << "info: constructed patch of " << vertices.size()
+       << " visible elements.\n";
+
   srandExt();
 
   out.clear();
@@ -45,10 +50,14 @@ void RandomVis::vVisibleRandom(uint steps, double prob, Common::vec2ilist& out) 
     const double p = double(rand()) * rndNorm;
     if (p >= prob) out.push_back(*i);
   }
+
+  cerr << "info: after randomization " << out.size() << " elements remain.\n";
 }
 
 void RandomVis::vRandomVisible(uint steps, double prob, Common::vec2ilist& out) {
   using namespace Common;
+
+  cerr << "info: creating vertices in random/visible mode.\n";
 
   assert((prob >= 0.0) && (prob <= 1.0));
 
@@ -70,6 +79,9 @@ void RandomVis::vRandomVisible(uint steps, double prob, Common::vec2ilist& out) 
     }
   }
 
+  cerr << "info: constructed random patch of " << vertices.size()
+       << " elements.\n";
+
   vec2ielist ext;
 
   for (vec2ilist::const_iterator i = vertices.begin(); i != vertices.end(); ++i)
@@ -78,6 +90,9 @@ void RandomVis::vRandomVisible(uint steps, double prob, Common::vec2ilist& out) 
   sort(ext.begin(), ext.end());
   normalize(ext);
   ext.erase(unique(ext.begin(), ext.end()), ext.end());
+
+  cerr << "info: after visibility computation " << ext.size()
+       << " elements remain.\n";
 
   out.clear();
   out.reserve(ext.size());
@@ -88,6 +103,8 @@ void RandomVis::vRandomVisible(uint steps, double prob, Common::vec2ilist& out) 
 
 void RandomVis::radialProjVisRnd(uint steps, double prob, Common::dlist& out) {
   using namespace Common;
+
+  cerr << "info: creating vertices in visible/random mode.\n";
 
   assert((prob >= 0.0) && (prob <= 1.0));
 
@@ -104,6 +121,9 @@ void RandomVis::radialProjVisRnd(uint steps, double prob, Common::dlist& out) {
       vertices.push_back(vec2i(x, y));
     }
   }
+
+  cerr << "info: constructed patch of " << vertices.size()
+       << " visible elements.\n";
 
   srandExt();
 
@@ -116,6 +136,8 @@ void RandomVis::radialProjVisRnd(uint steps, double prob, Common::dlist& out) {
     if (p >= prob) angles.push_back(i->angle());
   }
 
+  cerr << "info: applying radial projection to " << angles.size() << " vertices.\n";
+
   sort(angles.begin(), angles.end());
 
   out.clear();
@@ -126,6 +148,8 @@ void RandomVis::radialProjVisRnd(uint steps, double prob, Common::dlist& out) {
 
 void RandomVis::radialProjRndVis(uint steps, double prob, Common::dlist& out) {
   using namespace Common;
+
+  cerr << "info: creating vertices in random/visible mode.\n";
 
   assert((prob >= 0.0) && (prob <= 1.0));
 
@@ -147,6 +171,9 @@ void RandomVis::radialProjRndVis(uint steps, double prob, Common::dlist& out) {
     }
   }
 
+  cerr << "info: constructed random patch of " << vertices.size()
+       << " elements.\n";
+
   vec2ilist visible;
   visible.reserve(vertices.size());
 
@@ -157,6 +184,8 @@ void RandomVis::radialProjRndVis(uint steps, double prob, Common::dlist& out) {
 
   sort(visible.begin(), visible.end());
   visible.erase(unique(visible.begin(), visible.end()), visible.end());
+
+  cerr << "info: applying radial projection to " << visible.size() << " vertices.\n";
 
   dlist angles;
   double meandist;
