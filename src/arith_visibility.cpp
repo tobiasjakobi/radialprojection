@@ -984,7 +984,7 @@ void ArithVisibility::visCircleZ2(const uint r, Common::vec2ilist& out,
   vec2ilist circleZ2;
   vCircleZ2(r, circleZ2);
 
-  cerr << "Constructed patch of the Minkowski embedding of Z[Sqrt[2]] with "
+  cerr << "info: constructed patch of the Minkowski embedding of Z[Sqrt[2]] with "
        << circleZ2.size() << " vertices.\n";
 
   VisListZ2* vlist = new VisListZ2;
@@ -996,7 +996,8 @@ void ArithVisibility::visCircleZ2(const uint r, Common::vec2ilist& out,
     if (visibility2FreeZ2(*i)) vlist->insertSorted(*i);
   }
 
-  cerr << "Isolated " << vlist->size() << " square-free elements of the patch.\n";
+  cerr << "info: isolated " << vlist->size()
+       << " square-free elements of the patch.\n";
 
   circleZ2.resize(0); // deallocate the initial vertices
 
@@ -1019,7 +1020,7 @@ void ArithVisibility::visCircleZ2Fast(const uint r,
   vec2ilist circleZ2;
   vCircleZ2(r, circleZ2);
 
-  cerr << "Constructed patch of the Minkowski embedding of Z[Sqrt[2]] with "
+  cerr << "info: constructed patch of the Minkowski embedding of Z[Sqrt[2]] with "
        << circleZ2.size() << " vertices.\n";
 
   vec2ielist ext;
@@ -1046,7 +1047,8 @@ void ArithVisibility::visCircleZ2Fast(const uint r,
     num_sqfree = ext.size();
   }
 
-  cerr << "Isolated " << num_sqfree << " square-free elements of the patch.\n";
+  cerr << "info: isolated " << num_sqfree
+       << " square-free elements of the patch.\n";
 
   circleZ2.resize(0);
 
@@ -1072,7 +1074,7 @@ void ArithVisibility::visCircleGI(const uint r, Common::vec2ilist& out,
   vec2ilist circleGI;
   vCircleGI(r, circleGI);
 
-  cerr << "Constructed patch of the Gaussian Integers with "
+  cerr << "info: constructed patch of the Gaussian Integers with "
        << circleGI.size() << " vertices.\n";
 
   VisListGI* vlist = new VisListGI;
@@ -1084,7 +1086,8 @@ void ArithVisibility::visCircleGI(const uint r, Common::vec2ilist& out,
     if (visibility2FreeGI(*i)) vlist->insertSorted(*i);
   }
 
-  cerr << "Isolated " << vlist->size() << " square-free elements of the patch.\n";
+  cerr << "info: isolated " << vlist->size()
+       << " square-free elements of the patch.\n";
 
   circleGI.resize(0); // deallocate the initial vertices
 
@@ -1107,7 +1110,7 @@ void ArithVisibility::visCircleGIFast(const uint r,
   vec2ilist circleGI;
   vCircleGI(r, circleGI);
 
-  cerr << "Constructed patch of the Gaussian Integers with "
+  cerr << "info: constructed patch of the Gaussian Integers with "
        << circleGI.size() << " vertices.\n";
 
   vec2ielist ext;
@@ -1134,7 +1137,8 @@ void ArithVisibility::visCircleGIFast(const uint r,
     num_sqfree = ext.size();
   }
 
-  cerr << "Isolated " << num_sqfree << " square-free elements of the patch.\n";
+  cerr << "info: isolated " << num_sqfree
+       << " square-free elements of the patch.\n";
 
   circleGI.resize(0);
 
@@ -1160,7 +1164,7 @@ void ArithVisibility::visCircleES(const uint r, Common::vec2ilist& out,
   vec2ilist circleES;
   vCircleES(r, circleES);
 
-  cerr << "Constructed patch of the Eisenstein Integers with "
+  cerr << "info: constructed patch of the Eisenstein Integers with "
        << circleES.size() << " vertices.\n";
 
   VisListES* vlist = new VisListES;
@@ -1172,7 +1176,8 @@ void ArithVisibility::visCircleES(const uint r, Common::vec2ilist& out,
     if (visibility2FreeES(*i)) vlist->insertSorted(*i);
   }
 
-  cerr << "Isolated " << vlist->size() << " square-free elements of the patch.\n";
+  cerr << "info: isolated " << vlist->size()
+       << " square-free elements of the patch.\n";
 
   circleES.resize(0); // deallocate the initial vertices
 
@@ -1195,7 +1200,7 @@ void ArithVisibility::visCircleESFast(const uint r,
   vec2ilist circleES;
   vCircleES(r, circleES);
 
-  cerr << "Constructed patch of the Eisenstein Integers with "
+  cerr << "info: constructed patch of the Eisenstein Integers with "
        << circleES.size() << " vertices.\n";
 
   vec2ielist ext;
@@ -1222,7 +1227,8 @@ void ArithVisibility::visCircleESFast(const uint r,
     num_sqfree = ext.size();
   }
 
-  cerr << "Isolated " << num_sqfree << " square-free elements of the patch.\n";
+  cerr << "info: isolated " << num_sqfree
+       << " square-free elements of the patch.\n";
 
   circleES.resize(0);
 
@@ -1248,7 +1254,7 @@ void ArithVisibility::visCircleGM(const uint r, Common::vec2ilist& out,
   vec2ilist circleGM;
   vCircleGM(r, circleGM);
 
-  cerr << "Constructed patch of the Minkowski embedding of Z[tau] "
+  cerr << "info: constructed patch of the Minkowski embedding of Z[tau] "
        << "(tau the golden mean) with " << circleGM.size()
        << " vertices.\n";
 
@@ -1261,7 +1267,8 @@ void ArithVisibility::visCircleGM(const uint r, Common::vec2ilist& out,
     if (visibility2FreeGM(*i)) vlist->insertSorted(*i);
   }
 
-  cerr << "Isolated " << vlist->size() << " square-free elements of the patch.\n";
+  cerr << "info: isolated " << vlist->size()
+       << " square-free elements of the patch.\n";
 
   circleGM.resize(0); // deallocate the initial vertices
 
@@ -1284,7 +1291,7 @@ void ArithVisibility::visCircleGMFast(const uint r,
   vec2ilist circleGM;
   vCircleGM(r, circleGM);
 
-  cerr << "Constructed patch of the Minkowski embedding of Z[tau] with "
+  cerr << "info: constructed patch of the Minkowski embedding of Z[tau] with "
        << circleGM.size() << " vertices.\n";
 
   vec2ielist ext;
@@ -1311,7 +1318,8 @@ void ArithVisibility::visCircleGMFast(const uint r,
     num_sqfree = ext.size();
   }
 
-  cerr << "Isolated " << num_sqfree << " square-free elements of the patch.\n";
+  cerr << "info: isolated " << num_sqfree
+       << " square-free elements of the patch.\n";
 
   circleGM.resize(0);
 
@@ -1336,7 +1344,7 @@ void ArithVisibility::radialProjZ2(const uint r, Common::dlist& out) {
   vec2ilist circleZ2, sqfreeZ2;
   vCircleZ2(r, circleZ2);
 
-  cerr << "Constructed patch of the Minkowski embedding of Z[tau] with "
+  cerr << "info: constructed patch of the Minkowski embedding of Z[tau] with "
        << circleZ2.size() << " vertices.\n";
 
   sqfreeZ2.reserve(lround(double(circleZ2.size()) * 0.71));
@@ -1344,7 +1352,7 @@ void ArithVisibility::radialProjZ2(const uint r, Common::dlist& out) {
   for (vec2ilist::const_iterator i = circleZ2.begin(); i != circleZ2.end(); ++i)
     if (visibility2FreeZ2(*i)) sqfreeZ2.push_back(i->primitive());
 
-  cerr << "Isolated " << sqfreeZ2.size()
+  cerr << "info: isolated " << sqfreeZ2.size()
        << " square-free elements of the patch.\n";
 
   circleZ2.resize(0); // deallocate the initial vertices
@@ -1376,7 +1384,7 @@ void ArithVisibility::radialProjGI(const uint r, Common::dlist& out) {
   vec2ilist circleGI, sqfreeGI;
   vCircleGI(r, circleGI);
 
-  cerr << "Constructed patch of the Gaussian Integers with "
+  cerr << "info: constructed patch of the Gaussian Integers with "
        << circleGI.size() << " vertices.\n";
 
   sqfreeGI.reserve(lround(double(circleGI.size()) * 0.69));
@@ -1384,7 +1392,7 @@ void ArithVisibility::radialProjGI(const uint r, Common::dlist& out) {
   for (vec2ilist::const_iterator i = circleGI.begin(); i != circleGI.end(); ++i)
     if (visibility2FreeGI(*i)) sqfreeGI.push_back(i->primitive());
 
-  cerr << "Isolated " << sqfreeGI.size()
+  cerr << "info: isolated " << sqfreeGI.size()
        << " square-free elements of the patch.\n";
 
   circleGI.resize(0); // deallocate the initial vertices
@@ -1416,7 +1424,7 @@ void ArithVisibility::radialProjES(const uint r, Common::dlist& out) {
   vec2ilist circleES, sqfreeES;
   vCircleES(r, circleES);
 
-  cerr << "Constructed patch of the Eisenstein Integers with "
+  cerr << "info: constructed patch of the Eisenstein Integers with "
        << circleES.size() << " vertices.\n";
 
   sqfreeES.reserve(lround(double(circleES.size()) * 0.8));
@@ -1424,7 +1432,7 @@ void ArithVisibility::radialProjES(const uint r, Common::dlist& out) {
   for (vec2ilist::const_iterator i = circleES.begin(); i != circleES.end(); ++i)
     if (visibility2FreeES(*i)) sqfreeES.push_back(i->primitive());
 
-  cerr << "Isolated " << sqfreeES.size()
+  cerr << "info: isolated " << sqfreeES.size()
        << " square-free elements of the patch.\n";
 
   circleES.resize(0); // deallocate the initial vertices
@@ -1456,7 +1464,7 @@ void ArithVisibility::radialProjGM(const uint r, Common::dlist& out) {
   vec2ilist circleGM, sqfreeGM;
   vCircleGM(r, circleGM);
 
-  cerr << "Constructed patch of the Minkowski embedding of Z[tau] with "
+  cerr << "info: constructed patch of the Minkowski embedding of Z[tau] with "
        << circleGM.size() << " vertices.\n";
 
   sqfreeGM.reserve(lround(double(circleGM.size()) * 0.89));
@@ -1464,7 +1472,7 @@ void ArithVisibility::radialProjGM(const uint r, Common::dlist& out) {
   for (vec2ilist::const_iterator i = circleGM.begin(); i != circleGM.end(); ++i)
     if (visibility2FreeGM(*i)) sqfreeGM.push_back(i->primitive());
 
-  cerr << "Isolated " << sqfreeGM.size()
+  cerr << "info: isolated " << sqfreeGM.size()
        << " square-free elements of the patch.\n";
 
   circleGM.resize(0); // deallocate the initial vertices
