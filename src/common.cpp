@@ -673,6 +673,43 @@ readfail:
   return ;
 }
 
+void Common::minmax(const dlist& input, double& min, double& max) {
+  double a, b;
+
+  dlist::const_iterator i = input.begin();
+  a = b = *i;
+
+  ++i;
+  for (; i != input.end(); ++i) {
+    if (*i < a) a = *i;
+    if (*i > b) b = *i;
+  }
+
+  min = a;
+  max = b;
+}
+
+void Common::stats(const dlist& input, const uint* const bins, uint n) {
+  double min, max;
+  minmax(input, min, max);
+
+  cerr << "info: minimum input value = " << min << endl;
+  cerr << "info: maximum input value = " << max << endl;
+
+  if (n < 2) {
+    cerr << "info: list has less than two elements (not computing stats).\n";
+    return;
+  }
+
+  uint idx = 0;
+  for (uint i = 1; i < n; ++i) {
+    if (bins[i] > bins[idx]) idx = i;
+  }
+
+  cerr << "info: largest bin with " << bins[idx] << " elements has index "
+       << idx << endl;
+}
+
 uint* Common::histogramBinning(const dlist& input, uint& num_bin, uint& in_bin,
                        const double a, const double b, const double step) {
   num_bin = uint((b - a) / step);

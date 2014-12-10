@@ -1378,6 +1378,9 @@ namespace Common {
   void writeRawConsole(const vec4ilist& input);
   void readRawConsole(vec4ilist& output);
 
+  void minmax(const dlist& input, double& min, double& max);
+  void stats(const dlist& input, const uint* const bins, uint n);
+
   uint* histogramBinning(const dlist& input, uint& num_bin, uint& in_bin,
                          const double a, const double b, const double step);
   uint* histoTailBinning(const dlist& input, uint& num_bin, uint& in_bin,
