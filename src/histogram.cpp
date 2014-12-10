@@ -60,14 +60,19 @@ int main(int argc, char* argv[]) {
     }
   }
 
+  if (mode > 1) {
+    cerr << "error: unknown mode (" << mode <<  ") selected.\n";
+    return 1;
+  }
+
   if (mode == 0) {
     cerr << "Creating envelope for bulk section (output data type is 64-bit IEEE float, 8 byte alignment).\n";
-    Common::histogramEnvelopeLD(0.0, param, stepsize);
-    //Common::histogramEnvelope(0.0, param, stepsize);
+    //Common::histogramEnvelopeLD(0.0, param, stepsize);
+    Common::histogramEnvelope(0.0, param, stepsize);
   } else {
     cerr << "Creating envelope for tail section (output data type is 80-bit IEEE float, 16 byte alignment).\n";
-    Common::histoTailEnvelopeLD(param, stepsize);
-    //Common::histogramEnvelope(0.0, param, stepsize);
+    //Common::histoTailEnvelopeLD(param, stepsize);
+    Common::histogramEnvelope(0.0, param, stepsize);
   }
 
   return 0;
