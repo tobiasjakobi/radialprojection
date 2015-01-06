@@ -764,9 +764,13 @@ bool ArithVisibility::clipFundamentalZ2(const vec2d& x) {
   static const vec2d vec1(0.5, 0.5);
   static const vec2d vec2(sqrt(2.0) / 4.0, -sqrt(2.0) / 4.0);
 
-  if (clipeps + checkPosition(vec2 + vzero, vec2 + vec1, x) < 0) return false;
+  /*if (clipeps + checkPosition(vec2 + vzero, vec2 + vec1, x) < 0) return false;
   if (clipeps + checkPosition(-vec2 + vec1, -vec2 + vzero, x) < 0) return false;
   if (clipeps + checkPosition(-vec1 + vzero, -vec1 + vec2, x) < 0) return false;
+  if (clipeps + checkPosition(vec1 + vec2, vec1 + vzero, x) < 0) return false;*/
+  if (clipeps + checkPosition(vzero, vec1, x) < 0) return false;
+  if (clipeps + checkPosition(-vec2 + vec1, -vec2 + vzero, x) < 0) return false;
+  if (clipeps + checkPosition(vzero, vec2, x) < 0) return false;
   if (clipeps + checkPosition(vec1 + vec2, vec1 + vzero, x) < 0) return false;
 
   return true;
@@ -1789,6 +1793,57 @@ void toEPS(const vector<ArithVisibility::bragg>& input, bool fill) {
     cout << mode << endl;
   }
 
+  cout << "showpage" << endl;
+  cout << "%%EOF" << endl;
+}
+
+void toEPS2(const vector<ArithVisibility::bragg>& input) {
+  using namespace ArithVisibility;
+
+  vec2d min, max;
+  double radius;
+
+  // Base width of the Postscript and offset to the borders.
+  const int basewidth = 800;
+  const int offset = 50;
+
+  if (input.empty()) return;
+
+  minmax(input, min, max, radius);
+
+  const double xfactor = std::max(abs(min.x), abs(max.x));
+  const double yfactor = std::max(abs(min.y), abs(max.y));
+
+  const int height = basewidth * lround(yfactor / xfactor);
+
+  // Write header with bounding box information
+  cout << "%!PS-Adobe-3.0 EPSF-3.0" << endl;
+  cout << "%%BoundingBox: 0 0 " << basewidth << ' ' << height << endl;
+  cout << "%%BeginProlog" << endl;
+  cout << "%%EndProlog" << endl;
+
+  cout << "1 setlinecap" << endl
+       << "1 setlinejoin" << endl;
+
+  // circle hack: draw a line width linewidth set to radius and length zero
+  cout << "/circlehack {2 mul setlinewidth moveto 0 0 rlineto stroke} def" << endl;
+
+  // Translate origin to the middle of the page
+  cout << (basewidth / 2) << ' ' << (height / 2) << " translate" << endl;
+
+  const double scaling = std::min(
+    double(basewidth - offset) / (2.0 * (xfactor + radius)),
+    double(height - offset) / (2.0 * (yfactor + radius)));
+
+  // Apply scaling
+  cout << lround(scaling) << ' ' << lround(scaling) << " scale" << endl;
+
+  for (vector<bragg>::const_iterator k = input.begin(); k != input.end(); ++k) {
+    cout << k->getPosition().x << ' ' << k->getPosition().y << ' '
+         << k->getIntensity() << " circlehack" << endl;
+  }
+
+  cout << "showpage" << endl;
   cout << "%%EOF" << endl;
 }
 

@@ -354,7 +354,11 @@ void minmax(const vector<ArithVisibility::bragg>& input, vec2d& min,
             vec2d& max, double& radius);
 
 // Format output into encapsulated Postscript
-void toEPS(const vector<ArithVisibility::bragg>& input);
+void toEPS(const vector<ArithVisibility::bragg>& input, bool fill);
+
+// Different method of writing an encapsulated Postscript.
+// Only filled circles are supported.
+void toEPS2(const vector<ArithVisibility::bragg>& input);
 
 // Format output into Scalable Vector Graphics (SVG)
 void toSVG(const vector<ArithVisibility::bragg>& input);
