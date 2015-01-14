@@ -68,11 +68,11 @@ int main(int argc, char* argv[]) {
   if (mode == 0) {
     cerr << "Creating envelope for bulk section (output data type is 64-bit IEEE float, 8 byte alignment).\n";
     //Common::histogramEnvelopeLD(0.0, param, stepsize);
-    Common::histogramEnvelope(0.0, param, stepsize);
+    Common::histogramEnvelope(0.0, param, stepsize, false);
   } else {
     cerr << "Creating envelope for tail section (output data type is 80-bit IEEE float, 16 byte alignment).\n";
     //Common::histoTailEnvelopeLD(param, stepsize);
-    Common::histogramEnvelope(0.0, param, stepsize);
+    Common::histogramEnvelope(0.0, param, stepsize, false);
   }
 
   return 0;

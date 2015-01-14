@@ -1378,25 +1378,49 @@ namespace Common {
   void writeRawConsole(const vec4ilist& input);
   void readRawConsole(vec4ilist& output);
 
-  void minmax(const dlist& input, double& min, double& max);
-  void stats(const dlist& input, const uint* const bins, uint n);
+  /* binning data object:
+   * range: binning range, second parameter is ignored in 'tail'-mode
+   * step: step size / width of the bins
+   * tail: do binning of the 'tail' of the data
+   *
+   * data: output from binning process
+   * catched: number of data points which 'hit' a bin */
+  struct BinningData {
+    double range[2];
+    double step;
+    bool tail;
 
-  uint* histogramBinning(const dlist& input, uint& num_bin, uint& in_bin,
-                         const double a, const double b, const double step);
-  uint* histoTailBinning(const dlist& input, uint& num_bin, uint& in_bin,
-                         const double a, const double step);
+    vector<uint> data;
+    uint catched;
+  };
+
+  // Compute the minimum/maximum value of the input list
+  void minmax(const dlist& input, double& min, double& max);
+
+  /* Compute the index of the 'bin' with the maximum number of entries. *
+   * Only works properly if this 'bin' is unique.                       */
+  void binmax(const BinningData& input, uint& index);
+
+  // Compute statistics for 'data' and 'bin' and print to console
+  void printstats(const dlist& data, const BinningData& bin);
+
+  // Compute binning of 'input' with parameters given in 'output'
+  void histogramBinning(const dlist& input, BinningData& output);
+
+  template <typename T>
+  void histogramScale(const BinningData& input, vector<T>& output, T scale);
 
   /* Creates "envelope" data for given histogram input:                 *
    * Can be used for ListPlot to visualize the distributions coming     *
    * from numerical simulations of the radial projection.               */
-  void histogramEnvelope(const double a, const double b, const double step);
+  void histogramEnvelope(double a, double b, double step, bool stats);
 
   // Same as histogramEnvelope but processes the "tail" of the data.
-  void histoTailEnvelope(const double a, const double step);
+  void histoTailEnvelope(double a, double step, bool stats);
 
   // Histogram envelope routines for large data inputs
-  void histogramEnvelopeLD(const double a, const double b, const double step);
-  void histoTailEnvelopeLD(const double a, const double step);
+  void histogramEnvelopeLD(double a, double b, double step);
+  void histoTailEnvelopeLD(double a, double step);
 
   void neighbourDiff(const dlist& input, dlist& output, double& mean);
   void normalizeAngDists(dlist& input, double mean);

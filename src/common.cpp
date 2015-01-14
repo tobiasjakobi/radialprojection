@@ -689,144 +689,145 @@ void Common::minmax(const dlist& input, double& min, double& max) {
   max = b;
 }
 
-void Common::stats(const dlist& input, const uint* const bins, uint n) {
+void Common::binmax(const BinningData& input, uint& index) {
+  uint idx = 0;
+
+  const vector<uint>& data = input.data;
+
+  for (uint i = 0; i < input.data.size(); ++i) {
+    if (data[i] > data[idx]) idx = i;
+  }
+
+  index = idx;
+}
+
+void Common::printstats(const dlist& data, const BinningData& bin) {
   double min, max;
-  minmax(input, min, max);
+  minmax(data, min, max);
 
   cerr << "info: minimum input value = " << min << endl;
   cerr << "info: maximum input value = " << max << endl;
 
-  if (n < 2) {
-    cerr << "info: list has less than two elements (not computing stats).\n";
-    return;
-  }
+  uint index;
+  binmax(bin, index);
 
-  uint idx = 0;
-  for (uint i = 1; i < n; ++i) {
-    if (bins[i] > bins[idx]) idx = i;
-  }
-
-  cerr << "info: largest bin with " << bins[idx] << " elements has index "
-       << idx << endl;
+  cerr << "info: largest bin with " << bin.data[index] << " elements has index "
+       << index << endl;
 }
 
-uint* Common::histogramBinning(const dlist& input, uint& num_bin, uint& in_bin,
-                       const double a, const double b, const double step) {
-  num_bin = uint((b - a) / step);
-  in_bin = 0;
+void Common::histogramBinning(const dlist& input, BinningData& output) {
+  if (input.empty()) return;
 
-  uint* bins = new uint[num_bin];
-  for (uint i = 0; i < num_bin; ++i)
-    bins[i] = 0;
+  uint catched = 0;
+  double input_max;
 
-  for (dlist::const_iterator j = input.begin(); j != input.end(); ++j) {
-    const double cur = *j;
+  const double a = output.range[0];
+  const double step = output.step;
+
+  if (output.tail) {
+    // find maximum value of input list
+    dlist::const_iterator i = input.begin();
+    input_max = *i; ++i;
+    for (; i != input.end(); ++i) {
+      if (*i > input_max) input_max = *i;
+    }
+
+    // check if we don't overflow the (maximum) bin count
+    if ((input_max + 1.0 - a) / step > double(numeric_limits<uint>::max()))
+      return;
+
+    cerr << "info: computing histogram binning for data tail "
+         << "(maximum input value = " << input_max << ")\n";
+  }
+
+  const double b = (output.tail ? input_max + 1.0 : output.range[1]);
+
+  vector<uint>& data = output.data;
+  data.clear();
+  data.resize(uint((b - a) / step), 0);
+
+  for (dlist::const_iterator i = input.begin(); i != input.end(); ++i) {
+    const double cur = *i;
 
     if (cur < a || cur >= b) continue;
 
-    ++bins[uint((cur - a) / step)];
-    ++in_bin;
+    ++data[uint((cur - a) / step)];
+    ++catched;
   }
 
-  return bins;
+  cerr << "info: computed histogram with " << data.size() << " bins (interval = ["
+       << a << ',' << b << "); step width = " << step << ")\n";
+  cerr << "statistics: " << catched << " data points (from " << input.size()
+       << ") fall into the binning area\n";
+
+  output.catched = catched;
 }
 
-uint* Common::histoTailBinning(const dlist& input, uint& num_bin, uint& in_bin,
-                       const double a, const double step) {
-  if (input.empty())
-    return NULL;
+template <typename T>
+void Common::histogramScale(const BinningData& input,
+                            vector<T>& output, T scale) {
+  output.clear();
+  output.reserve(input.data.size());
 
-  // find maximum value of input list
-  dlist::const_iterator j = input.begin();
-  double input_max = *j; ++j;
-  for (; j != input.end(); ++j) {
-    if (*j > input_max)
-      input_max = *j;
+  for (vector<uint>::const_iterator i = input.data.begin();
+       i != input.data.end(); ++i) {
+    output.push_back(T(*i) * scale);
   }
-
-  // check if we don't overflow the (maximum) bin count
-  if ((input_max + 1.0 - a) / step > double(numeric_limits<uint>::max())) {
-    return NULL;
-  }
-
-  num_bin = uint((input_max + 1.0 - a) / step);
-  in_bin = 0;
-
-  uint* bins = new uint[num_bin];
-  for (uint i = 0; i < num_bin; ++i)
-    bins[i] = 0;
-
-  for (j = input.begin(); j != input.end(); ++j) {
-    const double cur = *j;
-
-    if (cur < a) continue;
-
-    ++bins[uint((cur - a) / step)];
-    ++in_bin;
-  }
-
-  return bins;
 }
 
 /* Creates "envelope" data for given histogram input:                 *
  * Can be used for ListPlot to visualize the distributions coming     *
  * from numerical simulations of the radial projection.               */
-void Common::histogramEnvelope(const double a, const double b, const double step) {
+void Common::histogramEnvelope(double a, double b, double step, bool stats) {
   // fetch input data from console
   dlist inputData;
   readRawConsole(inputData);
 
   // compute histogram binning
-  uint num_bin, in_bin;
-  uint* binData = histogramBinning(inputData, num_bin, in_bin, a, b, step);
+  BinningData binData;
+  binData.range[0] = a;
+  binData.range[1] = b;
+  binData.step = step;
+  binData.tail = false;
+  histogramBinning(inputData, binData);
+
+  // convert to envelope by applying scaling
   dlist envelopeData;
+  histogramScale(binData, envelopeData, 1.0 / (double(inputData.size()) * step));
 
-  cerr << "Computing histogram with " << num_bin << " bins (interval = ["
-       << a << ',' << b << "); step width = " << step << ")\n";
-  cerr << "statistics: " << in_bin << " data points (from " << inputData.size()
-       << ") fall into the binning area\n";
-
-  const double scaler = 1.0 / (double(inputData.size()) * step);
-  for (uint i = 0; i < num_bin; ++i) {
-    envelopeData.push_back(double(binData[i]) * scaler);
-  }
-  delete [] binData;
+  if (stats) printstats(inputData, binData);
 
   // output to console
   writeRawConsole(envelopeData);
 }
 
 // Same as histogramEnvelope but processes the "tail" of the data.
-void Common::histoTailEnvelope(const double a, const double step) {
+void Common::histoTailEnvelope(double a, double step, bool stats) {
   dlist inputData;
   readRawConsole(inputData);
 
-  uint num_bin, in_bin;
-  uint* binData = histoTailBinning(inputData, num_bin, in_bin, a, step);
+  BinningData binData;
+  binData.range[0] = a;
+  binData.step = step;
+  binData.tail = true;
+  histogramBinning(inputData, binData);
 
-  // Since the tail is usually quite long, we need extended precision here
-  eflist envelopeData;
-
-  if (binData == NULL) {
-    cerr << "Binning failed due to range/precision issues.\n";
+  if (binData.data.empty()) {
+    cerr << "error: binning failed (range or precision issues?)\n";
     return;
   }
 
-  cerr << "Computing histogram with " << num_bin << " bins (tail beginning from "
-       << a << "; step width = " << step << ")\n";
-  cerr << "statistics: " << in_bin << " data points (from " << inputData.size()
-       << ") fall into the binning area\n";
+  // Since the tail is usually quite long, we need extended precision here
+  eflist envelopeData;
+  histogramScale(binData, envelopeData,
+    1.0L / (long double)(double(inputData.size()) * step));
 
-  const long double scaler = 1.0L / (long double)(double(inputData.size()) * step);
-  for (uint i = 0; i < num_bin; ++i) {
-    envelopeData.push_back((long double)(binData[i]) * scaler);
-  }
-  delete [] binData;
+  if (stats) printstats(inputData, binData);
 
   writeRawConsole(envelopeData);
 }
 
-void Common::histogramEnvelopeLD(const double a, const double b, const double step) {
+void Common::histogramEnvelopeLD(double a, double b, double step) {
   const uint num_bin = uint((b - a) / step);
 
   ullong ndata = 0;
@@ -868,7 +869,7 @@ void Common::histogramEnvelopeLD(const double a, const double b, const double st
   writeRawConsole(envelopeData);
 }
 
-void Common::histoTailEnvelopeLD(const double a, const double step) {
+void Common::histoTailEnvelopeLD(double a, double step) {
   ullong ndata = 0;
   ullong in_bin = 0;
   uint lindex = 0;  
