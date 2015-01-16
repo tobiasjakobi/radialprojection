@@ -209,7 +209,9 @@ void RandomVis::radialProjRndVis(uint steps, double prob, Common::dlist& out) {
   cerr << "info: mean distance = " << meandist << endl;
 }
 
-int main(int argc, char* argv[]) {
+typedef void (*radialfunc)(uint, double, Common::dlist&);
+
+int main_normal(int argc, char* argv[]) {
   stringstream parser;
 
   uint mode = 0;
@@ -276,4 +278,117 @@ int main(int argc, char* argv[]) {
   }
 
   return 0;
+}
+
+int main_statistics(int argc, char* argv[]) {
+  stringstream parser;
+
+  uint mode = 0;
+  uint steps = 100;
+  double probstep = 0.1;
+
+  radialfunc rfunc = NULL;
+
+  if (argc >= 2) {
+    parser.str(argv[1]);
+    parser.clear();
+    parser >> mode;
+
+    if (argc >= 3) {
+      parser.str(argv[2]);
+      parser.clear();
+      parser >> steps;
+
+      if (argc >= 4) {
+        parser.str(argv[3]);
+        parser.clear();
+        parser >> probstep;
+      }
+    }
+  }
+
+  if (mode == 0) {
+    rfunc = RandomVis::radialProjVisRnd;
+  } else if (mode == 1) {
+    rfunc = RandomVis::radialProjRndVis;
+  } else {
+    cerr << "error: unknown mode (" << mode <<  ") selected.\n";
+    return 1;
+  }
+
+  const double probeps = 0.001;
+
+  if ((probstep < probeps) || (probstep > 1.0 - probeps)) {
+    cerr << "error: probability step value " << probstep << " not in [0,1].\n";
+    return 1;
+  }
+
+  Common::dlist spacings;
+  Common::BinningStats stats;
+
+  /* We currently hardcode the binning parameters here. */
+  stats.range[0] = 0.0;
+  stats.range[1] = 3.0;
+  stats.step = 0.01;
+  stats.tail = false;
+
+  cerr << "info: output format: {" << "discard probability, "
+       << "minimum input, " << "maximum input, "
+       << "position of largest bin" << "}\n";
+
+  double prob = probstep;
+  cout << '{';
+  while (true) {
+    rfunc(uint(double(steps) / sqrt(1 - prob)), prob, spacings);
+
+    histogramStatistics(spacings, stats);
+
+    cout << '{' << prob << ',' << stats.min << ',' << stats.max
+         << ',' << stats.maxbin_position << '}';
+
+    prob += probstep;
+    if (prob > 1.0 - probeps)
+      break;
+    else
+      cout << ',' << endl;
+  }
+  cout << '}' << endl;
+
+  return 0;
+}
+
+void print_usage() {
+  cerr << "random: usage:" << endl;
+
+  cerr << "random --normal: selects normal main mode" << endl;
+  cerr << "\t\tparameter 1: mode (even = point set; odd = radial projection)" << endl;
+    cerr << "\t\t\t" << "0/1 = visible-random; 2/3 = random-visible;" << endl;
+  cerr << "\t\tparameter 2: steps" << endl;
+  cerr << "\t\tparameter 3: discard probability" << endl;
+
+  cerr << "random --statistics: selects statistics main mode" << endl;
+  cerr << "\t\tparameter 1: mode (0 = visible-random; 1 = random-visible)" << endl;
+  cerr << "\t\tparameter 2: range (number of vertices depends on mode)" << endl;
+  cerr << "\t\tparameter 2: probability step (how fine [0,1] is sampled)" << endl;
+}
+
+int main(int argc, char* argv[]) {
+  stringstream parser;
+  string main_mode;
+  int ret = 0;
+
+  if (argc >= 2) {
+    parser.str(argv[1]);
+    parser.clear();
+    parser >> main_mode;
+  }
+
+  if (main_mode == "--normal")
+    ret = main_normal(argc - 1, argv + 1);
+  else if (main_mode == "--statistics")
+    ret = main_statistics(argc - 1, argv + 1);
+  else
+    print_usage();
+
+  return ret;
 }

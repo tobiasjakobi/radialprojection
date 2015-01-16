@@ -1422,6 +1422,20 @@ namespace Common {
   void histogramEnvelopeLD(double a, double b, double step);
   void histoTailEnvelopeLD(double a, double step);
 
+  struct BinningStats {
+    double range[2];
+    double step;
+    bool tail;
+
+    double min, max;
+    uint maxbin_index;
+    double maxbin_position;
+  };
+
+  void binningCopySettings(const BinningStats& input, BinningData& output);
+
+  void histogramStatistics(const dlist& input, BinningStats& output);
+
   void neighbourDiff(const dlist& input, dlist& output, double& mean);
   void normalizeAngDists(dlist& input, double mean);
   void radialProj(const vec2dlist& input,

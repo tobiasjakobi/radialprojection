@@ -713,6 +713,10 @@ void Common::printstats(const dlist& data, const BinningData& bin) {
 
   cerr << "info: largest bin with " << bin.data[index] << " elements has index "
        << index << endl;
+  cerr << "info: bin = [" << bin.range[0] + bin.step * double(index)
+       << ", " << bin.range[0] + bin.step * double(index + 1)
+       << "] (midpoint = " << bin.range[0] + bin.step * (double(index) + 0.5)
+       << ")\n";
 }
 
 void Common::histogramBinning(const dlist& input, BinningData& output) {
@@ -914,6 +918,30 @@ void Common::histoTailEnvelopeLD(double a, double step) {
   }
 
   writeRawConsole(envelopeData);
+}
+
+void Common::binningCopySettings(const BinningStats& input, BinningData& output) {
+  output.range[0] = input.range[0];
+  output.range[1] = input.range[1];
+  output.step = input.step;
+  output.tail = input.tail;
+}
+
+void Common::histogramStatistics(const dlist& input, BinningStats& output) {
+  BinningData binData;
+  binningCopySettings(output, binData);
+
+  histogramBinning(input, binData);
+
+  dlist envelopeData;
+  histogramScale(binData, envelopeData,
+    1.0 / (double(input.size()) * binData.step));
+
+  minmax(input, output.min, output.max);
+  binmax(binData, output.maxbin_index);
+
+  output.maxbin_position = binData.range[0] +
+    binData.step * (double(output.maxbin_index) + 0.5);
 }
 
 void Common::neighbourDiff(const dlist& input, dlist& output, double& mean) {
