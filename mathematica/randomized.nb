@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[     14677,        430]
-NotebookOptionsPosition[     14178,        410]
-NotebookOutlinePosition[     14535,        426]
-CellTagsIndexPosition[     14492,        423]
+NotebookDataLength[     17427,        513]
+NotebookOptionsPosition[     16768,        489]
+NotebookOutlinePosition[     17125,        505]
+CellTagsIndexPosition[     17082,        502]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -406,7 +406,86 @@ Cell[BoxData[
     RowBox[{"DynamicEnv", "[", 
      RowBox[{"\"\<random/rndvis\>\"", ",", "y"}], "]"}], "]"}]}], 
   "}"}]], "Input",
- CellChangeTimes->{{3.626784690225793*^9, 3.626784712636127*^9}}]
+ CellChangeTimes->{{3.626784690225793*^9, 3.626784712636127*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+  "SetDirectory", "[", "\"\</homes/tjakobi/PhD_Work/radialprojection\>\"", 
+   "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Timing", "[", 
+  RowBox[{
+   RowBox[{"dataExternRandom", "=", 
+    RowBox[{"RunThrough", "[", 
+     RowBox[{"\"\<./random --statistics 0 2000 0.01\>\"", ",", "Null"}], 
+     "]"}]}], ";"}], "]"}]}], "Input",
+ CellChangeTimes->{{3.630415562117779*^9, 3.630415590260221*^9}, {
+  3.630416157503296*^9, 3.630416159295896*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"minimum", " ", "value", " ", 
+    RowBox[{"(", 
+     RowBox[{"gap", " ", "position"}], ")"}]}], " ", "*)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{"ListPlot", "[", 
+   RowBox[{"Map", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"Part", "[", 
+         RowBox[{"#", ",", "1"}], "]"}], ",", 
+        RowBox[{"Part", "[", 
+         RowBox[{"#", ",", "2"}], "]"}]}], "}"}], "&"}], ",", 
+     "dataExternRandom"}], "]"}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.6304160400158863`*^9, 3.6304160696824493`*^9}, {
+  3.630416579033049*^9, 3.6304165890205297`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"maximum", " ", "value", " ", 
+    RowBox[{"(", 
+     RowBox[{"probably", " ", 
+      RowBox[{"doesn", "'"}], "t", " ", "have", " ", "any", " ", "serious", 
+      " ", "meaning"}], ")"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"ListPlot", "[", 
+   RowBox[{"Map", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"Part", "[", 
+         RowBox[{"#", ",", "1"}], "]"}], ",", 
+        RowBox[{"Part", "[", 
+         RowBox[{"#", ",", "3"}], "]"}]}], "}"}], "&"}], ",", 
+     "dataExternRandom"}], "]"}], "]"}]}]], "Input",
+ CellChangeTimes->{
+  3.630416082518976*^9, {3.6304165909554243`*^9, 3.630416608875701*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"position", " ", "of", " ", "histogram", " ", "peak", " ", 
+    RowBox[{"(", 
+     RowBox[{"'", 
+      RowBox[{"unsharp", "'"}], " ", "because", " ", "bins", " ", "are", " ", 
+      "discrete"}], ")"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"ListPlot", "[", 
+   RowBox[{"Map", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"Part", "[", 
+         RowBox[{"#", ",", "1"}], "]"}], ",", 
+        RowBox[{"Part", "[", 
+         RowBox[{"#", ",", "4"}], "]"}]}], "}"}], "&"}], ",", 
+     "dataExternRandom"}], "]"}], "]"}]}]], "Input",
+ CellChangeTimes->{
+  3.630416095231409*^9, {3.630416611530707*^9, 3.630416653419846*^9}}]
 },
 WindowSize->{1920, 1145},
 WindowMargins->{{0, Automatic}, {Automatic, 0}},
@@ -431,7 +510,11 @@ Cell[10162, 294, 848, 23, 89, "Input"],
 Cell[11013, 319, 968, 26, 114, "Input"],
 Cell[11984, 347, 1266, 32, 189, "Input"],
 Cell[13253, 381, 426, 12, 38, "Input"],
-Cell[13682, 395, 492, 13, 38, "Input"]
+Cell[13682, 395, 492, 13, 38, "Input"],
+Cell[14177, 410, 485, 12, 64, "Input"],
+Cell[14665, 424, 652, 19, 64, "Input"],
+Cell[15320, 445, 714, 20, 64, "Input"],
+Cell[16037, 467, 727, 20, 64, "Input"]
 }
 ]
 *)
