@@ -329,7 +329,7 @@ int main_statistics(int argc, char* argv[]) {
   /* We currently hardcode the binning parameters here. */
   stats.range[0] = 0.0;
   stats.range[1] = 3.0;
-  stats.step = 0.01;
+  stats.step = 0.002;
   stats.tail = false;
 
   cerr << "info: output format: {" << "discard probability, "
