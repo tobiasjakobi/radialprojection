@@ -239,7 +239,9 @@ int main_normal(int argc, char* argv[]) {
   Common::vec2ilist randomized;
   Common::dlist spacings;
 
-  if ((prob < 0.0) || (prob > 1.0)) {
+  const double probeps = 0.001;
+
+  if ((prob < probeps) || (prob > 1.0 - probeps)) {
     cerr << "error: probability value " << prob << " not in [0,1].\n";
     return 1;
   }
@@ -357,6 +359,61 @@ int main_statistics(int argc, char* argv[]) {
   return 0;
 }
 
+int main_single(int argc, char* argv[]) {
+  stringstream parser;
+
+  uint mode = 0;
+  uint steps = 100;
+  double prob = 0.5;
+
+  radialfunc rfunc = NULL;
+
+  if (argc >= 2) {
+    parser.str(argv[1]);
+    parser.clear();
+    parser >> mode;
+
+    if (argc >= 3) {
+      parser.str(argv[2]);
+      parser.clear();
+      parser >> steps;
+
+      if (argc >= 4) {
+        parser.str(argv[3]);
+        parser.clear();
+        parser >> prob;
+      }
+    }
+  }
+
+  // TODO: parse binning parameters too
+
+  if (mode == 0) {
+    rfunc = RandomVis::radialProjVisRnd;
+  } else if (mode == 1) {
+    rfunc = RandomVis::radialProjRndVis;
+  } else {
+    cerr << "error: unknown mode (" << mode <<  ") selected.\n";
+    return 1;
+  }
+
+  const double probeps = 0.001;
+
+  if ((prob < probeps) || (prob > 1.0 - probeps)) {
+    cerr << "error: probability value " << prob << " not in [0,1].\n";
+    return 1;
+  }
+
+  Common::dlist spacings;
+
+  rfunc(uint(double(steps) / sqrt(1 - prob)), prob, spacings);
+
+  // TODO: implement
+  // ./random --normal $mode $steps "${prob}" | ./histogram 0 0.002 1.4 > "${tempfile}"
+
+  return 0;
+}
+
 void print_usage() {
   cerr << "random: usage:" << endl;
 
@@ -370,6 +427,14 @@ void print_usage() {
   cerr << "\t\tparameter 1: mode (0 = visible-random; 1 = random-visible)" << endl;
   cerr << "\t\tparameter 2: range (number of vertices depends on mode)" << endl;
   cerr << "\t\tparameter 2: probability step (how fine [0,1] is sampled)" << endl;
+
+  cerr << "random --statistics: selects single main mode" << endl;
+  cerr << "(creates a histogram for a single random realisation)" << endl;
+  cerr << "\t\tparameter 1: mode (0 = visible-random; 1 = random-visible)" << endl;
+  cerr << "\t\tparameter 2: range (number of vertices depends on mode)" << endl;
+  cerr << "\t\t(internally the range is expanded to compensate "
+       << "for the loss of vertices due to the discarding process)" << endl;
+  cerr << "\t\tparameter 3: discard probability" << endl;
 }
 
 int main(int argc, char* argv[]) {
@@ -387,6 +452,8 @@ int main(int argc, char* argv[]) {
     ret = main_normal(argc - 1, argv + 1);
   else if (main_mode == "--statistics")
     ret = main_statistics(argc - 1, argv + 1);
+  else if (main_mode == "--single")
+    ret = main_single(argc - 1, argv + 1);
   else
     print_usage();
 
