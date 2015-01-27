@@ -362,9 +362,15 @@ int main_statistics(int argc, char* argv[]) {
 int main_single(int argc, char* argv[]) {
   stringstream parser;
 
+  // parameters for the radial projection part
   uint mode = 0;
   uint steps = 100;
   double prob = 0.5;
+
+  // parameters for the histogram/binning part
+  uint hmode = 0;
+  double hstep = 0.002;
+  double hparam = 1.4;
 
   radialfunc rfunc = NULL;
 
@@ -386,7 +392,23 @@ int main_single(int argc, char* argv[]) {
     }
   }
 
-  // TODO: parse binning parameters too
+  if (argc >= 5) {
+    parser.str(argv[4]);
+    parser.clear();
+    parser >> hmode;
+
+    if (argc >= 6) {
+      parser.str(argv[5]);
+      parser.clear();
+      parser >> hstep;
+
+      if (argc >= 7) {
+        parser.str(argv[6]);
+        parser.clear();
+        parser >> hparam;
+      }
+    }
+  }
 
   if (mode == 0) {
     rfunc = RandomVis::radialProjVisRnd;
@@ -404,12 +426,31 @@ int main_single(int argc, char* argv[]) {
     return 1;
   }
 
+  if ((hmode != 0) && (hmode != 1)) {
+    cerr << "error: unknown histogram mode (" << hmode <<  ") selected.\n";
+    return 1;
+  }
+
+  if ((hstep <= 0.0) || (hparam <= 0.0)) {
+    cerr << "error: histogram step/parameter not strictly greater than zero.\n";
+    return 1;
+  }
+
   Common::dlist spacings;
 
   rfunc(uint(double(steps) / sqrt(1 - prob)), prob, spacings);
 
-  // TODO: implement
-  // ./random --normal $mode $steps "${prob}" | ./histogram 0 0.002 1.4 > "${tempfile}"
+  Common::BinningData binData;
+  binData.range[0] = (hmode == 0 ? 0.0 : hparam);
+  binData.range[1] = (hmode == 0 ? hparam : 0.0);
+  binData.step = hstep;
+  binData.tail = (hmode == 1);
+  histogramBinning(spacings, binData);
+
+  Common::dlist envelopeData;
+  histogramScale(binData, envelopeData, 1.0 / (double(spacings.size()) * hstep));
+
+  Common::writeRawConsole(envelopeData);
 
   return 0;
 }
@@ -428,7 +469,7 @@ void print_usage() {
   cerr << "\t\tparameter 2: range (number of vertices depends on mode)" << endl;
   cerr << "\t\tparameter 2: probability step (how fine [0,1] is sampled)" << endl;
 
-  cerr << "random --statistics: selects single main mode" << endl;
+  cerr << "random --single: selects single main mode" << endl;
   cerr << "(creates a histogram for a single random realisation)" << endl;
   cerr << "\t\tparameter 1: mode (0 = visible-random; 1 = random-visible)" << endl;
   cerr << "\t\tparameter 2: range (number of vertices depends on mode)" << endl;
