@@ -459,23 +459,23 @@ void print_usage() {
   cerr << "random: usage:" << endl;
 
   cerr << "random --normal: selects normal main mode" << endl;
-  cerr << "\t\tparameter 1: mode (even = point set; odd = radial projection)" << endl;
-    cerr << "\t\t\t" << "0/1 = visible-random; 2/3 = random-visible;" << endl;
-  cerr << "\t\tparameter 2: steps" << endl;
-  cerr << "\t\tparameter 3: discard probability" << endl;
+  cerr << "\tparameter 1: mode (even = point set; odd = radial projection)" << endl;
+    cerr << "\t\t" << "0/1 = visible-random; 2/3 = random-visible;" << endl;
+  cerr << "\tparameter 2: steps" << endl;
+  cerr << "\tparameter 3: discard probability" << endl;
 
   cerr << "random --statistics: selects statistics main mode" << endl;
-  cerr << "\t\tparameter 1: mode (0 = visible-random; 1 = random-visible)" << endl;
-  cerr << "\t\tparameter 2: range (number of vertices depends on mode)" << endl;
-  cerr << "\t\tparameter 2: probability step (how fine [0,1] is sampled)" << endl;
+  cerr << "\tparameter 1: mode (0 = visible-random; 1 = random-visible)" << endl;
+  cerr << "\tparameter 2: range (number of vertices depends on mode)" << endl;
+  cerr << "\tparameter 2: probability step (how fine [0,1] is sampled)" << endl;
 
   cerr << "random --single: selects single main mode" << endl;
   cerr << "(creates a histogram for a single random realisation)" << endl;
-  cerr << "\t\tparameter 1: mode (0 = visible-random; 1 = random-visible)" << endl;
-  cerr << "\t\tparameter 2: range (number of vertices depends on mode)" << endl;
+  cerr << "\tparameter 1: mode (0 = visible-random; 1 = random-visible)" << endl;
+  cerr << "\tparameter 2: range (number of vertices depends on mode)" << endl;
   cerr << "\t\t(internally the range is expanded to compensate "
        << "for the loss of vertices due to the discarding process)" << endl;
-  cerr << "\t\tparameter 3: discard probability" << endl;
+  cerr << "\tparameter 3: discard probability" << endl;
 }
 
 int main(int argc, char* argv[]) {
