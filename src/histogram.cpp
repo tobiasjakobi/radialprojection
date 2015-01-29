@@ -17,62 +17,102 @@
 
 #include <sstream>
 
+void print_usage() {
+  cerr << "histogram: usage:" << endl;
+
+  cerr << "random --normal: selects normal main mode" << endl;
+  cerr << "random --largedata: selects large data main mode" << endl;
+  cerr << "(both modes share the same set of parameters" << endl;
+
+  cerr << "\tparameter 1: mode (0 = bulk; 1 = tail)" << endl;
+  cerr << "\tparameter 2: step size (binning resolution)" << endl;
+  cerr << "\tparameter 3: range (for 'bulk') / start (for 'tail')" << endl;
+}
+
 int main(int argc, char* argv[]) {
+  stringstream parser;
+  string tempstr;
 
-  uint mode = 0; // 0 = bulk, 1 = tail
-  double stepsize;
-  double param = 3.0; // histogram range (bulk mode), histogram start (tail mode)
+  int main_mode = -1;
+  uint mode = 0;
+  double stepsize = -1.0;
+  double param = 3.0;
 
-  cerr << "Histogram envelope generation mode: stdin = histogram data / stdout = envelope data\n";
-
-  // Parse mode
   if (argc >= 2) {
-    stringstream ss(argv[1]);
-    ss >> mode;
-
-    if (mode != 0 && mode != 1) {
-      cerr << "Unsupported mode selected (0 = bulk, 1 = tail).\n";
-      return 0;
-    }
+    parser.str(argv[1]);
+    parser.clear();
+    parser >> tempstr;
   }
 
-  // Parse step size
+  if (tempstr == "--normal")
+    main_mode = 0;
+  else if (tempstr == "--largedata")
+    main_mode = 1;
+
+  if (main_mode == -1) {
+    print_usage();
+    return 0;
+  }
+
+  cerr << "info: histogram envelope generation mode.\n"
+       << "(stdin = histogram data / stdout = envelope data)\n";
+
   if (argc >= 3) {
-    stringstream ss(argv[2]);
-    ss >> stepsize;
+    parser.str(argv[2]);
+    parser.clear();
+    parser >> mode;
 
-    if (stepsize < 0.0) {
-      cerr << "Step size has to be a positive value.\n";
-      return 0;
-    }
-  } else {
-    stepsize = (mode == 0) ? 0.01 : 0.1;
-  }
+    if (argc >= 4) {
+      parser.str(argv[3]);
+      parser.clear();
+      parser >> stepsize;
 
-  // Parse (range/start) parameter
-  if (argc >= 4) {
-    stringstream ss(argv[3]);
-    ss >> param;
-
-    if (param <= 0.0) {
-      cerr << "Range/start parameter has to be strictly positive.\n";
-      return 0;
+       if (argc >= 5) {
+        parser.str(argv[4]);
+        parser.clear();
+        parser >> param;
+      }
     }
   }
 
-  if (mode > 1) {
-    cerr << "error: unknown mode (" << mode <<  ") selected.\n";
+  if ((mode != 0) && (mode != 1)) {
+    cerr << "error: unsupported mode selected.\n";
     return 1;
   }
 
-  if (mode == 0) {
-    cerr << "Creating envelope for bulk section (output data type is 64-bit IEEE float, 8 byte alignment).\n";
-    //Common::histogramEnvelopeLD(0.0, param, stepsize);
-    Common::histogramEnvelope(0.0, param, stepsize, false);
+  if (stepsize <= 0.0) {
+    if (stepsize == -1.0) {
+      stepsize = (mode == 0) ? 0.01 : 0.1;
+    } else {
+      cerr << "error: step size has to be strictly positive.\n";
+      return 2;
+    }
+  }
+
+  if (param <= 0.0) {
+    cerr << "error: range / start has to be strictly positive.\n";
+    return 3;
+  }
+
+  const char* msg = (mode == 0 ?
+    "info: creating envelope for bulk section (output data type is 64-bit IEEE float, 8 byte alignment).\n" :
+    "info: creating envelope for tail section (output data type is 80-bit IEEE float, 16 byte alignment).\n");
+
+  if (main_mode == 0) {
+    cerr << msg;
+
+    if (mode == 0)
+      Common::histogramEnvelope(0.0, param, stepsize, false);
+    else
+      Common::histoTailEnvelope(param, stepsize, false);
   } else {
-    cerr << "Creating envelope for tail section (output data type is 80-bit IEEE float, 16 byte alignment).\n";
-    //Common::histoTailEnvelopeLD(param, stepsize);
-    Common::histogramEnvelope(0.0, param, stepsize, false);
+    cerr << "info: processing large data (streaming).\n";
+    cerr << msg;
+
+    if (mode == 0)
+      Common::histogramEnvelopeLD(0.0, param, stepsize);
+    else
+      Common::histoTailEnvelopeLD(param, stepsize);
   }
 
   return 0;
