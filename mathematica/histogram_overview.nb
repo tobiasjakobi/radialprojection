@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[     31285,        845]
-NotebookOptionsPosition[     29990,        806]
-NotebookOutlinePosition[     30424,        823]
-CellTagsIndexPosition[     30381,        820]
+NotebookDataLength[     29460,        793]
+NotebookOptionsPosition[     28203,        755]
+NotebookOutlinePosition[     28637,        772]
+CellTagsIndexPosition[     28594,        769]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -116,57 +116,6 @@ Cell[BoxData[
    3.53830420834928*^9}, {3.538304352979112*^9, 3.538304364769791*^9}, 
    3.538304769034411*^9, {3.538304967567263*^9, 3.53830496897486*^9}, {
    3.569069977411452*^9, 3.569069981971471*^9}}],
-
-Cell[BoxData[{
- RowBox[{
-  RowBox[{
-   RowBox[{"transformBin", "[", 
-    RowBox[{"i_", ",", "data_"}], "]"}], ":=", 
-   RowBox[{"{", 
-    RowBox[{
-     RowBox[{"N", "[", 
-      RowBox[{
-       RowBox[{"(", 
-        RowBox[{"i", "-", "1"}], ")"}], "*", 
-       RowBox[{"histoParams", "[", 
-        RowBox[{"[", "2", "]"}], "]"}]}], "]"}], ",", 
-     RowBox[{
-      RowBox[{"envelopeData", "[", "data", "]"}], "[", 
-      RowBox[{"[", "i", "]"}], "]"}]}], "}"}]}], ";"}], "\[IndentingNewLine]", 
- RowBox[{
-  RowBox[{
-   RowBox[{"transformEnvData", "[", 
-    RowBox[{"data_", ",", 
-     RowBox[{"param_:", "Null"}]}], "]"}], ":=", 
-   RowBox[{"Block", "[", 
-    RowBox[{
-     RowBox[{"{", "rmax", "}"}], ",", "\[IndentingNewLine]", 
-     RowBox[{
-      RowBox[{"rmax", "=", 
-       RowBox[{
-        RowBox[{
-         RowBox[{"Round", "[", 
-          RowBox[{
-           RowBox[{"Part", "[", 
-            RowBox[{"#", ",", "1"}], "]"}], "/", 
-           RowBox[{"Part", "[", 
-            RowBox[{"#", ",", "2"}], "]"}]}], "]"}], "&"}], "[", 
-        RowBox[{"If", "[", 
-         RowBox[{
-          RowBox[{"param", "===", "Null"}], ",", "histoParams", ",", 
-          "param"}], "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
-      RowBox[{"Map", "[", 
-       RowBox[{
-        RowBox[{
-         RowBox[{"transformBin", "[", 
-          RowBox[{"#", ",", "data"}], "]"}], "&"}], ",", 
-        RowBox[{"Range", "[", 
-         RowBox[{"1", ",", "rmax"}], "]"}]}], "]"}]}]}], "]"}]}], 
-  ";"}]}], "Input",
- CellChangeTimes->{{3.5692355371196623`*^9, 3.569235540255355*^9}, {
-   3.569235682980798*^9, 3.5692357642469873`*^9}, {3.631617081728922*^9, 
-   3.6316170936237593`*^9}, {3.631617210861808*^9, 3.631617374889125*^9}, 
-   3.631617409672061*^9, {3.631617473045128*^9, 3.631617476901083*^9}}],
 
 Cell[BoxData[{
  RowBox[{
@@ -828,25 +777,24 @@ Cell[1481, 47, 209, 4, 45, "Input"],
 Cell[1693, 53, 831, 22, 75, "Input"],
 Cell[2527, 77, 1270, 32, 133, "Input"],
 Cell[3800, 111, 408, 6, 45, "Input"],
-Cell[4211, 119, 1784, 49, 133, "Input"],
-Cell[5998, 170, 4220, 107, 394, "Input"],
-Cell[10221, 279, 712, 17, 75, "Input"],
-Cell[10936, 298, 3896, 96, 394, "Input"],
-Cell[14835, 396, 587, 14, 75, "Input"],
-Cell[15425, 412, 787, 21, 75, "Input"],
-Cell[16215, 435, 1837, 50, 133, "Input"],
-Cell[18055, 487, 338, 8, 45, "Input"],
-Cell[18396, 497, 1327, 28, 104, "Input"],
-Cell[19726, 527, 353, 9, 45, "Input"],
-Cell[20082, 538, 931, 24, 75, "Input"],
-Cell[21016, 564, 1167, 29, 75, "Input"],
-Cell[22186, 595, 880, 20, 45, "Input"],
-Cell[23069, 617, 1263, 30, 75, "Input"],
-Cell[24335, 649, 1319, 31, 75, "Input"],
-Cell[25657, 682, 1772, 48, 133, "Input"],
-Cell[27432, 732, 688, 18, 75, "Input"],
-Cell[28123, 752, 782, 21, 75, "Input"],
-Cell[28908, 775, 1078, 29, 75, "Input"]
+Cell[4211, 119, 4220, 107, 394, "Input"],
+Cell[8434, 228, 712, 17, 75, "Input"],
+Cell[9149, 247, 3896, 96, 394, "Input"],
+Cell[13048, 345, 587, 14, 75, "Input"],
+Cell[13638, 361, 787, 21, 75, "Input"],
+Cell[14428, 384, 1837, 50, 133, "Input"],
+Cell[16268, 436, 338, 8, 45, "Input"],
+Cell[16609, 446, 1327, 28, 104, "Input"],
+Cell[17939, 476, 353, 9, 45, "Input"],
+Cell[18295, 487, 931, 24, 75, "Input"],
+Cell[19229, 513, 1167, 29, 75, "Input"],
+Cell[20399, 544, 880, 20, 67, "Input"],
+Cell[21282, 566, 1263, 30, 112, "Input"],
+Cell[22548, 598, 1319, 31, 112, "Input"],
+Cell[23870, 631, 1772, 48, 199, "Input"],
+Cell[25645, 681, 688, 18, 112, "Input"],
+Cell[26336, 701, 782, 21, 112, "Input"],
+Cell[27121, 724, 1078, 29, 112, "Input"]
 }
 ]
 *)
