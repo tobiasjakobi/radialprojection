@@ -16,6 +16,26 @@
 #ifndef _CYCLOTOMIC_RANDOM_H_
 #define _CYCLOTOMIC_RANDOM_H_
 
-/* TODO: add code */
+#include "common.h"
+
+namespace CyclotomicRandom {
+
+  enum processing_mode {
+    octagonal_visrnd   = 0, /* octagonal / Ammann-Beenker tiling (L8 lattice) */
+    octagonal_rndvis   = 1,
+    decagonal_visrnd   = 2, /* decagonal / Tübingen triangle tiling (L5 lattice) */
+    decagonal_rndvis   = 3,
+    dodecagonal_visrnd = 4, /* dodecagonal / Gähler shield tiling (L12 lattice) */
+    dodecagonal_rndvis = 5,
+    rhmbpenrose_visrnd = 6, /* rhombic Penrose tiling (L5 with four windows) */
+    rhmbpenrose_rndvis = 7,
+    processing_mode_end
+  };
+
+  bool check_mode(uint mode) {
+    return (mode >= processing_mode_end);
+  }
+
+};
 
 #endif /* _CYCLOTOMIC_RANDOM_H_ */

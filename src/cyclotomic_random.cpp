@@ -15,7 +15,70 @@
 
 #include "cyclotomic_random.h"
 
+#include <sstream>
+
 int main(int argc, char* argv[]) {
-  /* TODO: implement */
+  using namespace CyclotomicRandom;
+
+  stringstream parser;
+
+  uint mode = 0;
+  uint steps = 100;
+
+  if (argc >= 2) {
+    parser.str(argv[1]);
+    parser.clear();
+    parser >> mode;
+
+    if (argc >= 3) {
+      parser.str(argv[2]);
+      parser.clear();
+      parser >> steps;
+    }
+  }
+
+  if (check_mode(mode)) {
+    cerr << "error: unknown mode (" << mode <<  ") selected.\n";
+    return 1;
+  }
+
+  switch (mode) {
+    case octagonal_visrnd:
+      /* TODO: implement */
+    break;
+
+    case octagonal_rndvis:
+      /* TODO: implement */
+    break;
+
+    case decagonal_visrnd:
+      /* TODO: implement */
+    break;
+
+    case decagonal_rndvis:
+      /* TODO: implement */
+    break;
+
+    case dodecagonal_visrnd:
+      /* TODO: implement */
+    break;
+
+    case dodecagonal_rndvis:
+      /* TODO: implement */
+    break;
+
+    case rhmbpenrose_visrnd:
+      /* TODO: implement */
+    break;
+
+    case rhmbpenrose_rndvis:
+      /* TODO: implement */
+    break;
+
+    default:
+      assert(false);
+    break;
+  }
+
   return 0;
 }
