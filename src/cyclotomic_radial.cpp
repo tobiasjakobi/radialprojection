@@ -55,6 +55,8 @@ void SingleMachine::apply_shift(uint mode) {
 int SingleMachine::main(int argc, char* argv[]) {
   const vec4i init(0, 0, 0, 0);
 
+  stringstream parser;
+
   // inputs
   uint steps = 40;
   bool sector = false;
@@ -78,28 +80,37 @@ int SingleMachine::main(int argc, char* argv[]) {
   }
   */
 
-  if (argc >= 2) {
-    stringstream ss(argv[1]);
-    ss >> steps;
-  }
+  if (argc > 8) argc = 8;
 
-  if (argc >= 3) {
-    stringstream ss(argv[2]);
-    ss >> mode;
-  }
+  switch (argc) {
+    default: /* this should catch cases 5, 6, 7 and 8 */
+      for (uint k = 0; k < 4; ++k) {
+        parser.str(argv[4 + k]);
+        parser.clear();
+        parser >> origin[k];
+      }
+      if (origin != vec4i(0, 0, 0, 0)) use_default_origin = false;
 
-  if (argc >= 4) {
-    stringstream ss(argv[3]);
-    ss >> sector;
-  }
+    /* fall-through is intended in all cases */
+    case 4:
+      parser.str(argv[3]);
+      parser.clear();
+      parser >> sector;
 
-  if (argc >= 8) {
-    for (uint k = 0; k < 4; ++k) {
-      stringstream ss(argv[4 + k]);
-      ss >> origin[k];
-    }
+    case 3:
+      parser.str(argv[2]);
+      parser.clear();
+      parser >> steps;
 
-    if (origin != vec4i(0, 0, 0, 0)) use_default_origin = false;
+    case 2:
+      parser.str(argv[1]);
+      parser.clear();
+      parser >> mode;
+
+    case 1:
+    case 0:
+      /* do nothing */
+      break;
   }
 
   if (check_mode(mode)) {
