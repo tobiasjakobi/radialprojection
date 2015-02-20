@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[     38581,       1007]
-NotebookOptionsPosition[     36893,        958]
-NotebookOutlinePosition[     37372,        976]
-CellTagsIndexPosition[     37329,        973]
+NotebookDataLength[     38816,       1010]
+NotebookOptionsPosition[     37128,        961]
+NotebookOutlinePosition[     37607,        979]
+CellTagsIndexPosition[     37564,        976]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -207,16 +207,16 @@ Cell[BoxData[
   RowBox[{"(*", " ", 
    RowBox[{
     RowBox[{"Parameter", " ", "1", " ", 
-     RowBox[{"(", "40", ")"}]}], " ", "=", " ", 
-    RowBox[{"max", " ", "steps"}]}], "                            ", "*)"}], 
-  "\[IndentingNewLine]", 
-  RowBox[{"(*", " ", 
-   RowBox[{
-    RowBox[{"Parameter", " ", "2", " ", 
      RowBox[{"(", "4", ")"}]}], " ", "=", " ", 
     RowBox[{"generate", " ", "dodecagonal", " ", "tiling", " ", 
      RowBox[{"(", 
       RowBox[{"mode", " ", "4"}], ")"}]}]}], "  ", "*)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{"Parameter", " ", "2", " ", 
+     RowBox[{"(", "40", ")"}]}], " ", "=", " ", 
+    RowBox[{"max", " ", "steps"}]}], "                            ", "*)"}], 
   "\[IndentingNewLine]", 
   RowBox[{"(*", " ", 
    RowBox[{
@@ -230,8 +230,8 @@ Cell[BoxData[
     RowBox[{
      RowBox[{"verts", "[", "Dodecagonal", "]"}], "=", 
      RowBox[{"RunThrough", "[", 
-      RowBox[{"\"\<./cyclotomic_radial 15 4 0\>\"", ",", "Null"}], "]"}]}], 
-    ";"}], "\[IndentingNewLine]", 
+      RowBox[{"\"\<./cyclotomic_radial --single 4 15 0\>\"", ",", "Null"}], 
+      "]"}]}], ";"}], "\[IndentingNewLine]", 
    RowBox[{"{", 
     RowBox[{
      RowBox[{"Length", "[", 
@@ -256,7 +256,8 @@ Cell[BoxData[
    3.568734020188502*^9, 3.568734022683777*^9}, {3.568735649281787*^9, 
    3.568735649552467*^9}, {3.568736826055595*^9, 3.568736829520091*^9}, {
    3.568977775817926*^9, 3.56897777973261*^9}, {3.568980858919543*^9, 
-   3.56898085926301*^9}}],
+   3.56898085926301*^9}, {3.633436923052953*^9, 3.633436924170887*^9}, {
+   3.6334370151915417`*^9, 3.633437026488604*^9}}],
 
 Cell[BoxData[{
  RowBox[{
@@ -426,7 +427,7 @@ Cell[BoxData[{
      RowBox[{
       RowBox[{"cmd", "=", 
        RowBox[{"StringReplace", "[", 
-        RowBox[{"\"\<./cyclotomic_radial steps 4 0\>\"", ",", 
+        RowBox[{"\"\<./cyclotomic_radial --single 4 steps 0\>\"", ",", 
          RowBox[{"{", 
           RowBox[{"\"\<steps\>\"", "\[Rule]", 
            RowBox[{"ToString", "[", "steps", "]"}]}], "}"}]}], "]"}]}], ";", 
@@ -456,7 +457,7 @@ Cell[BoxData[{
      RowBox[{
       RowBox[{"cmd", "=", 
        RowBox[{"StringReplace", "[", 
-        RowBox[{"\"\<./cyclotomic_radial steps 4 0\>\"", ",", 
+        RowBox[{"\"\<./cyclotomic_radial --single 4 steps 0\>\"", ",", 
          RowBox[{"{", 
           RowBox[{"\"\<steps\>\"", "\[Rule]", 
            RowBox[{"ToString", "[", "steps", "]"}]}], "}"}]}], "]"}]}], ";", 
@@ -534,7 +535,8 @@ Cell[BoxData[{
    3.568730975470693*^9, {3.568731108276671*^9, 3.568731123972392*^9}, 
    3.568731163080724*^9, {3.568733691093124*^9, 3.56873369254509*^9}, {
    3.568733736014845*^9, 3.568733737731971*^9}, {3.568969359540632*^9, 
-   3.568969376214721*^9}, {3.568969413988038*^9, 3.568969428278634*^9}}],
+   3.568969376214721*^9}, {3.568969413988038*^9, 3.568969428278634*^9}, {
+   3.633437038014536*^9, 3.633437067790724*^9}}],
 
 Cell[BoxData[{
  RowBox[{
@@ -805,10 +807,11 @@ Cell[BoxData[
 Cell[BoxData[
  RowBox[{"computeGCD2Status", "[", 
   RowBox[{"RunThrough", "[", 
-   RowBox[{"\"\<./cyclotomic_radial 100 4 0\>\"", ",", "Null"}], "]"}], 
-  "]"}]], "Input",
+   RowBox[{"\"\<./cyclotomic_radial --single 4 100 0\>\"", ",", "Null"}], 
+   "]"}], "]"}]], "Input",
  CellChangeTimes->{{3.567846576185333*^9, 3.567846582599826*^9}, {
-  3.56784663371677*^9, 3.567846636317838*^9}}],
+  3.56784663371677*^9, 3.567846636317838*^9}, {3.63343707564669*^9, 
+  3.633437079415065*^9}}],
 
 Cell[BoxData[{
  RowBox[{
@@ -956,7 +959,7 @@ Cell[BoxData[
    3.568441924565223*^9, 3.568441926067227*^9}, 3.568442946481199*^9, 
    3.568632420093645*^9}]
 },
-WindowSize->{1920, 1147},
+WindowSize->{1920, 1140},
 WindowMargins->{{0, Automatic}, {Automatic, 0}},
 PrivateNotebookOptions->{"VersionedStylesheet"->{"Default.nb"[8.] -> False}},
 TaggingRules->{"SearchInProgress" -> False},
@@ -975,40 +978,40 @@ CellTagsIndex->{}
 *)
 (*NotebookFileOutline
 Notebook[{
-Cell[557, 20, 241, 7, 46, "Input"],
-Cell[801, 29, 130, 2, 46, "Input"],
-Cell[934, 33, 341, 10, 77, "Input"],
-Cell[1278, 45, 867, 19, 107, "Input"],
-Cell[2148, 66, 1600, 28, 77, "Input"],
-Cell[3751, 96, 2291, 71, 137, "Input"],
-Cell[6045, 169, 345, 8, 46, "Input"],
-Cell[6393, 179, 177, 4, 46, "Input"],
-Cell[6573, 185, 285, 6, 46, "Input"],
-Cell[6861, 193, 137, 4, 46, "Input"],
-Cell[7001, 199, 2774, 59, 197, "Input"],
-Cell[9778, 260, 937, 29, 107, "Input"],
-Cell[10718, 291, 1954, 41, 107, "Input"],
-Cell[12675, 334, 1279, 33, 107, "Input"],
-Cell[13957, 369, 7065, 167, 797, "Input"],
-Cell[21025, 538, 808, 25, 77, "Input"],
-Cell[21836, 565, 4223, 97, 527, "Input"],
-Cell[26062, 664, 425, 6, 46, "Input"],
-Cell[26490, 672, 364, 6, 46, "Input"],
-Cell[26857, 680, 399, 13, 46, "Input"],
-Cell[27259, 695, 525, 15, 77, "Input"],
-Cell[27787, 712, 259, 5, 46, "Input"],
-Cell[28049, 719, 2448, 60, 227, "Input"],
-Cell[30500, 781, 860, 21, 167, "Input"],
-Cell[31363, 804, 285, 6, 46, "Input"],
-Cell[31651, 812, 529, 14, 77, "Input"],
-Cell[32183, 828, 570, 15, 77, "Input"],
-Cell[32756, 845, 542, 12, 77, "Input"],
-Cell[33301, 859, 363, 8, 46, "Input"],
-Cell[33667, 869, 164, 4, 46, "Input"],
-Cell[33834, 875, 522, 14, 77, "Input"],
-Cell[34359, 891, 1117, 28, 107, "Input"],
-Cell[35479, 921, 872, 23, 107, "Input"],
-Cell[36354, 946, 535, 10, 46, "Input"]
+Cell[557, 20, 241, 7, 45, "Input"],
+Cell[801, 29, 130, 2, 45, "Input"],
+Cell[934, 33, 341, 10, 75, "Input"],
+Cell[1278, 45, 867, 19, 104, "Input"],
+Cell[2148, 66, 1600, 28, 75, "Input"],
+Cell[3751, 96, 2291, 71, 133, "Input"],
+Cell[6045, 169, 345, 8, 45, "Input"],
+Cell[6393, 179, 177, 4, 45, "Input"],
+Cell[6573, 185, 285, 6, 45, "Input"],
+Cell[6861, 193, 137, 4, 45, "Input"],
+Cell[7001, 199, 2883, 60, 191, "Input"],
+Cell[9887, 261, 937, 29, 104, "Input"],
+Cell[10827, 292, 1954, 41, 104, "Input"],
+Cell[12784, 335, 1279, 33, 104, "Input"],
+Cell[14066, 370, 7133, 168, 771, "Input"],
+Cell[21202, 540, 808, 25, 75, "Input"],
+Cell[22013, 567, 4223, 97, 510, "Input"],
+Cell[26239, 666, 425, 6, 45, "Input"],
+Cell[26667, 674, 364, 6, 45, "Input"],
+Cell[27034, 682, 399, 13, 45, "Input"],
+Cell[27436, 697, 525, 15, 75, "Input"],
+Cell[27964, 714, 259, 5, 45, "Input"],
+Cell[28226, 721, 2448, 60, 220, "Input"],
+Cell[30677, 783, 860, 21, 162, "Input"],
+Cell[31540, 806, 343, 7, 45, "Input"],
+Cell[31886, 815, 529, 14, 75, "Input"],
+Cell[32418, 831, 570, 15, 75, "Input"],
+Cell[32991, 848, 542, 12, 75, "Input"],
+Cell[33536, 862, 363, 8, 45, "Input"],
+Cell[33902, 872, 164, 4, 45, "Input"],
+Cell[34069, 878, 522, 14, 75, "Input"],
+Cell[34594, 894, 1117, 28, 104, "Input"],
+Cell[35714, 924, 872, 23, 104, "Input"],
+Cell[36589, 949, 535, 10, 45, "Input"]
 }
 ]
 *)

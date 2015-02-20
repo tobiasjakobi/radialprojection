@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[   3373355,      62400]
-NotebookOptionsPosition[   3371526,      62334]
-NotebookOutlinePosition[   3371883,      62350]
-CellTagsIndexPosition[   3371840,      62347]
+NotebookDataLength[   3373826,      62411]
+NotebookOptionsPosition[   3371997,      62345]
+NotebookOutlinePosition[   3372354,      62361]
+CellTagsIndexPosition[   3372311,      62358]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -266,17 +266,28 @@ Cell[BoxData[
 
 Cell[CellGroupData[{
 
-Cell[BoxData[{
+Cell[BoxData[
  RowBox[{
-  RowBox[{"mylist0", "=", 
-   RowBox[{"RunThrough", "[", 
-    RowBox[{"\"\<./cyclotomic_radial\>\"", ",", "Null"}], "]"}]}], 
-  ";"}], "\[IndentingNewLine]", 
- RowBox[{"Length", "[", 
-  RowBox[{"Part", "[", 
-   RowBox[{"mylist0", ",", "1"}], "]"}], "]"}]}], "Input",
+  RowBox[{"(*", " ", 
+   RowBox[{"Edit", " ", 
+    RowBox[{"the", " ", "'"}], 
+    RowBox[{"cyclotomic_radial", "'"}], " ", "source", " ", 
+    RowBox[{"(", 
+     RowBox[{"single", " ", "main", " ", "function"}], ")"}], " ", "before", 
+    " ", "running", " ", 
+    RowBox[{"this", "!"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"mylist0", "=", 
+     RowBox[{"RunThrough", "[", 
+      RowBox[{"\"\<./cyclotomic_radial --single\>\"", ",", "Null"}], "]"}]}], 
+    ";"}], "\[IndentingNewLine]", 
+   RowBox[{"Length", "[", 
+    RowBox[{"Part", "[", 
+     RowBox[{"mylist0", ",", "1"}], "]"}], "]"}]}]}]], "Input",
  CellChangeTimes->{{3.584275476772154*^9, 3.584275482035911*^9}, {
-  3.5842772445435*^9, 3.5842772447782087`*^9}}],
+  3.5842772445435*^9, 3.5842772447782087`*^9}, {3.633436876764286*^9, 
+  3.633436904090638*^9}, {3.633436982138212*^9, 3.633436992813978*^9}}],
 
 Cell[BoxData["2298"], "Output",
  CellChangeTimes->{3.5843416710614433`*^9, 3.584341988804772*^9}]
@@ -62332,7 +62343,7 @@ KisEnVMdYuUORVDJIvauIxE+lpiYf0xeXB9zdj0SH9gii9nCcHp87M8y457/
 \>"]]
 }, Open  ]]
 },
-WindowSize->{1920, 1147},
+WindowSize->{1920, 1140},
 WindowMargins->{{0, Automatic}, {Automatic, 0}},
 Magnification->1.25,
 FrontEndVersion->"9.0 for Linux x86 (64-bit) (January 25, 2013)",
@@ -62364,11 +62375,11 @@ Cell[2922, 98, 477, 12, 38, "Input"],
 Cell[3402, 112, 1793, 55, 89, "Input"],
 Cell[CellGroupData[{
 Cell[5220, 171, 252, 5, 38, "Input"],
-Cell[5475, 178, 389, 13, 65, "Output"]
+Cell[5475, 178, 389, 13, 62, "Output"]
 }, Open  ]],
 Cell[CellGroupData[{
 Cell[5901, 196, 230, 5, 38, "Input"],
-Cell[6134, 203, 408, 14, 65, "Output"]
+Cell[6134, 203, 408, 14, 62, "Output"]
 }, Open  ]],
 Cell[CellGroupData[{
 Cell[6579, 222, 485, 13, 38, "Input"],
@@ -62380,26 +62391,26 @@ Cell[7509, 254, 139, 3, 38, "Output"]
 }, Open  ]],
 Cell[7663, 260, 137, 4, 38, "Input"],
 Cell[CellGroupData[{
-Cell[7825, 268, 406, 10, 64, "Input"],
-Cell[8234, 280, 97, 1, 38, "Output"]
+Cell[7825, 268, 877, 21, 89, "Input"],
+Cell[8705, 291, 97, 1, 38, "Output"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[8368, 286, 331, 7, 64, "Input"],
-Cell[8702, 295, 99, 1, 38, "Output"]
+Cell[8839, 297, 331, 7, 64, "Input"],
+Cell[9173, 306, 99, 1, 38, "Output"]
 }, Open  ]],
-Cell[8816, 299, 297, 8, 38, "Input"],
+Cell[9287, 310, 297, 8, 38, "Input"],
 Cell[CellGroupData[{
-Cell[9138, 311, 1298, 34, 114, "Input"],
-Cell[10439, 347, 1641000, 30488, 467, 1469158, 27669, "CachedBoxData", \
+Cell[9609, 322, 1298, 34, 114, "Input"],
+Cell[10910, 358, 1641000, 30488, 467, 1469158, 27669, "CachedBoxData", \
 "BoxData", "Output"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[1651476, 30840, 480, 9, 38, "Input"],
-Cell[1651959, 30851, 9459, 162, 468, "Output"]
+Cell[1651947, 30851, 480, 9, 38, "Input"],
+Cell[1652430, 30862, 9459, 162, 468, "Output"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[1661455, 31018, 211, 4, 38, "Input"],
-Cell[1661669, 31024, 1709841, 31307, 467, 1505996, 27964, "CachedBoxData", \
+Cell[1661926, 31029, 211, 4, 38, "Input"],
+Cell[1662140, 31035, 1709841, 31307, 467, 1505996, 27964, "CachedBoxData", \
 "BoxData", "Output"]
 }, Open  ]]
 }
