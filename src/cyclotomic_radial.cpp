@@ -319,6 +319,12 @@ int MultiMachine::slave(int argc, char* argv[]) {
   return 0;
 }
 
+void print_usage() {
+  cerr << "cyclotomic_radial: usage:" << endl;
+
+  /* TODO: write docu */
+}
+
 int main(int argc, char* argv[]) {
   stringstream parser;
   string main_mode;
@@ -347,6 +353,8 @@ int main(int argc, char* argv[]) {
           ret = MultiMachine::slave(argc - 2, argv + 2);
       }
     }
+  } else {
+    print_usage();
   }
 
   return ret;
