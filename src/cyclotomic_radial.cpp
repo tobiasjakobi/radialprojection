@@ -320,20 +320,34 @@ int MultiMachine::slave(int argc, char* argv[]) {
 }
 
 int main(int argc, char* argv[]) {
-
-  //return SingleMachine::main(argc, argv);
+  stringstream parser;
+  string main_mode;
+  int ret = 0;
 
   if (argc >= 2) {
-    stringstream parser(argv[1]);
-    uint mode;
-    parser >> mode;
+    parser.str(argv[1]);
+    parser.clear();
+    parser >> main_mode;
+  }
 
-    if (mode == 0) {
-      return MultiMachine::master(argc - 1, argv + 1);
-    } else {
-      if (mode == 1) {
-        return MultiMachine::slave(argc - 1, argv + 1);
+  if (main_mode == "--single") {
+    ret = SingleMachine::main(argc - 1, argv + 1);
+  } else if (main_mode == "--multi") {
+    uint multi_mode;
+
+    if (argc >= 3) {
+      parser.str(argv[2]);
+      parser.clear();
+      parser >> multi_mode;
+
+      if (multi_mode == 0) {
+        ret = MultiMachine::master(argc - 2, argv + 2);
+      } else {
+        if (multi_mode == 1)
+          ret = MultiMachine::slave(argc - 2, argv + 2);
       }
     }
   }
+
+  return ret;
 }
