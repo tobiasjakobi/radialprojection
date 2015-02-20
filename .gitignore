@@ -1,0 +1,13 @@
+*.o
+arith_visibility
+chiral_radial
+corner_cases
+cyclotomic_radial
+cyclotomic_random
+griddual
+hexagonal
+higher_cyclo
+histogram
+pdf_writer
+random
+tuebingen
