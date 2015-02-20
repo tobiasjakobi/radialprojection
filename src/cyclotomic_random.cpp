@@ -44,6 +44,7 @@ int main(int argc, char* argv[]) {
 
   uint mode = 0;
   uint steps = 100;
+  double prob = 0.5;
 
   Common::vec4ilist tiling, visible;
 
@@ -57,6 +58,19 @@ int main(int argc, char* argv[]) {
       parser.clear();
       parser >> steps;
     }
+
+    if (argc >= 4) {
+        parser.str(argv[3]);
+        parser.clear();
+        parser >> prob;
+      }
+  }
+
+  const double probeps = 0.001;
+
+  if ((prob < probeps) || (prob > 1.0 - probeps)) {
+    cerr << "error: probability value " << prob << " not in [0,1].\n";
+    return 1;
   }
 
   if (check_mode(mode)) {
@@ -68,7 +82,7 @@ int main(int argc, char* argv[]) {
     case octagonal_visrnd:
       Octogonal::projTilingVisLocal(init, steps, false, tiling, visible);
       tiling.clear(); /* original tiling vertices are not used */
-      randomize(visible, tiling, 0.5);
+      randomize(visible, tiling, prob);
       cerr << "info: after randomization " << tiling.size()
            << " vertices remain\n";
     break;
@@ -80,7 +94,7 @@ int main(int argc, char* argv[]) {
     case decagonal_visrnd:
       Decagonal::projTilingVisLocal(init, steps, tiling, visible);
       tiling.clear();
-      randomize(visible, tiling, 0.5);
+      randomize(visible, tiling, prob);
       cerr << "info: after randomization " << tiling.size()
            << " vertices remain\n";
     break;
@@ -92,7 +106,7 @@ int main(int argc, char* argv[]) {
     case dodecagonal_visrnd:
       Dodecagonal::projTilingVisLocal(init, steps, tiling, visible);
       tiling.clear();
-      randomize(visible, tiling, 0.5);
+      randomize(visible, tiling, prob);
       cerr << "info: after randomization " << tiling.size()
            << " vertices remain\n";
     break;
@@ -104,7 +118,7 @@ int main(int argc, char* argv[]) {
     case rhmbpenrose_visrnd:
       RhombicPenrose::projTilingVis(init, init, steps, false, tiling, visible);
       tiling.clear();
-      randomize(visible, tiling, 0.5);
+      randomize(visible, tiling, prob);
       cerr << "info: after randomization " << tiling.size()
            << " vertices remain\n";
     break;
