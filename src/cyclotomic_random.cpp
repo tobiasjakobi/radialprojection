@@ -15,15 +15,34 @@
 
 #include "cyclotomic_random.h"
 
+#include "cyclotomic_octagonal.h"
+
 #include <sstream>
+
+template <typename T>
+void CyclotomicRandom::randomize(const vector<T>& input,
+                          vector<T>& output, double prob) {
+  Common::srandExt();
+  const double rndNorm = 1.0 / double(RAND_MAX);
+
+  for (typename vector<T>::const_iterator i = input.begin();
+       i != input.end(); ++i) {
+    const double p = double(rand()) * rndNorm;
+    if (p >= prob) output.push_back(*i);
+  }
+}
 
 int main(int argc, char* argv[]) {
   using namespace CyclotomicRandom;
+
+  const vec4i init(0, 0, 0, 0);
 
   stringstream parser;
 
   uint mode = 0;
   uint steps = 100;
+
+  Common::vec4ilist tiling, visible;
 
   if (argc >= 2) {
     parser.str(argv[1]);
@@ -44,7 +63,11 @@ int main(int argc, char* argv[]) {
 
   switch (mode) {
     case octagonal_visrnd:
-      /* TODO: implement */
+      Octogonal::projTilingVisLocal(init, steps, false, tiling, visible);
+      tiling.clear(); /* original tiling vertices are not used */
+      randomize(visible, tiling, 0.5);
+      cerr << "info: after randomization " << tiling.size()
+           << " vertices remain\n";
     break;
 
     case octagonal_rndvis:

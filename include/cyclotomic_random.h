@@ -36,6 +36,9 @@ namespace CyclotomicRandom {
     return (mode >= processing_mode_end);
   }
 
+  template <typename T>
+  void randomize(const vector<T>& input, vector<T>& output, double prob);
+
 };
 
 #endif /* _CYCLOTOMIC_RANDOM_H_ */
