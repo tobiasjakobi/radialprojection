@@ -42,7 +42,10 @@ tuebingen: tuebingen.o common.o; $(compiler) -o $@ $(ldflags) $^
 arith_visibility: arith_visibility.o common.o; $(compiler) -o $@ $(ldflags) $^
 pdf_writer: pdf_writer.o common.o; $(compiler) -o $@ $(ldflags) $^ -lcairo
 random: random.o common.o; $(compiler) -o $@ $(ldflags) $^
-cyclotomic_random: cyclotomic_random.o cyclotomic_octagonal.o common.o; $(compiler) -o $@ $(ldflags) $^
+cyclotomic_random: cyclotomic_random.o cyclotomic_octagonal.o \
+                   cyclotomic_decagonal.o cyclotomic_dodecagonal.o \
+                   cyclotomic_rhombic_penrose.o \
+                   common.o; $(compiler) -o $@ $(ldflags) $^
 
 clean:
 	rm -f *.o

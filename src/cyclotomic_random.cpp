@@ -16,6 +16,9 @@
 #include "cyclotomic_random.h"
 
 #include "cyclotomic_octagonal.h"
+#include "cyclotomic_decagonal.h"
+#include "cyclotomic_dodecagonal.h"
+#include "cyclotomic_rhombic_penrose.h"
 
 #include <sstream>
 
@@ -75,7 +78,11 @@ int main(int argc, char* argv[]) {
     break;
 
     case decagonal_visrnd:
-      /* TODO: implement */
+      Decagonal::projTilingVisLocal(init, steps, tiling, visible);
+      tiling.clear();
+      randomize(visible, tiling, 0.5);
+      cerr << "info: after randomization " << tiling.size()
+           << " vertices remain\n";
     break;
 
     case decagonal_rndvis:
@@ -83,7 +90,11 @@ int main(int argc, char* argv[]) {
     break;
 
     case dodecagonal_visrnd:
-      /* TODO: implement */
+      Dodecagonal::projTilingVisLocal(init, steps, tiling, visible);
+      tiling.clear();
+      randomize(visible, tiling, 0.5);
+      cerr << "info: after randomization " << tiling.size()
+           << " vertices remain\n";
     break;
 
     case dodecagonal_rndvis:
@@ -91,7 +102,11 @@ int main(int argc, char* argv[]) {
     break;
 
     case rhmbpenrose_visrnd:
-      /* TODO: implement */
+      RhombicPenrose::projTilingVis(init, init, steps, false, tiling, visible);
+      tiling.clear();
+      randomize(visible, tiling, 0.5);
+      cerr << "info: after randomization " << tiling.size()
+           << " vertices remain\n";
     break;
 
     case rhmbpenrose_rndvis:
