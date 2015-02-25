@@ -123,18 +123,18 @@ int SingleMachine::main(int argc, char* argv[]) {
   switch (mode) {
     case octagonal_tiling:
       if (use_default_origin)
-        Octogonal::projTilingVisLocal(init, steps, sector, tiling, visible);
+        Octagonal::projTilingVisLocal(init, steps, sector, tiling, visible);
       else
-        Octogonal::projTilingVis(init, origin, steps, false, tiling, visible); // onlySector is ignored
+        Octagonal::projTilingVis(init, origin, steps, false, tiling, visible); // onlySector is ignored
     break;
 
     case octagonal_radprj:
       if (use_default_origin)
-        Octogonal::projTilingVisLocal(init, steps, sector, tiling, visible);
+        Octagonal::projTilingVisLocal(init, steps, sector, tiling, visible);
       else
-        Octogonal::projTilingVis(init, origin, steps, true, tiling, visible); // onlySector is ignored
+        Octagonal::projTilingVis(init, origin, steps, true, tiling, visible); // onlySector is ignored
 
-      Octogonal::radialProj(visible, output, mean, sector);
+      Octagonal::radialProj(visible, output, mean, sector);
     break;
 
     case decagonal_tiling:
@@ -321,6 +321,14 @@ int MultiMachine::slave(int argc, char* argv[]) {
 
 void print_usage() {
   cerr << "cyclotomic_radial: usage:" << endl;
+
+  cerr << "cyclotomic_radial --single: selects single main mode" << endl;
+  cerr << "\tparameter 1: mode" << endl;
+  cerr << "\tparameter 2: steps" << endl;
+  cerr << "\tparameter 3: sector" << endl;
+
+  cerr << "cyclotomic_radial --multi: selects multi main mode" << endl;
+  cerr << "\tparameter 1: multi type (0 = master; 1 = slave)" << endl;
 
   /* TODO: write docu */
 }

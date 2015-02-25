@@ -1084,7 +1084,7 @@ namespace Coprime {
 
   void gcdZTest(uint count);
 
-  // Used in the octogonal case:
+  // Used in the octagonal case:
   vec2i moduloZ2(const vec2i& a, const vec2i& b);
   vec2i gcdZ2(const vec2i& a, const vec2i& b);
 

@@ -135,7 +135,7 @@ void Dodecagonal::projTilingVisLocal(const vec4i& initpoint, uint maxstep,
         /* By empirical tests the only type of vertices that can be visible *
          * are those with a gcd-norm of 1 (coprime elements) or gcd-norm 2. *
          * The norm 2 vertices are the exceptional ones which don't appear  *
-         * in the octogonal (AB) and decagonal (TTT) case.                  */
+         * in the octagonal (AB) and decagonal (TTT) case.                  */
         const int gcdnorm = Coprime::gcdZ3(pp.transL12ToDirect()).normZ3();
         switch (gcdnorm) {
           case 1: if (checkScaledProjInWindow(pp, false, circularWindow)) continue;

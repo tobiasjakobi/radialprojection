@@ -19,7 +19,7 @@
 #include "common.h"
 #include "visibility.h"
 
-namespace Octogonal {
+namespace Octagonal {
 
   /* inflation factor of the octagonal tiling */
   const double silverMean = 1.0 + sqrt(2.0);

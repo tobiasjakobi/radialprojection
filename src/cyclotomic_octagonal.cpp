@@ -19,9 +19,9 @@
 
 #include <algorithm>
 
-const double Octogonal::VisOp::epsilon = 2.0 * numeric_limits<double>::epsilon();
+const double Octagonal::VisOp::epsilon = 2.0 * numeric_limits<double>::epsilon();
 
-bool Octogonal::checkProjInSector(const vec2d& orthpoint) {
+bool Octagonal::checkProjInSector(const vec2d& orthpoint) {
   using namespace Common;
 
   const double v[2] = {abs(orthpoint.x), abs(orthpoint.y)};
@@ -42,7 +42,7 @@ bool Octogonal::checkProjInSector(const vec2d& orthpoint) {
   return false;
 }
 
-bool Octogonal::checkProjInWindow(const vec4i& point, bool useCircle) {
+bool Octagonal::checkProjInWindow(const vec4i& point, bool useCircle) {
   using namespace Common;
 
   const vec2d pt(point.orthProjL8());
@@ -63,7 +63,7 @@ bool Octogonal::checkProjInWindow(const vec4i& point, bool useCircle) {
   }
 }
 
-bool Octogonal::checkScaledProjInWindow(const vec4i& point, bool useCircle) {
+bool Octagonal::checkScaledProjInWindow(const vec4i& point, bool useCircle) {
   using namespace Common;
 
   const vec2d pt(point.orthProjL8() * silverMean);
@@ -84,7 +84,7 @@ bool Octogonal::checkScaledProjInWindow(const vec4i& point, bool useCircle) {
   }
 }
 
-void Octogonal::projTiling(const vec4i& initpoint, uint maxstep,
+void Octagonal::projTiling(const vec4i& initpoint, uint maxstep,
                  Common::vec4ilist& tilingpoints) {
   using namespace Common;
 
@@ -123,7 +123,7 @@ void Octogonal::projTiling(const vec4i& initpoint, uint maxstep,
        << tilingpoints.size() << " vertices.\n";
 }
 
-void Octogonal::projTilingVis(const vec4i& initpoint,
+void Octagonal::projTilingVis(const vec4i& initpoint,
                  const vec4i& origin,
                  uint maxstep, bool radialproj,
                  Common::vec4ilist& tilingpoints,
@@ -194,7 +194,7 @@ void Octogonal::projTilingVis(const vec4i& initpoint,
 }
 
 // See projTilingVis for more comments on the code.
-void Octogonal::projTilingVisLocal(const vec4i& initpoint,
+void Octagonal::projTilingVisLocal(const vec4i& initpoint,
                  uint maxstep, bool onlySector,
                  Common::vec4ilist& tilingpoints,
                  Common::vec4ilist& visiblepoints) {
@@ -249,7 +249,7 @@ void Octogonal::projTilingVisLocal(const vec4i& initpoint,
        << visiblepoints.size() << " visible ones.\n";
 }
 
-void Octogonal::radialProj(const Common::vec4ilist& input,
+void Octagonal::radialProj(const Common::vec4ilist& input,
                           Common::dlist& output,
                           double& meandist, bool onlySector) {
   using namespace Common;
@@ -277,7 +277,7 @@ void Octogonal::radialProj(const Common::vec4ilist& input,
   normalizeAngDists(output, meandist);
 }
 
-void Octogonal::radialProj(const Common::vec4ilist& input,
+void Octagonal::radialProj(const Common::vec4ilist& input,
                           const vec4i& origin, double radius,
                           Common::dlist& output, double& meandist) {
   using namespace Common;
@@ -322,7 +322,7 @@ void Octogonal::radialProj(const Common::vec4ilist& input,
   normalizeAngDists(output, meandist);
 }
 
-void Octogonal::testWindow(Common::vec2ilist& output,
+void Octagonal::testWindow(Common::vec2ilist& output,
                           uint resolution) {
   using namespace Common;
 
@@ -343,7 +343,7 @@ void Octogonal::testWindow(Common::vec2ilist& output,
   }
 }
 
-void Octogonal::innerOuterRadius(const Common::vec4ilist& tilingpoints,
+void Octagonal::innerOuterRadius(const Common::vec4ilist& tilingpoints,
                           double& inner, double& outer) {
   using namespace Common;
 
@@ -359,7 +359,7 @@ void Octogonal::innerOuterRadius(const Common::vec4ilist& tilingpoints,
   inner = cos(pi / 8.0) * outer;
 }
 
-bool Octogonal::VisOp::rayTest(const invectype& a, const invectype& b) {
+bool Octagonal::VisOp::rayTest(const invectype& a, const invectype& b) {
   // let Z<2> be Z[sqrt[2]]
   // transform into the Z<2>*1 + Z<2>*xi
   // representation (this is a direct sum)
