@@ -64,6 +64,10 @@ namespace Dodecagonal {
   bool checkProjInWindow(const vec4i& point, bool useCircle);
   bool checkScaledProjInWindow(const vec4i& point, bool gcdNormTwo, bool useCircle);
 
+  /* projTiling only constructs the tiling, starting from the initpoint */
+  void projTiling(const vec4i& initpoint, uint maxstep,
+                  Common::vec4ilist& tilingpoints);
+
   /* projTilingVisLocal uses a modified local test to determine         *
    * visibility. The test was derived partly from numerical             *
    * simulations and also from direct computation with the              *
