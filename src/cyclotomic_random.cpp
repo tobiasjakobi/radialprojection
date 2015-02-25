@@ -80,7 +80,7 @@ int main(int argc, char* argv[]) {
 
   switch (mode) {
     case octagonal_visrnd:
-      Octogonal::projTilingVisLocal(init, steps, false, tiling, visible);
+      Octagonal::projTilingVisLocal(init, steps, false, tiling, visible);
       tiling.clear(); /* original tiling vertices are not used */
       randomize(visible, tiling, prob);
       cerr << "info: after randomization " << tiling.size()
@@ -88,6 +88,9 @@ int main(int argc, char* argv[]) {
     break;
 
     case octagonal_rndvis:
+      Octagonal::projTiling(init, steps, tiling);
+      randomize(tiling, visible, prob);
+      tiling.swap(visible);
       /* TODO: implement */
     break;
 
@@ -100,6 +103,9 @@ int main(int argc, char* argv[]) {
     break;
 
     case decagonal_rndvis:
+      Decagonal::projTiling(init, steps, tiling);
+      randomize(tiling, visible, prob);
+      tiling.swap(visible);
       /* TODO: implement */
     break;
 
@@ -112,6 +118,9 @@ int main(int argc, char* argv[]) {
     break;
 
     case dodecagonal_rndvis:
+      Dodecagonal::projTiling(init, steps, tiling);
+      randomize(tiling, visible, prob);
+      tiling.swap(visible);
       /* TODO: implement */
     break;
 
@@ -124,6 +133,9 @@ int main(int argc, char* argv[]) {
     break;
 
     case rhmbpenrose_rndvis:
+      RhombicPenrose::projTiling(init, steps, tiling);
+      randomize(tiling, visible, prob);
+      tiling.swap(visible);
       /* TODO: implement */
     break;
 
