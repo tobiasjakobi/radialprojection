@@ -47,6 +47,8 @@ int main(int argc, char* argv[]) {
   double prob = 0.5;
 
   Common::vec4ilist tiling, visible;
+  Common::dlist spacings;
+  double mean;
 
   if (argc >= 2) {
     parser.str(argv[1]);
@@ -85,6 +87,7 @@ int main(int argc, char* argv[]) {
       randomize(visible, tiling, prob);
       cerr << "info: after randomization " << tiling.size()
            << " vertices remain\n";
+      Octagonal::radialProj(tiling, spacings, mean, false);
     break;
 
     case octagonal_rndvis:
@@ -100,6 +103,7 @@ int main(int argc, char* argv[]) {
       randomize(visible, tiling, prob);
       cerr << "info: after randomization " << tiling.size()
            << " vertices remain\n";
+      Decagonal::radialProj(tiling, spacings, mean);
     break;
 
     case decagonal_rndvis:
@@ -115,6 +119,7 @@ int main(int argc, char* argv[]) {
       randomize(visible, tiling, prob);
       cerr << "info: after randomization " << tiling.size()
            << " vertices remain\n";
+      Dodecagonal::radialProj(tiling, spacings, mean);
     break;
 
     case dodecagonal_rndvis:
@@ -130,6 +135,7 @@ int main(int argc, char* argv[]) {
       randomize(visible, tiling, prob);
       cerr << "info: after randomization " << tiling.size()
            << " vertices remain\n";
+      RhombicPenrose::radialProj(tiling, spacings, mean);
     break;
 
     case rhmbpenrose_rndvis:
@@ -143,6 +149,12 @@ int main(int argc, char* argv[]) {
       assert(false);
     break;
   }
+
+  cerr << "mean distance " << mean
+       << " during radial projection of " << (spacings.size() + 1)
+       << " vertices.\n";
+
+  Common::writeRawConsole(spacings);
 
   return 0;
 }
