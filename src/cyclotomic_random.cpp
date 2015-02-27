@@ -22,6 +22,29 @@
 
 #include <sstream>
 
+// See SingleMachine::apply_shift (cyclotomic_radial) for comments.
+void CyclotomicRandom::apply_shift(uint mode) {
+  using namespace Common;
+
+  if (mode == octagonal_visrnd || mode == octagonal_rndvis)
+    return;
+
+  if (mode == rhmbpenrose_visrnd || mode == rhmbpenrose_rndvis) {
+    vec4i::shift.set(1.0e-4, 1.0e-4);
+    return;
+  }
+
+  if (circularWindow) {
+    cerr << "Using (simplified) circular window with same area.\n";
+    return;
+  }
+
+  if (windowBookOrientation) {
+    cerr << "Using decagon/dodecagon window orientation from the book, applying slight shift to it.\n";
+    vec4i::shift.set(1.0e-4, 1.0e-4);
+  }
+}
+
 template <typename T>
 void CyclotomicRandom::randomize(const vector<T>& input,
                           vector<T>& output, double prob) {
@@ -80,6 +103,8 @@ int main(int argc, char* argv[]) {
     return 1;
   }
 
+  apply_shift(mode);
+
   switch (mode) {
     case octagonal_visrnd:
       Octagonal::projTilingVisLocal(init, steps, false, tiling, visible);
@@ -95,6 +120,7 @@ int main(int argc, char* argv[]) {
       randomize(tiling, visible, prob);
       tiling.swap(visible);
       /* TODO: implement */
+      assert(false);
     break;
 
     case decagonal_visrnd:
@@ -111,6 +137,7 @@ int main(int argc, char* argv[]) {
       randomize(tiling, visible, prob);
       tiling.swap(visible);
       /* TODO: implement */
+      assert(false);
     break;
 
     case dodecagonal_visrnd:
@@ -127,6 +154,7 @@ int main(int argc, char* argv[]) {
       randomize(tiling, visible, prob);
       tiling.swap(visible);
       /* TODO: implement */
+      assert(false);
     break;
 
     case rhmbpenrose_visrnd:
@@ -143,6 +171,7 @@ int main(int argc, char* argv[]) {
       randomize(tiling, visible, prob);
       tiling.swap(visible);
       /* TODO: implement */
+      assert(false);
     break;
 
     default:

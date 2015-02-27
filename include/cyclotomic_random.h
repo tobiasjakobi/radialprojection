@@ -20,6 +20,11 @@
 
 namespace CyclotomicRandom {
 
+  enum random_mode {
+    cyclotomic_visrnd,
+    cyclotomic_rndvis
+  };
+
   enum processing_mode {
     octagonal_visrnd   = 0, /* octagonal / Ammann-Beenker tiling (L8 lattice) */
     octagonal_rndvis   = 1,
@@ -35,6 +40,12 @@ namespace CyclotomicRandom {
   bool check_mode(uint mode) {
     return (mode >= processing_mode_end);
   }
+
+  bool get_random_mode(uint mode) {
+    return (mode % 2 == 0 ? cyclotomic_visrnd : cyclotomic_rndvis);
+  }
+
+  void apply_shift(uint mode);
 
   template <typename T>
   void randomize(const vector<T>& input, vector<T>& output, double prob);
