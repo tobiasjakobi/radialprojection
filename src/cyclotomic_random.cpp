@@ -158,8 +158,8 @@ int main(int argc, char* argv[]) {
       randomize(tiling, visible, prob);
       tiling.swap(visible);
       randomization_stats_msg(tiling);
-      /* TODO: implement */
-      assert(false);
+      Dodecagonal::extractVisible(init, true, tiling, visible);
+      Dodecagonal::radialProj(visible, spacings, mean);
     break;
 
     case rhmbpenrose_visrnd:
