@@ -116,7 +116,7 @@ int main(int argc, char* argv[]) {
       tiling.clear(); /* original tiling vertices are not used */
       randomize(visible, tiling, prob);
       randomization_stats_msg(tiling);
-      Octagonal::radialProj(tiling, spacings, mean, false);
+      Octagonal::radialProj(visible, spacings, mean, false);
     break;
 
     case octagonal_rndvis:
@@ -134,7 +134,7 @@ int main(int argc, char* argv[]) {
       tiling.clear();
       randomize(visible, tiling, prob);
       randomization_stats_msg(tiling);
-      Decagonal::radialProj(tiling, spacings, mean);
+      Decagonal::radialProj(visible, spacings, mean);
     break;
 
     case decagonal_rndvis:
@@ -150,7 +150,7 @@ int main(int argc, char* argv[]) {
       tiling.clear();
       randomize(visible, tiling, prob);
       randomization_stats_msg(tiling);
-      Dodecagonal::radialProj(tiling, spacings, mean);
+      Dodecagonal::radialProj(visible, spacings, mean);
     break;
 
     case dodecagonal_rndvis:
@@ -166,7 +166,7 @@ int main(int argc, char* argv[]) {
       tiling.clear();
       randomize(visible, tiling, prob);
       randomization_stats_msg(tiling);
-      RhombicPenrose::radialProj(tiling, spacings, mean);
+      RhombicPenrose::radialProj(visible, spacings, mean);
     break;
 
     case rhmbpenrose_rndvis:
