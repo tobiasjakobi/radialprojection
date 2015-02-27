@@ -67,7 +67,7 @@ int SingleMachine::main(int argc, char* argv[]) {
 
   // outputs
   Common::vec4ilist tiling, visible;
-  Common::dlist output;
+  Common::dlist spacings;
   double mean;
 
   /* create dodecagonal tiling with edges
@@ -134,7 +134,7 @@ int SingleMachine::main(int argc, char* argv[]) {
       else
         Octagonal::projTilingVis(init, origin, steps, true, tiling, visible); // onlySector is ignored
 
-      Octagonal::radialProj(visible, output, mean, sector);
+      Octagonal::radialProj(visible, spacings, mean, sector);
     break;
 
     case decagonal_tiling:
@@ -158,10 +158,10 @@ int SingleMachine::main(int argc, char* argv[]) {
 
         Decagonal::projTilingVisLocal(init, steps, tiling, visible);
         Decagonal::extractSector(visible, vistilSector);
-        Decagonal::radialProj(vistilSector, output, mean);
+        Decagonal::radialProj(vistilSector, spacings, mean);
       } else {
         Decagonal::projTilingVis(init, origin, steps, true, tiling, visible);
-        Decagonal::radialProj(visible, output, mean);
+        Decagonal::radialProj(visible, spacings, mean);
       }
     break;
 
@@ -186,10 +186,10 @@ int SingleMachine::main(int argc, char* argv[]) {
 
         Dodecagonal::projTilingVisLocal(init, steps, tiling, visible);
         Dodecagonal::extractSector(visible, vistilSector);
-        Dodecagonal::radialProj(vistilSector, output, mean);
+        Dodecagonal::radialProj(vistilSector, spacings, mean);
       } else {
         Dodecagonal::projTilingVis(init, origin, steps, true, tiling, visible);
-        Dodecagonal::radialProj(visible, output, mean);
+        Dodecagonal::radialProj(visible, spacings, mean);
       }
     break;
 
@@ -207,7 +207,7 @@ int SingleMachine::main(int argc, char* argv[]) {
 
     case rhmbpenrose_radprj:
       RhombicPenrose::projTilingVis(init, origin, steps, true, tiling, visible);
-      RhombicPenrose::radialProj(visible, output, mean);
+      RhombicPenrose::radialProj(visible, spacings, mean);
     break;
 
     default:
@@ -227,10 +227,10 @@ int SingleMachine::main(int argc, char* argv[]) {
     // to the console in raw mode in this case.
 
     cerr << "mean distance " << mean
-         << " during radial projection of " << (output.size() + 1)
+         << " during radial projection of " << (spacings.size() + 1)
          << " vertices.\n";
 
-    Common::writeRawConsole(output);
+    Common::writeRawConsole(spacings);
   }
 
   return 0;
@@ -291,7 +291,7 @@ int MultiMachine::slave(int argc, char* argv[]) {
 
   vec4i origin;
   vec4ilist tiling;
-  dlist output;
+  dlist spacings;
   double radius, mdist;
 
   if (argc != 3) return 1;
@@ -312,9 +312,9 @@ int MultiMachine::slave(int argc, char* argv[]) {
   }
 
   readRawConsole(tiling);
-  Decagonal::radialProj(tiling, origin, radius, output, mdist);
+  Decagonal::radialProj(tiling, origin, radius, spacings, mdist);
 
-  writeRawConsole(output);
+  writeRawConsole(spacings);
 
   return 0;
 }
