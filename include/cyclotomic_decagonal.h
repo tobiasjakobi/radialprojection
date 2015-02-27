@@ -77,6 +77,10 @@ namespace Decagonal {
   void extractSector(const Common::vec4ilist& input,
                      Common::vec4ilist& output);
 
+  void extractVisible(const vec4i& origin, bool radialproj,
+                      const Common::vec4ilist& input,
+                      Common::vec4ilist& output);
+
   void radialProj(const Common::vec4ilist& input,
                   Common::dlist& output,
                   double& meandist);
