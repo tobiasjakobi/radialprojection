@@ -1155,8 +1155,8 @@ namespace Meta {
   template <uint p, uint i>
   class isPrime {
   public:
-    enum {prim = (p == 2) || (p % i) &&
-                 isPrime<(i > 2 ? p : 0), i - 1>::prim}; 
+    enum {prim = (p == 2) || ((p % i) &&
+                 isPrime<(i > 2 ? p : 0), i - 1>::prim)}; 
   }; 
 
   template<>
