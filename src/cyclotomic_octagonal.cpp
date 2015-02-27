@@ -249,6 +249,35 @@ void Octagonal::projTilingVisLocal(const vec4i& initpoint,
        << visiblepoints.size() << " visible ones.\n";
 }
 
+void Octagonal::extractVisible(const vec4i& origin, bool radialproj,
+                          const Common::vec4ilist& input,
+                          Common::vec4ilist& output) {
+  using namespace Common;
+
+  VisList* vlist = new VisList;
+  vlist->reserve(input.size() - 1);
+
+  vlist->init();
+
+  for (vec4ilist::const_iterator i = input.begin(); i != input.end(); ++i) {
+    const vec4i shifted(*i - origin);
+
+    if (shifted.isZero()) continue;
+    vlist->insertSorted(shifted);
+  }
+
+  if (radialproj)
+    vlist->removeInvisibleFast();
+  else
+    vlist->removeInvisibleProper();
+
+  output.clear();
+  output.reserve(vlist->size());
+  vlist->dump(output);
+
+  delete vlist;
+}
+
 void Octagonal::radialProj(const Common::vec4ilist& input,
                           Common::dlist& output,
                           double& meandist, bool onlySector) {
