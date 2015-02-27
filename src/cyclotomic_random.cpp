@@ -58,6 +58,11 @@ void CyclotomicRandom::randomize(const vector<T>& input,
   }
 }
 
+static inline void randomization_stats_msg(const Common::vec4ilist& l) {
+  cerr << "info: after randomization " << l.size()
+       << " vertices remain\n";
+}
+
 int main(int argc, char* argv[]) {
   using namespace CyclotomicRandom;
 
@@ -110,8 +115,7 @@ int main(int argc, char* argv[]) {
       Octagonal::projTilingVisLocal(init, steps, false, tiling, visible);
       tiling.clear(); /* original tiling vertices are not used */
       randomize(visible, tiling, prob);
-      cerr << "info: after randomization " << tiling.size()
-           << " vertices remain\n";
+      randomization_stats_msg(tiling);
       Octagonal::radialProj(tiling, spacings, mean, false);
     break;
 
@@ -119,16 +123,17 @@ int main(int argc, char* argv[]) {
       Octagonal::projTiling(init, steps, tiling);
       randomize(tiling, visible, prob);
       tiling.swap(visible);
-      /* TODO: implement */
-      assert(false);
+      randomization_stats_msg(tiling);
+      Octagonal::extractVisible(init, true, tiling, visible);
+      /* TODO: put message here */
+      Octagonal::radialProj(visible, spacings, mean, false);
     break;
 
     case decagonal_visrnd:
       Decagonal::projTilingVisLocal(init, steps, tiling, visible);
       tiling.clear();
       randomize(visible, tiling, prob);
-      cerr << "info: after randomization " << tiling.size()
-           << " vertices remain\n";
+      randomization_stats_msg(tiling);
       Decagonal::radialProj(tiling, spacings, mean);
     break;
 
@@ -144,8 +149,7 @@ int main(int argc, char* argv[]) {
       Dodecagonal::projTilingVisLocal(init, steps, tiling, visible);
       tiling.clear();
       randomize(visible, tiling, prob);
-      cerr << "info: after randomization " << tiling.size()
-           << " vertices remain\n";
+      randomization_stats_msg(tiling);
       Dodecagonal::radialProj(tiling, spacings, mean);
     break;
 
@@ -161,8 +165,7 @@ int main(int argc, char* argv[]) {
       RhombicPenrose::projTilingVis(init, init, steps, false, tiling, visible);
       tiling.clear();
       randomize(visible, tiling, prob);
-      cerr << "info: after randomization " << tiling.size()
-           << " vertices remain\n";
+      randomization_stats_msg(tiling);
       RhombicPenrose::radialProj(tiling, spacings, mean);
     break;
 
