@@ -1031,6 +1031,8 @@ ostream& operator<<(ostream &os, const vec2s& v) {
 
 ostream& operator<<(ostream &os, const vec2iExt& rhs) {
   os << '{' << rhs.get() << ',' << (int)rhs << '}';
+
+  return os;
 }
 
 ostream& operator<<(ostream &os, const tilingEdge& e) {
