@@ -265,7 +265,6 @@ void Dodecagonal::projTilingVis(const vec4i& initpoint,
   vlist->dump(visiblepoints);
 
   delete vlist;
-  vlist = NULL;
 }
 
 vec4i Dodecagonal::sqDist(const vec4i& v, const vec4i& w) {

@@ -233,7 +233,6 @@ void RhombicPenrose::projTilingVis(const vec4i& initpoint,
   vlist->dump(visiblepoints);
 
   delete vlist;
-  vlist = NULL;
 }
 
 void RhombicPenrose::extractSector(const Common::vec4ilist& input,

@@ -192,7 +192,6 @@ void Decagonal::projTilingVis(const vec4i& initpoint,
   vlist->dump(visiblepoints);
 
   delete vlist;
-  vlist = NULL;
 }
 
 void Decagonal::projTilingVisLocal(const vec4i& initpoint, uint maxstep,
