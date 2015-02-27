@@ -175,8 +175,8 @@ int main(int argc, char* argv[]) {
       randomize(tiling, visible, prob);
       tiling.swap(visible);
       randomization_stats_msg(tiling);
-      /* TODO: implement */
-      assert(false);
+      RhombicPenrose::extractVisible(init, true, false, tiling, visible);
+      RhombicPenrose::radialProj(visible, spacings, mean);
     break;
 
     default:
