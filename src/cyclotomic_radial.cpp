@@ -323,14 +323,27 @@ void print_usage() {
   cerr << "cyclotomic_radial: usage:" << endl;
 
   cerr << "cyclotomic_radial --single: selects single main mode" << endl;
-  cerr << "\tparameter 1: mode" << endl;
+  cerr << "\tparameter 1: mode (even = point set; odd = radial projection)" << endl;
+    cerr << "\t\t" << "0/1 = octagonal (Ammann-Beenker)" << endl;
+    cerr << "\t\t" << "2/3 = decagonal (Tübingen triangle)" << endl;
+    cerr << "\t\t" << "4/5 = dodecagonal (Gähler shield)" << endl;
+    cerr << "\t\t" << "6/7 = rhombic Penrose (cyclotomic multi-window)" << endl;
   cerr << "\tparameter 2: steps" << endl;
-  cerr << "\tparameter 3: sector" << endl;
+  cerr << "\tparameter 3: sector (if possible reduce point set to sector)" << endl;
+  cerr << "\tparameter {4,5,6,7}: custom origin (for visibility computation)" << endl;
 
   cerr << "cyclotomic_radial --multi: selects multi main mode" << endl;
   cerr << "\tparameter 1: multi type (0 = master; 1 = slave)" << endl;
+  cerr << "\t\t" << "(parameters below are shifted)" << endl;
 
-  /* TODO: write docu */
+  cerr << "\tmaster mode (tiling mode currently hardcoded):" << endl;
+  cerr << "\t\t" << "parameter 1: steps (of initial tiling)" << endl;
+  cerr << "\t\t" << "parameter 2: samples (number of subpatches to create)" << endl;
+  cerr << "\t\t" << "parameter 3: percentage (determines size of subpatch)" << endl;
+
+  cerr << "\tslave mode:" << endl;
+  cerr << "\t\t" << "parameter 1: radius (double reinterpret_casted as ulong):" << endl;
+  cerr << "\t\t" << "parameter 2: origin (formatted as \"x,y,z,w\")" << endl;
 }
 
 int main(int argc, char* argv[]) {
