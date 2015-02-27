@@ -160,7 +160,6 @@ void RhombicPenrose::projTilingVis(const vec4i& initpoint,
                                vec4i(1,1,1,1),  vec4i(-1,0,0,0),
                                vec4i(0,-1,0,0), vec4i(0,0,-1,0),
                                vec4i(0,0,0,-1), vec4i(-1,-1,-1,-1)};
-  const bool default_origin = origin.isZero();
 
   if (initpoint.kappaL5() != 0) {
     cerr << "Initial point not of zero-parity.\n";
@@ -195,17 +194,32 @@ void RhombicPenrose::projTilingVis(const vec4i& initpoint,
   cerr << "Constructed patch of rhombic penrose tiling with "
        << tilingpoints.size() << " vertices.\n";
 
+  extractVisible(origin, radialproj, origin.isZero() && true /* TODO */,tilingpoints, visiblepoints);
+}
+
+void RhombicPenrose::extractSector(const Common::vec4ilist& input,
+             Common::vec4ilist& output) {
+  // Identical to the decagonal case:
+  Decagonal::extractSector(input, output);
+}
+
+void RhombicPenrose::extractVisible(const vec4i& origin, bool radialproj,
+                      bool onlySector, const Common::vec4ilist& input,
+                      Common::vec4ilist& output) {
+  using namespace Common;
+
+  const bool default_origin = origin.isZero();
   VisList* vlist = new VisList;
 
   if (radialproj && default_origin)
-    vlist->reserve((tilingpoints.size() - 1) / 5);
+    vlist->reserve((input.size() - 1) / 5);
   else
-    vlist->reserve(tilingpoints.size() - 1);
+    vlist->reserve(input.size() - 1);
 
   vlist->init();
 
-  if (radialproj && default_origin) {
-    for (vec4ilist::const_iterator i = tilingpoints.begin(); i != tilingpoints.end(); ++i) {
+  if (radialproj && onlySector) {
+    for (vec4ilist::const_iterator i = input.begin(); i != input.end(); ++i) {
       if (i->isZero()) continue;
 
       const vec2d physProj(i->paraProjL5());
@@ -215,7 +229,7 @@ void RhombicPenrose::projTilingVis(const vec4i& initpoint,
       }
     }
   } else {
-    for (vec4ilist::const_iterator i = tilingpoints.begin(); i != tilingpoints.end(); ++i) {
+    for (vec4ilist::const_iterator i = input.begin(); i != input.end(); ++i) {
       const vec4i shifted(*i - origin);
 
       if (shifted.isZero()) continue;
@@ -228,17 +242,11 @@ void RhombicPenrose::projTilingVis(const vec4i& initpoint,
   else
     vlist->removeInvisibleProper();
 
-  visiblepoints.clear();
-  visiblepoints.reserve(vlist->size());
-  vlist->dump(visiblepoints);
+  output.clear();
+  output.reserve(vlist->size());
+  vlist->dump(output);
 
   delete vlist;
-}
-
-void RhombicPenrose::extractSector(const Common::vec4ilist& input,
-             Common::vec4ilist& output) {
-  // Identical to the decagonal case:
-  Decagonal::extractSector(input, output);
 }
 
 void RhombicPenrose::radialProj(const Common::vec4ilist& input,
