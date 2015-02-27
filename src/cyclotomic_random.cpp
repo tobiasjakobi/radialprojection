@@ -125,7 +125,6 @@ int main(int argc, char* argv[]) {
       tiling.swap(visible);
       randomization_stats_msg(tiling);
       Octagonal::extractVisible(init, true, tiling, visible);
-      /* TODO: put message here */
       Octagonal::radialProj(visible, spacings, mean, false);
     break;
 
@@ -141,8 +140,9 @@ int main(int argc, char* argv[]) {
       Decagonal::projTiling(init, steps, tiling);
       randomize(tiling, visible, prob);
       tiling.swap(visible);
-      /* TODO: implement */
-      assert(false);
+      randomization_stats_msg(tiling);
+      Decagonal::extractVisible(init, true, tiling, visible);
+      Decagonal::radialProj(visible, spacings, mean);
     break;
 
     case dodecagonal_visrnd:
@@ -157,6 +157,7 @@ int main(int argc, char* argv[]) {
       Dodecagonal::projTiling(init, steps, tiling);
       randomize(tiling, visible, prob);
       tiling.swap(visible);
+      randomization_stats_msg(tiling);
       /* TODO: implement */
       assert(false);
     break;
@@ -173,6 +174,7 @@ int main(int argc, char* argv[]) {
       RhombicPenrose::projTiling(init, steps, tiling);
       randomize(tiling, visible, prob);
       tiling.swap(visible);
+      randomization_stats_msg(tiling);
       /* TODO: implement */
       assert(false);
     break;
