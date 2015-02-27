@@ -21,10 +21,10 @@
 
 namespace Octagonal {
 
-  /* inflation factor of the octagonal tiling */
+  // Inflation factor of the octagonal tiling
   const double silverMean = 1.0 + sqrt(2.0);
 
-  /* octagon radii */
+  // Octagon radii
   const double innerRadiusSquared = (2.0 * silverMean + 1.0) / 8.0;
   const double outerRadiusSquared = (silverMean + 1.0) / 4.0;
 
@@ -34,16 +34,19 @@ namespace Octagonal {
   bool checkProjInWindow(const vec4i& point, bool useCircle);
   bool checkScaledProjInWindow(const vec4i& point, bool useCircle);
 
-  /* projTiling only constructs the tiling, starting from the initpoint */
+  // Only construct the tiling, starting from the initpoint.
   void projTiling(const vec4i& initpoint, uint maxstep,
                   Common::vec4ilist& tilingpoints);
 
+  /* Constructs the tiling pointset and computes visibility. *
+   * An arbitrary origin can be used.                        */
   void projTilingVis(const vec4i& initpoint,
                      const vec4i& origin,
                      uint maxstep, bool radialproj,
                      Common::vec4ilist& tilingpoints,
                      Common::vec4ilist& visiblepoints);
 
+  // Compute visibility with the local test (much faster).
   void projTilingVisLocal(const vec4i& initpoint,
                           uint maxstep, bool onlySector,
                           Common::vec4ilist& tilingpoints,
@@ -53,14 +56,15 @@ namespace Octagonal {
                   Common::dlist& output,
                   double& meandist, bool onlySector);
 
-  /* radial projection of a given input tiling, but computed from a non-default origin/radius */
+  /* Radial projection of a given input tiling, but *
+   * computed from a non-default origin/radius.     */
   void radialProj(const Common::vec4ilist& input,
                   const vec4i& origin, double radius,
                   Common::dlist& output, double& meandist);
 
   void testWindow(Common::vec2ilist& output, uint resolution);
 
-  /* Compute inner and outer radius of tiling. */
+  // Compute inner and outer radius of tiling.
   void innerOuterRadius(const Common::vec4ilist& tilingpoints,
                         double& inner, double& outer);
 
