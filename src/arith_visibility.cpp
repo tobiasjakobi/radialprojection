@@ -1510,6 +1510,7 @@ ostream& operator<<(ostream &os, const ArithVisibility::vec2iq& v) {
 ostream& operator<<(ostream &os, const ArithVisibility::bragg& b) {
   os << "circle((" << b.getPosition().x << ',' << b.getPosition().y << "),"
      << b.getIntensity() << ",color='black',thickness=0.5)";
+  return os;
 }
 
 void vTableZ2(const uint r, Common::vec2ilist& table) {
