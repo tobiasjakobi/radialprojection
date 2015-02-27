@@ -1,5 +1,5 @@
 compiler := g++
-cflags   := -I./include
+cflags   := -I./include -Wall -Wno-narrowing
 ldflags  :=
 
 ifndef platform
