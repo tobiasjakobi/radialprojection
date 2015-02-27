@@ -243,28 +243,7 @@ void Dodecagonal::projTilingVis(const vec4i& initpoint,
   cerr << "Constructed patch of dodecagonal tiling with "
        << tilingpoints.size() << " vertices.\n";
 
-  VisList* vlist = new VisList;
-  vlist->reserve(tilingpoints.size() - 1);
-
-  vlist->init();
-
-  for (vec4ilist::const_iterator i = tilingpoints.begin(); i != tilingpoints.end(); ++i) {
-    const vec4i shifted(*i - origin);
-
-    if (shifted.isZero()) continue; // zero = reference point (not visible)
-    vlist->insertSorted(shifted);
-  }
-
-  if (radialproj)
-    vlist->removeInvisibleFast();
-  else
-    vlist->removeInvisibleProper();
-
-  visiblepoints.clear();
-  visiblepoints.reserve(vlist->size());
-  vlist->dump(visiblepoints);
-
-  delete vlist;
+  extractVisible(origin, radialproj, tilingpoints, visiblepoints);
 }
 
 vec4i Dodecagonal::sqDist(const vec4i& v, const vec4i& w) {
@@ -346,6 +325,35 @@ void Dodecagonal::extractSector(const Common::vec4ilist& input,
       output.push_back(*i);
     }
   }
+}
+
+void Dodecagonal::extractVisible(const vec4i& origin, bool radialproj,
+                      const Common::vec4ilist& input,
+                      Common::vec4ilist& output) {
+  using namespace Common;
+
+  VisList* vlist = new VisList;
+  vlist->reserve(input.size() - 1);
+
+  vlist->init();
+
+  for (vec4ilist::const_iterator i = input.begin(); i != input.end(); ++i) {
+    const vec4i shifted(*i - origin);
+
+    if (shifted.isZero()) continue; // zero = reference point (not visible)
+    vlist->insertSorted(shifted);
+  }
+
+  if (radialproj)
+    vlist->removeInvisibleFast();
+  else
+    vlist->removeInvisibleProper();
+
+  output.clear();
+  output.reserve(vlist->size());
+  vlist->dump(output);
+
+  delete vlist;
 }
 
 void Dodecagonal::radialProj(const Common::vec4ilist& input,
