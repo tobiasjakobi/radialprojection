@@ -194,7 +194,8 @@ void RhombicPenrose::projTilingVis(const vec4i& initpoint,
   cerr << "Constructed patch of rhombic penrose tiling with "
        << tilingpoints.size() << " vertices.\n";
 
-  extractVisible(origin, radialproj, origin.isZero() && true /* TODO */,tilingpoints, visiblepoints);
+  extractVisible(origin, radialproj, origin.isZero() && radialproj,
+                 tilingpoints, visiblepoints);
 }
 
 void RhombicPenrose::extractSector(const Common::vec4ilist& input,
