@@ -339,7 +339,7 @@ int main_statistics(int argc, char* argv[]) {
   double prob = probstep;
   cout << '{';
   while (true) {
-    rfunc(uint(double(steps) / sqrt(1 - prob)), prob, spacings);
+    rfunc(uint(double(steps) / sqrt(1.0 - prob)), prob, spacings);
 
     histogramStatistics(spacings, stats);
 
@@ -436,7 +436,7 @@ int main_single(int argc, char* argv[]) {
 
   Common::dlist spacings;
 
-  rfunc(uint(double(steps) / sqrt(1 - prob)), prob, spacings);
+  rfunc(uint(double(steps) / sqrt(1.0 - prob)), prob, spacings);
 
   Common::BinningData binData;
   binData.range[0] = (hmode == 0 ? 0.0 : hparam);
