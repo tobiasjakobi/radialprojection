@@ -209,8 +209,6 @@ void RandomVis::radialProjRndVis(uint steps, double prob, Common::dlist& out) {
   cerr << "info: mean distance = " << meandist << endl;
 }
 
-typedef void (*radialfunc)(uint, double, Common::dlist&);
-
 int main_normal(int argc, char* argv[]) {
   stringstream parser;
 
@@ -289,7 +287,7 @@ int main_statistics(int argc, char* argv[]) {
   uint steps = 100;
   double probstep = 0.1;
 
-  radialfunc rfunc = NULL;
+  RandomVis::radialfunc rfunc;
 
   if (argc >= 2) {
     parser.str(argv[1]);
@@ -372,7 +370,7 @@ int main_single(int argc, char* argv[]) {
   double hstep = 0.002;
   double hparam = 1.4;
 
-  radialfunc rfunc = NULL;
+  RandomVis::radialfunc rfunc;
 
   if (argc >= 2) {
     parser.str(argv[1]);

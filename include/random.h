@@ -30,6 +30,8 @@ namespace RandomVis {
   void radialProjVisRnd(uint steps, double prob, Common::dlist& out);
   void radialProjRndVis(uint steps, double prob, Common::dlist& out);
 
+  typedef void (*radialfunc)(uint, double, Common::dlist&);
+
 };
 
 #endif
