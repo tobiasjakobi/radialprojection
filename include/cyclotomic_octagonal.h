@@ -57,6 +57,10 @@ namespace Octagonal {
                       const Common::vec4ilist& input,
                       Common::vec4ilist& output);
 
+  // Compute estimations based on given 'maxstep' or 'size' value.
+  uint estimateSize(uint maxstep);
+  uint estimateSteps(uint size);
+
   void radialProj(const Common::vec4ilist& input,
                   Common::dlist& output,
                   double& meandist, bool onlySector);
