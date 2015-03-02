@@ -41,7 +41,7 @@ namespace CyclotomicRandom {
     return (mode >= processing_mode_end);
   }
 
-  bool get_random_mode(uint mode) {
+  random_mode get_random_mode(uint mode) {
     return (mode % 2 == 0 ? cyclotomic_visrnd : cyclotomic_rndvis);
   }
 
@@ -50,6 +50,35 @@ namespace CyclotomicRandom {
   template <typename T>
   void randomize(const vector<T>& input, vector<T>& output, double prob);
 
+  class RadialFunc {
+  public:
+    typedef void (*tilingfunc)(const vec4i&, uint, Common::vec4ilist&);
+    typedef void (*vislocalfunc)(const vec4i&, uint, Common::vec4ilist&,
+                                 Common::vec4ilist&);
+    typedef void (*extractfunc)(const vec4i&, bool, const Common::vec4ilist&,
+                                Common::vec4ilist&);
+    typedef void (*radprojfunc)(const Common::vec4ilist&,
+                                Common::dlist&, double&);
+
+  private:
+    tilingfunc projTiling;
+    vislocalfunc projTilingVisLocal;
+    extractfunc extractVisible;
+    radprojfunc radialProj;
+
+  public:
+    RadialFunc(tilingfunc projTiling_, vislocalfunc projTilingVisLocal_,
+               extractfunc extractVisible_, radprojfunc radialProj_) :
+      projTiling(projTiling_), projTilingVisLocal(projTilingVisLocal_),
+      extractVisible(extractVisible_), radialProj(radialProj_) {}
+
+    ~RadialFunc() {}
+
+    RadialFunc(const RadialFunc& rf);
+
+    void call(random_mode mode, uint steps, double prob,
+                    Common::dlist& spacings) const;
+  };
 };
 
 #endif /* _CYCLOTOMIC_RANDOM_H_ */

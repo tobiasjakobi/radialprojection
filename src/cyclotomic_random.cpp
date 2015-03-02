@@ -22,6 +22,24 @@
 
 #include <sstream>
 
+namespace CyclotomicRandom {
+  /*const static RadialFunc octagonalRF(
+    Octagonal::projTiling, Octagonal::projTilingVisLocal,
+    Octagonal::extractVisible, Octagonal::radialProj);*/
+
+  const static RadialFunc decagonalRF(
+    Decagonal::projTiling, Decagonal::projTilingVisLocal,
+    Decagonal::extractVisible, Decagonal::radialProj);
+
+  const static RadialFunc dodecagonalRF(
+    Dodecagonal::projTiling, Dodecagonal::projTilingVisLocal,
+    Dodecagonal::extractVisible, Dodecagonal::radialProj);
+
+  /*const static RadialFunc rhombicPenroseRF(
+    RhombicPenrose::projTiling, RhombicPenrose::projTilingVisLocal,
+    RhombicPenrose::extractVisible, RhombicPenrose::radialProj);*/
+};
+
 // See SingleMachine::apply_shift (cyclotomic_radial) for comments.
 void CyclotomicRandom::apply_shift(uint mode) {
   using namespace Common;
@@ -58,12 +76,41 @@ void CyclotomicRandom::randomize(const vector<T>& input,
   }
 }
 
+CyclotomicRandom::RadialFunc::RadialFunc(const RadialFunc& rf) {
+  assert(false); // disallow use of copy-constructor
+}
+
+void CyclotomicRandom::RadialFunc::call(random_mode mode, uint steps,
+                    double prob, Common::dlist& spacings) const {
+  static const vec4i init(0, 0, 0, 0);
+
+  Common::vec4ilist tiling, visible;
+  double meandist;
+
+  if (mode == cyclotomic_visrnd) {
+    projTilingVisLocal(init, steps, tiling, visible);
+    tiling.clear();
+    randomize(visible, tiling, prob);
+  } else if (mode == cyclotomic_rndvis) {
+    projTiling(init, steps, tiling);
+    randomize(tiling, visible, prob);
+    tiling.swap(visible);
+    extractVisible(init, true, tiling, visible);
+  } else {
+    assert(false);
+    return;
+  }
+
+  radialProj(visible, spacings, meandist);
+  cerr << "info: mean distance = " << meandist << endl;
+}
+
 static inline void randomization_stats_msg(const Common::vec4ilist& l) {
   cerr << "info: after randomization " << l.size()
        << " vertices remain\n";
 }
 
-int main(int argc, char* argv[]) {
+int main_normal(int argc, char* argv[]) {
   using namespace CyclotomicRandom;
 
   const vec4i init(0, 0, 0, 0);
@@ -191,4 +238,141 @@ int main(int argc, char* argv[]) {
   Common::writeRawConsole(spacings);
 
   return 0;
+}
+
+int main_statistics(int argc, char* argv[]) {
+  using namespace CyclotomicRandom;
+
+  stringstream parser;
+
+  uint mode = 0;
+  uint steps = 100;
+  double probstep = 0.1;
+
+  const CyclotomicRandom::RadialFunc* rfunc;
+
+  if (argc >= 2) {
+    parser.str(argv[1]);
+    parser.clear();
+    parser >> mode;
+
+    if (argc >= 3) {
+      parser.str(argv[2]);
+      parser.clear();
+      parser >> steps;
+
+      if (argc >= 4) {
+        parser.str(argv[3]);
+        parser.clear();
+        parser >> probstep;
+      }
+    }
+  }
+
+  switch (mode) {
+    case octagonal_visrnd:
+    case octagonal_rndvis:
+      assert(false);
+      rfunc = NULL;
+    break;
+
+    case decagonal_visrnd:
+    case decagonal_rndvis:
+      rfunc = &decagonalRF;
+    break;
+
+    case dodecagonal_visrnd:
+    case dodecagonal_rndvis:
+      rfunc = &dodecagonalRF;
+    break;
+
+    case rhmbpenrose_visrnd:
+    case rhmbpenrose_rndvis:
+      assert(false);
+      rfunc = NULL;
+    break;
+
+    default:
+      cerr << "error: unknown mode (" << mode <<  ") selected.\n";
+      return 1;
+    break;
+  }
+
+  apply_shift(mode);
+
+  const CyclotomicRandom::random_mode rfunc_mode = get_random_mode(mode);
+
+  const double probeps = 0.001;
+
+  if ((probstep < probeps) || (probstep > 1.0 - probeps)) {
+    cerr << "error: probability step value " << probstep << " not in [0,1].\n";
+    return 1;
+  }
+
+  Common::dlist spacings;
+  Common::BinningStats stats;
+
+  /* We currently hardcode the binning parameters here. */
+  stats.range[0] = 0.0;
+  stats.range[1] = 3.0;
+  stats.step = 0.002;
+  stats.tail = false;
+
+  cerr << "info: output format: {" << "discard probability, "
+       << "minimum input, " << "maximum input, "
+       << "position of largest bin" << "}\n";
+
+  double prob = probstep;
+  cout << '{';
+  while (true) {
+    rfunc->call(rfunc_mode, uint(double(steps) / sqrt(1 - prob)), prob, spacings);
+
+    histogramStatistics(spacings, stats);
+
+    cout << '{' << prob << ',' << stats.min << ',' << stats.max
+         << ',' << stats.maxbin_position << '}';
+
+    prob += probstep;
+    if (prob > 1.0 - probeps)
+      break;
+    else
+      cout << ',' << endl;
+  }
+  cout << '}' << endl;
+
+  return 0;
+}
+
+int main_single(int argc, char* argv[]) {
+  assert(false);
+  return -1;
+}
+
+void print_usage() {
+  cerr << "cyclotomic_random: usage:" << endl;
+
+  // TODO: implement
+}
+
+int main(int argc, char* argv[]) {
+  stringstream parser;
+  string main_mode;
+  int ret = 0;
+
+  if (argc >= 2) {
+    parser.str(argv[1]);
+    parser.clear();
+    parser >> main_mode;
+  }
+
+  if (main_mode == "--normal")
+    ret = main_normal(argc - 1, argv + 1);
+  else if (main_mode == "--statistics")
+    ret = main_statistics(argc - 1, argv + 1);
+  else if (main_mode == "--single")
+    ret = main_single(argc - 1, argv + 1);
+  else
+    print_usage();
+
+  return ret;
 }
