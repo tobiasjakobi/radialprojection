@@ -88,6 +88,14 @@ namespace RhombicPenrose {
                   Common::dlist& output,
                   double& meandist, uint window);
 
+  // Aliases for function pointer compatibility reasons
+  void extractVisible2(const vec4i& origin, bool radialproj,
+                       const Common::vec4ilist& input,
+                       Common::vec4ilist& output);
+  void projTilingVis2(const vec4i& initpoint, uint maxstep,
+                      Common::vec4ilist& tilingpoints,
+                      Common::vec4ilist& visiblepoints);
+
   void testWindow(Common::vec2ilist& output, uint resolution, uint window);
 
   struct VisOp {
