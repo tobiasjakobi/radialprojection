@@ -356,6 +356,21 @@ void Dodecagonal::extractVisible(const vec4i& origin, bool radialproj,
   delete vlist;
 }
 
+uint Dodecagonal::estimateSize(uint maxstep) {
+  // Parameters were computed using Mathematica's FindFit
+  static const double params[2] = {10.6339, 9.64282};
+
+  const double x = double(maxstep);
+  return uint(params[0] * x + params[1] * x * x);
+}
+
+uint Dodecagonal::estimateSteps(uint size) {
+  static const double params[4] = {0.051852, -10.6339, 113.08, 38.5713};
+
+  const double x = double(size);
+  return uint(params[0] * (params[1] + sqrt(params[2] + params[3] * x)));
+}
+
 void Dodecagonal::radialProj(const Common::vec4ilist& input,
                   Common::dlist& output,
                   double& meandist) {
