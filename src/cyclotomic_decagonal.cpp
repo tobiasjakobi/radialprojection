@@ -279,6 +279,21 @@ void Decagonal::extractVisible(const vec4i& origin, bool radialproj,
   delete vlist;
 }
 
+uint Decagonal::estimateSize(uint maxstep) {
+  // Parameters were computed using Mathematica's FindFit
+  static const double params[2] = {5.94039, 4.26288};
+
+  const double x = double(maxstep);
+  return uint(params[0] * x + params[1] * x * x);
+}
+
+uint Decagonal::estimateSteps(uint size) {
+  static const double params[4] = {0.117292, -5.94039, 35.2883, 17.0515};
+
+  const double x = double(size);
+  return uint(params[0] * (params[1] + sqrt(params[2] + params[3] * x)));
+}
+
 void Decagonal::radialProj(const Common::vec4ilist& input,
                           Common::dlist& output,
                           double& meandist) {
