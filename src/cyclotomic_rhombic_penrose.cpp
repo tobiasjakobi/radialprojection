@@ -250,6 +250,21 @@ void RhombicPenrose::extractVisible(const vec4i& origin, bool radialproj,
   delete vlist;
 }
 
+uint RhombicPenrose::estimateGrowth(uint input, bool steps) {
+  const double x = double(input);
+
+  if (steps) {
+    static const double params[4] = {0.209245, -2.00585, 4.02342, 9.55819};
+
+    return uint(params[0] * (params[1] + sqrt(params[2] + params[3] * x)));
+  } else {
+    // Parameters were computed using Mathematica's FindFit
+    static const double params[2] = {2.00585, 2.38955};
+
+    return uint(params[0] * x + params[1] * x * x);
+  }
+}
+
 void RhombicPenrose::radialProj(const Common::vec4ilist& input,
              Common::dlist& output, double& meandist) {
   // Identical to the decagonal case:
