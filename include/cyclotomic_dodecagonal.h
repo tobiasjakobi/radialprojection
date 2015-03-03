@@ -105,8 +105,7 @@ namespace Dodecagonal {
                       Common::vec4ilist& output);
 
   // Compute estimations based on given 'maxstep' or 'size' value.
-  uint estimateSize(uint maxstep);
-  uint estimateSteps(uint size);
+  uint estimateGrowth(uint input, bool steps);
 
   void radialProj(const Common::vec4ilist& input,
                   Common::dlist& output,
