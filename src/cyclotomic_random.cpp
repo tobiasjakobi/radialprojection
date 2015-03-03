@@ -96,7 +96,7 @@ void CyclotomicRandom::RadialFunc::call(random_mode mode, uint steps,
   const uint steps_p = estimateGrowth(target_size, true);
 
   if (mode == cyclotomic_visrnd) {
-    projTilingVisLocal(init, steps_p, tiling, visible);
+    projTilingVis(init, steps_p, tiling, visible);
     tiling.clear();
     randomize(visible, tiling, prob);
     tiling.swap(visible);
