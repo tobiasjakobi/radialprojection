@@ -38,9 +38,10 @@ namespace CyclotomicRandom {
     Dodecagonal::extractVisible, Dodecagonal::radialProj,
     Dodecagonal::estimateGrowth);
 
-  /*const static RadialFunc rhombicPenroseRF(
-    RhombicPenrose::projTiling, RhombicPenrose::projTilingVisLocal,
-    RhombicPenrose::extractVisible, RhombicPenrose::radialProj);*/
+  const static RadialFunc rhombicPenroseRF(
+    RhombicPenrose::projTiling, RhombicPenrose::projTilingVis2,
+    RhombicPenrose::extractVisible2, RhombicPenrose::radialProj,
+    RhombicPenrose::estimateGrowth);
 };
 
 // See SingleMachine::apply_shift (cyclotomic_radial) for comments.
