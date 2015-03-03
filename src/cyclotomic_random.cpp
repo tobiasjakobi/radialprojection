@@ -44,6 +44,11 @@ namespace CyclotomicRandom {
     RhombicPenrose::estimateGrowth);
 };
 
+static inline void randomization_stats_msg(const Common::vec4ilist& l) {
+  cerr << "info: after randomization " << l.size()
+       << " vertices remain\n";
+}
+
 // See SingleMachine::apply_shift (cyclotomic_radial) for comments.
 void CyclotomicRandom::apply_shift(uint mode) {
   using namespace Common;
@@ -97,13 +102,15 @@ void CyclotomicRandom::RadialFunc::call(random_mode mode, uint steps,
 
   if (mode == cyclotomic_visrnd) {
     projTilingVis(init, steps_p, tiling, visible);
-    tiling.clear();
+    tiling.clear(); /* original tiling vertices are not used */
     randomize(visible, tiling, prob);
     tiling.swap(visible);
+    randomization_stats_msg(visible);
   } else if (mode == cyclotomic_rndvis) {
     projTiling(init, steps_p, tiling);
     randomize(tiling, visible, prob);
     tiling.swap(visible);
+    randomization_stats_msg(tiling);
     extractVisible(init, true, tiling, visible);
   } else {
     assert(false);
@@ -112,11 +119,6 @@ void CyclotomicRandom::RadialFunc::call(random_mode mode, uint steps,
 
   radialProj(visible, spacings, meandist);
   cerr << "info: mean distance = " << meandist << endl;
-}
-
-static inline void randomization_stats_msg(const Common::vec4ilist& l) {
-  cerr << "info: after randomization " << l.size()
-       << " vertices remain\n";
 }
 
 int main_normal(int argc, char* argv[]) {
@@ -130,9 +132,11 @@ int main_normal(int argc, char* argv[]) {
   uint steps = 100;
   double prob = 0.5;
 
+  const CyclotomicRandom::RadialFunc* rfunc;
+
   Common::vec4ilist tiling, visible;
   Common::dlist spacings;
-  double mean;
+  //double mean;
 
   if (argc >= 2) {
     parser.str(argv[1]);
@@ -164,85 +168,41 @@ int main_normal(int argc, char* argv[]) {
     return 1;
   }
 
-  apply_shift(mode);
-
   switch (mode) {
     case octagonal_visrnd:
-      Octagonal::projTilingVisLocal(init, steps, false, tiling, visible);
-      tiling.clear(); /* original tiling vertices are not used */
-      randomize(visible, tiling, prob);
-      randomization_stats_msg(tiling);
-      Octagonal::radialProj(tiling, spacings, mean, false);
-    break;
-
     case octagonal_rndvis:
-      Octagonal::projTiling(init, steps, tiling);
-      randomize(tiling, visible, prob);
-      tiling.swap(visible);
-      randomization_stats_msg(tiling);
-      Octagonal::extractVisible(init, true, tiling, visible);
-      Octagonal::radialProj(visible, spacings, mean, false);
+      rfunc = &octagonalRF;
     break;
 
     case decagonal_visrnd:
-      Decagonal::projTilingVisLocal(init, steps, tiling, visible);
-      tiling.clear();
-      randomize(visible, tiling, prob);
-      randomization_stats_msg(tiling);
-      Decagonal::radialProj(tiling, spacings, mean);
-    break;
-
     case decagonal_rndvis:
-      Decagonal::projTiling(init, steps, tiling);
-      randomize(tiling, visible, prob);
-      tiling.swap(visible);
-      randomization_stats_msg(tiling);
-      Decagonal::extractVisible(init, true, tiling, visible);
-      Decagonal::radialProj(visible, spacings, mean);
+      rfunc = &decagonalRF;
     break;
 
     case dodecagonal_visrnd:
-      Dodecagonal::projTilingVisLocal(init, steps, tiling, visible);
-      tiling.clear();
-      randomize(visible, tiling, prob);
-      randomization_stats_msg(tiling);
-      Dodecagonal::radialProj(tiling, spacings, mean);
-    break;
-
     case dodecagonal_rndvis:
-      Dodecagonal::projTiling(init, steps, tiling);
-      randomize(tiling, visible, prob);
-      tiling.swap(visible);
-      randomization_stats_msg(tiling);
-      Dodecagonal::extractVisible(init, true, tiling, visible);
-      Dodecagonal::radialProj(visible, spacings, mean);
+      rfunc = &dodecagonalRF;
     break;
 
     case rhmbpenrose_visrnd:
-      RhombicPenrose::projTilingVis(init, init, steps, false, tiling, visible);
-      tiling.clear();
-      randomize(visible, tiling, prob);
-      randomization_stats_msg(tiling);
-      RhombicPenrose::radialProj(tiling, spacings, mean);
-    break;
-
     case rhmbpenrose_rndvis:
-      RhombicPenrose::projTiling(init, steps, tiling);
-      randomize(tiling, visible, prob);
-      tiling.swap(visible);
-      randomization_stats_msg(tiling);
-      RhombicPenrose::extractVisible(init, true, false, tiling, visible);
-      RhombicPenrose::radialProj(visible, spacings, mean);
+      rfunc = &rhombicPenroseRF;
     break;
 
     default:
       assert(false);
+      rfunc = NULL;
     break;
   }
 
-  cerr << "mean distance " << mean
+  apply_shift(mode);
+
+  const CyclotomicRandom::random_mode rfunc_mode = get_random_mode(mode);
+  rfunc->call(rfunc_mode, steps, prob, spacings);
+
+  /*cerr << "mean distance " << mean
        << " during radial projection of " << (spacings.size() + 1)
-       << " vertices.\n";
+       << " vertices.\n";*/
 
   Common::writeRawConsole(spacings);
 
