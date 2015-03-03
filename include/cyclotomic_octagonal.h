@@ -52,13 +52,6 @@ namespace Octagonal {
                           Common::vec4ilist& tilingpoints,
                           Common::vec4ilist& visiblepoints);
 
-  // Alias for function pointer compatibility reasons
-  void projTilingVisLocal2(const vec4i& initpoint, uint maxstep,
-                          Common::vec4ilist& tilingpoints,
-                          Common::vec4ilist& visiblepoints) {
-    projTilingVisLocal(initpoint, maxstep, false, tilingpoints, visiblepoints);
-  }
-
   // Just compute visibility for vertices from 'input' (seen from 'origin').
   void extractVisible(const vec4i& origin, bool radialproj,
                       const Common::vec4ilist& input,
@@ -71,17 +64,18 @@ namespace Octagonal {
                   Common::dlist& output,
                   double& meandist, bool onlySector);
 
-  // Alias for function pointer compatibility reasons
-  void radialProj2(const Common::vec4ilist& input, Common::dlist& output,
-                   double& meandist) {
-    radialProj(input, output, meandist, false);
-  }
-
   /* Radial projection of a given input tiling, but *
    * computed from a non-default origin/radius.     */
   void radialProj(const Common::vec4ilist& input,
                   const vec4i& origin, double radius,
                   Common::dlist& output, double& meandist);
+
+  // Aliases for function pointer compatibility reasons
+  void projTilingVisLocal2(const vec4i& initpoint, uint maxstep,
+                           Common::vec4ilist& tilingpoints,
+                           Common::vec4ilist& visiblepoints);
+  void radialProj2(const Common::vec4ilist& input, Common::dlist& output,
+                   double& meandist);
 
   void testWindow(Common::vec2ilist& output, uint resolution);
 
