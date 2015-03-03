@@ -23,9 +23,10 @@
 #include <sstream>
 
 namespace CyclotomicRandom {
-  /*const static RadialFunc octagonalRF(
-    Octagonal::projTiling, Octagonal::projTilingVisLocal,
-    Octagonal::extractVisible, Octagonal::radialProj);*/
+  const static RadialFunc octagonalRF(
+    Octagonal::projTiling, Octagonal::projTilingVisLocal2,
+    Octagonal::extractVisible, Octagonal::radialProj2,
+    Octagonal::estimateGrowth);
 
   const static RadialFunc decagonalRF(
     Decagonal::projTiling, Decagonal::projTilingVisLocal,
@@ -279,8 +280,7 @@ int main_statistics(int argc, char* argv[]) {
   switch (mode) {
     case octagonal_visrnd:
     case octagonal_rndvis:
-      assert(false);
-      rfunc = NULL;
+      rfunc = &octagonalRF;
     break;
 
     case decagonal_visrnd:
