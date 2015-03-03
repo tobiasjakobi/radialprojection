@@ -29,11 +29,13 @@ namespace CyclotomicRandom {
 
   const static RadialFunc decagonalRF(
     Decagonal::projTiling, Decagonal::projTilingVisLocal,
-    Decagonal::extractVisible, Decagonal::radialProj);
+    Decagonal::extractVisible, Decagonal::radialProj,
+    Decagonal::estimateGrowth);
 
   const static RadialFunc dodecagonalRF(
     Dodecagonal::projTiling, Dodecagonal::projTilingVisLocal,
-    Dodecagonal::extractVisible, Dodecagonal::radialProj);
+    Dodecagonal::extractVisible, Dodecagonal::radialProj,
+    Dodecagonal::estimateGrowth);
 
   /*const static RadialFunc rhombicPenroseRF(
     RhombicPenrose::projTiling, RhombicPenrose::projTilingVisLocal,
@@ -87,12 +89,17 @@ void CyclotomicRandom::RadialFunc::call(random_mode mode, uint steps,
   Common::vec4ilist tiling, visible;
   double meandist;
 
+  const uint target_size = uint(
+    double(estimateGrowth(steps, false)) / (1.0 - prob));
+  const uint steps_p = estimateGrowth(target_size, true);
+
   if (mode == cyclotomic_visrnd) {
-    projTilingVisLocal(init, steps, tiling, visible);
+    projTilingVisLocal(init, steps_p, tiling, visible);
     tiling.clear();
     randomize(visible, tiling, prob);
+    tiling.swap(visible);
   } else if (mode == cyclotomic_rndvis) {
-    projTiling(init, steps, tiling);
+    projTiling(init, steps_p, tiling);
     randomize(tiling, visible, prob);
     tiling.swap(visible);
     extractVisible(init, true, tiling, visible);
@@ -325,7 +332,7 @@ int main_statistics(int argc, char* argv[]) {
   double prob = probstep;
   cout << '{';
   while (true) {
-    rfunc->call(rfunc_mode, uint(double(steps) / sqrt(1 - prob)), prob, spacings);
+    rfunc->call(rfunc_mode, steps, prob, spacings);
 
     histogramStatistics(spacings, stats);
 

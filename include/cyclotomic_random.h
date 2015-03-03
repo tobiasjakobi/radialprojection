@@ -59,18 +59,22 @@ namespace CyclotomicRandom {
                                 Common::vec4ilist&);
     typedef void (*radprojfunc)(const Common::vec4ilist&,
                                 Common::dlist&, double&);
+    typedef uint (*estimatefunc)(uint, bool);
 
   private:
     tilingfunc projTiling;
     vislocalfunc projTilingVisLocal;
     extractfunc extractVisible;
     radprojfunc radialProj;
+    estimatefunc estimateGrowth;
 
   public:
     RadialFunc(tilingfunc projTiling_, vislocalfunc projTilingVisLocal_,
-               extractfunc extractVisible_, radprojfunc radialProj_) :
+               extractfunc extractVisible_, radprojfunc radialProj_,
+               estimatefunc estimateGrowth_) :
       projTiling(projTiling_), projTilingVisLocal(projTilingVisLocal_),
-      extractVisible(extractVisible_), radialProj(radialProj_) {}
+      extractVisible(extractVisible_), radialProj(radialProj_),
+      estimateGrowth(estimateGrowth_) {}
 
     ~RadialFunc() {}
 
