@@ -20,8 +20,8 @@
 void print_usage() {
   cerr << "histogram: usage:" << endl;
 
-  cerr << "random --normal: selects normal main mode" << endl;
-  cerr << "random --largedata: selects large data main mode" << endl;
+  cerr << "histogram --normal: selects normal main mode" << endl;
+  cerr << "histogram --largedata: selects large data main mode" << endl;
   cerr << "(both modes share the same set of parameters" << endl;
 
   cerr << "\tparameter 1: mode (0 = bulk; 1 = tail)" << endl;
