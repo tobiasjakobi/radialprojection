@@ -842,9 +842,7 @@ int main(int argc, char* argv[]) {
               createVerticesVis(verts, initialChiral, steps, cut);
               radialProj(verts, output, mean);
 
-              cerr << "mean distance " << mean
-                   << " during radial projection of "
-                   << verts.size() << " vertices.\n";
+              meanDistanceMessage(verts.size(), mean);
               writeRawConsole(output);
             }
             break;
@@ -878,9 +876,7 @@ int main(int argc, char* argv[]) {
               createVerticesVis(verts, initialChair, steps, cut);
               radialProj(verts, output, mean);
 
-              cerr << "mean distance " << mean
-                   << " during radial projection of "
-                   << verts.size() << " vertices.\n";
+              meanDistanceMessage(verts.size(), mean);
               writeRawConsole(output);
             }
             break;

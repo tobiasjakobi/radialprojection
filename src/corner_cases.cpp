@@ -173,7 +173,7 @@ int main(int argc, char* argv[]) {
     sort(angles.begin(), angles.end());
     neighbourDiff(angles, output, meandist);
 
-    cerr << "mean distance = " << meandist << endl;
+    meanDistanceMessage(angles.size(), meandist);
 
     writeRawConsole(output);
   }

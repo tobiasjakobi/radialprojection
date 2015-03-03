@@ -547,9 +547,7 @@ int main(int argc, char* argv[]) {
               double mean;
               radialProj(verts, output, mean);
 
-              cerr << "mean distance " << mean
-                   << " during radial projection of "
-                   << verts.size() << " vertices.\n";
+              meanDistanceMessage(verts.size(), mean);
               writeRawConsole(output);
             }
             break;

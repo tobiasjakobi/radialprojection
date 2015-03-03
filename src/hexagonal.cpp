@@ -409,9 +409,7 @@ int main(int argc, char* argv[]) {
 
     cout << visible;
   } else {
-    cerr << "mean distance " << mean << " during radial projection of "
-         << (output.size() + 1) << " vertices.\n";
-
+    Common::meanDistanceMessage(output.size() + 1, mean);
     Common::writeRawConsole(output);
   }
 

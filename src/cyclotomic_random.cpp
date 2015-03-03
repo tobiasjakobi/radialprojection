@@ -118,7 +118,7 @@ void CyclotomicRandom::RadialFunc::call(random_mode mode, uint steps,
   }
 
   radialProj(visible, spacings, meandist);
-  cerr << "info: mean distance = " << meandist << endl;
+  Common::meanDistanceMessage(spacings.size() + 1, meandist);
 }
 
 int main_normal(int argc, char* argv[]) {
@@ -134,9 +134,7 @@ int main_normal(int argc, char* argv[]) {
 
   const CyclotomicRandom::RadialFunc* rfunc;
 
-  Common::vec4ilist tiling, visible;
   Common::dlist spacings;
-  //double mean;
 
   if (argc >= 2) {
     parser.str(argv[1]);
@@ -199,10 +197,6 @@ int main_normal(int argc, char* argv[]) {
 
   const CyclotomicRandom::random_mode rfunc_mode = get_random_mode(mode);
   rfunc->call(rfunc_mode, steps, prob, spacings);
-
-  /*cerr << "mean distance " << mean
-       << " during radial projection of " << (spacings.size() + 1)
-       << " vertices.\n";*/
 
   Common::writeRawConsole(spacings);
 

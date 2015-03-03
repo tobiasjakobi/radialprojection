@@ -226,9 +226,7 @@ int SingleMachine::main(int argc, char* argv[]) {
     // We're only interested in the angular data, which is written
     // to the console in raw mode in this case.
 
-    cerr << "mean distance " << mean
-         << " during radial projection of " << (spacings.size() + 1)
-         << " vertices.\n";
+    Common::meanDistanceMessage(spacings.size() + 1, mean);
 
     Common::writeRawConsole(spacings);
   }

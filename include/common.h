@@ -1445,6 +1445,9 @@ namespace Common {
   static inline uint vectorStats(const vector<T>& input) {
     return ((input.size() * 100) / input.capacity());
   }
+
+  // Common status message we print on screen
+  void meanDistanceMessage(uint num, double mean);
 };
 
 ostream& operator<<(ostream &os, const vec2i& v);

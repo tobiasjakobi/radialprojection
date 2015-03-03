@@ -277,10 +277,7 @@ int main(int argc, char* argv[]) {
     Heptagonal::projTilingVis(init, init, steps, true, tiling, visible);
     Heptagonal::radialProj(visible, out, mean);
 
-    cerr << "mean distance " << mean
-         << " during radial projection of " << (out.size() + 1)
-         << " vertices.\n";
-
+    Common::meanDistanceMessage(out.size() + 1, mean);
     Common::writeRawConsole(out);
   }
 

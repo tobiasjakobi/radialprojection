@@ -986,6 +986,11 @@ void Common::radialProj(const vec2dlist& input,
   normalizeAngDists(output, meandist);
 }
 
+void Common::meanDistanceMessage(uint num, double mean) {
+  cerr << "mean distance " << mean
+       << " during radial projection of " << num << " vertices.\n";
+}
+
 ostream& operator<<(ostream &os, const vec2i& v) {
   os << '{' << v.x << ',' << v.y << '}';
   return os;
