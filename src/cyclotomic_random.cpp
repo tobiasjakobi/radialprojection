@@ -250,8 +250,7 @@ int main_statistics(int argc, char* argv[]) {
 
     case rhmbpenrose_visrnd:
     case rhmbpenrose_rndvis:
-      assert(false);
-      rfunc = NULL;
+      rfunc = &rhombicPenroseRF;
     break;
 
     default:
@@ -306,12 +305,17 @@ int main_statistics(int argc, char* argv[]) {
 }
 
 int main_single(int argc, char* argv[]) {
+  /* TODO: implement */
   assert(false);
   return -1;
 }
 
 void print_usage() {
   cerr << "cyclotomic_random: usage:" << endl;
+
+  cerr << "cyclotomic_random --normal: selects normal main mode" << endl;
+
+  cerr << "cyclotomic_random --statistics: selects statistics main mode" << endl;
 
   // TODO: implement
 }
