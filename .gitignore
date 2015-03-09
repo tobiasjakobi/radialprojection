@@ -11,3 +11,5 @@ histogram
 pdf_writer
 random
 tuebingen
+datafiles/*
+mathinterface/feed2mathematica
