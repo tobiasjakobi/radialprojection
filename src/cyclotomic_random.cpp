@@ -314,10 +314,18 @@ void print_usage() {
   cerr << "cyclotomic_random: usage:" << endl;
 
   cerr << "cyclotomic_random --normal: selects normal main mode" << endl;
+  cerr << "\tparameter 1: mode (even = visible-random; odd = random-visible)" << endl;
+    cerr << "\t\t" << "0/1 = octagonal (Ammann-Beenker)" << endl;
+    cerr << "\t\t" << "2/3 = decagonal (Tübingen triangle)" << endl;
+    cerr << "\t\t" << "4/5 = dodecagonal (Gähler shield)" << endl;
+    cerr << "\t\t" << "6/7 = rhombic Penrose (cyclotomic multi-window)" << endl;
+  cerr << "\tparameter 2: steps (number of vertices depends on mode)" << endl;
+  cerr << "\tparameter 2: probability step (how fine [0,1] is sampled)" << endl;
 
   cerr << "cyclotomic_random --statistics: selects statistics main mode" << endl;
-
-  // TODO: implement
+  cerr << "\tparameter 1: mode (see \"normal\" mode)" << endl;
+  cerr << "\tparameter 2: steps (number of vertices depends on mode)" << endl;
+  cerr << "\tparameter 2: probability step (how fine [0,1] is sampled)" << endl;
 }
 
 int main(int argc, char* argv[]) {
