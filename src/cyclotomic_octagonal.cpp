@@ -38,7 +38,9 @@ bool Octagonal::checkProjInSector(const vec2d& orthpoint) {
     }
   }
 
+#ifndef NDEBUG
   cerr << "Warning: Insufficient accuracy in function checkProjInSector.\n";
+#endif
   return false;
 }
 
