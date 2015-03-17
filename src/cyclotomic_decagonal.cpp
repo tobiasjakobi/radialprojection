@@ -32,9 +32,11 @@ bool Decagonal::checkProjInSector(const vec2d& orthpoint, bool useAlt) {
   for (uint i = 0; i < 3; ++i) {
     test = checkPosition(verts[i], verts[i+1], v);
     if (test < -eps) return false;
+#ifndef NDEBUG
     if (test <= eps) {
       cerr << "Warning: Insufficient accuracy in function checkProjInSector.\n";
     }
+#endif
   }
 
   return true;
