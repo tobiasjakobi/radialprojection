@@ -118,7 +118,7 @@ void Dodecagonal::projTiling(const vec4i& initpoint, uint maxstep,
   }
 
   // We need 2 + 1 levels to avoid going "back" (into the wrong direction) when creating the patch.
-  TVLManager<vec4i> lvlman(2 + 1, tilingpoints);
+  TVLManager<vec4i, 2 + 1> lvlman(tilingpoints);
 
   for (uint n = 0; n < maxstep; ++n) {
     for (uint i = lvlman.begin(); i < lvlman.end(); ++i) {
@@ -164,7 +164,7 @@ void Dodecagonal::projTilingVisLocal(const vec4i& initpoint, uint maxstep,
   }
 
   // We need 2 + 1 levels to avoid going "back" (into the wrong direction) when creating the patch.
-  TVLManager<vec4i> lvlman(2 + 1, tilingpoints);
+  TVLManager<vec4i, 2 + 1> lvlman(tilingpoints);
 
   for (uint n = 0; n < maxstep; ++n) {
     for (uint i = lvlman.begin(); i < lvlman.end(); ++i) {
@@ -226,7 +226,7 @@ void Dodecagonal::projTilingVis(const vec4i& initpoint,
   }
 
   // We need 2 + 1 levels to avoid going "back" (into the wrong direction) when creating the patch.
-  TVLManager<vec4i> lvlman(2 + 1, tilingpoints);
+  TVLManager<vec4i, 2 + 1> lvlman(tilingpoints);
 
   for (uint n = 0; n < maxstep; ++n) {
     for (uint i = lvlman.begin(); i < lvlman.end(); ++i) {
@@ -276,7 +276,7 @@ void Dodecagonal::projTilingPatch(const vec4i& initpoint, uint maxstep,
     return;
   }
 
-  TVLManager<vec4i> lvlman(2 + 1, tilingpoints);
+  TVLManager<vec4i, 2 + 1> lvlman(tilingpoints);
 
   for (uint n = 0; n < maxstep; ++n) {
     for (uint i = lvlman.begin(); i < lvlman.end(); ++i) {

@@ -24,6 +24,10 @@ template <typename T>
 class TVLevel {
 private:
   vector<T>* vlist; // list of vertices
+  //vector<T> vlist;
+
+  //vector<T>::const_iterator begin;
+  //vector<T>::const_iterator end;
 
   uint lbegin;
   uint lend;
@@ -100,18 +104,14 @@ public:
 
 /* Tiling Vertex (list) Level Manager:                                *
  * We assume that the list will always contain one (initial) element. */
-template <typename T>
+template <typename T, unsigned int N>
 class TVLManager {
 private:
-  uint num_levels;
-  TVLevel<T>* levels;
+  TVLevel<T> levels[N];
 
   // We use a different way to count levels here (insertion level is 0)
   void init(vector<T>& l) {
-    assert(levels == 0);
-    levels = new TVLevel<T>[num_levels];
-
-    for (uint i = 0; i < num_levels; ++i) {
+    for (uint i = 0; i < N; ++i) {
       levels[i].bind(l);
     }
 
@@ -120,24 +120,18 @@ private:
   }
 
 public:
-  TVLManager(uint n, vector<T>& list) : num_levels(n), levels(0) {
-    assert(num_levels >= 2);
+  TVLManager(vector<T>& list) {
+    assert(N >= 2);
     init(list);
   }
 
   // Forbid to use copy-constructor
-  TVLManager(const TVLManager<T>& tvlm) {
+  TVLManager(const TVLManager<T, N>& tvlm) {
     assert(false);
   }
 
-  ~TVLManager() {
-    delete [] levels;
-  }
-
   bool insert(const T& item) {
-    assert(levels != 0);
-
-    for (uint i = 0; i < num_levels; ++i) {
+    for (uint i = 0; i < N; ++i) {
       if (levels[i].locate(item)) return false;
     }
 
@@ -146,7 +140,7 @@ public:
   }
 
   void advance() {
-    for (uint i = num_levels - 1; i > 0; --i) {
+    for (uint i = N - 1; i > 0; --i) {
       levels[i].assign(levels[i - 1]);
     }
 
@@ -154,13 +148,11 @@ public:
   }  
 
   uint begin() const {
-    assert(levels != 0);
     // Compensate for the 1-shift
     return (levels[1].begin() - 1);
   }
 
   uint end() const {
-    assert(levels != 0);
     return levels[1].end();
   }
 

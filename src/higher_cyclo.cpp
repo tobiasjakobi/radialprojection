@@ -106,7 +106,7 @@ void Heptagonal::projTiling(const vec6s& initpoint, uint maxstep,
     return;
   }
 
-  TVLManager<vec6s> lvlman(7 + 1, tilingpoints);
+  TVLManager<vec6s, 7 + 1> lvlman(tilingpoints);
 
   for (uint n = 0; n < maxstep; ++n) {
     for (uint i = lvlman.begin(); i < lvlman.end(); ++i) {
@@ -147,7 +147,7 @@ void Heptagonal::projTilingVis(const vec6s& initpoint,
     return;
   }
 
-  TVLManager<vec6s> lvlman(7 + 1, tilingpoints);
+  TVLManager<vec6s, 7 + 1> lvlman(tilingpoints);
 
   for (uint n = 0; n < maxstep; ++n) {
     for (uint i = lvlman.begin(); i < lvlman.end(); ++i) {

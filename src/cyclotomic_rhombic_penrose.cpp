@@ -125,7 +125,7 @@ void RhombicPenrose::projTiling(const vec4i& initpoint, uint maxstep,
   tilingpoints.clear();
   tilingpoints.push_back(initpoint);
 
-  TVLManager<vec4i> lvlman(2 + 1, tilingpoints);
+  TVLManager<vec4i, 2 + 1> lvlman(tilingpoints);
 
   for (uint n = 0; n < maxstep; ++n) {
     for (uint i = lvlman.begin(); i < lvlman.end(); ++i) {
@@ -174,7 +174,7 @@ void RhombicPenrose::projTilingVis(const vec4i& initpoint,
   tilingpoints.push_back(initpoint);
 
   // We need 2 + 1 levels to avoid going "back" (into the wrong direction) when creating the patch.
-  TVLManager<vec4i> lvlman(2 + 1, tilingpoints);
+  TVLManager<vec4i, 2 + 1> lvlman(tilingpoints);
 
   for (uint n = 0; n < maxstep; ++n) {
     for (uint i = lvlman.begin(); i < lvlman.end(); ++i) {
