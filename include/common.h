@@ -453,6 +453,25 @@ public:
     }
 
     return false;
+
+    /* FIXME (SSE):
+    uint mask = 0x000f;
+    const uint ltmask = _mm_movemask_epi8(_mm_cmplt_epi32(this->vsse, v.vsse));
+    const uint eqmask = _mm_movemask_epi8(_mm_cmpeq_epi32(this->vsse, v.vsse));
+
+    if (ltmask & mask) return true;
+    if (!(eqmask & mask)) return false;
+    mask <<= 4;
+
+    if (ltmask & mask) return true;
+    if (!(eqmask & mask)) return false;
+    mask <<= 4;
+
+    if (ltmask & mask) return true;
+    if (!(eqmask & mask)) return false;
+    mask <<= 4;
+
+    return (ltmask & mask);*/
   }
 
   bool operator==(const vec4i& v) const {
