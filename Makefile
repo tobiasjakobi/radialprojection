@@ -1,18 +1,23 @@
 compiler := g++
 cflags   := -I./include -Wall -Wno-narrowing
 ldflags  :=
+sseflags :=
 
 ifndef platform
 platform := $(shell $(compiler) -dumpmachine)
 endif
 
+ifeq (1,$(enable_sse))
+sseflags += -DCOMMON_USE_SSE
+endif
+
 ifeq (release-lto,$(build))
-cflags += -O2 -march=native -flto=4 -fuse-linker-plugin -DNDEBUG
+cflags += -O2 -march=native -flto=4 -fuse-linker-plugin -DNDEBUG $(sseflags)
 ldflags += -O2 -march=native -flto=4 -fuse-linker-plugin
 endif
 
 ifeq (release,$(build))
-cflags += -O2 -march=native -DNDEBUG
+cflags += -O2 -march=native -DNDEBUG $(sseflags)
 endif
 
 ifeq (debug,$(build))
