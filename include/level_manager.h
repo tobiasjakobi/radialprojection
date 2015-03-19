@@ -26,17 +26,13 @@ private:
   uint lbegin;
   uint lend;
 
-  uint range() const {
-    return (lend + 1 - lbegin);
-  }
-
-  bool empty() const {
-    return (lend < lbegin);
+  inline uint range() const {
+    return (lend - lbegin);
   }
 
 public:
   TVLevel() {
-    lbegin = 1;
+    lbegin = 0;
     lend = 0;
   }
 
@@ -46,7 +42,7 @@ public:
   }
 
   void init(uint a, uint b) {
-    assert(b + 1 >= a);
+    assert(b >= a);
 
     lbegin = a;
     lend = b;
@@ -63,24 +59,24 @@ public:
   }
 
   void shift(const TVLevel& tvl) {
-    lbegin = tvl.lend + 1;
+    lbegin = tvl.lend;
     lend = tvl.lend;
   }
 
-  uint begin() const {
+  inline uint begin() const {
     return lbegin;
   }
 
-  uint end() const {
+  inline uint end() const {
     return lend;
   }
 
   bool locate(const vector<T>& list, const T& target) const {
-    if (this->empty()) return false;
     const uint r = this->range();
+    if (r == 0) return false;
 
     for (uint k = 0; k < r; ++k) {
-      if (list.at(lbegin + k - 1) == target) return true;
+      if (list.at(lbegin + k) == target) return true;
     }
 
     return false;
@@ -101,8 +97,8 @@ public:
     assert(N >= 2);
 
     // We use a different way to count levels here (insertion level is 0)
-    levels[0].init(2, 1);
-    levels[1].init(1, 1);
+    levels[0].init(1, 1);
+    levels[1].init(0, 1);
   }
 
   // Forbid to use copy-constructor
@@ -128,8 +124,7 @@ public:
   }  
 
   uint begin() const {
-    // Compensate for the 1-shift
-    return (levels[1].begin() - 1);
+    return levels[1].begin();
   }
 
   uint end() const {
