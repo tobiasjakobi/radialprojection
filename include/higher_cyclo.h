@@ -98,6 +98,17 @@ public:
                  a[3] - v.a[3], a[4] - v.a[4], a[5] - v.a[5]);
   }
 
+  /* Lexicographic ordering, this is needed to use sorting *
+   * algorithms of STL containers.                         */
+  bool operator<(const vec6s& v) const {
+    for (uint i = 0; i < 5; ++i) {
+      if (a[i] < v[i]) return true;
+      if (a[i] != v[i]) return false;
+    }
+
+    return (a[5] < v[5]);
+  }
+
   bool operator==(const vec6s& v) const {
     return (a[0] == v.a[0] && a[1] == v.a[1] && a[2] == v.a[2] &&
             a[3] == v.a[3] && a[4] == v.a[4] && a[5] == v.a[5]);
