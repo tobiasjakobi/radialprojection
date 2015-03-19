@@ -58,3 +58,5 @@ clean:
 
 strip:
 	strip -s $(objects)
+
+rebuild: clean all
