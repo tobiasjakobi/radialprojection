@@ -80,6 +80,14 @@ public:
     return true;
   }
 
+  inline void sort(vector<T>& list) const {
+    std::sort(list.begin() + lbegin, list.begin() + lend);
+  }
+
+  inline bool locateSorted(const vector<T>& list, const T& target) const {
+    return binary_search(list.begin() + lbegin, list.begin() + lend, target);
+  }
+
 };
 
 /* Tiling Vertex (list) Level Manager:                                *
@@ -105,8 +113,10 @@ public:
   }
 
   bool insert(const T& item) {
-    for (uint i = 0; i < N; ++i) {
-      if (levels[i].locate(list, item)) return false;
+    if (levels[0].locate(list, item)) return false;
+
+    for (uint i = 1; i < N; ++i) {
+      if (levels[i].locateSorted(list, item)) return false;
     }
 
     levels[0].insert(list, item);
@@ -119,6 +129,7 @@ public:
     }
 
     levels[0].shift(levels[1]);
+    levels[1].sort(list);
   }  
 
   uint begin() const {
