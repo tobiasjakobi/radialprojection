@@ -23,12 +23,6 @@
 template <typename T>
 class TVLevel {
 private:
-  vector<T>* vlist; // list of vertices
-  //vector<T> vlist;
-
-  //vector<T>::const_iterator begin;
-  //vector<T>::const_iterator end;
-
   uint lbegin;
   uint lend;
 
@@ -41,20 +35,14 @@ private:
   }
 
 public:
-  TVLevel() : vlist(0) {
+  TVLevel() {
     lbegin = 1;
     lend = 0;
   }
 
-  TVLevel(const TVLevel<T>& tvl) : vlist(tvl.vlist) {
+  TVLevel(const TVLevel<T>& tvl) {
     lbegin = tvl.lbegin;
     lend = tvl.lend;
-  }
-
-  ~TVLevel() {}
-
-  void bind(vector<T>& list) {
-    vlist = &list;
   }
 
   void init(uint a, uint b) {
@@ -69,11 +57,9 @@ public:
     lend = tvl.lend;
   }
 
-  void insert(const T& item) {
-    assert(vlist != 0);
-
+  void insert(vector<T>& list, const T& item) {
     ++lend;
-    vlist->push_back(item);
+    list.push_back(item);
   }
 
   void shift(const TVLevel& tvl) {
@@ -89,12 +75,12 @@ public:
     return lend;
   }
 
-  bool locate(const T& target) const {
+  bool locate(const vector<T>& list, const T& target) const {
     if (this->empty()) return false;
     const uint r = this->range();
 
     for (uint k = 0; k < r; ++k) {
-      if (vlist->at(lbegin + k - 1) == target) return true;
+      if (list.at(lbegin + k - 1) == target) return true;
     }
 
     return false;
@@ -107,22 +93,16 @@ public:
 template <typename T, unsigned int N>
 class TVLManager {
 private:
+  vector<T>& list;
   TVLevel<T> levels[N];
 
-  // We use a different way to count levels here (insertion level is 0)
-  void init(vector<T>& l) {
-    for (uint i = 0; i < N; ++i) {
-      levels[i].bind(l);
-    }
+public:
+  TVLManager(vector<T>& l) : list(l) {
+    assert(N >= 2);
 
+    // We use a different way to count levels here (insertion level is 0)
     levels[0].init(2, 1);
     levels[1].init(1, 1);
-  }
-
-public:
-  TVLManager(vector<T>& list) {
-    assert(N >= 2);
-    init(list);
   }
 
   // Forbid to use copy-constructor
@@ -132,10 +112,10 @@ public:
 
   bool insert(const T& item) {
     for (uint i = 0; i < N; ++i) {
-      if (levels[i].locate(item)) return false;
+      if (levels[i].locate(list, item)) return false;
     }
 
-    levels[0].insert(item);
+    levels[0].insert(list, item);
     return true;
   }
 
