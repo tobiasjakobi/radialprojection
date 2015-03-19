@@ -26,7 +26,7 @@
 #include <vector>
 #include <algorithm>
 
-#if 0 /* FIXME (SSE) */
+#ifdef COMMON_USE_SSE
 #include <xmmintrin.h>
 #include <smmintrin.h>
 #endif
@@ -407,37 +407,64 @@ private:
 
 class vec4i {
 private:
-  int a[4];
-
-  /* FIXME (SSE): union {
+#ifdef COMMON_USE_SSE
+  union {
     int a[4];
     __m128i vsse;
-  }; */
+  };
+#else
+  int a[4];
+#endif
 
 public:
   vec4i() {}
   vec4i(int x0, int x1, int x2, int x3) {
+#ifdef COMMON_USE_SSE
+    vsse = _mm_set_epi32(x0, x1, x2, x3);
+#else
     a[0] = x0; a[1] = x1;
     a[2] = x2; a[3] = x3;
-
-    // FIXME (SSE): return _mm_set_epi32(x0, x1, x2, x3);
+#endif
   }
 
   vec4i operator+(const vec4i& v) const {
+#ifdef COMMON_USE_SSE
+    return _mm_add_epi32(vsse, v.vsse);
+#else
     return vec4i(a[0] + v.a[0], a[1] + v.a[1], a[2] + v.a[2], a[3] + v.a[3]);
-
-    // FIXME (SSE): return _mm_add_epi32(this->vsse, v.vsse);
+#endif
   }
 
   vec4i operator-(const vec4i& v) const {
+#ifdef COMMON_USE_SSE
+    return _mm_sub_epi32(vsse, v.vsse);
+#else
     return vec4i(a[0] - v.a[0], a[1] - v.a[1], a[2] - v.a[2], a[3] - v.a[3]);
-
-    // FIXME (SSE): return _mm_sub_epi32(this->vsse, v.vsse);
+#endif
   }
 
   /* Lexicographic ordering, this is needed to use sorting *
    * algorithms of STL containers.                         */
   bool operator<(const vec4i& v) const {
+#ifdef COMMON_USE_SSE
+    uint mask = 0x000f;
+    const uint ltmask = _mm_movemask_epi8(_mm_cmplt_epi32(vsse, v.vsse));
+    const uint eqmask = _mm_movemask_epi8(_mm_cmpeq_epi32(vsse, v.vsse));
+
+    if (ltmask & mask) return true;
+    if (!(eqmask & mask)) return false;
+    mask <<= 4;
+
+    if (ltmask & mask) return true;
+    if (!(eqmask & mask)) return false;
+    mask <<= 4;
+
+    if (ltmask & mask) return true;
+    if (!(eqmask & mask)) return false;
+    mask <<= 4;
+
+    return (ltmask & mask);
+#else
     if (a[0] < v[0]) return true;
 
     if (a[0] == v[0]) {
@@ -453,32 +480,16 @@ public:
     }
 
     return false;
-
-    /* FIXME (SSE):
-    uint mask = 0x000f;
-    const uint ltmask = _mm_movemask_epi8(_mm_cmplt_epi32(this->vsse, v.vsse));
-    const uint eqmask = _mm_movemask_epi8(_mm_cmpeq_epi32(this->vsse, v.vsse));
-
-    if (ltmask & mask) return true;
-    if (!(eqmask & mask)) return false;
-    mask <<= 4;
-
-    if (ltmask & mask) return true;
-    if (!(eqmask & mask)) return false;
-    mask <<= 4;
-
-    if (ltmask & mask) return true;
-    if (!(eqmask & mask)) return false;
-    mask <<= 4;
-
-    return (ltmask & mask);*/
+#endif
   }
 
   bool operator==(const vec4i& v) const {
+#ifdef COMMON_USE_SSE
+    const __m128i x = _mm_xor_si128(vsse, v.vsse);
+    return _mm_testz_si128(x, x);
+#else
     return (a[0] == v.a[0] && a[1] == v.a[1] && a[2] == v.a[2] && a[3] == v.a[3]);
-
-    /* FIXME (SSE): const __m128i x = _mm_xor_si128(this->vsse, v.vsse);
-    return _mm_testz_si128(x, x); */
+#endif
   }
 
   bool operator!=(const vec4i& v) const {
@@ -496,9 +507,11 @@ public:
   }
 
   bool isZero() const {
+#ifdef COMMON_USE_SSE
+    return _mm_testz_si128(vsse, vsse);
+#else
     return (a[0] == 0 && a[1] == 0 && a[2] == 0 && a[3] == 0);
-
-    // FIXME (SSE): return _mm_testz_si128(this->vsse, this->vsse)
+#endif
   }
 
   // Check if first component of direct-sum is zero
