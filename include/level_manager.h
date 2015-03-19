@@ -72,14 +72,12 @@ public:
   }
 
   bool locate(const vector<T>& list, const T& target) const {
-    const uint r = this->range();
-    if (r == 0) return false;
+    const typename vector<T>::const_iterator end = list.begin() + lend;
 
-    for (uint k = 0; k < r; ++k) {
-      if (list.at(lbegin + k) == target) return true;
-    }
+    if (find(list.begin() + lbegin, end, target) == end)
+      return false;
 
-    return false;
+    return true;
   }
 
 };
