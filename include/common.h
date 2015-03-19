@@ -435,6 +435,26 @@ public:
     // FIXME (SSE): return _mm_sub_epi32(this->vsse, v.vsse);
   }
 
+  /* Lexicographic ordering, this is needed to use sorting *
+   * algorithms of STL containers.                         */
+  bool operator<(const vec4i& v) const {
+    if (a[0] < v[0]) return true;
+
+    if (a[0] == v[0]) {
+      if (a[1] < v[1]) return true;
+
+       if (a[1] == v[1]) {
+         if (a[2] < v[2]) return true;
+
+         if (a[2] == v[2]) {
+           return (a[3] < v[3]);
+         }
+       }
+    }
+
+    return false;
+  }
+
   bool operator==(const vec4i& v) const {
     return (a[0] == v.a[0] && a[1] == v.a[1] && a[2] == v.a[2] && a[3] == v.a[3]);
 
