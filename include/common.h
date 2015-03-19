@@ -427,9 +427,13 @@ public:
 #endif
   }
 
+#ifdef COMMON_USE_SSE
+  vec4i(const __m128i& sse) : vsse(sse) {}
+#endif
+
   vec4i operator+(const vec4i& v) const {
 #ifdef COMMON_USE_SSE
-    return _mm_add_epi32(vsse, v.vsse);
+    return vec4i(_mm_add_epi32(vsse, v.vsse));
 #else
     return vec4i(a[0] + v.a[0], a[1] + v.a[1], a[2] + v.a[2], a[3] + v.a[3]);
 #endif
@@ -437,7 +441,7 @@ public:
 
   vec4i operator-(const vec4i& v) const {
 #ifdef COMMON_USE_SSE
-    return _mm_sub_epi32(vsse, v.vsse);
+    return vec4i(_mm_sub_epi32(vsse, v.vsse));
 #else
     return vec4i(a[0] - v.a[0], a[1] - v.a[1], a[2] - v.a[2], a[3] - v.a[3]);
 #endif
