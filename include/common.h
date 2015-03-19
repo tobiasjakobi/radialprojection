@@ -428,6 +428,15 @@ public:
   }
 
 #ifdef COMMON_USE_SSE
+  vec4i(const vec4i& v) : vsse(v.vsse) {}
+#else
+  vec4i(const vec4i& v) {
+    a[0] = v.a[0]; a[1] = v.a[1];
+    a[2] = v.a[2]; a[3] = v.a[3];
+  }
+#endif
+
+#ifdef COMMON_USE_SSE
   vec4i(const __m128i& sse) : vsse(sse) {}
 #endif
 
