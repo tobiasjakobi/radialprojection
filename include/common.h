@@ -345,7 +345,13 @@ public:
   }
 
   double lengthSquared() const {
+#ifdef COMMON_USE_SSE
+    /* Compute dot-product with itself, write result to first *
+     * component and extract the component as a double float. */
+    return _mm_cvtsd_f64(_mm_dp_pd(vsse, vsse, 0x31));
+#else
     return x * x + y * y;
+#endif
   }
 
   double length() const {
