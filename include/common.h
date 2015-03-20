@@ -295,12 +295,29 @@ public:
 
 class vec2d {
 public:
+#ifdef COMMON_USE_SSE
+  union {
+    struct {
+      double x, y;
+    };
+    __m128d vsse;
+  };
+#else
   double x, y;
+#endif
 
   vec2d() {}
   vec2d(double a, double b) : x(a), y(b) {}
 
+#ifdef COMMON_USE_SSE
+  vec2d(const vec2d& v) : vsse(v.vsse) {}
+#else
   vec2d(const vec2d& v) : x(v.x), y(v.y) {}
+#endif
+
+#ifdef COMMON_USE_SSE
+  vec2d(const __m128d& sse) : vsse(sse) {}
+#endif
 
   vec2d operator*(double scale) const {
     return vec2d(scale * x, scale * y);
@@ -589,11 +606,30 @@ public:
   }
 
   vec2d orthProjL8() const{
+#ifdef COMMON_USE_SSE
+    static const __m128 v1 = _mm_set_ps(1.0f/sqrtf(2.0f), -0.5f, 0.0f, 0.5f);
+    static const __m128 v2 = _mm_set_ps(0.0f, -0.5f, 1.0f/sqrtf(2.0f), -0.5f);
+
+    // convert int[4] to float[4]
+    const __m128 temp = _mm_cvtepi32_ps(vsse);
+
+    /*
+     *    _mm_dp_ps: dot-product on float[4] (0xAB is the read/write-mask)
+     *            A = read-mask (f = all components)
+     *            B = write-mask (1 = write result to first component,
+     *                             2 = write result to 2nd component)
+     * _mm_add_ps: add two float[4]
+     * _mm_cvtps_pd: convert first 2 components of a float[4] to double[2]
+     */
+    return vec2d(_mm_cvtps_pd(
+      _mm_add_ps(_mm_dp_ps(temp, v1, 0xf1), _mm_dp_ps(temp, v2, 0xf2))));
+#else
     static const double v1[4] = {1.0/sqrt(2.0), -0.5, 0.0, 0.5};
     static const double v2[4] = {0.0, -0.5, 1.0/sqrt(2.0), -0.5};
 
     return vec2d(a[0] * v1[0] + a[1] * v1[1] + a[2] * v1[2] + a[3] * v1[3],
                  a[0] * v2[0] + a[1] * v2[1] + a[2] * v2[2] + a[3] * v2[3]);
+#endif
   }
 
   vec2d paraProjL8() const {
