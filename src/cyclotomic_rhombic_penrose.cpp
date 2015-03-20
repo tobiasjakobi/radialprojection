@@ -125,7 +125,7 @@ void RhombicPenrose::projTiling(const vec4i& initpoint, uint maxstep,
   tilingpoints.clear();
   tilingpoints.push_back(initpoint);
 
-  TVLManager<vec4i, 2 + 1> lvlman(tilingpoints);
+  TVLManager<vec4ilist, 2 + 1> lvlman(tilingpoints);
 
   for (uint n = 0; n < maxstep; ++n) {
     for (uint i = lvlman.begin(); i < lvlman.end(); ++i) {
@@ -174,7 +174,7 @@ void RhombicPenrose::projTilingVis(const vec4i& initpoint,
   tilingpoints.push_back(initpoint);
 
   // We need 2 + 1 levels to avoid going "back" (into the wrong direction) when creating the patch.
-  TVLManager<vec4i, 2 + 1> lvlman(tilingpoints);
+  TVLManager<vec4ilist, 2 + 1> lvlman(tilingpoints);
 
   for (uint n = 0; n < maxstep; ++n) {
     for (uint i = lvlman.begin(); i < lvlman.end(); ++i) {
@@ -332,11 +332,11 @@ void RhombicPenrose::testWindow(Common::vec2ilist& output,
   }
 }
 
-bool RhombicPenrose::VisOp::rayTest(const invectype& a, const invectype& b) {
+bool RhombicPenrose::VisOp::rayTest(const vec4i& a, const vec4i& b) {
   // transform into the Z[tau]*1 + Z[tau]*xi
   // representation (this is a direct sum)
-  const invectype pa(a.transL5ToDirect());
-  const invectype pb(b.transL5ToDirect());
+  const vec4i pa(a.transL5ToDirect());
+  const vec4i pb(b.transL5ToDirect());
 
   // first filter the trivial cases
   if (pa.isFirstZero()) {

@@ -124,18 +124,18 @@ namespace Dodecagonal {
   };
 
   struct VisOp {
-    typedef vec4i invectype;
+    typedef Common::vec4ilist list_type;
     static const double epsilon;
 
-    static inline double angle(const invectype& a) {
+    static inline double angle(const vec4i& a) {
       return a.paraProjL12().angle();
     }
 
-    static inline vec2d toR2(const invectype& a) {
+    static inline vec2d toR2(const vec4i& a) {
       return a.paraProjL12();
     }
 
-    static bool rayTest(const invectype& a, const invectype& b);
+    static bool rayTest(const vec4i& a, const vec4i& b);
   };
 
   typedef VisTest::VisibleList<VisOp> VisList;

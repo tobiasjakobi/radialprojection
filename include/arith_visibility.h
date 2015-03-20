@@ -266,39 +266,39 @@ namespace ArithVisibility {
   bool clipFundamentalGM(const vec2d& x);
 
   struct VisOpZ2 {
-    typedef vec2i invectype;
+    typedef Common::vec2ilist list_type;
     static const double epsilon;
 
-    static double angle(const invectype& a);
-    static vec2d toR2(const invectype& a);
-    static bool rayTest(const invectype& a, const invectype& b);
+    static double angle(const vec2i& a);
+    static vec2d toR2(const vec2i& a);
+    static bool rayTest(const vec2i& a, const vec2i& b);
   };
 
   struct VisOpGI {
-    typedef vec2i invectype;
+    typedef Common::vec2ilist list_type;
     static const double epsilon;
 
-    static double angle(const invectype& a);
-    static vec2d toR2(const invectype& a);
-    static bool rayTest(const invectype& a, const invectype& b);
+    static double angle(const vec2i& a);
+    static vec2d toR2(const vec2i& a);
+    static bool rayTest(const vec2i& a, const vec2i& b);
   };
 
   struct VisOpES {
-    typedef vec2i invectype;
+    typedef Common::vec2ilist list_type;
     static const double epsilon;
 
-    static double angle(const invectype& a);
-    static vec2d toR2(const invectype& a);
-    static bool rayTest(const invectype& a, const invectype& b);
+    static double angle(const vec2i& a);
+    static vec2d toR2(const vec2i& a);
+    static bool rayTest(const vec2i& a, const vec2i& b);
   };
 
   struct VisOpGM {
-    typedef vec2i invectype;
+    typedef Common::vec2ilist list_type;
     static const double epsilon;
 
-    static double angle(const invectype& a);
-    static vec2d toR2(const invectype& a);
-    static bool rayTest(const invectype& a, const invectype& b);
+    static double angle(const vec2i& a);
+    static vec2d toR2(const vec2i& a);
+    static bool rayTest(const vec2i& a, const vec2i& b);
   };
 
   typedef VisTest::VisibleList<VisOpZ2> VisListZ2;

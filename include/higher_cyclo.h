@@ -194,6 +194,7 @@ public:
 namespace Common {
 
   typedef vector<vec4d> vec4dlist;
+  typedef vector<vec6s> vec6slist;
 
 };
 
@@ -217,21 +218,21 @@ namespace Coprime {
 namespace Heptagonal {
 
   struct VisOp {
-    typedef vec6s invectype;
+    typedef Common::vec6slist list_type;
     static const double epsilon;
 
-    static double angle(const invectype& a) {
+    static double angle(const vec6s& a) {
       return a.toPhysicalL7().angle();
     }
 
-    static vec2d toR2(const invectype& a) {
+    static vec2d toR2(const vec6s& a) {
       return a.toPhysicalL7();
     }
 
-    static bool rayTest(const invectype& a, const invectype& b) {
+    static bool rayTest(const vec6s& a, const vec6s& b) {
       // convert to direct sum representation
-      invectype pa(a.toDirectL7());
-      invectype pb(b.toDirectL7());
+      vec6s pa(a.toDirectL7());
+      vec6s pb(b.toDirectL7());
 
       if (pa.isFirstZero()) {
         return pb.isFirstZero();

@@ -25,13 +25,13 @@ namespace GridDualizing {
   void createGamma(uint n, double entry, Common::dlist& output);
 
   template <typename T>
-  void generate(vec2dlist& r, vec2dlist& o);
+  void generate(Common::vec2dlist& r, Common::vec2dlist& o);
 
   template <typename T>
   void generate(vector<T>& s);
 
   template <typename T>
-  void fill(const vec2d& i, const vec2dlist& r,
+  void fill(const vec2d& i, const Common::vec2dlist& r,
             const Common::dlist& g, T& out);
 
   // Generate tiling by grid dualization method
@@ -51,10 +51,10 @@ namespace GridDualizing {
   void createLines(GridTiling<T>& gt);
 
   template <typename T>
-  void dump2D(const GridTiling<T>& gt, vec2dlist& output);
+  void dump2D(const GridTiling<T>& gt, Common::vec2dlist& output);
 
   template <typename T>
-  void dump2D(const vector<T>& verts, vec2dlist& output);
+  void dump2D(const vector<T>& verts, Common::vec2dlist& output);
 
   template <typename T>
   double outerRadius(const GridTiling<T>& gt);
@@ -111,7 +111,7 @@ void GridDualizing::createGamma(uint n, double entry, Common::dlist& output){
 }
 
 template <typename T>
-void GridDualizing::generate(vec2dlist& r, vec2dlist& o) {
+void GridDualizing::generate(Common::vec2dlist& r, Common::vec2dlist& o) {
   using namespace Common;
 
   r.resize(T::size);
@@ -138,7 +138,7 @@ void GridDualizing::generate(vector<T>& s) {
 }
 
 template <typename T>
-void GridDualizing::fill(const vec2d& i, const vec2dlist& r,
+void GridDualizing::fill(const vec2d& i, const Common::vec2dlist& r,
                const Common::dlist& g, T& out) {
   for (uint k = 0; k < T::size; ++k) {
      out[k] = ceil(i.dot(r[k]) + g[k]); // K(j) = ceil(Re(z \times xi^{-j}) + gamma_j)
@@ -152,7 +152,7 @@ void GridDualizing::dualize(const T& min, const T& max,
   if (gamma.size() != T::size) return;
 
   // generate roots and orthogonal roots
-  vec2dlist roots, rootsorth;
+  Common::vec2dlist roots, rootsorth;
   generate<T>(roots, rootsorth);
 
   vector<T> step;
@@ -250,7 +250,7 @@ void GridDualizing::createLines(GridTiling<T>& gt) {
 }
 
 template <typename T>
-void GridDualizing::dump2D(const GridTiling<T>& gt, vec2dlist& output) {
+void GridDualizing::dump2D(const GridTiling<T>& gt, Common::vec2dlist& output) {
   if (gt.vertices.size() == 0) return;
 
   output.clear();
@@ -263,7 +263,7 @@ void GridDualizing::dump2D(const GridTiling<T>& gt, vec2dlist& output) {
 }
 
 template <typename T>
-void GridDualizing::dump2D(const vector<T>& verts, vec2dlist& output) {
+void GridDualizing::dump2D(const vector<T>& verts, Common::vec2dlist& output) {
   if (verts.size() == 0) return;
 
   output.clear();

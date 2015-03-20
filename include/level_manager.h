@@ -25,6 +25,7 @@ class TVLevel {
 private:
   uint lbegin;
   uint lend;
+  typedef typename T::value_type item_type;
 
   inline uint range() const {
     return (lend - lbegin);
@@ -53,7 +54,7 @@ public:
     lend = tvl.lend;
   }
 
-  void insert(vector<T>& list, const T& item) {
+  void insert(T& list, const item_type& item) {
     ++lend;
     list.push_back(item);
   }
@@ -71,8 +72,8 @@ public:
     return lend;
   }
 
-  bool locate(const vector<T>& list, const T& target) const {
-    const typename vector<T>::const_iterator end = list.begin() + lend;
+  bool locate(const T& list, const item_type& target) const {
+    const typename T::const_iterator end = list.begin() + lend;
 
     if (find(list.begin() + lbegin, end, target) == end)
       return false;
@@ -80,11 +81,11 @@ public:
     return true;
   }
 
-  inline void sort(vector<T>& list) const {
+  inline void sort(T& list) const {
     std::sort(list.begin() + lbegin, list.begin() + lend);
   }
 
-  inline bool locateSorted(const vector<T>& list, const T& target) const {
+  inline bool locateSorted(const T& list, const item_type& target) const {
     return binary_search(list.begin() + lbegin, list.begin() + lend, target);
   }
 
@@ -95,11 +96,12 @@ public:
 template <typename T, unsigned int N>
 class TVLManager {
 private:
-  vector<T>& list;
+  T& list;
   TVLevel<T> levels[N];
+  typedef typename T::value_type item_type;
 
 public:
-  TVLManager(vector<T>& l) : list(l) {
+  TVLManager(T& l) : list(l) {
     assert(N >= 2);
 
     // We use a different way to count levels here (insertion level is 0)
@@ -112,7 +114,7 @@ public:
     assert(false);
   }
 
-  bool insert(const T& item) {
+  bool insert(const item_type& item) {
     if (levels[0].locate(list, item)) return false;
 
     for (uint i = 1; i < N; ++i) {

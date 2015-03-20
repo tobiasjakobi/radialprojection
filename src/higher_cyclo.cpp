@@ -22,8 +22,6 @@
 
 namespace Common {
 
-  typedef vector<vec6s> vec6slist;
-
   bool locate(const vec6slist& list, const vec6s& target,
               uint i, uint j, uint range);
 
@@ -106,7 +104,7 @@ void Heptagonal::projTiling(const vec6s& initpoint, uint maxstep,
     return;
   }
 
-  TVLManager<vec6s, 7 + 1> lvlman(tilingpoints);
+  TVLManager<vec6slist, 7 + 1> lvlman(tilingpoints);
 
   for (uint n = 0; n < maxstep; ++n) {
     for (uint i = lvlman.begin(); i < lvlman.end(); ++i) {
@@ -147,7 +145,7 @@ void Heptagonal::projTilingVis(const vec6s& initpoint,
     return;
   }
 
-  TVLManager<vec6s, 7 + 1> lvlman(tilingpoints);
+  TVLManager<vec6slist, 7 + 1> lvlman(tilingpoints);
 
   for (uint n = 0; n < maxstep; ++n) {
     for (uint i = lvlman.begin(); i < lvlman.end(); ++i) {

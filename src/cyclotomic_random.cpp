@@ -73,13 +73,11 @@ void CyclotomicRandom::apply_shift(uint mode) {
 }
 
 template <typename T>
-void CyclotomicRandom::randomize(const vector<T>& input,
-                          vector<T>& output, double prob) {
+void CyclotomicRandom::randomize(const T& input, T& output, double prob) {
   Common::srandExt();
   const double rndNorm = 1.0 / double(RAND_MAX);
 
-  for (typename vector<T>::const_iterator i = input.begin();
-       i != input.end(); ++i) {
+  for (typename T::const_iterator i = input.begin(); i != input.end(); ++i) {
     const double p = double(rand()) * rndNorm;
     if (p >= prob) output.push_back(*i);
   }
@@ -103,12 +101,12 @@ void CyclotomicRandom::RadialFunc::call(random_mode mode, uint steps,
   if (mode == cyclotomic_visrnd) {
     projTilingVis(init, steps_p, tiling, visible);
     tiling.clear(); /* original tiling vertices are not used */
-    randomize(visible, tiling, prob);
+    randomize<Common::vec4ilist>(visible, tiling, prob);
     tiling.swap(visible);
     randomization_stats_msg(visible);
   } else if (mode == cyclotomic_rndvis) {
     projTiling(init, steps_p, tiling);
-    randomize(tiling, visible, prob);
+    randomize<Common::vec4ilist>(tiling, visible, prob);
     tiling.swap(visible);
     randomization_stats_msg(tiling);
     extractVisible(init, true, tiling, visible);

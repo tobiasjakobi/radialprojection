@@ -25,16 +25,17 @@ namespace VisTest {
   template <typename T>
   class VisibleList {
   private:
-    typedef typename T::invectype _invectype;
+    typedef typename T::list_type list_type;
+    typedef typename list_type::value_type item_type;
 
-    typedef typename PooledList<_invectype>::Type _vlist;
-    typedef typename _vlist::iterator _iter;
-    typedef typename _vlist::const_iterator _citer;
+    typedef typename PooledList<item_type>::Type vlist;
+    typedef typename vlist::iterator iter;
+    typedef typename vlist::const_iterator citer;
 
     OneTimePool* mempool;
 
-    _vlist* l; // internal point list (double-linked)
-    _iter c; // last insert position
+    vlist* l; // internal point list (double-linked)
+    iter c; // last insert position
 
   public:
 
@@ -64,7 +65,7 @@ namespace VisTest {
     void reserve(uint elements) {
       if (mempool != 0) return;
 
-      const size_t bytes = elements * PooledList<_invectype>::NodeByteSize;
+      const size_t bytes = elements * PooledList<item_type>::NodeByteSize;
       cerr << "info: reserving memory pool of " << bytes << " bytes.\n";
 
       mempool = new OneTimePool(bytes);
@@ -73,11 +74,11 @@ namespace VisTest {
     void init() {
       if (l != 0) return;
 
-      l = new typename PooledList<_invectype>::Type(mempool);
+      l = new typename PooledList<item_type>::Type(mempool);
       c = l->end();
     }
 
-    void insertSorted(const _invectype& v) {
+    void insertSorted(const item_type& v) {
       const double v_a = T::angle(v);
       const double c_a = T::angle(*c);
 
@@ -87,7 +88,7 @@ namespace VisTest {
       }
 
       bool found = false;
-      _iter p = c;
+      iter p = c;
 
       if (v_a == c_a) {
         found = isearch(v);
@@ -108,10 +109,10 @@ namespace VisTest {
     }
 
     // collect nodes that are "near" i
-    void collectNearNodes(const _iter& i, vector<_iter>& list) {
+    void collectNearNodes(const iter& i, vector<iter>& list) {
       const double i_a = T::angle(*i);
 
-      _iter j;
+      iter j;
 
       // collect in forward direction
       j = i;
@@ -145,13 +146,13 @@ namespace VisTest {
       cerr << "info: computing (incorrect) visibility for "
            << l->size() << " vertices." << endl;
 
-      vector<_iter> nodes;
+      vector<iter> nodes;
 
-      for (_iter i = l->begin(); i != l->end(); ++i) {
+      for (iter i = l->begin(); i != l->end(); ++i) {
         collectNearNodes(i, nodes);
 
-        for (typename vector<_iter>::iterator j = nodes.begin(); j != nodes.end(); ++j) {
-          const _iter k = *j;
+        for (typename vector<iter>::iterator j = nodes.begin(); j != nodes.end(); ++j) {
+          const iter k = *j;
           if (T::rayTest(*i, *k)) l->erase(k);
         }
 
@@ -167,13 +168,13 @@ namespace VisTest {
       cerr << "info: computing (proper) visibility for "
            << l->size() << " vertices." << endl;
 
-      vector<_iter> nodes;
+      vector<iter> nodes;
 
-      for (_iter i = l->begin(); i != l->end(); ++i) {
+      for (iter i = l->begin(); i != l->end(); ++i) {
         collectNearNodes(i, nodes);
 
-        for (typename vector<_iter>::iterator j = nodes.begin(); j != nodes.end(); ++j) {
-          const _iter k = *j;
+        for (typename vector<iter>::iterator j = nodes.begin(); j != nodes.end(); ++j) {
+          const iter k = *j;
           if (!T::rayTest(*i, *k)) continue;
 
           if (T::toR2(*k).lengthSquared() >= T::toR2(*i).lengthSquared())
@@ -187,13 +188,13 @@ namespace VisTest {
     }
 
     void toR2(Common::vec2dlist& output) const {
-      for (_citer i = l->begin(); i != l->end(); ++i) {
+      for (citer i = l->begin(); i != l->end(); ++i) {
         output.push_back(T::toR2(*i));
       }
     }
 
-    void dump(vector<_invectype>& output) const {
-      for (_citer i = l->begin(); i != l->end(); ++i) {
+    void dump(list_type& output) const {
+      for (citer i = l->begin(); i != l->end(); ++i) {
         output.push_back(*i);
       }
     }
@@ -211,7 +212,7 @@ namespace VisTest {
         return true;
       }
 
-      _citer i = l->begin();
+      citer i = l->begin();
 
       bool ordered = true;
       double a = T::angle(*i);
@@ -235,7 +236,7 @@ namespace VisTest {
     void print() const {
       if (l->size() == 0) return;
 
-      _citer i = l->begin();
+      citer i = l->begin();
       cerr << T::angle(*i);;
       ++i;
 
@@ -248,9 +249,9 @@ namespace VisTest {
 
   private:
 
-    bool isearch(const _invectype& v) {
+    bool isearch(const item_type& v) {
       const double v_a = T::angle(v);
-      _iter i;
+      iter i;
 
       i = c;
       while (i != l->end()) {
@@ -280,10 +281,10 @@ namespace VisTest {
     // search in forward direction for the entry v:
     // returns true if entry found
     // returns false otherwise together with an insert position
-    bool fsearch(const _invectype& v, _iter& inspos) {
+    bool fsearch(const item_type& v, iter& inspos) {
       const double v_a = T::angle(v);
 
-      _iter i = c;
+      iter i = c;
 
       while (i != l->end()) {
         if (v == *i) {
@@ -306,10 +307,10 @@ namespace VisTest {
       return false;
     }
 
-    bool bsearch(const _invectype& v, _iter& inspos) {
+    bool bsearch(const item_type& v, iter& inspos) {
       const double v_a = T::angle(v);
 
-      _iter i = c;
+      iter i = c;
       ++i;
 
       while (i != l->begin()) {
@@ -334,7 +335,7 @@ namespace VisTest {
       return false;
     }
 
-    void insert(const _invectype& v, const _iter& pos) {
+    void insert(const item_type& v, const iter& pos) {
       c = l->insert(pos, v);
     }
 

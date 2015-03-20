@@ -22,22 +22,22 @@
 namespace ChiralLB {
 
   struct VisOp {
-    typedef vec4s invectype;
+    typedef Common::vec4slist list_type;
     static const double epsilon;
 
-    static double angle(const invectype& a) {
+    static double angle(const vec4s& a) {
       return a.transL10ToR2().angle();
     }
 
-    static vec2d toR2(const invectype& a) {
+    static vec2d toR2(const vec4s& a) {
       return a.transL10ToR2();
     }
 
-    static bool rayTest(const invectype& a, const invectype& b) {
+    static bool rayTest(const vec4s& a, const vec4s& b) {
       // transform into the Z[tau]*1 + Z[tau]*xi
       // representation (this is a direct sum)
-      const invectype pa(a.transL10ToDirect());
-      const invectype pb(b.transL10ToDirect());
+      const vec4s pa(a.transL10ToDirect());
+      const vec4s pb(b.transL10ToDirect());
 
       // first filter the trivial cases
       if (pa.isFirstZero()) {

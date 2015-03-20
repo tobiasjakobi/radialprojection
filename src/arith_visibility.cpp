@@ -869,15 +869,15 @@ bool ArithVisibility::clipFundamentalGM(const vec2d& x) {
   return true;
 }
 
-double ArithVisibility::VisOpZ2::angle(const invectype& a) {
+double ArithVisibility::VisOpZ2::angle(const vec2i& a) {
   return a.minkowskiZ2().angle();
 }
 
-vec2d ArithVisibility::VisOpZ2::toR2(const invectype& a) {
+vec2d ArithVisibility::VisOpZ2::toR2(const vec2i& a) {
   return a.minkowskiZ2();
 }
 
-bool ArithVisibility::VisOpZ2::rayTest(const invectype& a, const invectype& b) {
+bool ArithVisibility::VisOpZ2::rayTest(const vec2i& a, const vec2i& b) {
   if (a.x == 0) {
     return (b.x == 0);
   }
@@ -897,15 +897,15 @@ bool ArithVisibility::VisOpZ2::rayTest(const invectype& a, const invectype& b) {
   return (b.x * a.y == b.y * a.x);
 }
 
-double ArithVisibility::VisOpGI::angle(const invectype& a) {
+double ArithVisibility::VisOpGI::angle(const vec2i& a) {
   return a.angle();
 }
 
-vec2d ArithVisibility::VisOpGI::toR2(const invectype& a) {
+vec2d ArithVisibility::VisOpGI::toR2(const vec2i& a) {
   return vec2d(double(a.x), double(a.y));
 }
 
-bool ArithVisibility::VisOpGI::rayTest(const invectype& a, const invectype& b) {
+bool ArithVisibility::VisOpGI::rayTest(const vec2i& a, const vec2i& b) {
   if (a.x == 0) {
     return (b.x == 0);
   }
@@ -925,15 +925,15 @@ bool ArithVisibility::VisOpGI::rayTest(const invectype& a, const invectype& b) {
   return (b.x * a.y == b.y * a.x);
 }
 
-double ArithVisibility::VisOpES::angle(const invectype& a) {
+double ArithVisibility::VisOpES::angle(const vec2i& a) {
   return a.minkowskiES().angle();
 }
 
-vec2d ArithVisibility::VisOpES::toR2(const invectype& a) {
+vec2d ArithVisibility::VisOpES::toR2(const vec2i& a) {
   return a.minkowskiES();
 }
 
-bool ArithVisibility::VisOpES::rayTest(const invectype& a, const invectype& b) {
+bool ArithVisibility::VisOpES::rayTest(const vec2i& a, const vec2i& b) {
   if (a.x == 0) {
     return (b.x == 0);
   }
@@ -953,15 +953,15 @@ bool ArithVisibility::VisOpES::rayTest(const invectype& a, const invectype& b) {
   return (b.x * a.y == b.y * a.x);
 }
 
-double ArithVisibility::VisOpGM::angle(const invectype& a) {
+double ArithVisibility::VisOpGM::angle(const vec2i& a) {
   return a.minkowskiGM().angle();
 }
 
-vec2d ArithVisibility::VisOpGM::toR2(const invectype& a) {
+vec2d ArithVisibility::VisOpGM::toR2(const vec2i& a) {
   return a.minkowskiGM();
 }
 
-bool ArithVisibility::VisOpGM::rayTest(const invectype& a, const invectype& b) {
+bool ArithVisibility::VisOpGM::rayTest(const vec2i& a, const vec2i& b) {
   if (a.x == 0) {
     return (b.x == 0);
   }

@@ -23,8 +23,6 @@
 
 namespace GridDualizing {
 
-  typedef vector<vec2d> vec2dlist;
-
   /* n = degree of rotational symmetry                                          *
    * This boils down to the Z-module over which all calculations are done.      *
    * In general the module is Z[xi_n], so without any simplifications           *

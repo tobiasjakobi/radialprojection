@@ -22,6 +22,8 @@
 
 #include <sstream>
 
+
+
 void SingleMachine::apply_shift(uint mode) {
   using namespace Common;
 
@@ -268,8 +270,8 @@ int MultiMachine::master(int argc, char* argv[]) {
 
   srad = inner * (double(percentage) / 100.0);
 
-  selectVertices<vec4i, RadiusSelector>(fulltiling, tiling);
-  selectOrigins<vec4i, Decagonal::LengthSelector>(tiling, origins, samples, srad, inner);
+  selectVertices<vec4ilist, RadiusSelector>(fulltiling, tiling);
+  selectOrigins<vec4ilist, Decagonal::LengthSelector>(tiling, origins, samples, srad, inner);
 
   cerr << "srad: " << reinterpret_double_to_ullong(srad) << endl;
   cerr << "origins: " << origins << endl;

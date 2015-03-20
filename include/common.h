@@ -27,6 +27,7 @@
 #include <algorithm>
 
 #ifdef COMMON_USE_SSE
+#include "alignment_allocator.h"
 #include <xmmintrin.h>
 #include <smmintrin.h>
 #endif
@@ -358,7 +359,11 @@ public:
   }
 
   vec2d abs() const {
+#ifdef COMMON_USE_SSE
+    return vec2d(_mm_max_pd(_mm_sub_pd(_mm_setzero_pd(), vsse), vsse));
+#else
     return vec2d(std::abs(a[0]), std::abs(a[1]));
+#endif
   }
 
   double lengthSquared() const {
@@ -1393,8 +1398,14 @@ namespace Common {
   static const double pi = atan(1.0) * 4.0;
   static const double eps = numeric_limits<double>::epsilon();
 
+#ifdef COMMON_USE_SSE
+  typedef vector<vec2d, AlignmentAllocator<vec2d, 16> > vec2dlist;
+  typedef vector<vec4i, AlignmentAllocator<vec4i, 16> > vec4ilist;
+#else
   typedef vector<vec2d> vec2dlist;
   typedef vector<vec4i> vec4ilist;
+#endif
+
   typedef vector<vec4s> vec4slist;
   typedef vector<vec2i> vec2ilist;
   typedef vector<vec2iExt> vec2ielist;
@@ -1431,8 +1442,8 @@ namespace Common {
 
   /* Select vertices based on condition specified in 'S'. */
   template <typename T, typename S>
-  static inline void selectVertices(const vector<T>& in, vector<T>& out) {
-    for (typename vector<T>::const_iterator i = in.begin(); i != in.end(); ++i) {
+  static inline void selectVertices(const T& in, T& out) {
+    for (typename T::const_iterator i = in.begin(); i != in.end(); ++i) {
       if (S::eval(*i)) out.push_back(*i);
     }
   }
@@ -1451,17 +1462,17 @@ namespace Common {
    * Only origins O are selected, where the ball of radius 'sampleRadius' around O  *
    * is still contained in the tiling (which has radius 'tilingRadius').            */
   template <typename T, typename S>
-  void selectOrigins(const vector<T>& tiling, vector<T>& origins,
-                     uint samples, double sampleRadius, double tilingRadius) {
+  void selectOrigins(const T& tiling, T& origins, uint samples,
+                     double sampleRadius, double tilingRadius) {
     if (sampleRadius >= tilingRadius) {
       cerr << "error: sample radius has to be strictly smaller then tiling radius.\n";
       return;
     }
 
     const double dist = tilingRadius - sampleRadius;
-    vector<T> verts;
+    T verts;
 
-    for (typename vector<T>::const_iterator i = tiling.begin(); i != tiling.end(); ++i) {
+    for (typename T::const_iterator i = tiling.begin(); i != tiling.end(); ++i) {
       if (S::length(*i) <= dist) verts.push_back(*i);
     }
 
@@ -1483,7 +1494,7 @@ namespace Common {
 
       index %= numverts;
 
-      const T origin(tiling[index]);
+      const typename T::value_type origin(tiling[index]);
       if (find(origins.begin(), origins.end(), origin) != origins.end()) continue;
 
       origins.push_back(origin);
@@ -1604,10 +1615,10 @@ ostream& operator<<(ostream &os, const vec2s& v);
 ostream& operator<<(ostream &os, const vec2iExt& rhs);
 ostream& operator<<(ostream &os, const tilingEdge& e);
 
-template <class T>
-ostream& operator<<(ostream &os, const vector<T>& list) {
+template <class T, class Allocator>
+ostream& operator<<(ostream &os, const vector<T, Allocator>& list) {
   if (!list.empty()) {
-    typename vector<T>::const_iterator i = list.begin();
+    typename vector<T, Allocator>::const_iterator i = list.begin();
 
     os << '{' << *i;
     ++i;

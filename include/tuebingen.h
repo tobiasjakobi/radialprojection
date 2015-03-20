@@ -25,22 +25,22 @@ namespace TuebingenTri {
 
   /* The visibility test behaves the same for both TTT and PRT. */
   struct VisOp {
-    typedef vec4s invectype;
+    typedef Common::vec4slist list_type;
     static const double epsilon;
 
-    static double angle(const invectype& a) {
+    static double angle(const vec4s& a) {
       return a.transL5ToR2().angle();
     }
 
-    static vec2d toR2(const invectype& a) {
+    static vec2d toR2(const vec4s& a) {
       return a.transL5ToR2();
     }
 
-    static bool rayTest(const invectype& a, const invectype& b) {
+    static bool rayTest(const vec4s& a, const vec4s& b) {
       // transform into the Z[tau]*1 + Z[tau]*xi
       // representation (this is a direct sum)
-      const invectype pa(a.transL5ToDirect());
-      const invectype pb(b.transL5ToDirect());
+      const vec4s pa(a.transL5ToDirect());
+      const vec4s pb(b.transL5ToDirect());
 
       // first filter the trivial cases
       if (pa.isFirstZero()) {
@@ -68,9 +68,9 @@ namespace TuebingenTri {
       // c = z_a * w_b
       // d = z_b * w_a
       Coprime::multZTau(vec2i(pa[0], pa[1]),
-                              vec2i(pb[2], pb[3]), c);
+                        vec2i(pb[2], pb[3]), c);
       Coprime::multZTau(vec2i(pb[0], pb[1]),
-                              vec2i(pa[2], pa[3]), d);
+                        vec2i(pa[2], pa[3]), d);
 
       return (c == d);
     }

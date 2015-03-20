@@ -105,7 +105,7 @@ void Octagonal::projTiling(const vec4i& initpoint, uint maxstep,
     return;
   }
 
-  TVLManager<vec4i, 2 + 1> lvlman(tilingpoints);
+  TVLManager<vec4ilist, 2 + 1> lvlman(tilingpoints);
 
   for (uint n = 0; n < maxstep; ++n) {
     for (uint i = lvlman.begin(); i < lvlman.end(); ++i) {
@@ -150,7 +150,7 @@ void Octagonal::projTilingVis(const vec4i& initpoint,
   }
 
   // We need 2 + 1 levels to avoid going "back" (into the wrong direction) when creating the patch.
-  TVLManager<vec4i, 2 + 1> lvlman(tilingpoints);
+  TVLManager<vec4ilist, 2 + 1> lvlman(tilingpoints);
 
   for (uint n = 0; n < maxstep; ++n) {
     for (uint i = lvlman.begin(); i < lvlman.end(); ++i) {
@@ -200,7 +200,7 @@ void Octagonal::projTilingVisLocal(const vec4i& initpoint,
     return;
   }
 
-  TVLManager<vec4i, 2 + 1> lvlman(tilingpoints);
+  TVLManager<vec4ilist, 2 + 1> lvlman(tilingpoints);
 
   for (uint n = 0; n < maxstep; ++n) {
     for (uint i = lvlman.begin(); i < lvlman.end(); ++i) {
@@ -393,12 +393,12 @@ void Octagonal::innerOuterRadius(const Common::vec4ilist& tilingpoints,
   inner = cos(pi / 8.0) * outer;
 }
 
-bool Octagonal::VisOp::rayTest(const invectype& a, const invectype& b) {
+bool Octagonal::VisOp::rayTest(const vec4i& a, const vec4i& b) {
   // let Z<2> be Z[sqrt[2]]
   // transform into the Z<2>*1 + Z<2>*xi
   // representation (this is a direct sum)
-  const invectype pa(a.transL8ToDirect());
-  const invectype pb(b.transL8ToDirect());
+  const vec4i pa(a.transL8ToDirect());
+  const vec4i pb(b.transL8ToDirect());
 
   // first filter the trivial cases
   if (pa.isFirstZero()) {
