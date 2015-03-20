@@ -24,7 +24,7 @@ const double Octagonal::VisOp::epsilon = 2.0 * numeric_limits<double>::epsilon()
 bool Octagonal::checkProjInSector(const vec2d& orthpoint) {
   using namespace Common;
 
-  const double v[2] = {abs(orthpoint.x), abs(orthpoint.y)};
+  const vec2d v(orthpoint.abs());
 
   const double tt = min(min(sqrt((2.0 * silverMean + 1.0) / 8.0) - v[0],
                             sqrt((2.0 * silverMean + 1.0) / 8.0) - v[1]),

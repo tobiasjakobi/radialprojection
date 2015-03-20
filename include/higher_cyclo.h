@@ -31,8 +31,8 @@ public:
   }
 
   vec4d(const vec2d& v1, const vec2d& v2) {
-    a[0] = v1.x; a[1] = v1.y;
-    a[2] = v2.x; a[3] = v2.y;
+    a[0] = v1[0]; a[1] = v1[1];
+    a[2] = v2[0]; a[3] = v2[1];
   }
 
   vec4d operator*(double scale) const {

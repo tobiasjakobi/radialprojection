@@ -133,8 +133,8 @@ vec2d vec2i::transTriToR2() const {
 
 vec2d vec2i::transGenericToR2(const vec2d& v) const {
   return vec2d(
-    double(x) + v.x * double(y),
-    v.y * double(y));
+    double(x) + v[0] * double(y),
+    v[1] * double(y));
 }
 
 vec2d vec2i::minkowskiZ2() const {
@@ -484,7 +484,8 @@ void Common::normalize(vec2ielist& in) {
 }
 
 double Common::checkPosition(const vec2d& a, const vec2d& b, const vec2d& c) {
-  const double pos = (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x);
+  const double pos = (b[0] - a[0]) * (c[1] - a[1]) -
+                     (b[1] - a[1]) * (c[0] - a[0]);
   return pos;
 }
 
@@ -998,7 +999,7 @@ ostream& operator<<(ostream &os, const vec2i& v) {
 
 ostream& operator<<(ostream &os, const vec2d& v) {
   os << '{' << fixed << setprecision(3)
-     << v.x << ',' << v.y << '}';
+     << v[0] << ',' << v[1] << '}';
   return os;
 }
 

@@ -44,7 +44,7 @@ void RhombicPenrose::getInnerOuterSquared(double& inner, double& outer, uint win
 bool RhombicPenrose::checkProjInSector(const vec2d& orthpoint, uint window) {
   using namespace Common;
 
-  const vec2d v(orthpoint.x, abs(orthpoint.y));
+  const vec2d v(orthpoint.abs());
   double test;
 
   const vec2d* const verts = vertices[window];

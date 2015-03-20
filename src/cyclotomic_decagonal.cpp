@@ -24,7 +24,7 @@ const double Decagonal::VisOp::epsilon = 2.0 * numeric_limits<double>::epsilon()
 bool Decagonal::checkProjInSector(const vec2d& orthpoint, bool useAlt) {
   using namespace Common;
 
-  const vec2d v(abs(orthpoint.x), abs(orthpoint.y));
+  const vec2d v(orthpoint.abs());
   double test;
 
   const vec2d* const verts = (useAlt ? verticesAlt : vertices);

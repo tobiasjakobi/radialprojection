@@ -294,25 +294,28 @@ public:
 };
 
 class vec2d {
-public:
+private:
 #ifdef COMMON_USE_SSE
   union {
-    struct {
-      double x, y;
-    };
+    double a[2];
     __m128d vsse;
   };
 #else
-  double x, y;
+  double a[2];
 #endif
 
+public:
   vec2d() {}
-  vec2d(double a, double b) : x(a), y(b) {}
+  vec2d(double x, double y) {
+    a[0] = x; a[1] = y;
+  }
 
 #ifdef COMMON_USE_SSE
   vec2d(const vec2d& v) : vsse(v.vsse) {}
 #else
-  vec2d(const vec2d& v) : x(v.x), y(v.y) {}
+  vec2d(const vec2d& v) {
+    a[0] = v.a[0]; a[1] = v.a[1];
+  }
 #endif
 
 #ifdef COMMON_USE_SSE
@@ -320,28 +323,42 @@ public:
 #endif
 
   vec2d operator*(double scale) const {
-    return vec2d(scale * x, scale * y);
+    return vec2d(scale * a[0], scale * a[1]);
   }
 
   vec2d operator-(const vec2d& v) const {
-    return vec2d(x - v.x, y - v.y);
+    return vec2d(a[0] - v.a[0], a[1] - v.a[1]);
   }
 
   vec2d operator+(const vec2d& v) const {
-    return vec2d(x + v.x, y + v.y);
+    return vec2d(a[0] + v.a[0], a[1] + v.a[1]);
   }
 
   vec2d& operator+=(const vec2d& v) {
-    x += v.x; y += v.y;
+    a[0] += v.a[0]; a[1] += v.a[1];
     return *this;
   }
 
   vec2d operator-() const {
-    return vec2d(-x, -y);
+    return vec2d(-a[0], -a[1]);
   }
 
-  void set(double a, double b) {
-    x = a; y = b;
+  double operator[](uint i) const {
+    assert(i < 2);
+    return a[i];
+  }
+
+  double& operator[](uint i) {
+    assert(i < 2);
+    return a[i];
+  }
+
+  void set(double x, double y) {
+    a[0] = x; a[1] = y;
+  }
+
+  vec2d abs() const {
+    return vec2d(std::abs(a[0]), std::abs(a[1]));
   }
 
   double lengthSquared() const {
@@ -350,7 +367,7 @@ public:
      * component and extract the component as a double float. */
     return _mm_cvtsd_f64(_mm_dp_pd(vsse, vsse, 0x31));
 #else
-    return x * x + y * y;
+    return a[0] * a[0] + a[1] * a[1];
 #endif
   }
 
@@ -359,64 +376,64 @@ public:
   }
 
   bool inSectorL8() const {
-    return (x >= 0.0 && y >= x);
+    return (a[0] >= 0.0 && a[1] >= a[0]);
   }
 
   bool inUpperHalfplane() const {
-    return (y >= 0.0);
+    return (a[1] >= 0.0);
   }
 
   bool inFirstQuadrant() const {
-    return (x >= 0.0 && y >= 0.0);
+    return (a[0] >= 0.0 && a[1] >= 0.0);
   }
 
   bool inFirstQuadOpen() const {
-    return (x > 0.0 && y > 0.0);
+    return (a[0] > 0.0 && a[1] > 0.0);
   }
 
   // Checks for phi(x,y) <= 2*pi/6 (60 degree):
   bool inSectorL3() const {
-    return (y/x <= sectorL3);
+    return (a[1]/a[0] <= sectorL3);
   }
 
   // Checks for phi(x,y) <= 2*pi/5 (72 degree):
   bool inSectorL5() const {
-    return (y/x <= sectorL5);
+    return (a[1]/a[0] <= sectorL5);
   }
 
   // Checks for phi(x,y) <= 2*pi/6 (60 degree):
   bool inSectorL12() const {
-    return (y/x <= sectorL12);
+    return (a[1]/a[0] <= sectorL12);
   }
 
   // Checks for phi(x,y) <= 2*pi/7 (51 degree):
   bool inSectorL7() const {
-    return (y/x <= sectorL7);
+    return (a[1]/a[0] <= sectorL7);
   }
 
   vec2d reduceIntoSectorL12() const {
-    const double absvals[2] = {abs(x), abs(y)};
+    const double absvals[2] = {std::abs(a[0]), std::abs(a[1])};
 
     return (absvals[0] >= absvals[1]) ? vec2d(absvals[0], absvals[1]) :
                                         vec2d(absvals[1], absvals[0]);
   }
 
   double angle() const {
-    return atan2(y, x);
+    return atan2(a[1], a[0]);
   }
 
   double dot(const vec2d& v) const {
-    return x * v.x + y * v.y;
+    return a[0] * v.a[0] + a[1] * v.a[1];
   }
 
   vec2d normalize() const {
     const double invlen = 1.0 / this->length();
-    return vec2d(x * invlen, y * invlen);
+    return vec2d(a[0] * invlen, a[1] * invlen);
   }
 
-  // a = cos(alpha), b = sin(alpha)
-  vec2d applyRotation(const double a, const double b) const {
-    return vec2d(x*a - y*b, x*b + y*a);
+  // x = cos(alpha), y = sin(alpha)
+  vec2d applyRotation(const double x, const double y) const {
+    return vec2d(a[0]*x - a[1]*y, a[0]*y + a[1]*x);
   }
 
 private:

@@ -39,11 +39,11 @@ void importRawConsole(vector<ArithVisibility::bragg>& output,
 
   cin.read(reinterpret_cast<char*>(&in_flt), sizeof(double));
   if (cin.eof() && cin.fail()) goto readfail;
-  range.x = in_flt;
+  range[0] = in_flt;
 
   cin.read(reinterpret_cast<char*>(&in_flt), sizeof(double));
   if (cin.eof() && cin.fail()) goto readfail;
-  range.y = in_flt;
+  range[1] = in_flt;
 
   cin.read(reinterpret_cast<char*>(&in_flt), sizeof(double));
   if (cin.eof() && cin.fail()) goto readfail;
@@ -89,15 +89,15 @@ void braggToPDF(const vector<ArithVisibility::bragg>& input,
 
   if (input.empty()) return;
 
-  const double height = basewidth * (range.y / range.x);
+  const double height = basewidth * (range[1] / range[0]);
 
   surface = cairo_pdf_surface_create(filename.c_str(), basewidth, height);
   cairo_pdf_surface_restrict_to_version(surface, CAIRO_PDF_VERSION_1_5);
   cr = cairo_create(surface);
 
   const double scaling = std::min(
-    (basewidth - offset) / (2.0 * (range.x + radius)),
-    (height - offset) / (2.0 * (range.y + radius)));
+    (basewidth - offset) / (2.0 * (range[0] + radius)),
+    (height - offset) / (2.0 * (range[1] + radius)));
 
   // Setup cairo
   cairo_set_source_rgba(cr, 0.0, 0.0, 0.0, 1.0);
@@ -110,7 +110,7 @@ void braggToPDF(const vector<ArithVisibility::bragg>& input,
 
   for (vector<bragg>::const_iterator k = input.begin(); k != input.end(); ++k) {
     // Invert y here, since PDF uses a different coordinate system
-    cairo_arc(cr, k->getPosition().x, -1.0 * k->getPosition().y,
+    cairo_arc(cr, k->getPosition()[0], -1.0 * k->getPosition()[1],
               k->getIntensity(), 0.0, 2.0 * M_PI);
     if (fill)
       cairo_fill(cr);

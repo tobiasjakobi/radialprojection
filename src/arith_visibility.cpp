@@ -1508,7 +1508,7 @@ ostream& operator<<(ostream &os, const ArithVisibility::vec2iq& v) {
 }
 
 ostream& operator<<(ostream &os, const ArithVisibility::bragg& b) {
-  os << "circle((" << b.getPosition().x << ',' << b.getPosition().y << "),"
+  os << "circle((" << b.getPosition()[0] << ',' << b.getPosition()[1] << "),"
      << b.getIntensity() << ",color='black',thickness=0.5)";
   return os;
 }
@@ -1725,20 +1725,20 @@ void minmax(const vector<ArithVisibility::bragg>& input,
     const vec2d temp(k->getPosition());
     const double rtemp = k->getIntensity();
 
-    if (temp.x < a.x) {
-      a.x = temp.x;
+    if (temp[0] < a[0]) {
+      a[0] = temp[0];
     }
 
-    if (temp.x > b.x) {
-      b.x = temp.x;
+    if (temp[0] > b[0]) {
+      b[0] = temp[0];
     }
 
-    if (temp.y < a.y) {
-      a.y = temp.y;
+    if (temp[1] < a[1]) {
+      a[1] = temp[1];
     }
 
-    if (temp.y > b.y) {
-      b.y = temp.y;
+    if (temp[1] > b[1]) {
+      b[1] = temp[1];
     }
 
     if (rtemp > r) r = rtemp;
@@ -1762,8 +1762,8 @@ void toEPS(const vector<ArithVisibility::bragg>& input, bool fill) {
 
   minmax(input, min, max, radius);
 
-  const double xfactor = std::max(abs(min.x), abs(max.x));
-  const double yfactor = std::max(abs(min.y), abs(max.y));
+  const double xfactor = std::max(abs(min[0]), abs(max[0]));
+  const double yfactor = std::max(abs(min[1]), abs(max[1]));
 
   const int height = basewidth * lround(yfactor / xfactor);
 
@@ -1789,7 +1789,7 @@ void toEPS(const vector<ArithVisibility::bragg>& input, bool fill) {
 
   for (vector<bragg>::const_iterator k = input.begin(); k != input.end(); ++k) {
     cout << "newpath" << endl;
-    cout << k->getPosition().x << ' ' << k->getPosition().y << ' '
+    cout << k->getPosition()[0] << ' ' << k->getPosition()[1] << ' '
          << k->getIntensity() << " 0 360 arc" << endl;
     cout << mode << endl;
   }
@@ -1812,8 +1812,8 @@ void toEPS2(const vector<ArithVisibility::bragg>& input) {
 
   minmax(input, min, max, radius);
 
-  const double xfactor = std::max(abs(min.x), abs(max.x));
-  const double yfactor = std::max(abs(min.y), abs(max.y));
+  const double xfactor = std::max(abs(min[0]), abs(max[0]));
+  const double yfactor = std::max(abs(min[1]), abs(max[1]));
 
   const int height = basewidth * lround(yfactor / xfactor);
 
@@ -1840,7 +1840,7 @@ void toEPS2(const vector<ArithVisibility::bragg>& input) {
   cout << lround(scaling) << ' ' << lround(scaling) << " scale" << endl;
 
   for (vector<bragg>::const_iterator k = input.begin(); k != input.end(); ++k) {
-    cout << k->getPosition().x << ' ' << k->getPosition().y << ' '
+    cout << k->getPosition()[0] << ' ' << k->getPosition()[1] << ' '
          << k->getIntensity() << " circlehack" << endl;
   }
 
@@ -1862,8 +1862,8 @@ void toSVG(const vector<ArithVisibility::bragg>& input, bool fill) {
 
   minmax(input, min, max, radius);
 
-  const double xfactor = std::max(abs(min.x), abs(max.x));
-  const double yfactor = std::max(abs(min.y), abs(max.y));
+  const double xfactor = std::max(abs(min[0]), abs(max[0]));
+  const double yfactor = std::max(abs(min[1]), abs(max[1]));
 
   const int height = basewidth * lround(yfactor / xfactor);
 
@@ -1888,8 +1888,8 @@ void toSVG(const vector<ArithVisibility::bragg>& input, bool fill) {
   const string fcolor = (fill ? "255, 255, 255" : "0, 0, 0");
 
   for (vector<bragg>::const_iterator k = input.begin(); k != input.end(); ++k) {
-    cout << "\t\t\t" << "<circle cx=\"" << k->getPosition().x << "\" cy=\""
-         << k->getPosition().y << "\" r=\"" << k->getIntensity()
+    cout << "\t\t\t" << "<circle cx=\"" << k->getPosition()[0] << "\" cy=\""
+         << k->getPosition()[1] << "\" r=\"" << k->getIntensity()
          << "\" fill=\"rgb(" << fcolor << ")\" fill-opacity=\""
          << fopacity << "\" stroke-width=\"" << strwidth
          << "\" stroke=\"rgb(0, 0, 0)\" />" << endl;
@@ -1909,8 +1909,8 @@ void exportRawConsole(const vector<ArithVisibility::bragg>& input) {
 
   minmax(input, min, max, radius);
 
-  const double range[2] = {std::max(abs(min.x), abs(max.x)),
-                           std::max(abs(min.y), abs(max.y))};
+  const double range[2] = {std::max(abs(min[0]), abs(max[0])),
+                           std::max(abs(min[1]), abs(max[1]))};
 
   unsigned out;
   const char* data;
