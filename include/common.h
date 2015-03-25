@@ -642,10 +642,11 @@ public:
     const __m128 temp = _mm_cvtepi32_ps(vsse);
 
     /*
-     *    _mm_dp_ps: dot-product on float[4] (0xAB is the read/write-mask)
+     * _mm_dp_ps: dot-product on float[4] (0xAB is the read/write-mask)
      *            A = read-mask (f = all components)
      *            B = write-mask (1 = write result to first component,
-     *                             2 = write result to 2nd component)
+     *                            2 = write result to 2nd component)
+     *            (issue: this instruction is slow!)
      * _mm_add_ps: add two float[4]
      * _mm_cvtps_pd: convert first 2 components of a float[4] to double[2]
      */
