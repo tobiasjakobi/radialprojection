@@ -361,6 +361,12 @@ public:
   vec2d abs() const {
 #ifdef COMMON_USE_SSE
     return vec2d(_mm_max_pd(_mm_sub_pd(_mm_setzero_pd(), vsse), vsse));
+
+    /*
+     * alternate version using sign bitmasking:
+     * static const __m128d sign_mask = _mm_set1_pd(-0.); // -0. = 1 << 63
+     * return _mm_andnot_pd(sign_mask, vsse); // !sign_mask & x
+    */
 #else
     return vec2d(std::abs(a[0]), std::abs(a[1]));
 #endif
