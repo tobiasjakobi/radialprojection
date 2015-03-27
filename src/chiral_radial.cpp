@@ -527,6 +527,7 @@ if (initial.empty())
 
   // TODO: implement correct visibility computation
 
+  // TODO: use threads to process this vector
   for (vector<vec4s>::iterator i = vlist.begin(); i != vlist.end(); ++i)
     *i = i->transL10ToDirect().directL10ToUnique();
 
