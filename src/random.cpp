@@ -83,6 +83,7 @@ void RandomVis::vRandomVisible(uint steps, double prob, Common::vec2ilist& out) 
        << " elements.\n";
 
   vec2ielist ext;
+  ext.reserve(vertices.size());
 
   for (vec2ilist::const_iterator i = vertices.begin(); i != vertices.end(); ++i)
     ext.push_back(*i);
