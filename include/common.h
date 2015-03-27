@@ -1177,6 +1177,22 @@ public:
 
 };
 
+/* The 'vec2iExt' class provides an efficient way to compute (correct)
+ * visibility of a set of elements from Z^2.
+ *
+ * When constructing a vec2iExt object from a vec2i object the GCD g of
+ * the two coordinates is computed and stored. The common factor g is then
+ * removed from the coordinates.
+ *
+ * The compare operators just operate on the coordinate (and not the common
+ * factor) data, so one can use the standard STL algorithms to sort the set
+ * and remove duplicate (in the sense that the coordinate data is the same)
+ * elements.
+ *
+ * To produce properly visible points, a normalization pass has to be
+ * applied to the list after the sort. This ensures that the element with the
+ * largest distance from zero survives.
+ */
 class vec2iExt {
 public:
   vec2iExt(const vec2i& in);
