@@ -923,10 +923,10 @@ public:
                  z1 * zeta5[1]);
   }
 
-  /* Take an element in direct-sum (L10) representation and return the           *
-   * primitive reduced version of that element. This makes the sense unique, in  *
-   * the sense that two elements lie on the same ray through zero iff after this *
-   * transformation they are equal in terms of coordinates.                      */
+  /* Take an element 'x' in direct-sum (L10) representation and return the *
+   * primitive reduced version of 'x'. This makes 'x' unique, in the sense *
+   * that two elements lie on the same ray through zero iff after this     *
+   * transformation they are equal in terms of coordinates.                */
   vec4s directL10ToUnique() const;
 
 };
