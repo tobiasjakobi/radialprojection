@@ -30,10 +30,10 @@ bool Octagonal::checkProjInSector(const vec2d& orthpoint) {
                             sqrt((2.0 * silverMean + 1.0) / 8.0) - v[1]),
                             silverMean / 2.0 - (v[0] + v[1]));
 
-  if (tt > eps) {
+  if (tt > Constants::eps) {
     return true;
   } else {
-    if (tt < -eps) {
+    if (tt < -Constants::eps) {
       return false;
     }
   }
@@ -54,10 +54,10 @@ bool Octagonal::checkProjInWindow(const vec4i& point, bool useCircle) {
     return circularCheck(refCircleRadiusSquared, pt1);
   }
 
-  if (innerRadiusSquared - pt1 > eps) {
+  if (innerRadiusSquared - pt1 > Constants::eps) {
     return true;
   } else {
-    if (outerRadiusSquared - pt1 < -eps) {
+    if (outerRadiusSquared - pt1 < -Constants::eps) {
       return false;
     } else {
       return checkProjInSector(pt);
@@ -75,10 +75,10 @@ bool Octagonal::checkScaledProjInWindow(const vec4i& point, bool useCircle) {
     return circularCheck(refCircleRadiusSquared, pt1);
   }
 
-  if (innerRadiusSquared - pt1 > eps) {
+  if (innerRadiusSquared - pt1 > Constants::eps) {
     return true;
   } else {
-    if (outerRadiusSquared - pt1 < -eps) {
+    if (outerRadiusSquared - pt1 < -Constants::eps) {
       return false;
     } else {
       return checkProjInSector(pt);
@@ -390,7 +390,7 @@ void Octagonal::innerOuterRadius(const Common::vec4ilist& tilingpoints,
   }
 
   outer = sqrt(out);
-  inner = cos(pi / 8.0) * outer;
+  inner = cos(Constants::pi / 8.0) * outer;
 }
 
 bool Octagonal::VisOp::rayTest(const vec4i& a, const vec4i& b) {

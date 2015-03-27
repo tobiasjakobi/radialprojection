@@ -168,7 +168,7 @@ public:
   }
 
   vec2d toPhysicalL7() const {
-    static const double u = Common::pi / 14.0;
+    static const double u = Constants::pi / 14.0;
 
     static const double v1[6] = {1.0, sin(3.0*u), -sin(u),
                                  -cos(2.0*u), -cos(2.0*u), -sin(u)};

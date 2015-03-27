@@ -41,6 +41,18 @@ using namespace std;
 
 class vec2d;
 
+namespace Constants {
+  /* The unit in Z[tau], with tau the golden mean.
+   * In particular we have tau = unitGM here. */
+  static const double unitGM = (1.0 + sqrt(5.0)) * 0.5;
+
+  // The unit in Z[Sqrt[2]].
+  static const double unitZ2 = 1.0 + sqrt(2.0);
+
+  static const double pi = atan(1.0) * 4.0;
+  static const double eps = numeric_limits<double>::epsilon();
+};
+
 class vec2i {
 public:
   int x, y;
@@ -181,17 +193,14 @@ public:
   }
 
   vec2i positiveGM() const {
-    static const double tau = (1.0 + sqrt(5.0)) * 0.5;
-
-    if (double(x) + double(y) * tau < 0)
+    if (double(x) + double(y) * Constants::unitGM < 0)
       return vec2i(-x, -y);
     else
       return vec2i(x, y);
   }
 
   bool isPositiveGM() const {
-    static const double tau = (1.0 + sqrt(5.0)) * 0.5;
-    return (double(x) + double(y) * tau >= 0);
+    return (double(x) + double(y) * Constants::unitGM >= 0);
   }
 
   bool isDiv(const int d) const {
@@ -1420,10 +1429,6 @@ namespace Common {
 
   // Replace the window by a circle of the same area.
   static const bool circularWindow = false;
-
-  /* Some constants: */
-  static const double pi = atan(1.0) * 4.0;
-  static const double eps = numeric_limits<double>::epsilon();
 
 #ifdef COMMON_USE_SSE
   typedef vector<vec2d, AlignmentAllocator<vec2d, 16> > vec2dlist;

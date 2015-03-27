@@ -25,7 +25,7 @@ const double vec2d::sectorL5 = sqrt(5.0 + 2.0*sqrt(5.0)); /* = tan(2*pi/5) */
 const double vec2d::sectorL12 = sqrt(3.0); /* = tan(2*pi/6) */
 
 // Used for the higher-order cyclotomic cases:
-const double vec2d::sectorL7 = tan(2.0 * Common::pi / 7.0);
+const double vec2d::sectorL7 = tan(2.0 * Constants::pi / 7.0);
 
 double Common::RadiusSelector::radiusSq = 0.0;
 
@@ -55,8 +55,6 @@ vec2i vec2i::multUnitGM(int k) const {
 }
 
 vec2i vec2i::reduceGM(int& k) const {
-  static const double tau = (1.0 + sqrt(5.0)) * 0.5;
-
   // Nothing to reduce if the element is already zero.
   if (x == 0 && y == 0) {
     k = 0;
@@ -65,7 +63,7 @@ vec2i vec2i::reduceGM(int& k) const {
 
   int a, b, t;
   bool sign = false;
-  double z = double(x) + double(y) * tau;
+  double z = double(x) + double(y) * Constants::unitGM;
 
   if (z < 0.0) {
     a = -x;
@@ -81,12 +79,12 @@ vec2i vec2i::reduceGM(int& k) const {
    * dealing with a unit. In this case the log-fraction is already an integer.     *
    * Use 'lround' instead of 'floor' in this case, to avoid numerical instability. */
   if (this->normZTau() == 1)
-    t = lround(log(z) / log(tau));
+    t = lround(log(z) / log(Constants::unitGM));
   else
-    t = floor(log(z) / log(tau));
+    t = floor(log(z) / log(Constants::unitGM));
 
-  assert(double(t) * log(tau) <= log(z) + 0.0001);
-  assert(log(z) < double(t+1) * log(tau));
+  assert(double(t) * log(Constants::unitGM) <= log(z) + 0.0001);
+  assert(log(z) < double(t+1) * log(Constants::unitGM));
 
   k = -t;
 
@@ -112,8 +110,8 @@ vec2i vec2i::reduceGM(int& k) const {
     }
   }
 
-  assert(1.0 <= double(a) + double(b) * tau);
-  assert(double(a) + double(b) * tau < tau);
+  assert(1.0 <= double(a) + double(b) * Constants::unitGM);
+  assert(double(a) + double(b) * Constants::unitGM < Constants::unitGM);
 
   if (sign) {
     a = -a;
@@ -149,8 +147,6 @@ vec2i vec2i::multUnitZ2(int k) const {
 }
 
 vec2i vec2i::reduceZ2(int& k) const {
-  static const double unitZ2 = 1.0 + sqrt(2.0);
-
   // For comments see reduceGM.
 
   if (x == 0 && y == 0) {
@@ -160,7 +156,7 @@ vec2i vec2i::reduceZ2(int& k) const {
 
   int a, b, t;
   bool sign = false;
-  double z = double(x) + double(y) * unitZ2;
+  double z = double(x) + double(y) * Constants::unitZ2;
 
   if (z < 0.0) {
     a = -x;
@@ -173,12 +169,12 @@ vec2i vec2i::reduceZ2(int& k) const {
   }
 
   if (this->normZ2() == 1)
-    t = lround(log(z) / log(unitZ2));
+    t = lround(log(z) / log(Constants::unitZ2));
   else
-    t = floor(log(z) / log(unitZ2));
+    t = floor(log(z) / log(Constants::unitZ2));
 
-  assert(double(t) * log(unitZ2) <= log(z) + 0.0001);
-  assert(log(z) < double(t+1) * log(unitZ2));
+  assert(double(t) * log(Constants::unitZ2) <= log(z) + 0.0001);
+  assert(log(z) < double(t+1) * log(Constants::unitZ2));
 
   k = -t;
 
@@ -202,8 +198,8 @@ vec2i vec2i::reduceZ2(int& k) const {
     }
   }
 
-  assert(1.0 <= double(a) + double(b) * unitZ2);
-  assert(double(a) + double(b) * unitZ2 < unitZ2);
+  assert(1.0 <= double(a) + double(b) * Constants::unitZ2);
+  assert(double(a) + double(b) * Constants::unitZ2 < Constants::unitZ2);
 
   if (sign) {
     a = -a;
@@ -243,11 +239,9 @@ vec2d vec2i::minkowskiES() const {
 }
 
 vec2d vec2i::minkowskiGM() const {
-  static const double tau = (1.0 + sqrt(5.0)) * 0.5;
-
   return vec2d(
-    double(x) + double(y) * tau,
-    double(x) + double(y) * (1.0 - tau)
+    double(x) + double(y) * Constants::unitGM,
+    double(x) + double(y) * (1.0 - Constants::unitGM)
   );
 }
 
@@ -580,10 +574,10 @@ double Common::checkPosition(const vec2d& a, const vec2d& b, const vec2d& c) {
 }
 
 bool Common::circularCheck(double radSquared, double xSquared) {
-  if (radSquared - xSquared > eps) {
+  if (radSquared - xSquared > Constants::eps) {
     return true;
   } else {
-    if (radSquared - xSquared < -eps) return false;
+    if (radSquared - xSquared < -Constants::eps) return false;
   }
 
   cerr << "Warning: Insufficient accuracy in function circularCheck.\n";

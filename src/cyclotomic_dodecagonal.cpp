@@ -31,9 +31,9 @@ bool Dodecagonal::checkProjInSector(const vec2d& orthpoint, bool useAlt) {
 
   for (uint i = 0; i < 2; ++i) {
     test = checkPosition(verts[i], verts[i+1], v);
-    if (test < -eps) return false;
+    if (test < -Constants::eps) return false;
 #ifndef NDEBUG
-    if (test <= eps) {
+    if (test <= Constants::eps) {
       cerr << "Warning: Insufficient accuracy in function checkProjInSector.\n";
     }
 #endif
@@ -52,10 +52,10 @@ bool Dodecagonal::checkProjInWindow(const vec4i& point, bool useCircle) {
     return circularCheck(refCircleRadiusSquared, pt1);
   }
 
-  if (innerRadSquared - pt1 > eps) {
+  if (innerRadSquared - pt1 > Constants::eps) {
     return true;
   } else {
-    if (outerRadSquared - pt1 < -eps) {
+    if (outerRadSquared - pt1 < -Constants::eps) {
       return false;
     } else {
       return checkProjInSector(pt, windowBookOrientation);
@@ -85,10 +85,10 @@ bool Dodecagonal::checkScaledProjInWindow(const vec4i& point,
     return circularCheck(refCircleRadiusSquared, pt1);
   }
 
-  if (innerRadSquared - pt1 > eps) {
+  if (innerRadSquared - pt1 > Constants::eps) {
     return true;
   } else {
-    if (outerRadSquared - pt1 < -eps) {
+    if (outerRadSquared - pt1 < -Constants::eps) {
       return false;
     } else {
       return checkProjInSector(pt, windowBookOrientation);

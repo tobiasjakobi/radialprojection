@@ -30,7 +30,7 @@ namespace Common {
 namespace Heptagonal {
 
   // Minimal polynomial is p(x) = x^3 + x^2 - 2*x - 1
-  const double lambda = 2.0 * cos(2.0 * Common::pi / 7.0);
+  const double lambda = 2.0 * cos(2.0 * Constants::pi / 7.0);
 
   // Use a ball of radius R in 4-space
   const double refBallRadiusSquared = 7.25; // TODO: adjust
@@ -72,10 +72,10 @@ bool Heptagonal::checkProjInWindow(const vec6s& point) {
   const vec4d pt(point.toInternalL7());
   const double pt1 = pt.lengthSquared();
 
-  if (refBallRadiusSquared - pt1 > eps) {
+  if (refBallRadiusSquared - pt1 > Constants::eps) {
     return true;
   } else {
-    if (refBallRadiusSquared - pt1 < -eps) return false;
+    if (refBallRadiusSquared - pt1 < -Constants::eps) return false;
   }
 
   cerr << "Warning: Insufficient accuracy in function checkProjInWindow.\n";

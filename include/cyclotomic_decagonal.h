@@ -31,7 +31,7 @@ namespace Decagonal {
   const double innerRadSquared = 0.25 * (3.0 * tau + 2.0);
   const double outerRadSquared = 1.0 + 2.0/sqrt(5.0);
 
-  const double refCircleRadiusSquared = sqrt((5.0 / 4.0) * (11.0 * tau + 7.0)) / Common::pi;
+  const double refCircleRadiusSquared = sqrt((5.0 / 4.0) * (11.0 * tau + 7.0)) / Constants::pi;
 
   /* Regular decagon with edge length sqrt((tau + 2)/5). *
    * The upper-most edge is aligned with the x-axis.     */

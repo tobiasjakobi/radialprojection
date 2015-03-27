@@ -51,9 +51,9 @@ bool RhombicPenrose::checkProjInSector(const vec2d& orthpoint, uint window) {
 
   for (uint i = 0; i < 3; ++i) {
     test = checkPosition(verts[i], verts[i+1], v);
-    if (test < -eps) return false;
+    if (test < -Constants::eps) return false;
 #ifndef NDEBUG
-    if (test <= eps) {
+    if (test <= Constants::eps) {
       cerr << "Warning: Insufficient accuracy in function checkProjInSector.\n";
     }
 #endif
@@ -71,10 +71,10 @@ bool RhombicPenrose::checkProjInWindow(const vec4i& point, uint window) {
   double innerSquared, outerSquared;
   getInnerOuterSquared(innerSquared, outerSquared, window);
 
-  if (innerSquared - pt1 > eps) {
+  if (innerSquared - pt1 > Constants::eps) {
     return true;
   } else {
-    if (outerSquared - pt1 < -eps) {
+    if (outerSquared - pt1 < -Constants::eps) {
       return false;
     } else {
       return checkProjInSector(pt, window);
@@ -94,10 +94,10 @@ bool RhombicPenrose::checkScaledProjInWindow(const vec4i& point, uint window) {
   double innerSquared, outerSquared;
   getInnerOuterSquared(innerSquared, outerSquared, window);
 
-  if (innerSquared - pt1 > eps) {
+  if (innerSquared - pt1 > Constants::eps) {
     return true;
   } else {
-    if (outerSquared - pt1 < -eps) {
+    if (outerSquared - pt1 < -Constants::eps) {
       return false;
     } else {
       return checkProjInSector(pt, window);

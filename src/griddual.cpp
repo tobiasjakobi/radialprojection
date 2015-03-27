@@ -118,8 +118,8 @@ void GridDualizing::generate(Common::vec2dlist& r, Common::vec2dlist& o) {
   o.resize(T::size);
 
   for (uint i = 0; i < T::size; ++i) {
-    const double x = cos(2.0 * pi * double(i) / double(T::realsize));
-    const double y = sin(2.0 * pi * double(i) / double(T::realsize));
+    const double x = cos(2.0 * Constants::pi * double(i) / double(T::realsize));
+    const double y = sin(2.0 * Constants::pi * double(i) / double(T::realsize));
 
     r[i].set(x, y);
     o[i].set(-y, x);
@@ -310,7 +310,7 @@ void GridDualizing::cutVertices(const GridTiling<T>& gt, vector<T>& output) {
    * dualized grid is derived from the original 2n-gon boundary by nesting  *
    * rotated 2n-gons into it. This can be seen even with n=5 and rather     *
    * small grids.                                                           */
-  const double cutoff = outerRadius(gt) * pow(cos(pi / double(2 * T::realsize)), 4.0);
+  const double cutoff = outerRadius(gt) * pow(cos(Constants::pi / double(2 * T::realsize)), 4.0);
   const double cosq = cutoff*cutoff;
 
   for (typename vector<typename GridTiling<T>::vtype>::const_iterator i = gt.vertices.begin();

@@ -31,7 +31,7 @@ namespace Dodecagonal {
   const double innerRadSquared = tau - 0.25;
   const double outerRadSquared = tau;
 
-  const double refCircleRadiusSquared = 3.0 * tau / Common::pi;
+  const double refCircleRadiusSquared = 3.0 * tau / Constants::pi;
 
   /* Regular dodecagon (12 sides) with edge length one. *
    * Orientation is the one resulting from connecting   *

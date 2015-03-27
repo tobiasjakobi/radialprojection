@@ -28,7 +28,7 @@ namespace Octagonal {
   const double innerRadiusSquared = (2.0 * silverMean + 1.0) / 8.0;
   const double outerRadiusSquared = (silverMean + 1.0) / 4.0;
 
-  const double refCircleRadiusSquared = silverMean / Common::pi;
+  const double refCircleRadiusSquared = silverMean / Constants::pi;
 
   bool checkProjInSector(const vec2d& orthpoint);
   bool checkProjInWindow(const vec4i& point, bool useCircle);

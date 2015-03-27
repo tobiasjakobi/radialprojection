@@ -123,8 +123,8 @@ namespace GridDualizing {
       roots = new vec2d[size];
 
       for (uint i = 0; i < size; ++i) {
-        roots[i].set(cos(2.0 * pi * double(i) / double(realsize)),
-                     sin(2.0 * pi * double(i) / double(realsize)));
+        roots[i].set(cos(2.0 * Constants::pi * double(i) / double(realsize)),
+                     sin(2.0 * Constants::pi * double(i) / double(realsize)));
       }
     }
 
