@@ -123,6 +123,96 @@ vec2i vec2i::reduceGM(int& k) const {
   return vec2i(a, b);
 }
 
+vec2i vec2i::multUnitZ2(int k) const {
+  int a = x;
+  int b = y;
+
+  if (k != 0) {
+    if (k > 0) {
+      while (k != 0) {
+        const int temp = a + b;
+        a = temp + b;
+        b = temp;
+        --k;
+      }
+    } else {
+      while (k != 0) {
+        const int temp = a - b;
+        a = b - temp;
+        b = temp;
+        ++k;
+      }
+    }
+  }
+
+  return vec2i(a, b);
+}
+
+vec2i vec2i::reduceZ2(int& k) const {
+  static const double unitZ2 = 1.0 + sqrt(2.0);
+
+  // For comments see reduceGM.
+
+  if (x == 0 && y == 0) {
+    k = 0;
+    return *this;
+  }
+
+  int a, b, t;
+  bool sign = false;
+  double z = double(x) + double(y) * unitZ2;
+
+  if (z < 0.0) {
+    a = -x;
+    b = -y;
+    z = -z;
+    sign = true;
+  } else {
+    a = x;
+    b = y;
+  }
+
+  if (this->normZ2() == 1)
+    t = lround(log(z) / log(unitZ2));
+  else
+    t = floor(log(z) / log(unitZ2));
+
+  assert(double(t) * log(unitZ2) <= log(z) + 0.0001);
+  assert(log(z) < double(t+1) * log(unitZ2));
+
+  k = -t;
+
+  if (t != 0) {
+    if (t < 0) {
+      // Multiply with our unit
+      while (t != 0) {
+        const int temp = a + b;
+        a = temp + b;
+        b = temp;
+        ++t;
+      }
+    } else {
+      // Divide by our unit
+      while (t != 0) {
+        const int temp = a - b;
+        a = b - temp;
+        b = temp;
+        --t;
+      }
+    }
+  }
+
+  assert(1.0 <= double(a) + double(b) * unitZ2);
+  assert(double(a) + double(b) * unitZ2 < unitZ2);
+
+  if (sign) {
+    a = -a;
+    b = -b;
+  }
+
+  return vec2i(a, b);
+}
+
 vec2d vec2i::transTriToR2() const {
   static const double factor = sqrt(3.0) * 0.5;
 

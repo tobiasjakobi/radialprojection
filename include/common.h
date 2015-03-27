@@ -278,6 +278,10 @@ public:
    * by multiplication with the units tau and tau^{-1}.                     */
   vec2i reduceGM(int& k) const;
 
+  // Same as above, but only in Z[Sqrt[2]].
+  vec2i multUnitZ2(int k) const;
+  vec2i reduceZ2(int& k) const;
+
   vec2d transTriToR2() const;
 
   vec2d transGenericToR2(const vec2d& v) const;
