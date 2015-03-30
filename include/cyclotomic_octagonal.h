@@ -21,14 +21,14 @@
 
 namespace Octagonal {
 
-  // Inflation factor of the octagonal tiling
-  const double silverMean = 1.0 + sqrt(2.0);
+  /* Inflation factor of the octagonal tiling is the silver
+   * mean, which is also the unit of Z[Sqrt[2]]. */
 
   // Octagon radii
-  const double innerRadiusSquared = (2.0 * silverMean + 1.0) / 8.0;
-  const double outerRadiusSquared = (silverMean + 1.0) / 4.0;
+  const double innerRadiusSquared = (2.0 * Constants::unitZ2 + 1.0) / 8.0;
+  const double outerRadiusSquared = (Constants::unitZ2 + 1.0) / 4.0;
 
-  const double refCircleRadiusSquared = silverMean / Constants::pi;
+  const double refCircleRadiusSquared = Constants::unitZ2 / Constants::pi;
 
   bool checkProjInSector(const vec2d& orthpoint);
   bool checkProjInWindow(const vec4i& point, bool useCircle);

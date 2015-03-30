@@ -66,7 +66,7 @@ bool Decagonal::checkProjInWindow(const vec4i& point, bool useCircle) {
 bool Decagonal::checkScaledProjInWindow(const vec4i& point, bool useCircle) {
   using namespace Common;
 
-  const vec2d pt(point.orthProjShiftL5(tau, true)); /* invert the shift here */
+  const vec2d pt(point.orthProjShiftL5(Constants::unitGM, true)); /* invert the shift here */
   const double pt1 = pt.lengthSquared();
 
   if (useCircle) {

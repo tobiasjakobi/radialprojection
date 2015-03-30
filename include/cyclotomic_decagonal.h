@@ -21,18 +21,22 @@
 
 namespace Decagonal {
 
-  /* inflation factor of the decagonal tiling */
-  const double tau = 0.5 * (1.0 + sqrt(5.0));
+  /* Inflation factor of the decagonal tiling is the golden
+   * mean, which is also the unit of Z[tau]. */
 
   /* decagon radii */
-  const double innerRadius = 0.5 * (tau + 1.0);
-  const double outerRadius = tau*tau / sqrt(tau*tau + 1.0); /* = sqrt(1 + 2/sqrt(5)) */
+  const double innerRadius = 0.5 * (Constants::unitGM + 1.0);
+  const double outerRadius = Constants::unitGM*Constants::unitGM /
+    sqrt(Constants::unitGM*Constants::unitGM + 1.0); // = sqrt(1 + 2/sqrt(5))
 
-  const double innerRadSquared = 0.25 * (3.0 * tau + 2.0);
+  const double innerRadSquared = 0.25 * (3.0 * Constants::unitGM + 2.0);
   const double outerRadSquared = 1.0 + 2.0/sqrt(5.0);
 
-  const double refCircleRadiusSquared = sqrt((5.0 / 4.0) * (11.0 * tau + 7.0)) / Constants::pi;
+  const double refCircleRadiusSquared = sqrt((5.0 / 4.0) *
+    (11.0 * Constants::unitGM + 7.0)) / Constants::pi;
 
+  // TODO: provide a better fix for this
+#define tau Constants::unitGM
   /* Regular decagon with edge length sqrt((tau + 2)/5). *
    * The upper-most edge is aligned with the x-axis.     */
   const vec2d vertices[10] = {
@@ -51,6 +55,7 @@ namespace Decagonal {
     vec2d(-innerRadius, -0.5 * sqrt((tau + 1.0)/(tau + 2.0))),   vec2d(-0.5 * tau, -0.5 * sqrt((8.0 * tau + 5.0)/(tau + 2.0))),
     vec2d(0.0, -outerRadius),                                    vec2d(0.5 * tau, -0.5 * sqrt((8.0 * tau + 5.0)/(tau + 2.0)))
   };
+#undef tau
 
   /* Important: When using verticesAlt as window, it needs to be shifted    *
    * by a small epsilon. Otherwise FP precision issues appear since certain *

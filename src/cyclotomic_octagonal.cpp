@@ -26,9 +26,9 @@ bool Octagonal::checkProjInSector(const vec2d& orthpoint) {
 
   const vec2d v(orthpoint.abs());
 
-  const double tt = min(min(sqrt((2.0 * silverMean + 1.0) / 8.0) - v[0],
-                            sqrt((2.0 * silverMean + 1.0) / 8.0) - v[1]),
-                            silverMean / 2.0 - (v[0] + v[1]));
+  const double tt = min(min(sqrt((2.0 * Constants::unitZ2 + 1.0) / 8.0) - v[0],
+                            sqrt((2.0 * Constants::unitZ2 + 1.0) / 8.0) - v[1]),
+                            Constants::unitZ2 / 2.0 - (v[0] + v[1]));
 
   if (tt > Constants::eps) {
     return true;
@@ -68,7 +68,7 @@ bool Octagonal::checkProjInWindow(const vec4i& point, bool useCircle) {
 bool Octagonal::checkScaledProjInWindow(const vec4i& point, bool useCircle) {
   using namespace Common;
 
-  const vec2d pt(point.orthProjL8() * silverMean);
+  const vec2d pt(point.orthProjL8() * Constants::unitZ2);
   const double pt1 = pt.lengthSquared();
 
   if (useCircle) {

@@ -46,7 +46,7 @@ namespace Constants {
    * In particular we have tau = unitGM here. */
   static const double unitGM = (1.0 + sqrt(5.0)) * 0.5;
 
-  // The unit in Z[Sqrt[2]].
+  // The unit in Z[Sqrt[2]], which is the silver mean.
   static const double unitZ2 = 1.0 + sqrt(2.0);
 
   static const double pi = atan(1.0) * 4.0;
