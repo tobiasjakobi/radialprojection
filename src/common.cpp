@@ -278,6 +278,28 @@ vec4i vec4i::directL8ToUnique() const {
   return vec4i(rx, ry);
 }
 
+vec4i vec4i::directL5ToUnique() const {
+  if (this->isZero()) return *this;
+
+  /* For comments see vec4s::directL10ToUnique().
+   * This makes essentially the same as the vec4s version. */
+
+  const vec2i& x = this->getFirstDirect();
+  const vec2i& y = this->getSecondDirect();
+
+  if (x.isZero()) return vec4i(0, 0, y.isPositiveGM() ? 1 : -1, 0);
+  if (y.isZero()) return vec4i(x.isPositiveGM() ? 1 : -1, 0, 0, 0);
+
+  const vec2i g(Coprime::gcdZTau(x, y).positiveGM());
+
+  int k;
+
+  const vec2i rx(x.divGM(g).reduceGM(k));
+  const vec2i ry(y.divGM(g).multUnitGM(k));
+
+  return vec4i(rx, ry);
+}
+
 vec4s vec4s::directL10ToUnique() const {
   if (this->isZero()) return *this;
 

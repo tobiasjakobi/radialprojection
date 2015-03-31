@@ -797,7 +797,9 @@ public:
     return (orthProjL12() * scale) - shift * (invert ? -1.0 : +1.0);
   }
 
+  // For comments see vec4s::directL10ToUnique in this header.
   vec4i directL8ToUnique() const;
+  vec4i directL5ToUnique() const;
 
   static vec2d shift;
 

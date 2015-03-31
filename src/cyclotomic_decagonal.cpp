@@ -281,6 +281,36 @@ void Decagonal::extractVisible(const vec4i& origin, bool radialproj,
   delete vlist;
 }
 
+void Decagonal::extractVisibleFast(const vec4i& origin,
+                const Common::vec4ilist& input, Common::vec4ilist& output) {
+  using namespace Common;
+
+  if (input.empty())
+    return;
+
+  vec4ilist temp;
+  temp.reserve(input.size());
+
+  for (vec4ilist::const_iterator i = input.begin(); i != input.end(); ++i) {
+    const vec4i shifted(*i - origin);
+
+    if (shifted.isZero()) continue;
+    temp.push_back(i->transL5ToDirect().directL5ToUnique());
+  }
+
+  sort(temp.begin(), temp.end());
+  temp.erase(unique(temp.begin(), temp.end()), temp.end());
+
+  cerr << "statistics: after (incorrect) visibility computation: "
+       << temp.size() << " vertices visible." << endl;
+
+  output.clear();
+  output.reserve(temp.size());
+
+  for (vec4ilist::const_iterator i = temp.begin(); i != temp.end(); ++i)
+    output.push_back(i->transDirectToL5());
+}
+
 uint Decagonal::estimateGrowth(uint input, bool steps) {
   const double x = double(input);
 
