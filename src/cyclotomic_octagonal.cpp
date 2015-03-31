@@ -284,9 +284,8 @@ void Octagonal::extractVisibleFast(const vec4i& origin,
   output.clear();
   output.reserve(temp.size());
 
-  // TODO: convert back to non-direct
-  //for (vector<vec4s>::const_iterator i = vlist.begin(); i != vlist.end(); ++i)
-  //  vertices.push_back(i->directL10ToR2());
+  for (vec4ilist::const_iterator i = temp.begin(); i != temp.end(); ++i)
+    output.push_back(i->transDirectToL8());
 }
 
 uint Octagonal::estimateGrowth(uint input, bool steps) {

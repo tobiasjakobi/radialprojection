@@ -658,6 +658,16 @@ public:
     return vec4i(a[0] - a[2], -a[3], a[1] + 2*a[3], a[2]);
   }
 
+  // Inverse of transL8ToDirect()
+  vec4i transDirectToL8() const {
+    return vec4i(a[0] + a[3], a[1] + a[2], a[3], -a[1]);
+  }
+
+  // Inverse of transL5ToDirect()
+  vec4i transDirectToL5() const {
+    return vec4i(a[0] + a[3], a[2] + a[3], a[3] - a[1], -a[1]);
+  }
+
   // Inverse of transL12ToDirect()
   vec4i transDirectToL12() const {
     return vec4i(a[0] + a[3], 2*a[1] + a[2], a[3], -a[1]);
