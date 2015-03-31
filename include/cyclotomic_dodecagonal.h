@@ -21,43 +21,48 @@
 
 namespace Dodecagonal {
 
-  /* inflation factor of the dodecagonal tiling */
-  const double tau = 2.0 + sqrt(3.0);
+  // Inflation factor of the dodecagonal tiling is the unit of Z[Sqrt[3]].
 
   /* dodecagon radii */
-  const double innerRadius = tau * 0.5;
-  const double outerRadius = sqrt(tau);
+  const double innerRadius = Constants::unitZ3 * 0.5;
+  const double outerRadius = sqrt(Constants::unitZ3);
 
-  const double innerRadSquared = tau - 0.25;
-  const double outerRadSquared = tau;
+  const double innerRadSquared = Constants::unitZ3 - 0.25;
+  const double outerRadSquared = Constants::unitZ3;
 
-  const double refCircleRadiusSquared = 3.0 * tau / Constants::pi;
+  const double refCircleRadiusSquared = 3.0 * Constants::unitZ3 / Constants::pi;
 
   /* Regular dodecagon (12 sides) with edge length one. *
    * Orientation is the one resulting from connecting   *
    * the twelve roots of unity (plus scaling).          */
   const vec2d vertices[12] = {
-    vec2d(outerRadius, 0.0), /* v1 */
-    vec2d(0.5 * sqrt(3.0) * outerRadius, 0.5 * outerRadius), /* v2 */
-    vec2d(0.5 * outerRadius, 0.5 * sqrt(3.0) * outerRadius), /* v3 */
-    vec2d(0.0, outerRadius), /* v4 */
-    vec2d(-0.5 * outerRadius, 0.5 * sqrt(3.0) * outerRadius), /* v5 */
-    vec2d(-0.5 * sqrt(3.0) * outerRadius, 0.5 * outerRadius), /* v6 */
-    vec2d(-outerRadius, 0.0), /* v7 = -v1 */
-    vec2d(-0.5 * sqrt(3.0) * outerRadius, -0.5 * outerRadius), /* v8 = -v2 */
-    vec2d(-0.5 * outerRadius, -0.5 * sqrt(3.0) * outerRadius), /* v9 = -v3 */
-    vec2d(0.0, -outerRadius), /* v10 = -v4 */
-    vec2d(0.5 * outerRadius, -0.5 * sqrt(3.0) * outerRadius), /* v11 = -v5 */
-    vec2d(0.5 * sqrt(3.0) * outerRadius, -0.5 * outerRadius)  /* v12 = -v6 */
+    vec2d(outerRadius, 0.0), // v1
+    vec2d(0.5 * sqrt(3.0) * outerRadius, 0.5 * outerRadius), // v2
+    vec2d(0.5 * outerRadius, 0.5 * sqrt(3.0) * outerRadius), // v3
+    vec2d(0.0, outerRadius), // v4
+    vec2d(-0.5 * outerRadius, 0.5 * sqrt(3.0) * outerRadius), // v5
+    vec2d(-0.5 * sqrt(3.0) * outerRadius, 0.5 * outerRadius), // v6
+    vec2d(-outerRadius, 0.0), // v7 = -v1
+    vec2d(-0.5 * sqrt(3.0) * outerRadius, -0.5 * outerRadius), // v8 = -v2
+    vec2d(-0.5 * outerRadius, -0.5 * sqrt(3.0) * outerRadius), // v9 = -v3
+    vec2d(0.0, -outerRadius), // v10 = -v4
+    vec2d(0.5 * outerRadius, -0.5 * sqrt(3.0) * outerRadius), // v11 = -v5
+    vec2d(0.5 * sqrt(3.0) * outerRadius, -0.5 * outerRadius)  // v12 = -v6
   };
 
   const vec2d verticesAlt[12] = {
-    vec2d(0.5 * tau, -0.5), vec2d(0.5 * tau, 0.5), /* v12, v1 */
-    vec2d(0.5 * (tau - 1.0), 0.5 * (tau - 1.0)), vec2d(0.5, 0.5 * tau), /* v2, v3 */
-    vec2d(-0.5, 0.5 * tau), vec2d(-0.5 * (tau - 1.0), 0.5 * (tau - 1.0)), /* v4, v5 */
-    vec2d(-0.5 * tau, 0.5), vec2d(-0.5 * tau, -0.5), /* v6, v7 */
-    vec2d(-0.5 * (tau - 1.0), -0.5 * (tau - 1.0)), vec2d(-0.5, -0.5 * tau), /* v8, v9 */
-    vec2d(0.5, -0.5 * tau), vec2d(0.5 * (tau - 1.0), -0.5 * (tau - 1.0)) /* v10, v11 */
+    vec2d(0.5 * Constants::unitZ3, -0.5), // v12
+    vec2d(0.5 * Constants::unitZ3, 0.5), // v1
+    vec2d(0.5 * (Constants::unitZ3 - 1.0), 0.5 * (Constants::unitZ3 - 1.0)), // v2
+    vec2d(0.5, 0.5 * Constants::unitZ3), // v3
+    vec2d(-0.5, 0.5 * Constants::unitZ3), // v4
+    vec2d(-0.5 * (Constants::unitZ3 - 1.0), 0.5 * (Constants::unitZ3 - 1.0)), // v5
+    vec2d(-0.5 * Constants::unitZ3, 0.5), // v6
+    vec2d(-0.5 * Constants::unitZ3, -0.5), // v7
+    vec2d(-0.5 * (Constants::unitZ3 - 1.0), -0.5 * (Constants::unitZ3 - 1.0)), // v8
+    vec2d(-0.5, -0.5 * Constants::unitZ3), // v9
+    vec2d(0.5, -0.5 * Constants::unitZ3), // v10
+    vec2d(0.5 * (Constants::unitZ3 - 1.0), -0.5 * (Constants::unitZ3 - 1.0)) // v11
   };
 
   bool checkProjInSector(const vec2d& orthpoint, bool useAlt);

@@ -88,7 +88,7 @@ bool RhombicPenrose::checkScaledProjInWindow(const vec4i& point, uint window) {
   // Note that scaling with -tau (MINUS!) is correct!
   // Usually this doesn't matter since the window is symmetric under
   // transformation with -1, but not here.
-  const vec2d pt(point.orthProjShiftL5() * -tau);
+  const vec2d pt(point.orthProjShiftL5() * -Constants::unitGM);
   const double pt1 = pt.lengthSquared();
 
   double innerSquared, outerSquared;

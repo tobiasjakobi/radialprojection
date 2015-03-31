@@ -49,8 +49,18 @@ namespace Constants {
   // The unit in Z[Sqrt[2]], which is the silver mean.
   static const double unitZ2 = 1.0 + sqrt(2.0);
 
+  // The unit in Z[Sqrt[3]].
+  static const double unitZ3 = 2.0 + sqrt(3.0);
+
   static const double pi = atan(1.0) * 4.0;
   static const double eps = numeric_limits<double>::epsilon();
+
+  // Zeta(2) in different number fields
+  static const double zetaZ2 = 48.0 * sqrt(2.0) / (pi * pi * pi * pi);
+  static const double zetaES = 1.28519095548414940291751179870;
+  static const double zetaGM = 1.1616711956186385497585826363320589131;
+
+  static const double catalanC = 0.915965594177219015054603514932;
 };
 
 class vec2i {
@@ -925,12 +935,11 @@ public:
   }
 
   vec2d directL10ToR2() const {
-    static const double tau = (1.0 + sqrt(5.0)) * 0.5;
     static const double zeta5[2] = {(-1.0 + sqrt(5.0)) / 4.0,
-                                    sqrt((5 + sqrt(5.0)) / 8.0)};
+                                    sqrt((5.0 + sqrt(5.0)) / 8.0)};
 
-    const double z0 = double(a[0]) + double(a[1]) * tau;
-    const double z1 = double(a[2]) + double(a[3]) * tau;
+    const double z0 = double(a[0]) + double(a[1]) * Constants::unitGM;
+    const double z1 = double(a[2]) + double(a[3]) * Constants::unitGM;
 
     return vec2d(z0 + z1 * zeta5[0],
                  z1 * zeta5[1]);

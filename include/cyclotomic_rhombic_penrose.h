@@ -21,8 +21,8 @@
 
 namespace RhombicPenrose {
 
-  /* inflation factor of the rhombic penrose tiling */
-  const double tau = 0.5 * (1.0 + sqrt(5.0));
+  /* Inflation factor of the decagonal tiling is the golden
+   * mean, which is also the unit of Z[tau]. */
 
   /* The rhombic penrose case uses four windows W1, W2, W3, W4: *
    * Let P be the convex hull of {1, xi, xi^2, xi^3, xi^4} with *
@@ -30,24 +30,44 @@ namespace RhombicPenrose {
    * W1 = P, W4 = -P, W3 = tau*P, W2 = -tau*P.                  */
 
   /* pentagon radii */
-  const double innerRadius[2] = {0.5 * tau, 0.25 * (tau + 1.0)};
-  const double outerRadius[2] = {1.0, tau}; 
+  const double innerRadius[2] = {
+    0.5 * Constants::unitGM,
+    0.25 * (Constants::unitGM + 1.0)
+  };
+  const double outerRadius[2] = {1.0, Constants::unitGM}; 
 
-  const double innerRadSquared[2] = {0.25 * (tau + 1.0), (7.0 + 3.0*sqrt(5.0)) / 8.0};
-  const double outerRadSquared[2] = {1.0, tau*tau};
+  const double innerRadSquared[2] = {
+    0.25 * (Constants::unitGM + 1.0),
+    (7.0 + 3.0*sqrt(5.0)) / 8.0
+  };
+  const double outerRadSquared[2] = {1.0, Constants::unitGM*Constants::unitGM};
 
   const vec2d vertices[4][5] = {
-    {vec2d(1.0, 0.0), vec2d(0.5 * (tau - 1.0), 0.5 * sqrt(tau + 2.0)),
-     vec2d(-0.5 * tau, 0.5 * sqrt(3.0 - tau)), vec2d(-0.5 * tau, -0.5 * sqrt(3.0 - tau)),
-     vec2d(0.5 * (tau - 1.0), -0.5 * sqrt(tau + 2.0))},
-    {vec2d(0.5 * (tau + 1.0), -0.5 * sqrt(tau + 2.0)),
-     vec2d(0.5 * (tau + 1.0), 0.5 * sqrt(tau + 2.0)), vec2d(-0.5, 0.5 * sqrt(4.0*tau + 3.0)), vec2d(-tau, 0.0), vec2d(-0.5, -0.5 * sqrt(4.0*tau + 3.0))},
-    {vec2d(tau, 0.0), vec2d(0.5, 0.5 * sqrt(4.0*tau + 3.0)),
-     vec2d(-0.5 * (tau + 1.0), 0.5 * sqrt(tau + 2.0)),
-     vec2d(-0.5 * (tau + 1.0), -0.5 * sqrt(tau + 2.0)), vec2d(0.5, -0.5 * sqrt(4.0*tau + 3.0))},
-    {vec2d(0.5 * tau, -0.5 * sqrt(3.0 - tau)), vec2d(0.5 * tau, 0.5 * sqrt(3.0 - tau)),
-     vec2d(-0.5 * (tau - 1.0), 0.5 * sqrt(tau + 2.0)), vec2d(-1.0, 0.0),
-     vec2d(-0.5 * (tau - 1.0), -0.5 * sqrt(tau + 2.0))}
+    {
+      vec2d(1.0, 0.0),
+      vec2d(0.5 * (Constants::unitGM - 1.0), 0.5 * sqrt(Constants::unitGM + 2.0)),
+      vec2d(-0.5 * Constants::unitGM, 0.5 * sqrt(3.0 - Constants::unitGM)),
+      vec2d(-0.5 * Constants::unitGM, -0.5 * sqrt(3.0 - Constants::unitGM)),
+      vec2d(0.5 * (Constants::unitGM - 1.0), -0.5 * sqrt(Constants::unitGM + 2.0))
+    }, {
+      vec2d(0.5 * (Constants::unitGM + 1.0), -0.5 * sqrt(Constants::unitGM + 2.0)),
+      vec2d(0.5 * (Constants::unitGM + 1.0), 0.5 * sqrt(Constants::unitGM + 2.0)),
+      vec2d(-0.5, 0.5 * sqrt(4.0*Constants::unitGM + 3.0)),
+      vec2d(-Constants::unitGM, 0.0),
+      vec2d(-0.5, -0.5 * sqrt(4.0*Constants::unitGM + 3.0))
+    }, {
+      vec2d(Constants::unitGM, 0.0),
+      vec2d(0.5, 0.5 * sqrt(4.0*Constants::unitGM + 3.0)),
+      vec2d(-0.5 * (Constants::unitGM + 1.0), 0.5 * sqrt(Constants::unitGM + 2.0)),
+      vec2d(-0.5 * (Constants::unitGM + 1.0), -0.5 * sqrt(Constants::unitGM + 2.0)),
+      vec2d(0.5, -0.5 * sqrt(4.0*Constants::unitGM + 3.0))
+    }, {
+      vec2d(0.5 * Constants::unitGM, -0.5 * sqrt(3.0 - Constants::unitGM)),
+      vec2d(0.5 * Constants::unitGM, 0.5 * sqrt(3.0 - Constants::unitGM)),
+      vec2d(-0.5 * (Constants::unitGM - 1.0), 0.5 * sqrt(Constants::unitGM + 2.0)),
+      vec2d(-1.0, 0.0),
+      vec2d(-0.5 * (Constants::unitGM - 1.0), -0.5 * sqrt(Constants::unitGM + 2.0))
+    }
   };
 
   void getInnerOuterSquared(double& inner, double& outer, uint window);

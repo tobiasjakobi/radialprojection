@@ -40,20 +40,31 @@ namespace Decagonal {
   /* Regular decagon with edge length sqrt((tau + 2)/5). *
    * The upper-most edge is aligned with the x-axis.     */
   const vec2d vertices[10] = {
-    vec2d(outerRadius, 0.0),                          vec2d(sqrt((11.0*tau + 7.0)/5.0)*0.5, tau*0.5),
-    vec2d(sqrt((tau + 2.0)/5.0)*0.5, innerRadius),    vec2d(-sqrt((tau + 2.0)/5.0)*0.5, innerRadius),
-    vec2d(-sqrt((11.0*tau + 7.0)/5.0)*0.5, tau*0.5),  vec2d(-outerRadius, 0.0),
-    vec2d(-sqrt((11.0*tau + 7.0)/5.0)*0.5, -tau*0.5), vec2d(-sqrt((tau + 2.0)/5.0)*0.5, -innerRadius),
-    vec2d(sqrt((tau + 2.0)/5.0)*0.5, -innerRadius),   vec2d(sqrt((11.0*tau + 7.0)/5.0)*0.5, -tau*0.5)};
+    vec2d(outerRadius, 0.0),
+    vec2d(sqrt((11.0*tau + 7.0)/5.0)*0.5, tau*0.5),
+    vec2d(sqrt((tau + 2.0)/5.0)*0.5, innerRadius),
+    vec2d(-sqrt((tau + 2.0)/5.0)*0.5, innerRadius),
+    vec2d(-sqrt((11.0*tau + 7.0)/5.0)*0.5, tau*0.5),
+    vec2d(-outerRadius, 0.0),
+    vec2d(-sqrt((11.0*tau + 7.0)/5.0)*0.5, -tau*0.5),
+    vec2d(-sqrt((tau + 2.0)/5.0)*0.5, -innerRadius),
+    vec2d(sqrt((tau + 2.0)/5.0)*0.5, -innerRadius),
+    vec2d(sqrt((11.0*tau + 7.0)/5.0)*0.5, -tau*0.5)
+  };
 
   /* This is essentially the other decagon rotated by 18 degrees. *
    * Results in alignment of the right-most edge with the y-axis. */
   const vec2d verticesAlt[10] = {
-    vec2d(innerRadius, -0.5 * sqrt((tau + 1.0)/(tau + 2.0))),    vec2d(innerRadius, 0.5 * sqrt((tau + 1.0)/(tau + 2.0))),
-    vec2d(0.5 * tau, 0.5 * sqrt((8.0 * tau + 5.0)/(tau + 2.0))), vec2d(0.0, outerRadius), vec2d(-0.5 * tau,
-    0.5 * sqrt((8.0 * tau + 5.0)/(tau + 2.0))),                  vec2d(-innerRadius, 0.5 * sqrt((tau + 1.0)/(tau + 2.0))),
-    vec2d(-innerRadius, -0.5 * sqrt((tau + 1.0)/(tau + 2.0))),   vec2d(-0.5 * tau, -0.5 * sqrt((8.0 * tau + 5.0)/(tau + 2.0))),
-    vec2d(0.0, -outerRadius),                                    vec2d(0.5 * tau, -0.5 * sqrt((8.0 * tau + 5.0)/(tau + 2.0)))
+    vec2d(innerRadius, -0.5 * sqrt((tau + 1.0)/(tau + 2.0))),
+    vec2d(innerRadius, 0.5 * sqrt((tau + 1.0)/(tau + 2.0))),
+    vec2d(0.5 * tau, 0.5 * sqrt((8.0 * tau + 5.0)/(tau + 2.0))),
+    vec2d(0.0, outerRadius), vec2d(-0.5 * tau,
+    0.5 * sqrt((8.0 * tau + 5.0)/(tau + 2.0))),
+    vec2d(-innerRadius, 0.5 * sqrt((tau + 1.0)/(tau + 2.0))),
+    vec2d(-innerRadius, -0.5 * sqrt((tau + 1.0)/(tau + 2.0))),
+    vec2d(-0.5 * tau, -0.5 * sqrt((8.0 * tau + 5.0)/(tau + 2.0))),
+    vec2d(0.0, -outerRadius),
+    vec2d(0.5 * tau, -0.5 * sqrt((8.0 * tau + 5.0)/(tau + 2.0)))
   };
 #undef tau
 

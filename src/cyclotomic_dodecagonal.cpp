@@ -71,12 +71,12 @@ bool Dodecagonal::checkScaledProjInWindow(const vec4i& point,
    * against a rescaled window depends on the gcd-norm of the   *
    * vertex. The scaling factors look a bit weird, but become   *
    * nicer if we don't consider the dodecagon with outer radius *
-   * sqrt(tau) but the normalized dodecagon (outer rad = 1).    */
-  const double scaler = gcdNormTwo ? sqrt(tau * 0.5) :
-                                     sqrt(tau * 2.0);
+   * sqrt(unitZ3) but the normalized dodecagon (outer rad = 1). */
+  const double scaler = gcdNormTwo ? sqrt(Constants::unitZ3 * 0.5) :
+                                     sqrt(Constants::unitZ3 * 2.0);
 
   /* Interesting observation: Multiply the two scaling factors and *
-   * we recover tauDode again. Hmm, nice!                          */
+   * we recover unitZ3 again. Hmm, nice!                           */
 
   const vec2d pt(point.orthProjShiftL12(scaler, gcdNormTwo));
   const double pt1 = pt.lengthSquared();

@@ -469,9 +469,6 @@ vec2i ArithVisibility::denomZ2Fourier(const vec2i& in, const int in_c) {
 }
 
 double ArithVisibility::intensityZ2(const vec2i& denom) {
-  static const double zetaZ2 = 48.0 * sqrt(2.0) / (Constants::pi *
-    Constants::pi * Constants::pi * Constants::pi);
-
   if (denom.isZero()) return 0.0;
 
   vector<vec2i> primesZ2;
@@ -484,7 +481,7 @@ double ArithVisibility::intensityZ2(const vec2i& denom) {
     ret *= (1.0 / (double(pnorm * pnorm) - 1.0));
   }
 
-  ret *= (1.0 / (2.0 * sqrt(2.0) * zetaZ2));
+  ret *= (1.0 / (2.0 * sqrt(2.0) * Constants::zetaZ2));
   return (ret*ret);
 }
 
@@ -497,8 +494,6 @@ vec2i ArithVisibility::denomGIFourier(const vec2i& in, const int in_c) {
 }
 
 double ArithVisibility::intensityGI(const vec2i& denom) {
-  static const double catalanC = 0.915965594177219015054603514932;
-
   if (denom.isZero()) return 0.0;
 
   vector<vec2i> primesGI;
@@ -511,7 +506,7 @@ double ArithVisibility::intensityGI(const vec2i& denom) {
     ret *= (1.0 / (double(pnorm * pnorm) - 1.0));
   }
 
-  ret *= (6.0 / (Constants::pi * Constants::pi * catalanC));
+  ret *= (6.0 / (Constants::pi * Constants::pi * Constants::catalanC));
   return (ret*ret);
 }
 
@@ -524,8 +519,6 @@ vec2i ArithVisibility::denomESFourier(const vec2i& in, const int in_c) {
 }
 
 double ArithVisibility::intensityES(const vec2i& denom) {
-  static const double zetaES = 1.28519095548414940291751179870;
-
   if (denom.isZero()) return 0.0;
 
   vector<vec2i> primesES;
@@ -538,7 +531,7 @@ double ArithVisibility::intensityES(const vec2i& denom) {
     ret *= (1.0 / (double(pnorm * pnorm) - 1.0));
   }
 
-  ret *= (2.0 / (sqrt(3.0) * zetaES));
+  ret *= (2.0 / (sqrt(3.0) * Constants::zetaES));
   return (ret*ret);
 }
 
@@ -551,8 +544,6 @@ vec2i ArithVisibility::denomGMFourier(const vec2i& in, const int in_c) {
 }
 
 double ArithVisibility::intensityGM(const vec2i& denom) {
-  static const double zetaGM = 1.1616711956186385497585826363320589131;
-
   if (denom.isZero()) return 0.0;
 
   vector<vec2i> primesGM;
@@ -565,7 +556,7 @@ double ArithVisibility::intensityGM(const vec2i& denom) {
     ret *= (1.0 / (double(pnorm * pnorm) - 1.0));
   }
 
-  ret *= (1.0 / (sqrt(5.0) * zetaGM));
+  ret *= (1.0 / (sqrt(5.0) * Constants::zetaGM));
   return (ret*ret);
 }
 
