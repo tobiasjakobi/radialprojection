@@ -156,7 +156,7 @@ vec2i vec2i::reduceZ2(int& k) const {
 
   int a, b, t;
   bool sign = false;
-  double z = double(x) + double(y) * Constants::unitZ2;
+  double z = double(x) + double(y) * sqrt(2.0);
 
   if (z < 0.0) {
     a = -x;
@@ -198,8 +198,8 @@ vec2i vec2i::reduceZ2(int& k) const {
     }
   }
 
-  assert(1.0 <= double(a) + double(b) * Constants::unitZ2);
-  assert(double(a) + double(b) * Constants::unitZ2 < Constants::unitZ2);
+  assert(1.0 <= double(a) + double(b) * sqrt(2.0));
+  assert(double(a) + double(b) * sqrt(2.0) < Constants::unitZ2);
 
   if (sign) {
     a = -a;
@@ -253,6 +253,29 @@ vec2i vec2i::primitive() const {
   const int g = Coprime::gcdZFast(abs(x), abs(y));
 
   return vec2i(x / g, y / g);
+}
+
+vec4i vec4i::directL8ToUnique() const {
+  if (this->isZero()) return *this;
+
+  const vec2i& x = this->getFirstDirect();
+  const vec2i& y = this->getSecondDirect();
+
+  // Special case handling
+  if (x.isZero()) return vec4i(0, 0, y.isPositiveZ2() ? 1 : -1, 0);
+  if (y.isZero()) return vec4i(x.isPositiveZ2() ? 1 : -1, 0, 0, 0);
+
+  // Compute a positive GCD in Z[Sqrt[2]]
+  const vec2i g(Coprime::gcdZ2(x, y).positiveZ2());
+
+  int k;
+
+  /* Divide the coordinates by g (making them primitive) *
+   * and then apply reduction, making (rx, ry) unique.   */
+  const vec2i rx(x.divZ2(g).reduceZ2(k));
+  const vec2i ry(y.divZ2(g).multUnitZ2(k));
+
+  return vec4i(rx, ry);
 }
 
 vec4s vec4s::directL10ToUnique() const {

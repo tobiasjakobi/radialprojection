@@ -202,6 +202,17 @@ public:
     return vec2i(x*x*x + 3*x*y*y + y*y*y, y*(3*x*x + 3*x*y + 2*y*y));
   }
 
+  vec2i positiveZ2() const {
+    if (double(x) + double(y) * sqrt(2.0) < 0)
+      return vec2i(-x, -y);
+    else
+      return vec2i(x, y);
+  }
+
+  bool isPositiveZ2() const {
+    return (double(x) + double(y) * sqrt(2.0) >= 0);
+  }
+
   vec2i positiveGM() const {
     if (double(x) + double(y) * Constants::unitGM < 0)
       return vec2i(-x, -y);
@@ -501,6 +512,11 @@ public:
 #endif
   }
 
+  vec4i(const vec2i& x01, const vec2i& x23) {
+    a[0] = x01.x; a[1] = x01.y;
+    a[2] = x23.x; a[3] = x23.y;
+  }
+
 #ifdef COMMON_USE_SSE
   vec4i(const vec4i& v) : vsse(v.vsse) {}
 #else
@@ -617,6 +633,14 @@ public:
 
   vec2i getSecond() const {
     return vec2i(a[2], a[3]);
+  }
+
+  const vec2i& getFirstDirect() const {
+    return *reinterpret_cast<const vec2i*>(&a[0]);
+  }
+
+  const vec2i& getSecondDirect() const {
+    return *reinterpret_cast<const vec2i*>(&a[2]);
   }
 
   // Transform from L8 to direct-sum representation
@@ -762,6 +786,8 @@ public:
   vec2d orthProjShiftL12(const double scale, bool invert) const {
     return (orthProjL12() * scale) - shift * (invert ? -1.0 : +1.0);
   }
+
+  vec4i directL8ToUnique() const;
 
   static vec2d shift;
 
@@ -909,7 +935,7 @@ public:
   }
 
   // Counterpart to 'transL5ToDirect'
-  vec4s transDirectToL15() const {
+  vec4s transDirectToL5() const {
     return vec4s(a[0] + a[3], a[2] + a[3], -a[1] + a[3], -a[1]);
   }
 

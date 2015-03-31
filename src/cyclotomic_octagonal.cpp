@@ -258,6 +258,37 @@ void Octagonal::extractVisible(const vec4i& origin, bool radialproj,
   delete vlist;
 }
 
+void Octagonal::extractVisibleFast(const vec4i& origin,
+                const Common::vec4ilist& input, Common::vec4ilist& output) {
+  using namespace Common;
+
+  if (input.empty())
+    return;
+
+  vec4ilist temp;
+  temp.reserve(input.size());
+
+  for (vec4ilist::const_iterator i = input.begin(); i != input.end(); ++i) {
+    const vec4i shifted(*i - origin);
+
+    if (shifted.isZero()) continue;
+    temp.push_back(i->transL8ToDirect().directL8ToUnique());
+  }
+
+  sort(temp.begin(), temp.end());
+  temp.erase(unique(temp.begin(), temp.end()), temp.end());
+
+  cerr << "statistics: after (incorrect) visibility computation: "
+       << temp.size() << " vertices visible." << endl;
+
+  output.clear();
+  output.reserve(temp.size());
+
+  // TODO: convert back to non-direct
+  //for (vector<vec4s>::const_iterator i = vlist.begin(); i != vlist.end(); ++i)
+  //  vertices.push_back(i->directL10ToR2());
+}
+
 uint Octagonal::estimateGrowth(uint input, bool steps) {
   const double x = double(input);
 
