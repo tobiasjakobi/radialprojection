@@ -328,11 +328,6 @@ void RhombicPenrose::radialProj(const Common::vec4ilist& input,
   normalizeAngDists(output, meandist);
 }
 
-void RhombicPenrose::extractVisible2(const vec4i& origin, bool radialproj,
-          const Common::vec4ilist& input, Common::vec4ilist& output) {
-  extractVisible(origin, radialproj, false, input, output);
-}
-
 void RhombicPenrose::projTilingVis2(const vec4i& initpoint, uint maxstep,
           Common::vec4ilist& tilingpoints, Common::vec4ilist& visiblepoints) {
   static const vec4i def_origin(0, 0, 0, 0);
