@@ -209,6 +209,94 @@ vec2i vec2i::reduceZ2(int& k) const {
   return vec2i(a, b);
 }
 
+vec2i vec2i::multUnitZ3(int k) const {
+  int a = x;
+  int b = y;
+
+  if (k != 0) {
+    if (k > 0) {
+      while (k != 0) {
+        const int temp[2] = {2*a + 3*b, a + 2*b};
+        a = temp[0];
+        b = temp[1];
+        --k;
+      }
+    } else {
+      while (k != 0) {
+        const int temp[2] = {2*a - 3*b, -a + 2*b};
+        a = temp[0];
+        b = temp[1];
+        ++k;
+      }
+    }
+  }
+
+  return vec2i(a, b);
+}
+
+vec2i vec2i::reduceZ3(int& k) const {
+  // For comments see reduceGM.
+
+  if (x == 0 && y == 0) {
+    k = 0;
+    return *this;
+  }
+
+  int a, b, t;
+  bool sign = false;
+  double z = double(x) + double(y) * sqrt(3.0);
+
+  if (z < 0.0) {
+    a = -x;
+    b = -y;
+    z = -z;
+    sign = true;
+  } else {
+    a = x;
+    b = y;
+  }
+
+  if (this->normZ3() == 1)
+    t = lround(log(z) / log(Constants::unitZ3));
+  else
+    t = floor(log(z) / log(Constants::unitZ3));
+
+  assert(double(t) * log(Constants::unitZ3) <= log(z) + 0.0001);
+  assert(log(z) < double(t+1) * log(Constants::unitZ3));
+
+  k = -t;
+
+  if (t != 0) {
+    if (t < 0) {
+      // Multiply with our unit
+      while (t != 0) {
+        const int temp[2] = {2*a + 3*b, a + 2*b};
+        a = temp[0];
+        b = temp[1];
+        ++t;
+      }
+    } else {
+      // Divide by our unit
+      while (t != 0) {
+        const int temp[2] = {2*a - 3*b, -a + 2*b};
+        a = temp[0];
+        b = temp[1];
+        --t;
+      }
+    }
+  }
+
+  assert(1.0 <= double(a) + double(b) * sqrt(3.0));
+  assert(double(a) + double(b) * sqrt(3.0) < Constants::unitZ3);
+
+  if (sign) {
+    a = -a;
+    b = -b;
+  }
+
+  return vec2i(a, b);
+}
+
 vec2d vec2i::transTriToR2() const {
   static const double factor = sqrt(3.0) * 0.5;
 
@@ -296,6 +384,27 @@ vec4i vec4i::directL5ToUnique() const {
 
   const vec2i rx(x.divGM(g).reduceGM(k));
   const vec2i ry(y.divGM(g).multUnitGM(k));
+
+  return vec4i(rx, ry);
+}
+
+vec4i vec4i::directL12ToUnique() const {
+  if (this->isZero()) return *this;
+
+  // For comments see vec4i::directL9ToUnique().
+
+  const vec2i& x = this->getFirstDirect();
+  const vec2i& y = this->getSecondDirect();
+
+  if (x.isZero()) return vec4i(0, 0, y.isPositiveZ3() ? 1 : -1, 0);
+  if (y.isZero()) return vec4i(x.isPositiveZ3() ? 1 : -1, 0, 0, 0);
+
+  const vec2i g(Coprime::gcdZ3(x, y).positiveZ3());
+
+  int k;
+
+  const vec2i rx(x.divZ3(g).reduceZ3(k));
+  const vec2i ry(y.divZ3(g).multUnitZ3(k));
 
   return vec4i(rx, ry);
 }

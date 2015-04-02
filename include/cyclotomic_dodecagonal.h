@@ -109,6 +109,10 @@ namespace Dodecagonal {
                       const Common::vec4ilist& input,
                       Common::vec4ilist& output);
 
+  // Fast computation of (incorrect) visibility, useful for radial projection.
+  void extractVisibleFast(const vec4i& origin, const Common::vec4ilist& input,
+                          Common::vec4ilist& output);
+
   // Compute estimations based on given 'maxstep' or 'size' value.
   uint estimateGrowth(uint input, bool steps);
 

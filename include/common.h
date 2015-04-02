@@ -202,6 +202,7 @@ public:
     return vec2i(x*x*x + 3*x*y*y + y*y*y, y*(3*x*x + 3*x*y + 2*y*y));
   }
 
+  // Return the 'absolute' value of this element of Z[Sqrt[2]].
   vec2i positiveZ2() const {
     if (double(x) + double(y) * sqrt(2.0) < 0)
       return vec2i(-x, -y);
@@ -209,10 +210,25 @@ public:
       return vec2i(x, y);
   }
 
+  // Check if this element of Z[Sqrt[2]] is 'positive'.
   bool isPositiveZ2() const {
     return (double(x) + double(y) * sqrt(2.0) >= 0);
   }
 
+  // Return the 'absolute' value of this element of Z[Sqrt[3]].
+  vec2i positiveZ3() const {
+    if (double(x) + double(y) * sqrt(3.0) < 0)
+      return vec2i(-x, -y);
+    else
+      return vec2i(x, y);
+  }
+
+  // Check if this element of Z[Sqrt[3]] is 'positive'.
+  bool isPositiveZ3() const {
+    return (double(x) + double(y) * sqrt(3.0) >= 0);
+  }
+
+  // Return the 'absolute' value of this element of Z[tau].
   vec2i positiveGM() const {
     if (double(x) + double(y) * Constants::unitGM < 0)
       return vec2i(-x, -y);
@@ -220,6 +236,7 @@ public:
       return vec2i(x, y);
   }
 
+  // Check if this element of Z[tau] is 'positive'.
   bool isPositiveGM() const {
     return (double(x) + double(y) * Constants::unitGM >= 0);
   }
@@ -241,6 +258,24 @@ public:
   vec2i divZ2(const vec2i& d) const {
     const int norm = d.preNormZ2();
     const int a = this->x * d.x - 2 * this->y * d.y;
+    const int b = d.x * this->y - this->x * d.y;
+
+    return vec2i(a / norm, b / norm);
+  };
+
+  // Check if 'this' can be divided by 'd' in Z[Sqrt[3]].
+  bool isDivZ3(const vec2i& d) const {
+    const int norm = d.preNormZ3();
+    const int a = this->x * d.x - 3 * this->y * d.y;
+    const int b = d.x * this->y - this->x * d.y;
+
+    return ((a % norm == 0) && (b % norm == 0));
+  };
+
+  // Divide 'this' by 'd' in Z[Sqrt[3]], assuming that this is defined.
+  vec2i divZ3(const vec2i& d) const {
+    const int norm = d.preNormZ3();
+    const int a = this->x * d.x - 3 * this->y * d.y;
     const int b = d.x * this->y - this->x * d.y;
 
     return vec2i(a / norm, b / norm);
@@ -311,6 +346,10 @@ public:
   // Same as above, but only in Z[Sqrt[2]].
   vec2i multUnitZ2(int k) const;
   vec2i reduceZ2(int& k) const;
+
+  // Same as above, but only in Z[Sqrt[3]].
+  vec2i multUnitZ3(int k) const;
+  vec2i reduceZ3(int& k) const;
 
   vec2d transTriToR2() const;
 
@@ -800,6 +839,7 @@ public:
   // For comments see vec4s::directL10ToUnique in this header.
   vec4i directL8ToUnique() const;
   vec4i directL5ToUnique() const;
+  vec4i directL12ToUnique() const;
 
   static vec2d shift;
 

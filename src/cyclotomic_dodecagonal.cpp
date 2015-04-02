@@ -358,6 +358,37 @@ void Dodecagonal::extractVisible(const vec4i& origin, bool radialproj,
   delete vlist;
 }
 
+
+void Dodecagonal::extractVisibleFast(const vec4i& origin,
+                const Common::vec4ilist& input, Common::vec4ilist& output) {
+  using namespace Common;
+
+  if (input.empty())
+    return;
+
+  vec4ilist temp;
+  temp.reserve(input.size());
+
+  for (vec4ilist::const_iterator i = input.begin(); i != input.end(); ++i) {
+    const vec4i shifted(*i - origin);
+
+    if (shifted.isZero()) continue;
+    temp.push_back(i->transL12ToDirect().directL12ToUnique());
+  }
+
+  sort(temp.begin(), temp.end());
+  temp.erase(unique(temp.begin(), temp.end()), temp.end());
+
+  cerr << "statistics: after (incorrect) visibility computation: "
+       << temp.size() << " vertices visible." << endl;
+
+  output.clear();
+  output.reserve(temp.size());
+
+  for (vec4ilist::const_iterator i = temp.begin(); i != temp.end(); ++i)
+    output.push_back(i->transDirectToL12());
+}
+
 uint Dodecagonal::estimateGrowth(uint input, bool steps) {
   const double x = double(input);
 
