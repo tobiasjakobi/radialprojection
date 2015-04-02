@@ -25,22 +25,22 @@
 namespace CyclotomicRandom {
   const static RadialFunc octagonalRF(
     Octagonal::projTiling, Octagonal::projTilingVisLocal2,
-    Octagonal::extractVisible, Octagonal::radialProj2,
+    Octagonal::extractVisibleFast, Octagonal::radialProj2,
     Octagonal::estimateGrowth);
 
   const static RadialFunc decagonalRF(
     Decagonal::projTiling, Decagonal::projTilingVisLocal,
-    Decagonal::extractVisible, Decagonal::radialProj,
+    Decagonal::extractVisibleFast, Decagonal::radialProj,
     Decagonal::estimateGrowth);
 
   const static RadialFunc dodecagonalRF(
     Dodecagonal::projTiling, Dodecagonal::projTilingVisLocal,
-    Dodecagonal::extractVisible, Dodecagonal::radialProj,
+    Dodecagonal::extractVisibleFast, Dodecagonal::radialProj,
     Dodecagonal::estimateGrowth);
 
   const static RadialFunc rhombicPenroseRF(
     RhombicPenrose::projTiling, RhombicPenrose::projTilingVis2,
-    RhombicPenrose::extractVisible2, RhombicPenrose::radialProj,
+    RhombicPenrose::extractVisibleFast, RhombicPenrose::radialProj,
     RhombicPenrose::estimateGrowth);
 };
 
@@ -109,7 +109,7 @@ void CyclotomicRandom::RadialFunc::call(random_mode mode, uint steps,
     randomize<Common::vec4ilist>(tiling, visible, prob);
     tiling.swap(visible);
     randomization_stats_msg(tiling);
-    extractVisible(init, true, tiling, visible);
+    extractVisible(init, tiling, visible);
   } else {
     assert(false);
     return;
