@@ -150,7 +150,7 @@ void RhombicPenrose::projTiling(const vec4i& initpoint, uint maxstep,
 
 void RhombicPenrose::projTilingVis(const vec4i& initpoint,
              const vec4i& origin,
-             uint maxstep, bool radialproj,
+             uint maxstep, uint flags,
              Common::vec4ilist& tilingpoints,
              Common::vec4ilist& visiblepoints) {
   using namespace Common;
@@ -196,8 +196,12 @@ void RhombicPenrose::projTilingVis(const vec4i& initpoint,
   cerr << "Constructed patch of rhombic penrose tiling with "
        << tilingpoints.size() << " vertices.\n";
 
-  extractVisible(origin, radialproj, origin.isZero() && radialproj,
-                 tilingpoints, visiblepoints);
+  /* If tiling vertices are going to used for radial projection, we can
+   * proceed using the fastvis routines. */
+  if (flags & proj_tiling_radialprojection)
+    extractVisibleFast(origin, tilingpoints, visiblepoints);
+  else
+    extractVisible(origin, flags, tilingpoints, visiblepoints);
 }
 
 void RhombicPenrose::extractSector(const Common::vec4ilist& input,
@@ -206,22 +210,23 @@ void RhombicPenrose::extractSector(const Common::vec4ilist& input,
   Decagonal::extractSector(input, output);
 }
 
-void RhombicPenrose::extractVisible(const vec4i& origin, bool radialproj,
-                      bool onlySector, const Common::vec4ilist& input,
-                      Common::vec4ilist& output) {
+void RhombicPenrose::extractVisible(const vec4i& origin, uint flags,
+                      const Common::vec4ilist& input, Common::vec4ilist& output) {
   using namespace Common;
 
-  const bool default_origin = origin.isZero();
+  const bool radialproj = flags & proj_tiling_radialprojection;
+  const bool onlysector = flags & proj_tiling_onlysector;
+
   VisList* vlist = new VisList;
 
-  if (radialproj && default_origin)
+  if (radialproj && origin.isZero())
     vlist->reserve((input.size() - 1) / 5);
   else
     vlist->reserve(input.size() - 1);
 
   vlist->init();
 
-  if (radialproj && onlySector) {
+  if (radialproj && onlysector) {
     for (vec4ilist::const_iterator i = input.begin(); i != input.end(); ++i) {
       if (i->isZero()) continue;
 
@@ -306,7 +311,7 @@ void RhombicPenrose::projTilingVis2(const vec4i& initpoint, uint maxstep,
           Common::vec4ilist& tilingpoints, Common::vec4ilist& visiblepoints) {
   static const vec4i def_origin(0, 0, 0, 0);
 
-  projTilingVis(initpoint, def_origin, maxstep, false,
+  projTilingVis(initpoint, def_origin, maxstep, Common::proj_tiling_none,
                 tilingpoints, visiblepoints);
 }
 

@@ -196,7 +196,8 @@ int SingleMachine::main(int argc, char* argv[]) {
     break;
 
     case rhmbpenrose_tiling:
-      RhombicPenrose::projTilingVis(init, origin, steps, false, tiling, visible);
+      RhombicPenrose::projTilingVis(init, origin, steps, Common::proj_tiling_none, // TODO: better onlySector handling
+                                    tiling, visible);
 
       if (sector && use_default_origin) {
         Common::vec4ilist vistilSector;
@@ -208,7 +209,9 @@ int SingleMachine::main(int argc, char* argv[]) {
     break;
 
     case rhmbpenrose_radprj:
-      RhombicPenrose::projTilingVis(init, origin, steps, true, tiling, visible);
+      RhombicPenrose::projTilingVis(init, origin, steps,
+                                    Common::proj_tiling_radialprojection,
+                                    tiling, visible);
       RhombicPenrose::radialProj(visible, spacings, mean);
     break;
 
