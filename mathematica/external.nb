@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[     15700,        458]
-NotebookOptionsPosition[     14967,        433]
-NotebookOutlinePosition[     15401,        450]
-CellTagsIndexPosition[     15358,        447]
+NotebookDataLength[     17461,        509]
+NotebookOptionsPosition[     16686,        483]
+NotebookOutlinePosition[     17120,        500]
+CellTagsIndexPosition[     17077,        497]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -429,7 +429,57 @@ Cell[BoxData[
           RowBox[{"Range", "[", 
            RowBox[{"1", ",", "rmax"}], "]"}]}], "]"}]}]}], "]"}]}], 
     ";"}]}]}]], "Input",
- CellChangeTimes->{{3.6316202882060547`*^9, 3.6316203016811132`*^9}}]
+ CellChangeTimes->{{3.6316202882060547`*^9, 3.6316203016811132`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "Bin", " ", "transformation", " ", "routines", " ", "when", " ", "working",
+     " ", "with", " ", "histogram", " ", "tail", " ", 
+    RowBox[{"data", "."}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"normalizeTail", "[", 
+      RowBox[{"list_", ",", "start_", ",", "step_"}], "]"}], ":=", 
+     RowBox[{"Map", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"start", "+", 
+           RowBox[{
+            RowBox[{"(", 
+             RowBox[{"#", "-", "1"}], ")"}], "*", "step"}]}], ",", 
+          RowBox[{"list", "[", 
+           RowBox[{"[", "#", "]"}], "]"}]}], "}"}], "&"}], ",", 
+       RowBox[{"Range", "[", 
+        RowBox[{"1", ",", 
+         RowBox[{"Length", "[", "list", "]"}]}], "]"}]}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"computeQuadraticError", "[", 
+      RowBox[{"list_", ",", "ffunc_"}], "]"}], ":=", 
+     RowBox[{
+      RowBox[{"Apply", "[", 
+       RowBox[{"Plus", ",", 
+        RowBox[{"Map", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{"Abs", "[", 
+             RowBox[{
+              RowBox[{"Part", "[", 
+               RowBox[{"#", ",", "2"}], "]"}], "-", 
+              RowBox[{"ffunc", "[", 
+               RowBox[{"Part", "[", 
+                RowBox[{"#", ",", "1"}], "]"}], "]"}]}], "]"}], "^", "2"}], 
+           "&"}], ",", "list"}], "]"}]}], "]"}], "/", 
+      RowBox[{"Length", "[", "list", "]"}]}]}], ";"}]}]}]], "Input",
+ CellChangeTimes->{{3.636982435092785*^9, 3.6369824541836643`*^9}, {
+  3.636982839659565*^9, 3.6369828401141443`*^9}}]
 },
 WindowSize->{1600, 1136},
 WindowMargins->{{0, Automatic}, {Automatic, 0}},
@@ -459,7 +509,8 @@ Cell[6004, 185, 834, 23, 104, "Input"],
 Cell[6841, 210, 1728, 45, 162, "Input"],
 Cell[8572, 257, 1920, 49, 191, "Input"],
 Cell[10495, 308, 2546, 67, 307, "Input"],
-Cell[13044, 377, 1919, 54, 162, "Input"]
+Cell[13044, 377, 1919, 54, 162, "Input"],
+Cell[14966, 433, 1716, 48, 133, "Input"]
 }
 ]
 *)
