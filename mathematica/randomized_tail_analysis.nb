@@ -1,0 +1,205 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 9.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[      7221,        196]
+NotebookOptionsPosition[      6813,        178]
+NotebookOutlinePosition[      7170,        194]
+CellTagsIndexPosition[      7127,        191]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"ClearAll", "[", 
+   RowBox[{"fitfncPoly", ",", "fitfncExp"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ClearAll", "[", 
+   RowBox[{"fitparamPoly", ",", "fitparamExp", ",", "computeRandomTailFit"}], 
+   "]"}], ";"}]}], "Input",
+ CellChangeTimes->{{3.6369827217674828`*^9, 3.6369827457523527`*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"fitfncPoly", "=", 
+   RowBox[{"Function", "[", 
+    RowBox[{"x", ",", 
+     RowBox[{
+      RowBox[{"a", "*", 
+       RowBox[{"x", "^", "3"}]}], "+", 
+      RowBox[{"b", "*", 
+       RowBox[{"x", "^", "4"}]}]}]}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"fitfncExp", "=", 
+   RowBox[{"Function", "[", 
+    RowBox[{"x", ",", 
+     RowBox[{"Exp", "[", 
+      RowBox[{"a", "/", "x"}], "]"}]}], "]"}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.637401155160605*^9, 3.637401158997759*^9}, 
+   3.637401230336494*^9, {3.637401272776457*^9, 3.637401274250938*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"fitparamPoly", "=", 
+   RowBox[{"{", 
+    RowBox[{"a", ",", "b"}], "}"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"fitparamExp", "=", 
+   RowBox[{"{", "a", "}"}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.636982699917419*^9, 3.6369827158968363`*^9}, {
+  3.637401161898349*^9, 3.637401162197612*^9}, {3.637401232335352*^9, 
+  3.637401232498774*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"computeRandomTailFit", "[", 
+    RowBox[{"filename_", ",", "tparams_", ",", "prange_"}], "]"}], ":=", 
+   RowBox[{"Module", "[", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "input", ",", "firstZeroPos", ",", "workingSet", ",", 
+       "\[IndentingNewLine]", "inverseSet", ",", "fitPoly", ",", "fitExp"}], 
+      "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"input", "=", 
+       RowBox[{"ReadExtFloatData", "[", "filename", "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"firstZeroPos", "=", 
+       RowBox[{"Min", "[", 
+        RowBox[{"Flatten", "[", 
+         RowBox[{"Position", "[", 
+          RowBox[{"input", ",", "0.0"}], "]"}], "]"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"workingSet", "=", 
+       RowBox[{"normalizeTail", "[", 
+        RowBox[{
+         RowBox[{"input", "[", 
+          RowBox[{"[", 
+           RowBox[{"1", ";;", 
+            RowBox[{"firstZeroPos", "-", "1"}]}], "]"}], "]"}], ",", 
+         RowBox[{"tparams", "[", 
+          RowBox[{"[", "1", "]"}], "]"}], ",", 
+         RowBox[{"tparams", "[", 
+          RowBox[{"[", "2", "]"}], "]"}]}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"inverseSet", "=", 
+       RowBox[{"Map", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"1", "/", 
+             RowBox[{"Part", "[", 
+              RowBox[{"#", ",", "1"}], "]"}]}], ",", 
+            RowBox[{"Part", "[", 
+             RowBox[{"#", ",", "2"}], "]"}]}], "}"}], "&"}], ",", 
+         "workingSet"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"fitPoly", "=", 
+       RowBox[{"FindFit", "[", 
+        RowBox[{"inverseSet", ",", 
+         RowBox[{"fitfncPoly", "[", "t", "]"}], ",", "fitparamPoly", ",", 
+         "t"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"fitExp", "=", 
+       RowBox[{"FindFit", "[", 
+        RowBox[{"inverseSet", ",", 
+         RowBox[{"fitfncExp", "[", "t", "]"}], ",", "fitparamExp", ",", "t"}],
+         "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"Print", "[", 
+       RowBox[{"{", 
+        RowBox[{"fitPoly", ",", "fitExp", ",", "\[IndentingNewLine]", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"computeQuadraticError", "[", 
+            RowBox[{"inverseSet", ",", 
+             RowBox[{"fitfncPoly", "/.", "fitPoly"}]}], "]"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"computeQuadraticError", "[", 
+            RowBox[{"inverseSet", ",", 
+             RowBox[{"fitfncExp", "/.", "fitExp"}]}], "]"}]}], "}"}]}], "}"}],
+        "]"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"Show", "[", 
+       RowBox[{
+        RowBox[{"ListPlot", "[", 
+         RowBox[{"inverseSet", ",", 
+          RowBox[{"PlotRange", "\[Rule]", "Full"}]}], "]"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"Plot", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"(", 
+              RowBox[{"fitfncPoly", "/.", "fitPoly"}], ")"}], "[", "t", "]"}],
+             ",", 
+            RowBox[{
+             RowBox[{"(", 
+              RowBox[{"fitfncExp", "/.", "fitExp"}], ")"}], "[", "t", "]"}]}],
+            "}"}], ",", "\[IndentingNewLine]", 
+          RowBox[{"{", 
+           RowBox[{"t", ",", "0", ",", "prange"}], "}"}]}], "]"}], ",", 
+        RowBox[{"ImageSize", "\[Rule]", "Large"}]}], "]"}]}]}], 
+    "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.6369825663987703`*^9, 3.6369826843612013`*^9}, {
+   3.636982757273164*^9, 3.636982821763688*^9}, {3.636982942357609*^9, 
+   3.6369830623280087`*^9}, {3.6369831469320993`*^9, 3.636983147235017*^9}, 
+   3.636983324130457*^9}],
+
+Cell[BoxData[
+ RowBox[{"computeRandomTailFit", "[", 
+  RowBox[{
+  "\"\</homes/tjakobi/PhD_Work/radialprojection/tout1/z2_rndvis_95.tail-1.5.\
+env\>\"", ",", "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{"1.5", ",", "0.1"}], "}"}], ",", "6.0"}], "]"}]], "Input",
+ CellChangeTimes->{{3.636983072668985*^9, 3.6369831007347307`*^9}, {
+   3.636983179197153*^9, 3.636983179307933*^9}, {3.636983239484397*^9, 
+   3.636983239611822*^9}, {3.63698327676299*^9, 3.636983276890109*^9}, {
+   3.636983408789694*^9, 3.636983422324217*^9}, {3.636983473123108*^9, 
+   3.636983502625917*^9}, {3.636983541040455*^9, 3.6369835473114033`*^9}, {
+   3.636983580972761*^9, 3.636983586393442*^9}, 3.63698411443189*^9, {
+   3.636984164357184*^9, 3.636984164484858*^9}, {3.636984214963319*^9, 
+   3.63698421512294*^9}, {3.636984819145067*^9, 3.636984834154847*^9}, {
+   3.637401034463496*^9, 3.6374010518708982`*^9}, {3.637401102668948*^9, 
+   3.637401102779022*^9}, {3.637401183198162*^9, 3.637401210155485*^9}, {
+   3.6374012951549673`*^9, 3.637401331730916*^9}, {3.637401375731513*^9, 
+   3.637401430142919*^9}}]
+},
+WindowSize->{1920, 1140},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+Magnification->1.25,
+FrontEndVersion->"9.0 for Linux x86 (64-bit) (January 25, 2013)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[557, 20, 353, 9, 64, "Input"],
+Cell[913, 31, 610, 17, 64, "Input"],
+Cell[1526, 50, 397, 10, 64, "Input"],
+Cell[1926, 62, 3785, 94, 414, "Input"],
+Cell[5714, 158, 1095, 18, 64, "Input"]
+}
+]
+*)
+
+(* End of internal cache information *)
