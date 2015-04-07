@@ -1,0 +1,155 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 9.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[      4745,        145]
+NotebookOptionsPosition[      4340,        127]
+NotebookOutlinePosition[      4697,        143]
+CellTagsIndexPosition[      4654,        140]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+  "filePrefix", ":=", 
+   "\"\</dev/shm/tjakobi/decagonal_rndvis_1100s/decagonal_rndvis_hq_\>\""}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.637401489663969*^9, 3.637401501944065*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Map", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      RowBox[{
+       RowBox[{"envelopeData", "[", 
+        RowBox[{"Current", "[", "#", "]"}], "]"}], "=", "\[IndentingNewLine]", 
+       RowBox[{"ReadDoubleData", "[", 
+        RowBox[{"StringJoin", "[", 
+         RowBox[{"filePrefix", ",", 
+          RowBox[{"ToString", "[", "#", "]"}], ",", "\"\<.env\>\""}], "]"}], 
+        "]"}]}], ";"}], "&"}], ",", 
+    RowBox[{"Range", "[", 
+     RowBox[{"1", ",", "99"}], "]"}]}], "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.6373957367255077`*^9, 3.6373958447400208`*^9}, {
+  3.637399264117655*^9, 3.637399284420784*^9}, {3.6374015003823*^9, 
+  3.637401510987369*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Map", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      RowBox[{"envelopeFct", "[", 
+       RowBox[{"Current", "[", "#", "]"}], "]"}], "=", "\[IndentingNewLine]", 
+      
+      RowBox[{"Interpolation", "[", 
+       RowBox[{"transformEnvData", "[", 
+        RowBox[{
+         RowBox[{"Current", "[", "#", "]"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"3.0", ",", "0.01"}], "}"}]}], "]"}], "]"}]}], ";"}], "&"}],
+    ",", 
+   RowBox[{"Range", "[", 
+    RowBox[{"1", ",", "99"}], "]"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.637395877255025*^9, 3.637395988561376*^9}, {
+  3.637399289686236*^9, 3.637399290396573*^9}, {3.637401522863904*^9, 
+  3.637401527551042*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Plot", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"envelopeFct", "[", 
+     RowBox[{"Current", "[", "50", "]"}], "]"}], "[", "t", "]"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"t", ",", "0", ",", "3"}], "}"}], ",", 
+   RowBox[{"PlotRange", "\[Rule]", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"0", ",", "3.0"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"0", ",", "1.2"}], "}"}]}], "}"}]}], ",", 
+   RowBox[{"ImageSize", "\[Rule]", "Large"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.637397007275709*^9, 3.637397037708489*^9}, {
+  3.637398900059743*^9, 3.6373989028398542`*^9}, {3.637399299525036*^9, 
+  3.637399325604484*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Map", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"Export", "[", 
+      RowBox[{
+       RowBox[{"StringJoin", "[", 
+        RowBox[{"filePrefix", ",", 
+         RowBox[{"IntegerString", "[", 
+          RowBox[{"#", ",", "10", ",", "2"}], "]"}], ",", "\"\<.bmp\>\""}], 
+        "]"}], ",", "\[IndentingNewLine]", 
+       RowBox[{"Plot", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"envelopeFct", "[", 
+           RowBox[{"Current", "[", "#", "]"}], "]"}], "[", "t", "]"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"t", ",", "0", ",", "3"}], "}"}], ",", 
+         RowBox[{"PlotRange", "\[Rule]", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"0", ",", "3.0"}], "}"}], ",", 
+            RowBox[{"{", 
+             RowBox[{"0", ",", "1.2"}], "}"}]}], "}"}]}], ",", 
+         RowBox[{"ImageSize", "\[Rule]", "Large"}]}], "]"}]}], "]"}], "&"}], 
+    ",", "\[IndentingNewLine]", 
+    RowBox[{"Range", "[", 
+     RowBox[{"1", ",", "99"}], "]"}]}], "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.6373959958992043`*^9, 3.6373960367546873`*^9}, 
+   3.637396736058984*^9, 3.6373968586760178`*^9, {3.6373968923278303`*^9, 
+   3.637396897046918*^9}, {3.637396984564374*^9, 3.637396999504504*^9}, 
+   3.6373970466517878`*^9, {3.637398896616426*^9, 3.6373989125670547`*^9}, {
+   3.637399348760934*^9, 3.637399353157646*^9}, {3.637401549380032*^9, 
+   3.637401568859277*^9}}]
+},
+WindowSize->{1920, 1140},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+Magnification->1.25,
+FrontEndVersion->"9.0 for Linux x86 (64-bit) (January 25, 2013)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[557, 20, 220, 6, 38, "Input"],
+Cell[780, 28, 701, 18, 64, "Input"],
+Cell[1484, 48, 710, 20, 64, "Input"],
+Cell[2197, 70, 677, 18, 38, "Input"],
+Cell[2877, 90, 1459, 35, 89, "Input"]
+}
+]
+*)
+
+(* End of internal cache information *)
+
