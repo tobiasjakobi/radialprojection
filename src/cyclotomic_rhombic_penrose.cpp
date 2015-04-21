@@ -311,7 +311,7 @@ void RhombicPenrose::projTilingVis2(const vec4i& initpoint, uint maxstep,
           Common::vec4ilist& tilingpoints, Common::vec4ilist& visiblepoints) {
   static const vec4i def_origin(0, 0, 0, 0);
 
-  projTilingVis(initpoint, def_origin, maxstep, Common::proj_tiling_none,
+  projTilingVis(initpoint, def_origin, maxstep, Common::proj_tiling_radialprojection,
                 tilingpoints, visiblepoints);
 }
 
