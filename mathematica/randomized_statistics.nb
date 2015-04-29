@@ -1,0 +1,233 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 9.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[      7006,        223]
+NotebookOptionsPosition[      6257,        196]
+NotebookOutlinePosition[      6614,        212]
+CellTagsIndexPosition[      6571,        209]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"ClearAll", "[", 
+   RowBox[{"filePrefix", ",", "fileName"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ClearAll", "[", "dataExternStatistics", "]"}], ";"}]}], "Input",
+ CellChangeTimes->{{3.6393133963573647`*^9, 3.639313411077523*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+  "filePrefix", ":=", 
+   "\"\</homes/tjakobi/PhD_Work/radialprojection/datafiles/\>\""}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+  "fileName", ":=", 
+   "\"\<cyclotomic_random/rhombic_penrose_rndvis_1000s.stats\>\""}], 
+  ";"}]}], "Input",
+ CellChangeTimes->{{3.639311454751513*^9, 3.6393115273272247`*^9}, 
+   3.639313379587922*^9, 3.639313436527215*^9, 3.639313888839753*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"dataExternStatistics", "=", 
+   RowBox[{"<<", 
+    RowBox[{"(", 
+     RowBox[{"StringJoin", "[", 
+      RowBox[{"filePrefix", ",", "fileName"}], "]"}], ")"}]}]}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.6393115487401953`*^9, 3.639311572448154*^9}, {
+  3.639311669246231*^9, 3.639311688720462*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Length", "[", "dataExternStatistics", "]"}]], "Input",
+ CellChangeTimes->{{3.639311575594963*^9, 3.639311581505864*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ClearAll", "[", 
+   RowBox[{
+   "dataMinimumValue", ",", "dataMaximumValue", ",", "dataPeakValue"}], "]"}],
+   ";"}]], "Input",
+ CellChangeTimes->{{3.639313414294682*^9, 3.6393134222643347`*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"dataMinimumValue", "=", 
+   RowBox[{"Map", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"1.0", "-", 
+         RowBox[{"Part", "[", 
+          RowBox[{"#", ",", "1"}], "]"}]}], ",", 
+        RowBox[{"Part", "[", 
+         RowBox[{"#", ",", "2"}], "]"}]}], "}"}], "&"}], ",", 
+     "dataExternStatistics"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"dataMaximumValue", "=", 
+   RowBox[{"Map", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"1.0", "-", 
+         RowBox[{"Part", "[", 
+          RowBox[{"#", ",", "1"}], "]"}]}], ",", 
+        RowBox[{"Part", "[", 
+         RowBox[{"#", ",", "3"}], "]"}]}], "}"}], "&"}], ",", 
+     "dataExternStatistics"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"dataPeakValue", "=", 
+   RowBox[{"Map", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"1.0", "-", 
+         RowBox[{"Part", "[", 
+          RowBox[{"#", ",", "1"}], "]"}]}], ",", 
+        RowBox[{"Part", "[", 
+         RowBox[{"#", ",", "4"}], "]"}]}], "}"}], "&"}], ",", 
+     "dataExternStatistics"}], "]"}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.639311730853202*^9, 3.639311838244141*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"ClearAll", "[", 
+   RowBox[{"fitFuncLinear", ",", "fitFuncCubic"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ClearAll", "[", 
+   RowBox[{"fitVarsLinear", ",", "fitVarsCubic"}], "]"}], ";"}]}], "Input",
+ CellChangeTimes->{{3.6393137213354197`*^9, 3.639313746315295*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"fitFuncLinear", "[", "t_", "]"}], ":=", 
+   RowBox[{"a", "*", "t"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"fitFuncCubic", "[", "t_", "]"}], ":=", 
+   RowBox[{
+    RowBox[{"a", "*", "t"}], "+", 
+    RowBox[{"b", "*", 
+     RowBox[{"t", "^", "2"}]}], "+", 
+    RowBox[{"c", "*", 
+     RowBox[{"t", "^", "3"}]}]}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"fitVarsLinear", ":=", 
+   RowBox[{"{", "a", "}"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"fitVarsCubic", ":=", 
+   RowBox[{"{", 
+    RowBox[{"a", ",", "b", ",", "c"}], "}"}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.6393136290974913`*^9, 3.6393136422600327`*^9}, {
+  3.639313681055132*^9, 3.639313726184935*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ClearAll", "[", 
+   RowBox[{"fitLinear", ",", "fitCubic"}], "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.6393138953939457`*^9, 3.6393139033533154`*^9}}],
+
+Cell[BoxData[{
+ RowBox[{"fitLinear", "=", 
+  RowBox[{"FindFit", "[", 
+   RowBox[{"dataMinimumValue", ",", 
+    RowBox[{"fitFuncLinear", "[", "t", "]"}], ",", "fitVarsLinear", ",", 
+    "t"}], "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{"fitCubic", "=", 
+  RowBox[{"FindFit", "[", 
+   RowBox[{"dataMinimumValue", ",", 
+    RowBox[{"fitFuncCubic", "[", "t", "]"}], ",", "fitVarsCubic", ",", "t"}], 
+   "]"}]}]}], "Input",
+ CellChangeTimes->{
+  3.639313621909576*^9, {3.6393137514347563`*^9, 3.639313778221653*^9}, {
+   3.639313838346859*^9, 3.639313839433009*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Show", "[", 
+  RowBox[{
+   RowBox[{"ListPlot", "[", "dataMinimumValue", "]"}], ",", 
+   RowBox[{"Plot", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"fitFuncLinear", "[", "t", "]"}], "/.", "fitLinear"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"t", ",", "0", ",", "1"}], "}"}]}], "]"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.6393118131147957`*^9, 3.639311817959721*^9}, {
+  3.639313802203843*^9, 3.6393138517442923`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Show", "[", 
+  RowBox[{
+   RowBox[{"ListPlot", "[", "dataMinimumValue", "]"}], ",", 
+   RowBox[{"Plot", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"fitFuncCubic", "[", "t", "]"}], "/.", "fitCubic"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"t", ",", "0", ",", "1"}], "}"}]}], "]"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.639313866525976*^9, 3.639313869035821*^9}}],
+
+Cell[BoxData[
+ RowBox[{"ListPlot", "[", "dataMaximumValue", "]"}]], "Input",
+ CellChangeTimes->{3.639312283170413*^9}],
+
+Cell[BoxData[
+ RowBox[{"ListPlot", "[", "dataPeakValue", "]"}]], "Input",
+ CellChangeTimes->{{3.63931229173454*^9, 3.639312294901228*^9}}]
+},
+WindowSize->{1920, 1140},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+Magnification->1.25,
+FrontEndVersion->"9.0 for Linux x86 (64-bit) (January 25, 2013)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[557, 20, 291, 7, 64, "Input"],
+Cell[851, 29, 430, 12, 64, "Input"],
+Cell[1284, 43, 334, 9, 38, "Input"],
+Cell[1621, 54, 144, 2, 38, "Input"],
+Cell[1768, 58, 230, 6, 38, "Input"],
+Cell[2001, 66, 1285, 40, 89, "Input"],
+Cell[3289, 108, 326, 8, 64, "Input"],
+Cell[3618, 118, 770, 22, 114, "Input"],
+Cell[4391, 142, 188, 4, 38, "Input"],
+Cell[4582, 148, 560, 13, 64, "Input"],
+Cell[5145, 163, 449, 11, 38, "Input"],
+Cell[5597, 176, 394, 10, 38, "Input"],
+Cell[5994, 188, 118, 2, 38, "Input"],
+Cell[6115, 192, 138, 2, 38, "Input"]
+}
+]
+*)
+
+(* End of internal cache information *)
+
