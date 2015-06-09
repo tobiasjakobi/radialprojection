@@ -10,14 +10,33 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[      7221,        196]
-NotebookOptionsPosition[      6813,        178]
-NotebookOutlinePosition[      7170,        194]
-CellTagsIndexPosition[      7127,        191]
+NotebookDataLength[     22504,        615]
+NotebookOptionsPosition[     21619,        585]
+NotebookOutlinePosition[     21976,        601]
+CellTagsIndexPosition[     21933,        598]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
 Notebook[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ClearAll", "[", 
+   RowBox[{"filePrefix", ",", "filePostfix"}], "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.637411067485918*^9, 3.6374110780838842`*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+  "filePrefix", ":=", 
+   "\"\</dev/shm/tjakobi/randomized_tails/z2_visrnd_\>\""}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"filePostfix", ":=", "\"\<.tail-1.5.env\>\""}], ";"}]}], "Input",
+ CellChangeTimes->{{3.637411028294928*^9, 3.6374110634404173`*^9}, {
+  3.6374117049577103`*^9, 3.637411706500876*^9}, {3.637414711221178*^9, 
+  3.637414712003869*^9}, {3.637415719058283*^9, 3.63741574037309*^9}, {
+  3.637485983490438*^9, 3.637485986753727*^9}}],
+
 Cell[BoxData[{
  RowBox[{
   RowBox[{"ClearAll", "[", 
@@ -116,53 +135,62 @@ Cell[BoxData[
         RowBox[{"inverseSet", ",", 
          RowBox[{"fitfncExp", "[", "t", "]"}], ",", "fitparamExp", ",", "t"}],
          "]"}]}], ";", "\[IndentingNewLine]", 
-      RowBox[{"Print", "[", 
-       RowBox[{"{", 
-        RowBox[{"fitPoly", ",", "fitExp", ",", "\[IndentingNewLine]", 
-         RowBox[{"{", 
-          RowBox[{
-           RowBox[{"computeQuadraticError", "[", 
-            RowBox[{"inverseSet", ",", 
-             RowBox[{"fitfncPoly", "/.", "fitPoly"}]}], "]"}], ",", 
-           "\[IndentingNewLine]", 
-           RowBox[{"computeQuadraticError", "[", 
-            RowBox[{"inverseSet", ",", 
-             RowBox[{"fitfncExp", "/.", "fitExp"}]}], "]"}]}], "}"}]}], "}"}],
-        "]"}], ";", "\[IndentingNewLine]", 
-      RowBox[{"Show", "[", 
-       RowBox[{
-        RowBox[{"ListPlot", "[", 
-         RowBox[{"inverseSet", ",", 
-          RowBox[{"PlotRange", "\[Rule]", "Full"}]}], "]"}], ",", 
-        "\[IndentingNewLine]", 
-        RowBox[{"Plot", "[", 
+      RowBox[{"{", 
+       RowBox[{"fitPoly", ",", "fitExp", ",", "\[IndentingNewLine]", 
+        RowBox[{"{", 
          RowBox[{
-          RowBox[{"{", 
+          RowBox[{"computeQuadraticError", "[", 
+           RowBox[{"inverseSet", ",", 
+            RowBox[{"fitfncPoly", "/.", "fitPoly"}]}], "]"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"computeQuadraticError", "[", 
+           RowBox[{"inverseSet", ",", 
+            RowBox[{"fitfncExp", "/.", "fitExp"}]}], "]"}]}], "}"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"Show", "[", 
+         RowBox[{
+          RowBox[{"ListPlot", "[", 
+           RowBox[{"inverseSet", ",", 
+            RowBox[{"PlotRange", "\[Rule]", "Full"}]}], "]"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"Plot", "[", 
            RowBox[{
-            RowBox[{
-             RowBox[{"(", 
-              RowBox[{"fitfncPoly", "/.", "fitPoly"}], ")"}], "[", "t", "]"}],
-             ",", 
-            RowBox[{
-             RowBox[{"(", 
-              RowBox[{"fitfncExp", "/.", "fitExp"}], ")"}], "[", "t", "]"}]}],
-            "}"}], ",", "\[IndentingNewLine]", 
-          RowBox[{"{", 
-           RowBox[{"t", ",", "0", ",", "prange"}], "}"}]}], "]"}], ",", 
-        RowBox[{"ImageSize", "\[Rule]", "Large"}]}], "]"}]}]}], 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"(", 
+                RowBox[{"fitfncPoly", "/.", "fitPoly"}], ")"}], "[", "t", 
+               "]"}], ",", 
+              RowBox[{
+               RowBox[{"(", 
+                RowBox[{"fitfncExp", "/.", "fitExp"}], ")"}], "[", "t", 
+               "]"}]}], "}"}], ",", "\[IndentingNewLine]", 
+            RowBox[{"{", 
+             RowBox[{"t", ",", "0", ",", "prange"}], "}"}]}], "]"}], ",", 
+          RowBox[{"ImageSize", "\[Rule]", "Large"}]}], "]"}]}], "}"}]}]}], 
     "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
  CellChangeTimes->{{3.6369825663987703`*^9, 3.6369826843612013`*^9}, {
    3.636982757273164*^9, 3.636982821763688*^9}, {3.636982942357609*^9, 
    3.6369830623280087`*^9}, {3.6369831469320993`*^9, 3.636983147235017*^9}, 
-   3.636983324130457*^9}],
+   3.636983324130457*^9, {3.637410943356636*^9, 3.637410956645382*^9}}],
 
 Cell[BoxData[
- RowBox[{"computeRandomTailFit", "[", 
-  RowBox[{
-  "\"\</homes/tjakobi/PhD_Work/radialprojection/tout1/z2_rndvis_95.tail-1.5.\
-env\>\"", ",", "\[IndentingNewLine]", 
-   RowBox[{"{", 
-    RowBox[{"1.5", ",", "0.1"}], "}"}], ",", "6.0"}], "]"}]], "Input",
+ RowBox[{
+  RowBox[{"histData0", "=", 
+   RowBox[{"Map", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"computeRandomTailFit", "[", 
+       RowBox[{
+        RowBox[{"StringJoin", "[", 
+         RowBox[{"filePrefix", ",", 
+          RowBox[{"ToString", "[", "#", "]"}], ",", "filePostfix"}], "]"}], 
+        ",", "\[IndentingNewLine]", 
+        RowBox[{"{", 
+         RowBox[{"1.5", ",", "0.1"}], "}"}], ",", "6.0"}], "]"}], "&"}], ",", 
+     
+     RowBox[{"Range", "[", 
+      RowBox[{"1", ",", "99"}], "]"}]}], "]"}]}], ";"}]], "Input",
  CellChangeTimes->{{3.636983072668985*^9, 3.6369831007347307`*^9}, {
    3.636983179197153*^9, 3.636983179307933*^9}, {3.636983239484397*^9, 
    3.636983239611822*^9}, {3.63698327676299*^9, 3.636983276890109*^9}, {
@@ -174,7 +202,386 @@ env\>\"", ",", "\[IndentingNewLine]",
    3.637401034463496*^9, 3.6374010518708982`*^9}, {3.637401102668948*^9, 
    3.637401102779022*^9}, {3.637401183198162*^9, 3.637401210155485*^9}, {
    3.6374012951549673`*^9, 3.637401331730916*^9}, {3.637401375731513*^9, 
-   3.637401430142919*^9}}]
+   3.637401430142919*^9}, {3.637410988106884*^9, 3.637410988650625*^9}, {
+   3.637411088631632*^9, 3.6374111451268997`*^9}, {3.637411716652549*^9, 
+   3.6374117194201603`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"ListPlot", "[", 
+  RowBox[{"Map", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"#", "/", "100"}], ",", 
+       RowBox[{"Part", "[", 
+        RowBox[{
+         RowBox[{"Part", "[", 
+          RowBox[{
+           RowBox[{"Part", "[", 
+            RowBox[{"histData0", ",", "#"}], "]"}], ",", "3"}], "]"}], ",", 
+         "2"}], "]"}]}], "}"}], "&"}], ",", 
+    RowBox[{"Range", "[", 
+     RowBox[{"1", ",", "99"}], "]"}]}], "]"}], "]"}]], "Input",
+ CellChangeTimes->{{3.637411344287066*^9, 3.637411475025375*^9}, {
+  3.637411524886595*^9, 3.6374115784335003`*^9}, {3.6374116091389847`*^9, 
+  3.6374116743813334`*^9}, {3.6374117226994*^9, 3.6374117678837976`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"ListPlot", "[", 
+  RowBox[{"Map", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"Part", "[", 
+      RowBox[{"#", ",", "3"}], "]"}], "&"}], ",", "histData0"}], "]"}], 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.63741120057097*^9, 3.637411248640222*^9}, {
+   3.637411279695503*^9, 3.637411282204863*^9}, 3.637414270621797*^9}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"fitfncPolyAlt", "=", 
+   RowBox[{"Function", "[", 
+    RowBox[{"x", ",", 
+     RowBox[{
+      RowBox[{"a", "*", 
+       RowBox[{"x", "^", 
+        RowBox[{"(", 
+         RowBox[{"-", "3"}], ")"}]}]}], "+", 
+      RowBox[{"b", "*", 
+       RowBox[{"x", "^", 
+        RowBox[{"(", 
+         RowBox[{"-", "4"}], ")"}]}]}]}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"fitfncExpAlt", "=", 
+   RowBox[{"Function", "[", 
+    RowBox[{"x", ",", 
+     RowBox[{"Exp", "[", 
+      RowBox[{"a", "*", "x"}], "]"}]}], "]"}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.637411831478157*^9, 3.637411845799148*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"computeRandomTailFitAlt", "[", 
+    RowBox[{"filename_", ",", "tparams_"}], "]"}], ":=", 
+   RowBox[{"Module", "[", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "input", ",", "firstZeroPos", ",", "workingSet", ",", 
+       "\[IndentingNewLine]", "fitPoly", ",", "fitExp", ",", "plotRange"}], 
+      "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"input", "=", 
+       RowBox[{"ReadExtFloatData", "[", "filename", "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"firstZeroPos", "=", 
+       RowBox[{"Min", "[", 
+        RowBox[{"Flatten", "[", 
+         RowBox[{"Position", "[", 
+          RowBox[{"input", ",", "0.0"}], "]"}], "]"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"workingSet", "=", 
+       RowBox[{"normalizeTail", "[", 
+        RowBox[{
+         RowBox[{"input", "[", 
+          RowBox[{"[", 
+           RowBox[{"1", ";;", 
+            RowBox[{"firstZeroPos", "-", "1"}]}], "]"}], "]"}], ",", 
+         RowBox[{"tparams", "[", 
+          RowBox[{"[", "1", "]"}], "]"}], ",", 
+         RowBox[{"tparams", "[", 
+          RowBox[{"[", "2", "]"}], "]"}]}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"fitPoly", "=", 
+       RowBox[{"FindFit", "[", 
+        RowBox[{"workingSet", ",", 
+         RowBox[{"fitfncPolyAlt", "[", "t", "]"}], ",", "fitparamPoly", ",", 
+         "t"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"fitExp", "=", 
+       RowBox[{"FindFit", "[", 
+        RowBox[{"workingSet", ",", 
+         RowBox[{"fitfncExpAlt", "[", "t", "]"}], ",", "fitparamExp", ",", 
+         "t"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"plotRange", "=", 
+       RowBox[{
+        RowBox[{"tparams", "[", 
+         RowBox[{"[", "1", "]"}], "]"}], "+", 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{"firstZeroPos", "-", "1"}], ")"}], "*", 
+         RowBox[{"tparams", "[", 
+          RowBox[{"[", "2", "]"}], "]"}]}]}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"{", 
+       RowBox[{"fitPoly", ",", "fitExp", ",", "\[IndentingNewLine]", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"computeQuadraticError", "[", 
+           RowBox[{"workingSet", ",", 
+            RowBox[{"fitfncPolyAlt", "/.", "fitPoly"}]}], "]"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"computeQuadraticError", "[", 
+           RowBox[{"workingSet", ",", 
+            RowBox[{"fitfncExpAlt", "/.", "fitExp"}]}], "]"}]}], "}"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"Show", "[", 
+         RowBox[{
+          RowBox[{"ListLogPlot", "[", 
+           RowBox[{"workingSet", ",", 
+            RowBox[{"PlotRange", "\[Rule]", "Full"}]}], "]"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"LogPlot", "[", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"(", 
+                RowBox[{"fitfncPolyAlt", "/.", "fitPoly"}], ")"}], "[", "t", 
+               "]"}], ",", 
+              RowBox[{
+               RowBox[{"(", 
+                RowBox[{"fitfncExpAlt", "/.", "fitExp"}], ")"}], "[", "t", 
+               "]"}]}], "}"}], ",", "\[IndentingNewLine]", 
+            RowBox[{"{", 
+             RowBox[{"t", ",", 
+              RowBox[{"tparams", "[", 
+               RowBox[{"[", "1", "]"}], "]"}], ",", "plotRange"}], "}"}]}], 
+           "]"}], ",", 
+          RowBox[{"ImageSize", "\[Rule]", "Large"}]}], "]"}]}], "}"}]}]}], 
+    "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.637411867933507*^9, 3.637411931326129*^9}, {
+  3.637413829216526*^9, 3.6374138493907337`*^9}, {3.63741406179895*^9, 
+  3.637414159251992*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Map", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"Export", "[", 
+     RowBox[{
+      RowBox[{"StringJoin", "[", 
+       RowBox[{"filePrefix", ",", 
+        RowBox[{"IntegerString", "[", 
+         RowBox[{"#", ",", "10", ",", "2"}], "]"}], ",", "\"\<.bmp\>\""}], 
+       "]"}], ",", 
+      RowBox[{
+       RowBox[{"computeRandomTailFitAlt", "[", 
+        RowBox[{
+         RowBox[{"StringJoin", "[", 
+          RowBox[{"filePrefix", ",", 
+           RowBox[{"ToString", "[", "#", "]"}], ",", "filePostfix"}], "]"}], 
+         ",", 
+         RowBox[{"{", 
+          RowBox[{"1.5", ",", "0.1"}], "}"}]}], "]"}], "[", 
+       RowBox[{"[", "4", "]"}], "]"}]}], "]"}], "&"}], ",", 
+   RowBox[{"Range", "[", 
+    RowBox[{"1", ",", "99"}], "]"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.6374119411837463`*^9, 3.637412022834133*^9}, {
+  3.6374120733129873`*^9, 3.637412134427223*^9}, {3.6374125181754313`*^9, 
+  3.6374125582365837`*^9}, {3.6374138595896482`*^9, 3.637413872399056*^9}, {
+  3.637413910839864*^9, 3.6374139328223467`*^9}, {3.637414151965747*^9, 
+  3.637414168156234*^9}, {3.6374142801791143`*^9, 3.637414359367242*^9}, {
+  3.637414403682704*^9, 3.637414410245694*^9}}],
+
+Cell[BoxData[
+ RowBox[{"DynamicModule", "[", 
+  RowBox[{
+   RowBox[{"{", "prob", "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"Slider", "[", 
+      RowBox[{
+       RowBox[{"Dynamic", "[", "prob", "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"1", ",", "99", ",", "1"}], "}"}]}], "]"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Dynamic", "[", 
+      RowBox[{"computeRandomTailFitAlt", "[", 
+       RowBox[{
+        RowBox[{"StringJoin", "[", 
+         RowBox[{"filePrefix", ",", 
+          RowBox[{"ToString", "[", "prob", "]"}], ",", "filePostfix"}], "]"}],
+         ",", 
+        RowBox[{"{", 
+         RowBox[{"1.5", ",", "0.1"}], "}"}]}], "]"}], "]"}]}], "}"}]}], 
+  "]"}]], "Input",
+ CellChangeTimes->{3.6374854070878963`*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"fitfncMix", "=", 
+   RowBox[{"Function", "[", 
+    RowBox[{"x", ",", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"p", "^", "2"}], "*", 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"36", "/", 
+            RowBox[{"Pi", "^", "4"}]}], ")"}], "*", 
+          RowBox[{"x", "^", 
+           RowBox[{"(", 
+            RowBox[{"-", "3"}], ")"}]}]}], "+", 
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"162", "/", 
+            RowBox[{"Pi", "^", "6"}]}], ")"}], "*", 
+          RowBox[{"x", "^", 
+           RowBox[{"(", 
+            RowBox[{"-", "4"}], ")"}]}]}]}], ")"}]}], "+", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"1", "-", "p"}], ")"}], "^", "2"}], "*", 
+       RowBox[{"Exp", "[", 
+        RowBox[{
+         RowBox[{"-", "x"}], "*", "q"}], "]"}]}]}]}], "]"}]}], ";"}]], "Input",\
+
+ CellChangeTimes->{{3.6374824574107323`*^9, 3.637482533436059*^9}, 
+   3.63748257969386*^9, {3.637482741637472*^9, 3.637482763942439*^9}, {
+   3.6374828737455683`*^9, 3.637482901131688*^9}, {3.637487663458164*^9, 
+   3.637487723302165*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"fitfncMix", "=", 
+   RowBox[{"Function", "[", 
+    RowBox[{"x", ",", 
+     RowBox[{"q", "*", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{"36", "/", 
+           RowBox[{"Pi", "^", "4"}]}], ")"}], "*", 
+         RowBox[{"x", "^", 
+          RowBox[{"(", 
+           RowBox[{"-", "3"}], ")"}]}]}], "+", 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{"162", "/", 
+           RowBox[{"Pi", "^", "6"}]}], ")"}], "*", 
+         RowBox[{"x", "^", 
+          RowBox[{"(", 
+           RowBox[{"-", "4"}], ")"}]}]}]}], ")"}], "*", 
+      RowBox[{"Exp", "[", 
+       RowBox[{
+        RowBox[{"-", "p"}], "*", "x"}], "]"}]}]}], "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.637487441685301*^9, 3.637487461040683*^9}, {
+  3.637487494905756*^9, 3.6374874953598957`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"computeRandomTailFitAlt2", "[", 
+    RowBox[{"filename_", ",", "tparams_"}], "]"}], ":=", 
+   RowBox[{"Module", "[", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "input", ",", "firstZeroPos", ",", "workingSet", ",", "fit", ",", 
+       "plotRange"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"input", "=", 
+       RowBox[{"ReadExtFloatData", "[", "filename", "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"firstZeroPos", "=", 
+       RowBox[{"Min", "[", 
+        RowBox[{"Flatten", "[", 
+         RowBox[{"Position", "[", 
+          RowBox[{"input", ",", "0.0"}], "]"}], "]"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"workingSet", "=", 
+       RowBox[{"normalizeTail", "[", 
+        RowBox[{
+         RowBox[{"input", "[", 
+          RowBox[{"[", 
+           RowBox[{"1", ";;", 
+            RowBox[{"firstZeroPos", "-", "1"}]}], "]"}], "]"}], ",", 
+         RowBox[{"tparams", "[", 
+          RowBox[{"[", "1", "]"}], "]"}], ",", 
+         RowBox[{"tparams", "[", 
+          RowBox[{"[", "2", "]"}], "]"}]}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"fit", "=", 
+       RowBox[{"FindFit", "[", 
+        RowBox[{"workingSet", ",", 
+         RowBox[{"fitfncMix", "[", "t", "]"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"p", ",", "q"}], "}"}], ",", "t"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"plotRange", "=", 
+       RowBox[{
+        RowBox[{"tparams", "[", 
+         RowBox[{"[", "1", "]"}], "]"}], "+", 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{"firstZeroPos", "-", "1"}], ")"}], "*", 
+         RowBox[{"tparams", "[", 
+          RowBox[{"[", "2", "]"}], "]"}]}]}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"{", 
+       RowBox[{"fit", ",", "\[IndentingNewLine]", 
+        RowBox[{"{", 
+         RowBox[{"computeQuadraticError", "[", 
+          RowBox[{"workingSet", ",", 
+           RowBox[{"fitfncMix", "/.", "fit"}]}], "]"}], "}"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"Show", "[", 
+         RowBox[{
+          RowBox[{"ListLogPlot", "[", 
+           RowBox[{"workingSet", ",", 
+            RowBox[{"PlotRange", "\[Rule]", "Full"}]}], "]"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"LogPlot", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"(", 
+              RowBox[{"fitfncMix", "/.", "fit"}], ")"}], "[", "t", "]"}], ",",
+             "\[IndentingNewLine]", 
+            RowBox[{"{", 
+             RowBox[{"t", ",", 
+              RowBox[{"tparams", "[", 
+               RowBox[{"[", "1", "]"}], "]"}], ",", "plotRange"}], "}"}]}], 
+           "]"}], ",", 
+          RowBox[{"ImageSize", "\[Rule]", "Large"}]}], "]"}]}], "}"}]}]}], 
+    "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{
+  3.6374824556559143`*^9, {3.6374825462331257`*^9, 3.6374826093289013`*^9}, 
+   3.637482698213008*^9, {3.6374828798654327`*^9, 3.6374829026544952`*^9}, {
+   3.637487498797791*^9, 3.637487498877413*^9}, {3.637487591996318*^9, 
+   3.637487593755886*^9}}],
+
+Cell[BoxData[
+ RowBox[{"DynamicModule", "[", 
+  RowBox[{
+   RowBox[{"{", "prob", "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"Slider", "[", 
+      RowBox[{
+       RowBox[{"Dynamic", "[", "prob", "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"1", ",", "99", ",", "1"}], "}"}]}], "]"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Dynamic", "[", 
+      RowBox[{"computeRandomTailFitAlt2", "[", 
+       RowBox[{
+        RowBox[{"StringJoin", "[", 
+         RowBox[{"filePrefix", ",", 
+          RowBox[{"ToString", "[", "prob", "]"}], ",", "filePostfix"}], "]"}],
+         ",", 
+        RowBox[{"{", 
+         RowBox[{"1.5", ",", "0.1"}], "}"}]}], "]"}], "]"}]}], "}"}]}], 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.637482623944656*^9, 3.6374826635780087`*^9}, {
+  3.637482790884245*^9, 3.637482820198103*^9}, {3.637482891152307*^9, 
+  3.637482935741694*^9}, {3.637484951454797*^9, 3.637485019037195*^9}, {
+  3.63748509028016*^9, 3.6374850989875183`*^9}, {3.6374851557547817`*^9, 
+  3.637485273669437*^9}, {3.63748532768454*^9, 3.637485382577368*^9}}]
 },
 WindowSize->{1920, 1140},
 WindowMargins->{{0, Automatic}, {Automatic, 0}},
@@ -193,11 +600,23 @@ CellTagsIndex->{}
 *)
 (*NotebookFileOutline
 Notebook[{
-Cell[557, 20, 353, 9, 64, "Input"],
-Cell[913, 31, 610, 17, 64, "Input"],
-Cell[1526, 50, 397, 10, 64, "Input"],
-Cell[1926, 62, 3785, 94, 414, "Input"],
-Cell[5714, 158, 1095, 18, 64, "Input"]
+Cell[557, 20, 190, 4, 38, "Input"],
+Cell[750, 26, 501, 11, 64, "Input"],
+Cell[1254, 39, 353, 9, 64, "Input"],
+Cell[1610, 50, 610, 17, 64, "Input"],
+Cell[2223, 69, 397, 10, 64, "Input"],
+Cell[2623, 81, 3830, 93, 414, "Input"],
+Cell[6456, 176, 1529, 30, 64, "Input"],
+Cell[7988, 208, 720, 19, 38, "Input"],
+Cell[8711, 229, 344, 9, 38, "Input"],
+Cell[9058, 240, 655, 21, 64, "Input"],
+Cell[9716, 263, 3725, 92, 414, "Input"],
+Cell[13444, 357, 1196, 28, 64, "Input"],
+Cell[14643, 387, 753, 22, 64, "Input"],
+Cell[15399, 411, 1159, 35, 38, "Input"],
+Cell[16561, 448, 855, 26, 38, "Input"],
+Cell[17419, 476, 3125, 79, 339, "Input"],
+Cell[20547, 557, 1068, 26, 64, "Input"]
 }
 ]
 *)

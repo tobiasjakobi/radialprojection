@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[     16994,        464]
-NotebookOptionsPosition[     15924,        430]
-NotebookOutlinePosition[     16379,        448]
-CellTagsIndexPosition[     16336,        445]
+NotebookDataLength[     17407,        477]
+NotebookOptionsPosition[     16297,        442]
+NotebookOutlinePosition[     16752,        460]
+CellTagsIndexPosition[     16709,        457]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -426,7 +426,19 @@ Cell[BoxData[
    RowBox[{"figuresAB", "[", "histoFull", "]"}]}]}]], "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.},
  CellChangeTimes->{{3.547287315886981*^9, 3.547287316231253*^9}, 
-   3.561989069779895*^9, {3.561989566215774*^9, 3.561989726694815*^9}}]
+   3.561989069779895*^9, {3.561989566215774*^9, 3.561989726694815*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+  "Unprotect", "[", "\"\<AperiodicTilings`OctagonalTilingCP`*\>\"", "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+  "Remove", "[", "\"\<AperiodicTilings`OctagonalTilingCP`*\>\"", "]"}], 
+  ";"}]}], "Input",
+ CellChangeTimes->{{3.641273847364132*^9, 3.641273853467176*^9}, {
+  3.641274238695253*^9, 3.641274245676*^9}}]
 },
 WindowSize->{1600, 1136},
 WindowMargins->{{0, Automatic}, {Automatic, 0}},
@@ -465,7 +477,8 @@ Cell[10734, 293, 374, 9, 45, "Input"],
 Cell[11111, 304, 1614, 38, 104, "Input"],
 Cell[12728, 344, 162, 4, 45, "Input"],
 Cell[12893, 350, 3027, 78, 336, "Input",
- CellGroupingRules->{GroupTogetherGrouping, 10000.}]
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[15923, 430, 370, 10, 75, "Input"]
 }
 ]
 *)

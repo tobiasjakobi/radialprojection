@@ -10,14 +10,21 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[     29460,        793]
-NotebookOptionsPosition[     28203,        755]
-NotebookOutlinePosition[     28637,        772]
-CellTagsIndexPosition[     28594,        769]
+NotebookDataLength[     30230,        816]
+NotebookOptionsPosition[     28865,        775]
+NotebookOutlinePosition[     29299,        792]
+CellTagsIndexPosition[     29256,        789]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
 Notebook[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ClearAll", "[", 
+   RowBox[{"cycloData", ",", "histos", ",", "histosOverlay"}], "]"}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.6412762299524183`*^9, 3.641276241273933*^9}}],
+
 Cell[BoxData[
  RowBox[{
   RowBox[{"cycloData", "=", 
@@ -117,6 +124,12 @@ Cell[BoxData[
    3.538304769034411*^9, {3.538304967567263*^9, 3.53830496897486*^9}, {
    3.569069977411452*^9, 3.569069981971471*^9}}],
 
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ClearAll", "[", 
+   RowBox[{"envelopeData", ",", "envelopeFct"}], "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.6412762475779552`*^9, 3.6412762540464993`*^9}}],
+
 Cell[BoxData[{
  RowBox[{
   RowBox[{
@@ -200,8 +213,8 @@ Cell[BoxData[{
    RowBox[{"envelopeData", "[", "TuebAvg", "]"}], "=", 
    RowBox[{
    "ReadDoubleData", "[", 
-    "\"\</homes/tjakobi/PhD_Work/radialprojection/datafiles/tuebavg2.env\>\"",
-     "]"}]}], ";"}], "\[IndentingNewLine]", 
+    "\"\</homes/tjakobi/PhD_Work/radialprojection/datafiles/tuebavg.env\>\"", 
+    "]"}]}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
    RowBox[{"envelopeData", "[", "Triangular", "]"}], "=", 
@@ -224,7 +237,7 @@ Cell[BoxData[{
    3.6061202684028254`*^9, 3.606120273031439*^9}, {3.609834650162559*^9, 
    3.609834654094902*^9}, {3.609834776683926*^9, 3.609834778795672*^9}, {
    3.631616155168359*^9, 3.631616166504891*^9}, {3.631617150511142*^9, 
-   3.631617151945208*^9}}],
+   3.631617151945208*^9}, 3.64127705212109*^9}],
 
 Cell[BoxData[{
  RowBox[{
@@ -348,16 +361,23 @@ Cell[BoxData[{
   RowBox[{
    RowBox[{"envelopeFct", "[", "OctoOrigin1000", "]"}], "=", 
    RowBox[{"Interpolation", "[", 
-    RowBox[{"normalizeEnvData", "[", "OctoOrigin1000", "]"}], "]"}]}], 
+    RowBox[{"transformEnvData", "[", "OctoOrigin1000", "]"}], "]"}]}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
    RowBox[{"envelopeFct", "[", "OctoOrigin1100", "]"}], "=", 
    RowBox[{"Interpolation", "[", 
-    RowBox[{"normalizeEnvData", "[", "OctoOrigin1100", "]"}], "]"}]}], 
+    RowBox[{"transformEnvData", "[", "OctoOrigin1100", "]"}], "]"}]}], 
   ";"}]}], "Input",
  CellChangeTimes->{{3.575361926715579*^9, 3.5753619419170637`*^9}, 
-   3.575374139027725*^9, {3.5753741725920153`*^9, 3.575374180369422*^9}}],
+   3.575374139027725*^9, {3.5753741725920153`*^9, 3.575374180369422*^9}, {
+   3.641277114256295*^9, 3.641277115108547*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ClearAll", "[", 
+   RowBox[{"plotOpts", ",", "fplot"}], "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.641276257657544*^9, 3.641276265161875*^9}}],
 
 Cell[BoxData[
  RowBox[{
@@ -771,30 +791,33 @@ CellTagsIndex->{}
 *)
 (*NotebookFileOutline
 Notebook[{
-Cell[557, 20, 734, 19, 104, "Input"],
-Cell[1294, 41, 184, 4, 45, "Input"],
-Cell[1481, 47, 209, 4, 45, "Input"],
-Cell[1693, 53, 831, 22, 75, "Input"],
-Cell[2527, 77, 1270, 32, 133, "Input"],
-Cell[3800, 111, 408, 6, 45, "Input"],
-Cell[4211, 119, 4220, 107, 394, "Input"],
-Cell[8434, 228, 712, 17, 75, "Input"],
-Cell[9149, 247, 3896, 96, 394, "Input"],
-Cell[13048, 345, 587, 14, 75, "Input"],
-Cell[13638, 361, 787, 21, 75, "Input"],
-Cell[14428, 384, 1837, 50, 133, "Input"],
-Cell[16268, 436, 338, 8, 45, "Input"],
-Cell[16609, 446, 1327, 28, 104, "Input"],
-Cell[17939, 476, 353, 9, 45, "Input"],
-Cell[18295, 487, 931, 24, 75, "Input"],
-Cell[19229, 513, 1167, 29, 75, "Input"],
-Cell[20399, 544, 880, 20, 67, "Input"],
-Cell[21282, 566, 1263, 30, 112, "Input"],
-Cell[22548, 598, 1319, 31, 112, "Input"],
-Cell[23870, 631, 1772, 48, 199, "Input"],
-Cell[25645, 681, 688, 18, 112, "Input"],
-Cell[26336, 701, 782, 21, 112, "Input"],
-Cell[27121, 724, 1078, 29, 112, "Input"]
+Cell[557, 20, 209, 5, 45, "Input"],
+Cell[769, 27, 734, 19, 104, "Input"],
+Cell[1506, 48, 184, 4, 45, "Input"],
+Cell[1693, 54, 209, 4, 45, "Input"],
+Cell[1905, 60, 831, 22, 75, "Input"],
+Cell[2739, 84, 1270, 32, 133, "Input"],
+Cell[4012, 118, 408, 6, 45, "Input"],
+Cell[4423, 126, 194, 4, 45, "Input"],
+Cell[4620, 132, 4240, 107, 394, "Input"],
+Cell[8863, 241, 712, 17, 75, "Input"],
+Cell[9578, 260, 3896, 96, 394, "Input"],
+Cell[13477, 358, 637, 15, 75, "Input"],
+Cell[14117, 375, 180, 4, 45, "Input"],
+Cell[14300, 381, 787, 21, 75, "Input"],
+Cell[15090, 404, 1837, 50, 133, "Input"],
+Cell[16930, 456, 338, 8, 45, "Input"],
+Cell[17271, 466, 1327, 28, 104, "Input"],
+Cell[18601, 496, 353, 9, 45, "Input"],
+Cell[18957, 507, 931, 24, 75, "Input"],
+Cell[19891, 533, 1167, 29, 75, "Input"],
+Cell[21061, 564, 880, 20, 45, "Input"],
+Cell[21944, 586, 1263, 30, 75, "Input"],
+Cell[23210, 618, 1319, 31, 75, "Input"],
+Cell[24532, 651, 1772, 48, 133, "Input"],
+Cell[26307, 701, 688, 18, 75, "Input"],
+Cell[26998, 721, 782, 21, 75, "Input"],
+Cell[27783, 744, 1078, 29, 75, "Input"]
 }
 ]
 *)

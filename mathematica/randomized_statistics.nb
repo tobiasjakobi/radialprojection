@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[      7006,        223]
-NotebookOptionsPosition[      6257,        196]
-NotebookOutlinePosition[      6614,        212]
-CellTagsIndexPosition[      6571,        209]
+NotebookDataLength[     19429,        554]
+NotebookOptionsPosition[     18162,        514]
+NotebookOutlinePosition[     18519,        530]
+CellTagsIndexPosition[     18476,        527]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -36,10 +36,12 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{
   "fileName", ":=", 
-   "\"\<cyclotomic_random/rhombic_penrose_rndvis_1000s.stats\>\""}], 
+   "\"\<cyclotomic_random/decagonal_rndvis_1800s.stats\>\""}], 
   ";"}]}], "Input",
  CellChangeTimes->{{3.639311454751513*^9, 3.6393115273272247`*^9}, 
-   3.639313379587922*^9, 3.639313436527215*^9, 3.639313888839753*^9}],
+   3.639313379587922*^9, 3.639313436527215*^9, 3.639313888839753*^9, 
+   3.639908943320344*^9, 3.6399089963250628`*^9, 3.639909114792616*^9, {
+   3.639909904563819*^9, 3.639909906626114*^9}}],
 
 Cell[BoxData[
  RowBox[{
@@ -109,12 +111,14 @@ Cell[BoxData[{
 Cell[BoxData[{
  RowBox[{
   RowBox[{"ClearAll", "[", 
-   RowBox[{"fitFuncLinear", ",", "fitFuncCubic"}], "]"}], 
+   RowBox[{"fitFuncLinear", ",", "fitFuncCubic", ",", "fitFuncLog"}], "]"}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"ClearAll", "[", 
-   RowBox[{"fitVarsLinear", ",", "fitVarsCubic"}], "]"}], ";"}]}], "Input",
- CellChangeTimes->{{3.6393137213354197`*^9, 3.639313746315295*^9}}],
+   RowBox[{"fitVarsLinear", ",", "fitVarsCubic", ",", "fitVarsLog"}], "]"}], 
+  ";"}]}], "Input",
+ CellChangeTimes->{{3.6393137213354197`*^9, 3.639313746315295*^9}, {
+  3.640087930973529*^9, 3.6400879346435823`*^9}}],
 
 Cell[BoxData[{
  RowBox[{
@@ -131,20 +135,36 @@ Cell[BoxData[{
     RowBox[{"c", "*", 
      RowBox[{"t", "^", "3"}]}]}]}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
+  RowBox[{
+   RowBox[{"fitFuncLog", "[", "t_", "]"}], ":=", 
+   RowBox[{"a", "*", 
+    RowBox[{"Log", "[", 
+     RowBox[{
+      RowBox[{"b", "*", "t"}], "+", "1"}], "]"}]}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
   RowBox[{"fitVarsLinear", ":=", 
    RowBox[{"{", "a", "}"}]}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"fitVarsCubic", ":=", 
    RowBox[{"{", 
-    RowBox[{"a", ",", "b", ",", "c"}], "}"}]}], ";"}]}], "Input",
+    RowBox[{"a", ",", "b", ",", "c"}], "}"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"fitVarsLog", ":=", 
+   RowBox[{"{", 
+    RowBox[{"a", ",", "b"}], "}"}]}], ";"}]}], "Input",
  CellChangeTimes->{{3.6393136290974913`*^9, 3.6393136422600327`*^9}, {
-  3.639313681055132*^9, 3.639313726184935*^9}}],
+  3.639313681055132*^9, 3.639313726184935*^9}, {3.640087888559848*^9, 
+  3.640087920940508*^9}}],
 
 Cell[BoxData[
  RowBox[{
   RowBox[{"ClearAll", "[", 
-   RowBox[{"fitLinear", ",", "fitCubic"}], "]"}], ";"}]], "Input",
- CellChangeTimes->{{3.6393138953939457`*^9, 3.6393139033533154`*^9}}],
+   RowBox[{"fitLinear", ",", "fitCubic", ",", "fitLog"}], "]"}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.6393138953939457`*^9, 3.6393139033533154`*^9}, {
+  3.640087942730665*^9, 3.640087943540703*^9}}],
 
 Cell[BoxData[{
  RowBox[{"fitLinear", "=", 
@@ -156,10 +176,20 @@ Cell[BoxData[{
   RowBox[{"FindFit", "[", 
    RowBox[{"dataMinimumValue", ",", 
     RowBox[{"fitFuncCubic", "[", "t", "]"}], ",", "fitVarsCubic", ",", "t"}], 
+   "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{"fitLog", "=", 
+  RowBox[{"FindFit", "[", 
+   RowBox[{"dataMinimumValue", ",", 
+    RowBox[{"fitFuncLog", "[", "t", "]"}], ",", "fitVarsLog", ",", "t"}], 
    "]"}]}]}], "Input",
  CellChangeTimes->{
   3.639313621909576*^9, {3.6393137514347563`*^9, 3.639313778221653*^9}, {
-   3.639313838346859*^9, 3.639313839433009*^9}}],
+   3.639313838346859*^9, 3.639313839433009*^9}, {3.6400879457126303`*^9, 
+   3.640087956923275*^9}}],
+
+Cell[BoxData[
+ RowBox[{"ToString", "[", "fitLog", "]"}]], "Input",
+ CellChangeTimes->{{3.640088981886334*^9, 3.6400889900660467`*^9}}],
 
 Cell[BoxData[
  RowBox[{"Show", "[", 
@@ -187,12 +217,300 @@ Cell[BoxData[
  CellChangeTimes->{{3.639313866525976*^9, 3.639313869035821*^9}}],
 
 Cell[BoxData[
+ RowBox[{"Show", "[", 
+  RowBox[{
+   RowBox[{"ListPlot", "[", "dataMinimumValue", "]"}], ",", 
+   RowBox[{"Plot", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"fitFuncLog", "[", "t", "]"}], "/.", "fitLog"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"t", ",", "0", ",", "1"}], "}"}]}], "]"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.640087971532889*^9, 3.640087975274745*^9}}],
+
+Cell[BoxData[
  RowBox[{"ListPlot", "[", "dataMaximumValue", "]"}]], "Input",
  CellChangeTimes->{3.639312283170413*^9}],
 
 Cell[BoxData[
  RowBox[{"ListPlot", "[", "dataPeakValue", "]"}]], "Input",
- CellChangeTimes->{{3.63931229173454*^9, 3.639312294901228*^9}}]
+ CellChangeTimes->{{3.63931229173454*^9, 3.639312294901228*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ClearAll", "[", 
+   RowBox[{
+   "minimumValueFitPlot", ",", "minimumValueFitPlot2", ",", 
+    "minimumValueFitCoeff"}], "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.639912282306406*^9, 3.63991228787875*^9}, {
+  3.640090016442506*^9, 3.6400900212494087`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"minimumValueFitPlot", "[", "filename_", "]"}], ":=", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"data", ",", "minval", ",", "flinear", ",", "fcubic"}], "}"}], 
+     ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"filename", "===", "Null"}], ",", 
+        RowBox[{"Return", "[", "]"}]}], "]"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"data", "=", 
+       RowBox[{"<<", 
+        RowBox[{"(", 
+         RowBox[{"StringJoin", "[", 
+          RowBox[{"filePrefix", ",", "filename"}], "]"}], ")"}]}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"minval", "=", 
+       RowBox[{"Map", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"1.0", "-", 
+             RowBox[{"Part", "[", 
+              RowBox[{"#", ",", "1"}], "]"}]}], ",", 
+            RowBox[{"Part", "[", 
+             RowBox[{"#", ",", "2"}], "]"}]}], "}"}], "&"}], ",", "data"}], 
+        "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"flinear", "=", 
+       RowBox[{"FindFit", "[", 
+        RowBox[{"minval", ",", 
+         RowBox[{"fitFuncLinear", "[", "t", "]"}], ",", "fitVarsLinear", ",", 
+         "t"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"fcubic", "=", 
+       RowBox[{"FindFit", "[", 
+        RowBox[{"minval", ",", 
+         RowBox[{"fitFuncCubic", "[", "t", "]"}], ",", "fitVarsCubic", ",", 
+         "t"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"Show", "[", 
+       RowBox[{
+        RowBox[{"ListPlot", "[", "minval", "]"}], ",", "\[IndentingNewLine]", 
+        
+        RowBox[{"Plot", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"Tooltip", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"fitFuncLinear", "[", "t", "]"}], "/.", "flinear"}], 
+              ",", 
+              RowBox[{"ToString", "[", "flinear", "]"}]}], "]"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"Tooltip", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"fitFuncCubic", "[", "t", "]"}], "/.", "fcubic"}], ",", 
+              RowBox[{"ToString", "[", "fcubic", "]"}]}], "]"}]}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"t", ",", "0", ",", "1"}], "}"}]}], "]"}], ",", 
+        RowBox[{"ImageSize", "\[Rule]", "Large"}]}], "]"}]}]}], 
+    "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.639912234362143*^9, 3.639912243358479*^9}, {
+  3.639912275197989*^9, 3.6399122793301353`*^9}, {3.639912460422491*^9, 
+  3.639912471111395*^9}, {3.640088800719181*^9, 3.6400888406551*^9}, {
+  3.640088891741063*^9, 3.640088930776349*^9}, {3.640089017707405*^9, 
+  3.640089042612646*^9}, {3.640090262569028*^9, 3.640090269800025*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"minimumValueFitPlot2", "[", "filename_", "]"}], ":=", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"data", ",", "minval", ",", "flinear", ",", "flog"}], "}"}], 
+     ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"filename", "===", "Null"}], ",", 
+        RowBox[{"Return", "[", "]"}]}], "]"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"data", "=", 
+       RowBox[{"<<", 
+        RowBox[{"(", 
+         RowBox[{"StringJoin", "[", 
+          RowBox[{"filePrefix", ",", "filename"}], "]"}], ")"}]}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"minval", "=", 
+       RowBox[{"Map", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"1.0", "-", 
+             RowBox[{"Part", "[", 
+              RowBox[{"#", ",", "1"}], "]"}]}], ",", 
+            RowBox[{"Part", "[", 
+             RowBox[{"#", ",", "2"}], "]"}]}], "}"}], "&"}], ",", "data"}], 
+        "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"flinear", "=", 
+       RowBox[{"FindFit", "[", 
+        RowBox[{"minval", ",", 
+         RowBox[{"fitFuncLinear", "[", "t", "]"}], ",", "fitVarsLinear", ",", 
+         "t"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"flog", "=", 
+       RowBox[{"FindFit", "[", 
+        RowBox[{"minval", ",", 
+         RowBox[{"fitFuncLog", "[", "t", "]"}], ",", "fitVarsLog", ",", "t"}],
+         "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"Show", "[", 
+       RowBox[{
+        RowBox[{"ListPlot", "[", "minval", "]"}], ",", "\[IndentingNewLine]", 
+        
+        RowBox[{"Plot", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"Tooltip", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"fitFuncLinear", "[", "t", "]"}], "/.", "flinear"}], 
+              ",", 
+              RowBox[{"ToString", "[", "flinear", "]"}]}], "]"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"Tooltip", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"fitFuncLog", "[", "t", "]"}], "/.", "flog"}], ",", 
+              RowBox[{"ToString", "[", "flog", "]"}]}], "]"}]}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"t", ",", "0", ",", "1"}], "}"}]}], "]"}], ",", 
+        RowBox[{"ImageSize", "\[Rule]", "Large"}]}], "]"}]}]}], 
+    "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.640088020335003*^9, 3.64008804032701*^9}, {
+  3.640089073032526*^9, 3.6400891128515043`*^9}, {3.640091336542506*^9, 
+  3.640091340446216*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"minimumValueFitCoeff", "[", "filename_", "]"}], ":=", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"data", ",", "minval", ",", "flinear", ",", "fcubic"}], "}"}], 
+     ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"filename", "===", "Null"}], ",", 
+        RowBox[{"Return", "[", "]"}]}], "]"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"data", "=", 
+       RowBox[{"<<", 
+        RowBox[{"(", 
+         RowBox[{"StringJoin", "[", 
+          RowBox[{"filePrefix", ",", "filename"}], "]"}], ")"}]}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"minval", "=", 
+       RowBox[{"Map", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"1.0", "-", 
+             RowBox[{"Part", "[", 
+              RowBox[{"#", ",", "1"}], "]"}]}], ",", 
+            RowBox[{"Part", "[", 
+             RowBox[{"#", ",", "2"}], "]"}]}], "}"}], "&"}], ",", "data"}], 
+        "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"flinear", "=", 
+       RowBox[{"FindFit", "[", 
+        RowBox[{"minval", ",", 
+         RowBox[{"fitFuncLinear", "[", "t", "]"}], ",", "fitVarsLinear", ",", 
+         "t"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"fcubic", "=", 
+       RowBox[{"FindFit", "[", 
+        RowBox[{"minval", ",", 
+         RowBox[{"fitFuncCubic", "[", "t", "]"}], ",", "fitVarsCubic", ",", 
+         "t"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"{", 
+       RowBox[{"flinear", ",", "fcubic"}], "}"}]}]}], "\[IndentingNewLine]", 
+    "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.64008759824088*^9, 3.6400876119933567`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ClearAll", "[", "statsFiles", "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.640090026597968*^9, 3.640090031006887*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"statsFiles", ":=", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "\"\<cyclotomic_random/octagonal_visrnd_1800s.stats\>\"", ",", 
+       "\"\<cyclotomic_random/octagonal_rndvis_1800s.stats\>\""}], "}"}], ",",
+      "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{
+      "\"\<cyclotomic_random/decagonal_visrnd_1800s.stats\>\"", ",", 
+       "\"\<cyclotomic_random/decagonal_rndvis_1800s.stats\>\""}], "}"}], ",",
+      "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{
+      "\"\<cyclotomic_random/dodecagonal_visrnd_1400s.stats\>\"", ",", 
+       "\"\<cyclotomic_random/dodecagonal_rndvis_1500s.stats\>\""}], "}"}], 
+     ",", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{
+      "\"\<cyclotomic_random/rhombic_penrose_visrnd_1700s.stats\>\"", ",", 
+       "\"\<cyclotomic_random/rhombic_penrose_rndvis_1800s.stats\>\""}], 
+      "}"}]}], "}"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.639912291485043*^9, 3.639912432068804*^9}, {
+   3.640069415100312*^9, 3.640069437803103*^9}, {3.6400901862329903`*^9, 
+   3.6400902036982937`*^9}, 3.641206755776062*^9, {3.642849791057926*^9, 
+   3.642849797568695*^9}}],
+
+Cell[BoxData[
+ RowBox[{"minimumValueFitPlot", "[", 
+  RowBox[{
+   RowBox[{"statsFiles", "[", 
+    RowBox[{"[", "1", "]"}], "]"}], "[", 
+   RowBox[{"[", "2", "]"}], "]"}], "]"}]], "Input",
+ CellChangeTimes->{{3.639912247589778*^9, 3.63991225638981*^9}, {
+  3.64008762193596*^9, 3.640087635151045*^9}, {3.640090316499467*^9, 
+  3.640090318477846*^9}}],
+
+Cell[BoxData[
+ RowBox[{"minimumValueFitPlot2", "[", 
+  RowBox[{
+   RowBox[{"statsFiles", "[", 
+    RowBox[{"[", "1", "]"}], "]"}], "[", 
+   RowBox[{"[", "2", "]"}], "]"}], "]"}]], "Input",
+ CellChangeTimes->{{3.640088089046895*^9, 3.6400880925640793`*^9}, {
+  3.640090323985895*^9, 3.640090324509869*^9}}],
+
+Cell[BoxData[
+ RowBox[{"GraphicsGrid", "[", 
+  RowBox[{"Map", "[", 
+   RowBox[{"minimumValueFitPlot", ",", "statsFiles", ",", 
+    RowBox[{"{", "2", "}"}]}], "]"}], "]"}]], "Input",
+ CellChangeTimes->{{3.6399124449996433`*^9, 3.639912452014488*^9}, {
+  3.639912482719112*^9, 3.639912483340384*^9}, {3.6400902097941008`*^9, 
+  3.640090221155943*^9}}],
+
+Cell[BoxData[
+ RowBox[{"GraphicsGrid", "[", 
+  RowBox[{"Map", "[", 
+   RowBox[{"minimumValueFitPlot2", ",", "statsFiles", ",", 
+    RowBox[{"{", "2", "}"}]}], "]"}], "]"}]], "Input",
+ CellChangeTimes->{{3.6400880599157867`*^9, 3.640088061986705*^9}, {
+  3.640090227618984*^9, 3.640090233105813*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Map", "[", 
+  RowBox[{"minimumValueFitCoeff", ",", "statsFiles", ",", 
+   RowBox[{"{", "2", "}"}]}], "]"}]], "Input",
+ CellChangeTimes->{
+  3.640087643258654*^9, {3.640092336273259*^9, 3.6400923372324047`*^9}}]
 },
 WindowSize->{1920, 1140},
 WindowMargins->{{0, Automatic}, {Automatic, 0}},
@@ -212,22 +530,34 @@ CellTagsIndex->{}
 (*NotebookFileOutline
 Notebook[{
 Cell[557, 20, 291, 7, 64, "Input"],
-Cell[851, 29, 430, 12, 64, "Input"],
-Cell[1284, 43, 334, 9, 38, "Input"],
-Cell[1621, 54, 144, 2, 38, "Input"],
-Cell[1768, 58, 230, 6, 38, "Input"],
-Cell[2001, 66, 1285, 40, 89, "Input"],
-Cell[3289, 108, 326, 8, 64, "Input"],
-Cell[3618, 118, 770, 22, 114, "Input"],
-Cell[4391, 142, 188, 4, 38, "Input"],
-Cell[4582, 148, 560, 13, 64, "Input"],
-Cell[5145, 163, 449, 11, 38, "Input"],
-Cell[5597, 176, 394, 10, 38, "Input"],
-Cell[5994, 188, 118, 2, 38, "Input"],
-Cell[6115, 192, 138, 2, 38, "Input"]
+Cell[851, 29, 546, 14, 64, "Input"],
+Cell[1400, 45, 334, 9, 38, "Input"],
+Cell[1737, 56, 144, 2, 38, "Input"],
+Cell[1884, 60, 230, 6, 38, "Input"],
+Cell[2117, 68, 1285, 40, 89, "Input"],
+Cell[3405, 110, 418, 10, 64, "Input"],
+Cell[3826, 122, 1169, 36, 164, "Input"],
+Cell[4998, 160, 255, 6, 38, "Input"],
+Cell[5256, 168, 812, 19, 89, "Input"],
+Cell[6071, 189, 134, 2, 38, "Input"],
+Cell[6208, 193, 449, 11, 38, "Input"],
+Cell[6660, 206, 394, 10, 38, "Input"],
+Cell[7057, 218, 390, 10, 38, "Input"],
+Cell[7450, 230, 118, 2, 38, "Input"],
+Cell[7571, 234, 138, 2, 38, "Input"],
+Cell[7712, 238, 294, 7, 38, "Input"],
+Cell[8009, 247, 2854, 70, 264, "Input"],
+Cell[10866, 319, 2651, 68, 264, "Input"],
+Cell[13520, 389, 1733, 45, 214, "Input"],
+Cell[15256, 436, 154, 3, 38, "Input"],
+Cell[15413, 441, 1194, 28, 114, "Input"],
+Cell[16610, 471, 349, 8, 38, "Input"],
+Cell[16962, 481, 305, 7, 38, "Input"],
+Cell[17270, 490, 349, 7, 38, "Input"],
+Cell[17622, 499, 299, 6, 38, "Input"],
+Cell[17924, 507, 234, 5, 38, "Input"]
 }
 ]
 *)
 
 (* End of internal cache information *)
-

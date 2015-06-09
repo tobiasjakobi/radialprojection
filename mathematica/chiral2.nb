@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[     23843,        646]
-NotebookOptionsPosition[     22441,        604]
-NotebookOutlinePosition[     22875,        621]
-CellTagsIndexPosition[     22832,        618]
+NotebookDataLength[     25580,        693]
+NotebookOptionsPosition[     24105,        649]
+NotebookOutlinePosition[     24540,        666]
+CellTagsIndexPosition[     24497,        663]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -44,7 +44,7 @@ Cell[BoxData[
   RowBox[{
    RowBox[{"data", "=", 
     RowBox[{"RunThrough", "[", 
-     RowBox[{"\"\<./chiral_radial 6 1 0\>\"", ",", "Null"}], "]"}]}], ";"}], 
+     RowBox[{"\"\<./chiral_radial 5 1 0\>\"", ",", "Null"}], "]"}]}], ";"}], 
   "]"}]], "Input",
  CellChangeTimes->{{3.540304612828274*^9, 3.540304613802457*^9}, {
    3.540304752445982*^9, 3.540304755840864*^9}, {3.540306711319505*^9, 
@@ -67,7 +67,52 @@ Cell[BoxData[
    3.541494640530249*^9, 3.541494683902583*^9, 3.54150850911394*^9, 
    3.541508744273352*^9, 3.547289120514221*^9, 3.547289155183698*^9, 
    3.547289231733087*^9, 3.547289268716593*^9, 3.549792258090706*^9, {
-   3.549793658860135*^9, 3.549793659408573*^9}}],
+   3.549793658860135*^9, 3.549793659408573*^9}, 3.623757692282839*^9, 
+   3.623758088502162*^9, {3.623760566416636*^9, 3.6237606268493767`*^9}, 
+   3.6237622520960617`*^9, {3.6237628111461563`*^9, 3.623762832552672*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Show", "[", 
+  RowBox[{
+   RowBox[{"ListPlot", "[", 
+    RowBox[{"data", ",", 
+     RowBox[{"AspectRatio", "\[Rule]", "1"}], ",", 
+     RowBox[{"PlotStyle", "\[Rule]", 
+      RowBox[{"PointSize", "[", "Small", "]"}]}]}], "]"}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"Graphics", "[", 
+    RowBox[{"{", 
+     RowBox[{"Red", ",", 
+      RowBox[{"PointSize", "[", "Large", "]"}], ",", 
+      RowBox[{"Point", "[", 
+       RowBox[{"{", 
+        RowBox[{"0", ",", "0"}], "}"}], "]"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"Point", "[", 
+       RowBox[{"Through", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"Cos", ",", "Sin"}], "}"}], "[", 
+         RowBox[{"2", "*", 
+          RowBox[{"Pi", "/", "5"}]}], "]"}], "]"}], "]"}]}], "}"}], "]"}]}], 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.623760664993363*^9, 3.6237606931222*^9}, {
+  3.6237628179494953`*^9, 3.623762818423622*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Show", "[", 
+  RowBox[{
+   RowBox[{"ListPlot", "[", 
+    RowBox[{"data", ",", 
+     RowBox[{"AspectRatio", "\[Rule]", "1"}], ",", 
+     RowBox[{"PlotStyle", "\[Rule]", 
+      RowBox[{"PointSize", "[", "Large", "]"}]}]}], "]"}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"Graphics", "[", 
+    RowBox[{"{", 
+     RowBox[{"Red", ",", 
+      RowBox[{"PointSize", "[", "Large", "]"}]}], "}"}], "]"}]}], 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.623757761075107*^9, 3.623757780975808*^9}}],
 
 Cell[BoxData[{
  RowBox[{
@@ -111,7 +156,7 @@ Cell[BoxData[
     RowBox[{"cutdata", ",", 
      RowBox[{"AspectRatio", "\[Rule]", "1"}], ",", 
      RowBox[{"PlotStyle", "\[Rule]", 
-      RowBox[{"PointSize", "[", "Tiny", "]"}]}], ",", 
+      RowBox[{"PointSize", "[", "Large", "]"}]}], ",", 
      RowBox[{"ImageSize", "\[Rule]", "Large"}], ",", 
      RowBox[{"Axes", "\[Rule]", "None"}]}], "]"}], ",", "\[IndentingNewLine]", 
    RowBox[{"Graphics", "[", 
@@ -128,7 +173,7 @@ Cell[BoxData[
     "]"}]}], "]"}]], "Input",
  CellChangeTimes->{{3.549793900695727*^9, 3.549793903970425*^9}, {
   3.549794024543307*^9, 3.549794071915948*^9}, {3.549794106405742*^9, 
-  3.549794110098933*^9}}],
+  3.549794110098933*^9}, {3.623757726820477*^9, 3.623757733190956*^9}}],
 
 Cell[BoxData[
  RowBox[{"Show", "[", 
@@ -602,10 +647,10 @@ Cell[BoxData[
   3.549794536657782*^9, 3.549794541243191*^9}, {3.562335297094682*^9, 
   3.562335299235567*^9}, {3.562335487878586*^9, 3.562335494774676*^9}}]
 },
-WindowSize->{1600, 1143},
+WindowSize->{1600, 1136},
 WindowMargins->{{0, Automatic}, {Automatic, 0}},
 PrivateNotebookOptions->{"VersionedStylesheet"->{"Default.nb"[8.] -> False}},
-Magnification->1.5,
+Magnification->1.25,
 FrontEndVersion->"9.0 for Linux x86 (64-bit) (January 25, 2013)",
 StyleDefinitions->"Default.nb"
 ]
@@ -620,34 +665,36 @@ CellTagsIndex->{}
 *)
 (*NotebookFileOutline
 Notebook[{
-Cell[557, 20, 427, 13, 77, "Input"],
-Cell[987, 35, 137, 4, 46, "Input"],
-Cell[1127, 41, 1755, 28, 46, "Input"],
-Cell[2885, 71, 507, 14, 77, "Input"],
-Cell[3395, 87, 215, 5, 46, "Input"],
-Cell[3613, 94, 219, 5, 46, "Input"],
-Cell[3835, 101, 151, 3, 46, "Input"],
-Cell[3989, 106, 951, 24, 77, "Input"],
-Cell[4943, 132, 1622, 33, 77, "Input"],
-Cell[6568, 167, 1004, 25, 107, "Input"],
-Cell[7575, 194, 2371, 71, 197, "Input"],
-Cell[9949, 267, 1753, 52, 137, "Input"],
-Cell[11705, 321, 311, 8, 77, "Input"],
-Cell[12019, 331, 863, 24, 107, "Input"],
-Cell[12885, 357, 1840, 41, 106, "Input"],
-Cell[14728, 400, 546, 9, 64, "Input"],
-Cell[15277, 411, 129, 2, 64, "Input"],
-Cell[15409, 415, 496, 12, 106, "Input"],
-Cell[15908, 429, 1261, 38, 106, "Input"],
-Cell[17172, 469, 186, 4, 64, "Input"],
-Cell[17361, 475, 300, 8, 64, "Input"],
-Cell[17664, 485, 302, 5, 64, "Input"],
-Cell[17969, 492, 699, 18, 106, "Input"],
-Cell[18671, 512, 944, 20, 108, "Input"],
-Cell[19618, 534, 511, 10, 64, "Input"],
-Cell[20132, 546, 274, 7, 64, "Input"],
-Cell[20409, 555, 1056, 23, 106, "Input"],
-Cell[21468, 580, 969, 22, 106, "Input"]
+Cell[557, 20, 427, 13, 64, "Input"],
+Cell[987, 35, 137, 4, 38, "Input"],
+Cell[1127, 41, 1927, 30, 38, "Input"],
+Cell[3057, 73, 930, 25, 89, "Input"],
+Cell[3990, 100, 509, 14, 64, "Input"],
+Cell[4502, 116, 507, 14, 64, "Input"],
+Cell[5012, 132, 215, 5, 38, "Input"],
+Cell[5230, 139, 219, 5, 38, "Input"],
+Cell[5452, 146, 151, 3, 38, "Input"],
+Cell[5606, 151, 998, 24, 64, "Input"],
+Cell[6607, 177, 1622, 33, 64, "Input"],
+Cell[8232, 212, 1004, 25, 64, "Input"],
+Cell[9239, 239, 2371, 71, 164, "Input"],
+Cell[11613, 312, 1753, 52, 114, "Input"],
+Cell[13369, 366, 311, 8, 64, "Input"],
+Cell[13683, 376, 863, 24, 89, "Input"],
+Cell[14549, 402, 1840, 41, 64, "Input"],
+Cell[16392, 445, 546, 9, 38, "Input"],
+Cell[16941, 456, 129, 2, 38, "Input"],
+Cell[17073, 460, 496, 12, 64, "Input"],
+Cell[17572, 474, 1261, 38, 64, "Input"],
+Cell[18836, 514, 186, 4, 38, "Input"],
+Cell[19025, 520, 300, 8, 38, "Input"],
+Cell[19328, 530, 302, 5, 38, "Input"],
+Cell[19633, 537, 699, 18, 64, "Input"],
+Cell[20335, 557, 944, 20, 64, "Input"],
+Cell[21282, 579, 511, 10, 38, "Input"],
+Cell[21796, 591, 274, 7, 38, "Input"],
+Cell[22073, 600, 1056, 23, 64, "Input"],
+Cell[23132, 625, 969, 22, 64, "Input"]
 }
 ]
 *)

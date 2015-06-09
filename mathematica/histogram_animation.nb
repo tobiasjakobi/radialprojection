@@ -10,21 +10,25 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[      4745,        145]
-NotebookOptionsPosition[      4340,        127]
-NotebookOutlinePosition[      4697,        143]
-CellTagsIndexPosition[      4654,        140]
+NotebookDataLength[      5316,        152]
+NotebookOptionsPosition[      4909,        134]
+NotebookOutlinePosition[      5266,        150]
+CellTagsIndexPosition[      5223,        147]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
 Notebook[{
-Cell[BoxData[
+Cell[BoxData[{
  RowBox[{
   RowBox[{
   "filePrefix", ":=", 
-   "\"\</dev/shm/tjakobi/decagonal_rndvis_1100s/decagonal_rndvis_hq_\>\""}], 
-  ";"}]], "Input",
- CellChangeTimes->{{3.637401489663969*^9, 3.637401501944065*^9}}],
+   "\"\</dev/shm/tjakobi/decagonal_visrnd_1800s/decagonal_visrnd_\>\""}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"animRange", ":=", "98"}], ";"}]}], "Input",
+ CellChangeTimes->{{3.637401489663969*^9, 3.637401501944065*^9}, {
+  3.6375688220187397`*^9, 3.637568853967458*^9}, {3.638610914829351*^9, 
+  3.638610962603146*^9}, {3.638611371702533*^9, 3.638611383097787*^9}}],
 
 Cell[BoxData[
  RowBox[{
@@ -41,10 +45,10 @@ Cell[BoxData[
           RowBox[{"ToString", "[", "#", "]"}], ",", "\"\<.env\>\""}], "]"}], 
         "]"}]}], ";"}], "&"}], ",", 
     RowBox[{"Range", "[", 
-     RowBox[{"1", ",", "99"}], "]"}]}], "]"}], ";"}]], "Input",
+     RowBox[{"1", ",", "animRange"}], "]"}]}], "]"}], ";"}]], "Input",
  CellChangeTimes->{{3.6373957367255077`*^9, 3.6373958447400208`*^9}, {
-  3.637399264117655*^9, 3.637399284420784*^9}, {3.6374015003823*^9, 
-  3.637401510987369*^9}}],
+   3.637399264117655*^9, 3.637399284420784*^9}, {3.6374015003823*^9, 
+   3.637401510987369*^9}, 3.638610930767685*^9, 3.638610967502881*^9}],
 
 Cell[BoxData[
  RowBox[{"Map", "[", 
@@ -63,10 +67,10 @@ Cell[BoxData[
           RowBox[{"3.0", ",", "0.01"}], "}"}]}], "]"}], "]"}]}], ";"}], "&"}],
     ",", 
    RowBox[{"Range", "[", 
-    RowBox[{"1", ",", "99"}], "]"}]}], "]"}]], "Input",
+    RowBox[{"1", ",", "animRange"}], "]"}]}], "]"}]], "Input",
  CellChangeTimes->{{3.637395877255025*^9, 3.637395988561376*^9}, {
   3.637399289686236*^9, 3.637399290396573*^9}, {3.637401522863904*^9, 
-  3.637401527551042*^9}}],
+  3.637401527551042*^9}, {3.638610946387807*^9, 3.638610968263492*^9}}],
 
 Cell[BoxData[
  RowBox[{"Plot", "[", 
@@ -98,7 +102,7 @@ Cell[BoxData[
        RowBox[{"StringJoin", "[", 
         RowBox[{"filePrefix", ",", 
          RowBox[{"IntegerString", "[", 
-          RowBox[{"#", ",", "10", ",", "2"}], "]"}], ",", "\"\<.bmp\>\""}], 
+          RowBox[{"#", ",", "10", ",", "2"}], "]"}], ",", "\"\<.png\>\""}], 
         "]"}], ",", "\[IndentingNewLine]", 
        RowBox[{"Plot", "[", 
         RowBox[{
@@ -114,16 +118,19 @@ Cell[BoxData[
              RowBox[{"0", ",", "3.0"}], "}"}], ",", 
             RowBox[{"{", 
              RowBox[{"0", ",", "1.2"}], "}"}]}], "}"}]}], ",", 
-         RowBox[{"ImageSize", "\[Rule]", "Large"}]}], "]"}]}], "]"}], "&"}], 
-    ",", "\[IndentingNewLine]", 
+         RowBox[{"ImageSize", "\[Rule]", "Large"}]}], "]"}], ",", 
+       RowBox[{"ImageResolution", "\[Rule]", "250"}]}], "]"}], "&"}], ",", 
+    "\[IndentingNewLine]", 
     RowBox[{"Range", "[", 
-     RowBox[{"1", ",", "99"}], "]"}]}], "]"}], ";"}]], "Input",
+     RowBox[{"1", ",", "animRange"}], "]"}]}], "]"}], ";"}]], "Input",
  CellChangeTimes->{{3.6373959958992043`*^9, 3.6373960367546873`*^9}, 
    3.637396736058984*^9, 3.6373968586760178`*^9, {3.6373968923278303`*^9, 
    3.637396897046918*^9}, {3.637396984564374*^9, 3.637396999504504*^9}, 
    3.6373970466517878`*^9, {3.637398896616426*^9, 3.6373989125670547`*^9}, {
    3.637399348760934*^9, 3.637399353157646*^9}, {3.637401549380032*^9, 
-   3.637401568859277*^9}}]
+   3.637401568859277*^9}, {3.637569043371052*^9, 3.6375690545151777`*^9}, {
+   3.637569555128935*^9, 3.6375695559061327`*^9}, {3.6375703468593683`*^9, 
+   3.63757035054142*^9}, 3.638610989556155*^9}]
 },
 WindowSize->{1920, 1140},
 WindowMargins->{{0, Automatic}, {Automatic, 0}},
@@ -142,14 +149,13 @@ CellTagsIndex->{}
 *)
 (*NotebookFileOutline
 Notebook[{
-Cell[557, 20, 220, 6, 38, "Input"],
-Cell[780, 28, 701, 18, 64, "Input"],
-Cell[1484, 48, 710, 20, 64, "Input"],
-Cell[2197, 70, 677, 18, 38, "Input"],
-Cell[2877, 90, 1459, 35, 89, "Input"]
+Cell[557, 20, 443, 10, 64, "Input"],
+Cell[1003, 32, 754, 18, 64, "Input"],
+Cell[1760, 52, 763, 20, 64, "Input"],
+Cell[2526, 74, 677, 18, 38, "Input"],
+Cell[3206, 94, 1699, 38, 89, "Input"]
 }
 ]
 *)
 
 (* End of internal cache information *)
-

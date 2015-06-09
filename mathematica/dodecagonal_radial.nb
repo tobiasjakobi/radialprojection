@@ -10,26 +10,31 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[     38816,       1010]
-NotebookOptionsPosition[     37128,        961]
-NotebookOutlinePosition[     37607,        979]
-CellTagsIndexPosition[     37564,        976]
+NotebookDataLength[     42191,       1108]
+NotebookOptionsPosition[     40184,       1051]
+NotebookOutlinePosition[     40663,       1069]
+CellTagsIndexPosition[     40620,       1066]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
 Notebook[{
 Cell[BoxData[
  RowBox[{
+  RowBox[{"ClearAll", "[", 
+   RowBox[{"initpoint", ",", "pointsize", ",", "tiling"}], "]"}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.6412747427314243`*^9, 3.641274766810236*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
   RowBox[{"AppendTo", "[", 
    RowBox[{
    "$Path", ",", 
     "\"\</homes/tjakobi/PhD_Work/radialprojection/packages\>\""}], "]"}], 
-  ";"}]], "Input",
- CellChangeTimes->{{3.538494815699629*^9, 3.538494818393842*^9}}],
-
-Cell[BoxData[
- RowBox[{"<<", "DodecagonalTilingCP`"}]], "Input",
- CellChangeTimes->{{3.537624933165909*^9, 3.537624934541496*^9}}],
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"<<", "DodecagonalTilingCP`"}]}], "Input",
+ CellChangeTimes->{{3.538494815699629*^9, 3.538494818393842*^9}, {
+  3.641274694842807*^9, 3.641274695156949*^9}}],
 
 Cell[BoxData[{
  RowBox[{
@@ -93,6 +98,14 @@ Cell[BoxData[{
    3.568108038121656*^9}, {3.568110478013524*^9, 3.568110478319086*^9}, {
    3.568976487037835*^9, 3.568976488236315*^9}, {3.56897653842958*^9, 
    3.568976542539152*^9}, 3.568976592668602*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ClearAll", "[", 
+   RowBox[{
+   "specialUnit", ",", "fundUnitZ3", ",", "stdRoots", ",", "multComplex"}], 
+   "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.641274768699637*^9, 3.6412747818831778`*^9}}],
 
 Cell[BoxData[{
  RowBox[{
@@ -190,6 +203,14 @@ Cell[BoxData[
  CellChangeTimes->{{3.537690204911727*^9, 3.537690205023545*^9}, {
   3.538224967194732*^9, 3.538224967337762*^9}, {3.568977567154038*^9, 
   3.568977567553936*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ClearAll", "[", 
+   RowBox[{
+   "verts", ",", "rootDodecagon", ",", "windowDodecagonNormalized", ",", 
+    "windowDodecagonStd"}], "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.6412747863496447`*^9, 3.641274797989253*^9}}],
 
 Cell[BoxData[
  RowBox[{
@@ -368,6 +389,14 @@ Cell[BoxData[
    3.568737177265787*^9, 3.568737196400249*^9}, {3.568977942749201*^9, 
    3.568977970995648*^9}}],
 
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ClearAll", "[", 
+   RowBox[{
+   "computeVertexBadness", ",", "compareLocalVsRay", ",", 
+    "compareLocalVsRayVisual"}], "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.641274800933156*^9, 3.6412748149996367`*^9}}],
+
 Cell[BoxData[{
  RowBox[{
   RowBox[{
@@ -536,7 +565,16 @@ Cell[BoxData[{
    3.568731163080724*^9, {3.568733691093124*^9, 3.56873369254509*^9}, {
    3.568733736014845*^9, 3.568733737731971*^9}, {3.568969359540632*^9, 
    3.568969376214721*^9}, {3.568969413988038*^9, 3.568969428278634*^9}, {
-   3.633437038014536*^9, 3.633437067790724*^9}}],
+   3.633437038014536*^9, 3.633437067790724*^9}, {3.641275242516645*^9, 
+   3.6412752465653467`*^9}, {3.641275990286519*^9, 3.641275990520722*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ClearAll", "[", 
+   RowBox[{
+   "dodecagonalColor", ",", "PlotNormSplitPara", ",", "PlotNormSplitOrtho"}], 
+   "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.641274817395002*^9, 3.6412748308240232`*^9}}],
 
 Cell[BoxData[{
  RowBox[{
@@ -665,12 +703,30 @@ Cell[BoxData[
   3.589877788594049*^9}, {3.589877853878374*^9, 3.589877866685255*^9}}],
 
 Cell[BoxData[
- RowBox[{"compareLocalVsRay", "[", "120", "]"}]], "Input",
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"TODO", ":", " ", 
+    RowBox[{
+     RowBox[{
+     "for", " ", "this", " ", "we", " ", "need", " ", "to", " ", "re"}], "-", 
+     
+     RowBox[{"implement", " ", "parsing", " ", 
+      RowBox[{"of", " ", "'"}], 
+      RowBox[{"local", "'"}], " ", "in", " ", 
+      RowBox[{"cyclotomic_radial", "."}]}]}]}], " ", "*)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{"See", " ", "in", " ", "compareLocalVsRay", 
+    RowBox[{"(", ")"}], " ", "in", " ", 
+    RowBox[{"particular", "."}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{"compareLocalVsRay", "[", "120", "]"}], "*)"}]}]], "Input",
  CellChangeTimes->{{3.568733223685572*^9, 3.568733231455038*^9}, {
   3.568969225123127*^9, 3.56896922538054*^9}, {3.568969590566138*^9, 
   3.568969591366176*^9}, {3.568969725417064*^9, 3.568969746647097*^9}, {
   3.568970169246332*^9, 3.568970169580686*^9}, {3.568970553604151*^9, 
-  3.568970553810219*^9}, {3.568974036900508*^9, 3.568974046878759*^9}}],
+  3.568970553810219*^9}, {3.568974036900508*^9, 3.568974046878759*^9}, {
+  3.641275995977085*^9, 3.641276050857315*^9}}],
 
 Cell[BoxData[
  RowBox[{"compareLocalVsRayVisual", "[", 
@@ -679,6 +735,14 @@ Cell[BoxData[
   3.568730809838923*^9, 3.568730810125203*^9}, {3.568731051315174*^9, 
   3.568731051985021*^9}, {3.568969275219594*^9, 3.568969275473774*^9}, {
   3.568969577335642*^9, 3.568969577687476*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ClearAll", "[", 
+   RowBox[{"applyWindowShift", ",", "computeGCD2Status", ",", "posterFig"}], 
+   "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.641274833043694*^9, 3.641274847489295*^9}, {
+  3.641275490250244*^9, 3.641275491866352*^9}}],
 
 Cell[BoxData[
  RowBox[{
@@ -705,19 +769,22 @@ Cell[BoxData[
      RowBox[{"(", 
       RowBox[{"direct", " ", "space"}], ")"}]}], ":"}], " ", "*)"}], 
   "\[IndentingNewLine]", 
-  RowBox[{"PlotNormSplitPara", "[", 
-   RowBox[{
-    RowBox[{"verts", "[", "Dodecagonal", "]"}], ",", "0.013"}], 
-   "]"}]}]], "Input",
+  RowBox[{"posterFig", "=", 
+   RowBox[{"PlotNormSplitPara", "[", 
+    RowBox[{
+     RowBox[{"verts", "[", "Dodecagonal", "]"}], ",", "0.013"}], 
+    "]"}]}]}]], "Input",
  CellChangeTimes->{{3.5696784393660927`*^9, 3.569678458616767*^9}, 
-   3.56967849936948*^9}],
+   3.56967849936948*^9, {3.641275473968433*^9, 3.641275475966393*^9}}],
 
 Cell[BoxData[
- RowBox[{"Export", "[", 
-  RowBox[{"\"\</homes/tjakobi/out.eps\>\"", ",", 
-   RowBox[{"Out", "[", "104", "]"}]}], "]"}]], "Input",
+ RowBox[{"(*", 
+  RowBox[{"Export", "[", 
+   RowBox[{"\"\</homes/tjakobi/poster_fig.eps\>\"", ",", "posterFig"}], "]"}],
+   "*)"}]], "Input",
  CellChangeTimes->{{3.589887658464699*^9, 3.589887676809647*^9}, {
-  3.589887725006918*^9, 3.589887725627454*^9}}],
+  3.589887725006918*^9, 3.589887725627454*^9}, {3.6412754799080267`*^9, 
+  3.641275487623905*^9}}],
 
 Cell[BoxData[
  RowBox[{
@@ -813,6 +880,13 @@ Cell[BoxData[
   3.56784663371677*^9, 3.567846636317838*^9}, {3.63343707564669*^9, 
   3.633437079415065*^9}}],
 
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ClearAll", "[", 
+   RowBox[{"data", ",", "inputGraph", ",", "stats", ",", "gap"}], "]"}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.641274850493752*^9, 3.641274864451818*^9}}],
+
 Cell[BoxData[{
  RowBox[{
   RowBox[{
@@ -894,6 +968,11 @@ Cell[BoxData[{
 
 Cell[BoxData[
  RowBox[{
+  RowBox[{"ClearAll", "[", "figuresGST", "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.641274866376956*^9, 3.641274874401173*^9}}],
+
+Cell[BoxData[
+ RowBox[{
   RowBox[{"figuresGST", "[", "histoFull", "]"}], "=", 
   RowBox[{"Show", "[", 
    RowBox[{
@@ -957,7 +1036,18 @@ Cell[BoxData[
    3.568372830812101*^9}, {3.568373194306509*^9, 3.56837319616539*^9}, 
    3.568373663505424*^9, {3.568441586064383*^9, 3.568441649537523*^9}, {
    3.568441924565223*^9, 3.568441926067227*^9}, 3.568442946481199*^9, 
-   3.568632420093645*^9}]
+   3.568632420093645*^9}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+  "Unprotect", "[", "\"\<AperiodicTilings`DodecagonalTilingCP`*\>\"", "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+  "Remove", "[", "\"\<AperiodicTilings`DodecagonalTilingCP`*\>\"", "]"}], 
+  ";"}]}], "Input",
+ CellChangeTimes->{{3.641274722110608*^9, 3.6412747293793783`*^9}}]
 },
 WindowSize->{1920, 1140},
 WindowMargins->{{0, Automatic}, {Automatic, 0}},
@@ -978,40 +1068,48 @@ CellTagsIndex->{}
 *)
 (*NotebookFileOutline
 Notebook[{
-Cell[557, 20, 241, 7, 45, "Input"],
-Cell[801, 29, 130, 2, 45, "Input"],
-Cell[934, 33, 341, 10, 75, "Input"],
-Cell[1278, 45, 867, 19, 104, "Input"],
-Cell[2148, 66, 1600, 28, 75, "Input"],
-Cell[3751, 96, 2291, 71, 133, "Input"],
-Cell[6045, 169, 345, 8, 45, "Input"],
-Cell[6393, 179, 177, 4, 45, "Input"],
-Cell[6573, 185, 285, 6, 45, "Input"],
-Cell[6861, 193, 137, 4, 45, "Input"],
-Cell[7001, 199, 2883, 60, 191, "Input"],
-Cell[9887, 261, 937, 29, 104, "Input"],
-Cell[10827, 292, 1954, 41, 104, "Input"],
-Cell[12784, 335, 1279, 33, 104, "Input"],
-Cell[14066, 370, 7133, 168, 771, "Input"],
-Cell[21202, 540, 808, 25, 75, "Input"],
-Cell[22013, 567, 4223, 97, 510, "Input"],
-Cell[26239, 666, 425, 6, 45, "Input"],
-Cell[26667, 674, 364, 6, 45, "Input"],
-Cell[27034, 682, 399, 13, 45, "Input"],
-Cell[27436, 697, 525, 15, 75, "Input"],
-Cell[27964, 714, 259, 5, 45, "Input"],
-Cell[28226, 721, 2448, 60, 220, "Input"],
-Cell[30677, 783, 860, 21, 162, "Input"],
-Cell[31540, 806, 343, 7, 45, "Input"],
-Cell[31886, 815, 529, 14, 75, "Input"],
-Cell[32418, 831, 570, 15, 75, "Input"],
-Cell[32991, 848, 542, 12, 75, "Input"],
-Cell[33536, 862, 363, 8, 45, "Input"],
-Cell[33902, 872, 164, 4, 45, "Input"],
-Cell[34069, 878, 522, 14, 75, "Input"],
-Cell[34594, 894, 1117, 28, 104, "Input"],
-Cell[35714, 924, 872, 23, 104, "Input"],
-Cell[36589, 949, 535, 10, 45, "Input"]
+Cell[557, 20, 205, 5, 45, "Input"],
+Cell[765, 27, 357, 9, 75, "Input"],
+Cell[1125, 38, 341, 10, 75, "Input"],
+Cell[1469, 50, 867, 19, 104, "Input"],
+Cell[2339, 71, 1600, 28, 75, "Input"],
+Cell[3942, 101, 235, 6, 45, "Input"],
+Cell[4180, 109, 2291, 71, 133, "Input"],
+Cell[6474, 182, 345, 8, 45, "Input"],
+Cell[6822, 192, 177, 4, 45, "Input"],
+Cell[7002, 198, 285, 6, 45, "Input"],
+Cell[7290, 206, 257, 6, 45, "Input"],
+Cell[7550, 214, 137, 4, 45, "Input"],
+Cell[7690, 220, 2883, 60, 191, "Input"],
+Cell[10576, 282, 937, 29, 104, "Input"],
+Cell[11516, 313, 1954, 41, 104, "Input"],
+Cell[13473, 356, 1279, 33, 104, "Input"],
+Cell[14755, 391, 247, 6, 45, "Input"],
+Cell[15005, 399, 7231, 169, 771, "Input"],
+Cell[22239, 570, 237, 6, 45, "Input"],
+Cell[22479, 578, 808, 25, 75, "Input"],
+Cell[23290, 605, 4223, 97, 510, "Input"],
+Cell[27516, 704, 1084, 24, 104, "Input"],
+Cell[28603, 730, 364, 6, 45, "Input"],
+Cell[28970, 738, 271, 6, 45, "Input"],
+Cell[29244, 746, 399, 13, 45, "Input"],
+Cell[29646, 761, 606, 16, 75, "Input"],
+Cell[30255, 779, 321, 7, 45, "Input"],
+Cell[30579, 788, 2448, 60, 220, "Input"],
+Cell[33030, 850, 860, 21, 162, "Input"],
+Cell[33893, 873, 343, 7, 45, "Input"],
+Cell[34239, 882, 210, 5, 45, "Input"],
+Cell[34452, 889, 529, 14, 75, "Input"],
+Cell[34984, 905, 570, 15, 75, "Input"],
+Cell[35557, 922, 542, 12, 75, "Input"],
+Cell[36102, 936, 363, 8, 45, "Input"],
+Cell[36468, 946, 164, 4, 45, "Input"],
+Cell[36635, 952, 522, 14, 75, "Input"],
+Cell[37160, 968, 154, 3, 45, "Input"],
+Cell[37317, 973, 1117, 28, 104, "Input"],
+Cell[38437, 1003, 872, 23, 104, "Input"],
+Cell[39312, 1028, 535, 10, 45, "Input"],
+Cell[39850, 1040, 330, 9, 75, "Input"]
 }
 ]
 *)

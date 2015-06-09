@@ -10,42 +10,40 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[     12766,        341]
-NotebookOptionsPosition[     11775,        309]
-NotebookOutlinePosition[     12209,        326]
-CellTagsIndexPosition[     12166,        323]
+NotebookDataLength[     13623,        366]
+NotebookOptionsPosition[     12553,        332]
+NotebookOutlinePosition[     12987,        349]
+CellTagsIndexPosition[     12944,        346]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
 Notebook[{
 Cell[BoxData[
  RowBox[{
+  RowBox[{"ClearAll", "[", 
+   RowBox[{"pointsize", ",", "tiling"}], "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.641274292803265*^9, 3.6412743338321*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
   RowBox[{"AppendTo", "[", 
    RowBox[{
    "$Path", ",", 
     "\"\</homes/tjakobi/PhD_Work/radialprojection/mathematica/packages\>\""}],
-    "]"}], ";"}]], "Input",
+    "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"<<", "DecagonalTilingCP`"}]}], "Input",
  CellChangeTimes->{{3.538494712503058*^9, 3.538494715329081*^9}, {
-  3.606120702542391*^9, 3.606120706411331*^9}}],
+  3.606120702542391*^9, 3.606120706411331*^9}, {3.641273869833745*^9, 
+  3.641273870082924*^9}}],
 
 Cell[BoxData[
- RowBox[{"<<", "DecagonalTilingCP`"}]], "Input",
- CellChangeTimes->{{3.536383544988185*^9, 3.536383546680682*^9}, {
-  3.536573500213718*^9, 3.536573502160719*^9}}],
-
-Cell[BoxData[{
- RowBox[{
-  RowBox[{"initpoint", "=", 
-   RowBox[{"{", 
-    RowBox[{"0", ",", "0", ",", "0", ",", "0"}], "}"}]}], 
-  ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"pointsize", "=", 
-   RowBox[{"1", "/", "200"}]}], ";"}]}], "Input",
+   RowBox[{"1", "/", "200"}]}], ";"}]], "Input",
  CellChangeTimes->{{3.537189619978285*^9, 3.537189629781629*^9}, {
-  3.537195100125987*^9, 3.537195100237257*^9}, {3.537201531108911*^9, 
-  3.5372015716241*^9}, {3.538220886006529*^9, 3.538220888205933*^9}, {
-  3.542086618301884*^9, 3.542086618607514*^9}}],
+   3.537195100125987*^9, 3.537195100237257*^9}, {3.537201531108911*^9, 
+   3.5372015716241*^9}, {3.538220886006529*^9, 3.538220888205933*^9}, {
+   3.542086618301884*^9, 3.542086618607514*^9}, 3.641274331544715*^9}],
 
 Cell[BoxData[
  RowBox[{
@@ -69,7 +67,10 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"tiling", "=", 
    RowBox[{"DecagonalProjectionTilingVis", "[", 
-    RowBox[{"initpoint", ",", "40"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"0", ",", "0", ",", "0", ",", "0"}], "}"}], ",", "40"}], 
+    "]"}]}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"(*", 
    RowBox[{"GraphicsGrid", "[", 
@@ -105,7 +106,8 @@ Cell[BoxData[{
    3.549637583619549*^9, 3.54963758380291*^9}, {3.549877591781573*^9, 
    3.549877594258226*^9}, {3.549877638214255*^9, 3.549877638394791*^9}, {
    3.549877888744614*^9, 3.54987788917751*^9}, {3.549877998810786*^9, 
-   3.549877999386653*^9}, {3.549880036885389*^9, 3.549880037356015*^9}}],
+   3.549877999386653*^9}, {3.549880036885389*^9, 3.549880037356015*^9}, 
+   3.641274322916232*^9}],
 
 Cell[BoxData[
  RowBox[{
@@ -169,6 +171,15 @@ Cell[BoxData[
  CellChangeTimes->{{3.537797089287119*^9, 3.537797090134604*^9}, {
   3.538221368260764*^9, 3.538221382255117*^9}, {3.538221791637278*^9, 
   3.538221791696914*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"ClearAll", "[", 
+   RowBox[{"verts", ",", "data"}], "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ClearAll", "[", 
+   RowBox[{"inputGraph", ",", "stats", ",", "gap"}], "]"}], ";"}]}], "Input",
+ CellChangeTimes->{{3.641274348250164*^9, 3.641274369015513*^9}}],
 
 Cell[BoxData[
  RowBox[{
@@ -305,7 +316,19 @@ Cell[BoxData[
      "}"}], "]"}]}], "]"}]], "Input",
  CellChangeTimes->{{3.542086786432005*^9, 3.542086793426597*^9}, {
   3.549637650187508*^9, 3.549637654165703*^9}, {3.549637861496955*^9, 
-  3.549637872167139*^9}, {3.562335223781472*^9, 3.562335249908137*^9}}]
+  3.549637872167139*^9}, {3.562335223781472*^9, 3.562335249908137*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+  "Unprotect", "[", "\"\<AperiodicTilings`DecagonalTilingCP`*\>\"", "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+  "Remove", "[", "\"\<AperiodicTilings`DecagonalTilingCP`*\>\"", "]"}], 
+  ";"}]}], "Input",
+ CellChangeTimes->{{3.641273883225157*^9, 3.6412738845512342`*^9}, {
+  3.641274268002289*^9, 3.6412742737321672`*^9}}]
 },
 WindowSize->{1600, 1136},
 WindowMargins->{{0, Automatic}, {Automatic, 0}},
@@ -325,24 +348,26 @@ CellTagsIndex->{}
 *)
 (*NotebookFileOutline
 Notebook[{
-Cell[557, 20, 303, 8, 45, "Input"],
-Cell[863, 30, 177, 3, 45, "Input"],
-Cell[1043, 35, 508, 12, 75, "Input"],
-Cell[1554, 49, 675, 16, 104, "Input"],
-Cell[2232, 67, 2203, 40, 133, "Input"],
-Cell[4438, 109, 894, 21, 133, "Input"],
-Cell[5335, 132, 292, 6, 45, "Input"],
-Cell[5630, 140, 662, 15, 75, "Input"],
-Cell[6295, 157, 522, 13, 75, "Input"],
-Cell[6820, 172, 137, 4, 45, "Input"],
-Cell[6960, 178, 1934, 46, 191, "Input"],
-Cell[8897, 226, 207, 5, 45, "Input"],
-Cell[9107, 233, 228, 5, 45, "Input"],
-Cell[9338, 240, 522, 14, 75, "Input"],
-Cell[9863, 256, 350, 7, 45, "Input"],
-Cell[10216, 265, 234, 5, 45, "Input"],
-Cell[10453, 272, 268, 7, 45, "Input"],
-Cell[10724, 281, 1047, 26, 104, "Input"]
+Cell[557, 20, 180, 4, 45, "Input"],
+Cell[740, 26, 417, 10, 75, "Input"],
+Cell[1160, 38, 383, 7, 45, "Input"],
+Cell[1546, 47, 675, 16, 104, "Input"],
+Cell[2224, 65, 2299, 44, 133, "Input"],
+Cell[4526, 111, 894, 21, 133, "Input"],
+Cell[5423, 134, 292, 6, 45, "Input"],
+Cell[5718, 142, 662, 15, 75, "Input"],
+Cell[6383, 159, 522, 13, 75, "Input"],
+Cell[6908, 174, 307, 7, 75, "Input"],
+Cell[7218, 183, 137, 4, 45, "Input"],
+Cell[7358, 189, 1934, 46, 191, "Input"],
+Cell[9295, 237, 207, 5, 45, "Input"],
+Cell[9505, 244, 228, 5, 45, "Input"],
+Cell[9736, 251, 522, 14, 75, "Input"],
+Cell[10261, 267, 350, 7, 45, "Input"],
+Cell[10614, 276, 234, 5, 45, "Input"],
+Cell[10851, 283, 268, 7, 45, "Input"],
+Cell[11122, 292, 1047, 26, 104, "Input"],
+Cell[12172, 320, 377, 10, 75, "Input"]
 }
 ]
 *)
