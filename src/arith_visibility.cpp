@@ -1762,10 +1762,13 @@ void toEPS(const vector<ArithVisibility::bragg>& input, bool fill) {
 
   minmax(input, min, max, radius);
 
-  const double xfactor = std::max(abs(min[0]), abs(max[0]));
-  const double yfactor = std::max(abs(min[1]), abs(max[1]));
+  // Compute range and midpoint of the input data
+  const vec2d range(max - min);
+  const vec2d mid(min + range * 0.5);
 
-  const int height = basewidth * lround(yfactor / xfactor);
+  // Aspect ratio used to compute height from basewidth
+  const double aspect = (range[0] == 0.0) ? 1.0 : range[1] / range[0];
+  const int height = lround(double(basewidth) * aspect);
 
   // Write header with bounding box information
   cout << "%!PS-Adobe-3.0 EPSF-3.0" << endl;
@@ -1777,8 +1780,8 @@ void toEPS(const vector<ArithVisibility::bragg>& input, bool fill) {
   cout << (basewidth / 2) << ' ' << (height / 2) << " translate" << endl;
 
   const double scaling = std::min(
-    double(basewidth - offset) / (2.0 * (xfactor + radius)),
-    double(height - offset) / (2.0 * (yfactor + radius)));
+    double(basewidth - offset) / (range[0] + radius),
+    double(height - offset) / (range[1] + radius));
 
   // Apply scaling
   cout << lround(scaling) << ' ' << lround(scaling) << " scale" << endl;
@@ -1788,8 +1791,10 @@ void toEPS(const vector<ArithVisibility::bragg>& input, bool fill) {
   const string mode = (fill ? "fill" : "stroke");
 
   for (vector<bragg>::const_iterator k = input.begin(); k != input.end(); ++k) {
+    const vec2d pos(k->getPosition() - mid);
+
     cout << "newpath" << endl;
-    cout << k->getPosition()[0] << ' ' << k->getPosition()[1] << ' '
+    cout << pos[0] << ' ' << pos[1] << ' '
          << k->getIntensity() << " 0 360 arc" << endl;
     cout << mode << endl;
   }
@@ -1867,10 +1872,13 @@ void toSVG(const vector<ArithVisibility::bragg>& input, bool fill) {
 
   minmax(input, min, max, radius);
 
-  const double xfactor = std::max(abs(min[0]), abs(max[0]));
-  const double yfactor = std::max(abs(min[1]), abs(max[1]));
+  // Compute range and midpoint of the input data
+  const vec2d range(max - min);
+  const vec2d mid(min + range * 0.5);
 
-  const int height = basewidth * lround(yfactor / xfactor);
+  // Aspect ratio used to compute height from basewidth
+  const double aspect = (range[0] == 0.0) ? 1.0 : range[1] / range[0];
+  const int height = lround(double(basewidth) * aspect);
 
   // Write header with geometry/dimension information
   cout << "<svg width=\"" << basewidth << "\" height=\"" << height
@@ -1882,8 +1890,8 @@ void toSVG(const vector<ArithVisibility::bragg>& input, bool fill) {
        << (height / 2) << ")\">" << endl;
 
   const double scaling = std::min(
-    double(basewidth - offset) / (2.0 * (xfactor + radius)),
-    double(height - offset) / (2.0 * (yfactor + radius)));
+    double(basewidth - offset) / (range[0] + radius),
+    double(height - offset) / (range[1] + radius));
 
   // Apply scaling
   cout << "\t\t" << "<g transform=\"scale(" << lround(scaling) << ")\">" << endl;
@@ -1893,8 +1901,10 @@ void toSVG(const vector<ArithVisibility::bragg>& input, bool fill) {
   const string fcolor = (fill ? "255, 255, 255" : "0, 0, 0");
 
   for (vector<bragg>::const_iterator k = input.begin(); k != input.end(); ++k) {
-    cout << "\t\t\t" << "<circle cx=\"" << k->getPosition()[0] << "\" cy=\""
-         << k->getPosition()[1] << "\" r=\"" << k->getIntensity()
+    const vec2d pos(k->getPosition() - mid);
+
+    cout << "\t\t\t" << "<circle cx=\"" << pos[0] << "\" cy=\""
+         << pos[1] << "\" r=\"" << k->getIntensity()
          << "\" fill=\"rgb(" << fcolor << ")\" fill-opacity=\""
          << fopacity << "\" stroke-width=\"" << strwidth
          << "\" stroke=\"rgb(0, 0, 0)\" />" << endl;
