@@ -732,6 +732,15 @@ bool ArithVisibility::visibility3FreeGM(const vec2i& in) {
   return true;
 }
 
+void ArithVisibility::bragg::rotate(double degree) {
+  const double rad = 2.0 * Constants::pi * (degree / 360.0);
+  const double a = sin(rad);
+  const double b = cos(rad);
+
+  const vec2d temp(position.applyRotation(a, b));
+  position.set(temp[0], temp[1]);
+}
+
 void ArithVisibility::diffractionZ2(const vector<vec2iq>& in,
         vector<bragg>& out, clipfunc f) {
   out.clear();
@@ -1803,10 +1812,13 @@ void toEPS2(const vector<ArithVisibility::bragg>& input) {
 
   minmax(input, min, max, radius);
 
-  const double xfactor = std::max(abs(min[0]), abs(max[0]));
-  const double yfactor = std::max(abs(min[1]), abs(max[1]));
+  // Compute range and midpoint of the input data
+  const vec2d range(max - min);
+  const vec2d mid(min + range * 0.5);
 
-  const int height = basewidth * lround(yfactor / xfactor);
+  // Aspect ratio used to compute height from basewidth
+  const double aspect = (range[0] == 0.0) ? 1.0 : range[1] / range[0];
+  const int height = lround(double(basewidth) * aspect);
 
   // Write header with bounding box information
   cout << "%!PS-Adobe-3.0 EPSF-3.0" << endl;
@@ -1824,14 +1836,16 @@ void toEPS2(const vector<ArithVisibility::bragg>& input) {
   cout << (basewidth / 2) << ' ' << (height / 2) << " translate" << endl;
 
   const double scaling = std::min(
-    double(basewidth - offset) / (2.0 * (xfactor + radius)),
-    double(height - offset) / (2.0 * (yfactor + radius)));
+    double(basewidth - offset) / (range[0] + radius),
+    double(height - offset) / (range[1] + radius));
 
   // Apply scaling
   cout << lround(scaling) << ' ' << lround(scaling) << " scale" << endl;
 
   for (vector<bragg>::const_iterator k = input.begin(); k != input.end(); ++k) {
-    cout << k->getPosition()[0] << ' ' << k->getPosition()[1] << ' '
+    const vec2d pos(k->getPosition() - mid);
+
+    cout << pos[0] << ' ' << pos[1] << ' '
          << k->getIntensity() << " circlehack" << endl;
   }
 
@@ -2042,9 +2056,11 @@ int main_diffraction(int argc, char* argv[]) {
     for (vector<bragg>::iterator k = diffraction.begin();
          k != diffraction.end(); ++k) {
       k->apply(sfunc);
+      //k->rotate(-45.0);
     }
 
-    exportRawConsole(diffraction);
+    //exportRawConsole(diffraction);
+    toEPS2(diffraction);
   } else {
     // Density computation mode
     using namespace Common;

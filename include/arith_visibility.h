@@ -237,6 +237,8 @@ namespace ArithVisibility {
     double getIntensity() const {
       return intensity;
     }
+
+    void rotate(double degree);
   };
 
   const double clipeps = 0.00001;
