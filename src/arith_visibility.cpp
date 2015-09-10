@@ -2066,7 +2066,6 @@ int main_diffraction(int argc, char* argv[]) {
     for (vector<bragg>::iterator k = diffraction.begin();
          k != diffraction.end(); ++k) {
       k->apply(sfunc);
-      //k->rotate(-45.0);
     }
 
     //exportRawConsole(diffraction);
