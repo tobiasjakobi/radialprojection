@@ -66,6 +66,7 @@ int SingleMachine::main(int argc, char* argv[]) {
   vec4i origin(0, 0, 0, 0);
 
   bool use_default_origin = true;
+  bool force_nonlocal_test = false;
 
   // outputs
   Common::vec4ilist tiling, visible;
@@ -81,6 +82,16 @@ int SingleMachine::main(int argc, char* argv[]) {
     return 0;
   }
   */
+
+  /*
+   * Special mode to force usage of the non-local test.
+   * Mainly useful for debugging the visibility algos.
+   */
+  if (argc == 5) {
+    const string arg(argv[4]);
+    if (arg == "nonlocal")
+      force_nonlocal_test = true;
+  }
 
   if (argc > 8) argc = 8;
   if (argc < 8) argc = 4;
@@ -125,14 +136,14 @@ int SingleMachine::main(int argc, char* argv[]) {
 
   switch (mode) {
     case octagonal_tiling:
-      if (use_default_origin)
+      if (use_default_origin && !force_nonlocal_test)
         Octagonal::projTilingVisLocal(init, steps, sector, tiling, visible);
       else
         Octagonal::projTilingVis(init, origin, steps, false, tiling, visible); // onlySector is ignored
     break;
 
     case octagonal_radprj:
-      if (use_default_origin)
+      if (use_default_origin && !force_nonlocal_test)
         Octagonal::projTilingVisLocal(init, steps, sector, tiling, visible);
       else
         Octagonal::projTilingVis(init, origin, steps, true, tiling, visible); // onlySector is ignored
@@ -141,7 +152,7 @@ int SingleMachine::main(int argc, char* argv[]) {
     break;
 
     case decagonal_tiling:
-      if (use_default_origin) {
+      if (use_default_origin && !force_nonlocal_test) {
         Decagonal::projTilingVisLocal(init, steps, tiling, visible);
 
         if (sector) {
@@ -156,7 +167,7 @@ int SingleMachine::main(int argc, char* argv[]) {
     break;
 
     case decagonal_radprj:
-      if (use_default_origin) {
+      if (use_default_origin && !force_nonlocal_test) {
         Common::vec4ilist vistilSector;
 
         Decagonal::projTilingVisLocal(init, steps, tiling, visible);
@@ -169,7 +180,7 @@ int SingleMachine::main(int argc, char* argv[]) {
     break;
 
     case dodecagonal_tiling:
-      if (use_default_origin) {
+      if (use_default_origin && !force_nonlocal_test) {
         Dodecagonal::projTilingVisLocal(init, steps, tiling, visible);
 
         if (sector) {
@@ -184,7 +195,7 @@ int SingleMachine::main(int argc, char* argv[]) {
     break;
 
     case dodecagonal_radprj:
-      if (use_default_origin) {
+      if (use_default_origin && !force_nonlocal_test) {
         Common::vec4ilist vistilSector;
 
         Dodecagonal::projTilingVisLocal(init, steps, tiling, visible);
