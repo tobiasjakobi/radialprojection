@@ -83,6 +83,7 @@ int SingleMachine::main(int argc, char* argv[]) {
   */
 
   if (argc > 8) argc = 8;
+  if (argc < 8) argc = 4;
 
   switch (argc) {
     default: /* this should catch cases 5, 6, 7 and 8 */
