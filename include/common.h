@@ -456,7 +456,7 @@ public:
   }
 
   double length() const {
-    return sqrt(lengthSquared());
+    return sqrt(this->lengthSquared());
   }
 
   bool inSectorL8() const {
