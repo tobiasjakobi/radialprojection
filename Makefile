@@ -24,6 +24,14 @@ ifeq (debug,$(build))
 cflags += -O0 -g
 endif
 
+# Enables "debugging" of the local visibility test.
+# In fact this intentionally breaks the visibility test for the
+# dodecagonal tiling, useful to illustrate the need to properly
+# shift the window (see the corresponding Mathematica worksheet).
+ifeq (1,$(visibility_debug))
+cflags += -DDODECAGONAL_VISIBILITY_DEBUG
+endif
+
 objects := cyclotomic_radial chiral_radial corner_cases \
            griddual hexagonal higher_cyclo histogram \
            tuebingen arith_visibility pdf_writer random \

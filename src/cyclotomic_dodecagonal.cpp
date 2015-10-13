@@ -78,7 +78,16 @@ bool Dodecagonal::checkScaledProjInWindow(const vec4i& point,
   /* Interesting observation: Multiply the two scaling factors and *
    * we recover unitZ3 again. Hmm, nice!                           */
 
-  const vec2d pt(point.orthProjShiftL12(scaler, gcdNormTwo));
+  /*
+   * See the 'dodecagonal_radial' Mathematica worksheet for
+   * details about why it suffices to always shift into the
+   * negative (inverted) direction.
+   */
+#ifdef DODECAGONAL_VISIBILITY_DEBUG
+  const vec2d pt(point.orthProjShiftL12(scaler, false));
+#else
+  const vec2d pt(point.orthProjShiftL12(scaler, true));
+#endif
   const double pt1 = pt.lengthSquared();
 
   if (useCircle) {
