@@ -400,6 +400,11 @@ public:
     return vec2d(scale * a[0], scale * a[1]);
   }
 
+  // Component-wise multiplication of vectors
+  vec2d operator*(const vec2d& v) const {
+    return vec2d(a[0] * v.a[0], a[1] * v.a[1]);
+  }
+
   vec2d operator-(const vec2d& v) const {
     return vec2d(a[0] - v.a[0], a[1] - v.a[1]);
   }
@@ -1662,6 +1667,9 @@ namespace Common {
   void writeRawConsole(const vec4ilist& input);
   void readRawConsole(vec4ilist& output);
 
+  void writeRawConsole(const vec2dlist& input);
+  void readRawConsole(vec2dlist& output);
+
   /* binning data object:
    * range: binning range, second parameter is ignored in 'tail'-mode
    * step: step size / width of the bins
@@ -1678,26 +1686,61 @@ namespace Common {
     uint catched;
   };
 
+  /* binning data object for two-dimensional data:
+   * range: range[0] contains min {x,y}-value
+   *        range[1] contains max {x,y}-value
+   * step: x-step and y-step (see also 'BinningData')
+   *
+   * numbin: number of bins in {x,y}-direction
+   *
+   * No tail binning mode is supported. */
+  struct BinningData2D {
+    vec2d range[2];
+    double step[2];
+
+    // binning output is still stored linearly
+    vector<uint> data;
+    uint numbin[2];
+    uint catched;
+  };
+
   // Compute the minimum/maximum value of the input list
   void minmax(const dlist& input, double& min, double& max);
 
+  void minmax(const vec2dlist& input, vec2d& min, vec2d& max);
+
   /* Compute the index of the 'bin' with the maximum number of entries. *
    * Only works properly if this 'bin' is unique.                       */
-  void binmax(const BinningData& input, uint& index);
+  template <typename T>
+  void binmax(const T& input, uint& index);
+
+  // Count the number of empty bins
+  template <typename T>
+  void emptybins(const T& input, uint& num);
 
   // Compute statistics for 'data' and 'bin' and print to console
   void printstats(const dlist& data, const BinningData& bin);
 
+  void printstats(const vec2dlist& data, const BinningData2D& bin);
+
   // Compute binning of 'input' with parameters given in 'output'
   void histogramBinning(const dlist& input, BinningData& output);
 
+  void histogramBinning(const vec2dlist& input, BinningData2D& output);
+
   template <typename T>
   void histogramScale(const BinningData& input, vector<T>& output, T scale);
+
+  template <typename T>
+  void histogramScale(const BinningData2D& input, vector<T>& output, T scale);
 
   /* Creates "envelope" data for given histogram input:                 *
    * Can be used for ListPlot to visualize the distributions coming     *
    * from numerical simulations of the radial projection.               */
   void histogramEnvelope(double a, double b, double step, bool stats);
+
+  void histogramEnvelope2D(const vec2d& min, const vec2d& max,
+    const vec2d& step, bool stats);
 
   // Same as histogramEnvelope but processes the "tail" of the data.
   void histoTailEnvelope(double a, double step, bool stats);

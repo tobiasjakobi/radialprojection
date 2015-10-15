@@ -912,6 +912,59 @@ readfail:
   return ;
 }
 
+void Common::writeRawConsole(const vec2dlist& input) {
+  unsigned out;
+  const char* data;
+
+  /* write signature first */
+
+  out = sizeof(double); /* element size */
+  cout.write(reinterpret_cast<const char*>(&out), sizeof(unsigned) * 1);
+
+  out = 2; /* number of elements per entry */
+  cout.write(reinterpret_cast<const char*>(&out), sizeof(unsigned) * 1);
+
+  out = input.size();
+  cout.write(reinterpret_cast<const char*>(&out), sizeof(unsigned) * 1);
+
+  data = reinterpret_cast<const char*>(&(*input.begin()));
+  cout.write(data, sizeof(vec2d) * input.size());
+}
+
+void Common::readRawConsole(vec2dlist& output) {
+  unsigned in;
+  vec2d data;
+
+  cin.read(reinterpret_cast<char*>(&in), sizeof(unsigned));
+  if (cin.eof() && cin.fail()) goto readfail;
+  if (in != sizeof(double)) goto signfail;
+
+  cin.read(reinterpret_cast<char*>(&in), sizeof(unsigned));
+  if (cin.eof() && cin.fail()) goto readfail;
+  if (in != 2) goto signfail;
+
+  cin.read(reinterpret_cast<char*>(&in), sizeof(unsigned));
+  if (cin.eof() && cin.fail()) goto readfail;
+
+  output.reserve(output.size() + in);
+
+  while (true) {
+    cin.read(reinterpret_cast<char*>(&data), sizeof(vec2d));
+    if (cin.eof()) break;
+
+    output.push_back(data);
+  }
+
+  return;
+signfail:
+  cerr << "error: verifying signature failed\n";
+  return;
+
+readfail:
+  cerr << "error: reading signature failed\n";
+  return;
+}
+
 void Common::minmax(const dlist& input, double& min, double& max) {
   double a, b;
 
@@ -928,7 +981,30 @@ void Common::minmax(const dlist& input, double& min, double& max) {
   max = b;
 }
 
-void Common::binmax(const BinningData& input, uint& index) {
+void Common::minmax(const vec2dlist& input, vec2d& min, vec2d& max) {
+  vec2d a, b;
+
+  vec2dlist::const_iterator i = input.begin();
+  a = b = *i;
+
+  ++i;
+  for (; i != input.end(); ++i) {
+    const double x = (*i)[0];
+    const double y = (*i)[1];
+
+    if (x < a[0]) a[0] = x;
+    if (x > b[0]) b[0] = x;
+
+    if (y < a[1]) a[1] = y;
+    if (y > b[1]) b[1] = y;
+  }
+
+  min = a;
+  max = b;
+}
+
+template <typename T>
+void Common::binmax(const T& input, uint& index) {
   uint idx = 0;
 
   const vector<uint>& data = input.data;
@@ -938,6 +1014,19 @@ void Common::binmax(const BinningData& input, uint& index) {
   }
 
   index = idx;
+}
+
+template <typename T>
+void Common::emptybins(const T& input, uint& num) {
+  uint nbins = 0;
+
+  for (vector<uint>::const_iterator i = input.data.begin();
+       i != input.data.end(); ++i) {
+    if (*i == 0)
+      ++nbins;
+  }
+
+  num = nbins;
 }
 
 void Common::printstats(const dlist& data, const BinningData& bin) {
@@ -956,6 +1045,37 @@ void Common::printstats(const dlist& data, const BinningData& bin) {
        << ", " << bin.range[0] + bin.step * double(index + 1)
        << "] (midpoint = " << bin.range[0] + bin.step * (double(index) + 0.5)
        << ")\n";
+}
+
+void Common::printstats(const vec2dlist& data, const BinningData2D& bin) {
+  vec2d min, max;
+  minmax(data, min, max);
+
+  cerr << "info: minimum input value = " << min << endl;
+  cerr << "info: maximum input value = " << max << endl;
+
+  uint index;
+  binmax(bin, index);
+
+  const uint y_pos = index / bin.numbin[0];
+  const uint x_pos = index % bin.numbin[0];
+
+  cerr << "info: largest bin with " << bin.data[index] << " elements has index {"
+       << x_pos << ", " << y_pos << "}" << endl;
+  cerr << "info: bin = [" << bin.range[0][0] + bin.step[0] * double(x_pos)
+       << ", " << bin.range[0][0] + bin.step[0] * double(x_pos + 1)
+       << "] x [" << bin.range[0][1] + bin.step[1] * double(y_pos)
+       << ", " << bin.range[0][1] + bin.step[1] * double(y_pos + 1)
+       << "] (midpoint = {" << bin.range[0][0] + bin.step[0] * (double(x_pos) + 0.5)
+       << ", " << bin.range[0][1] + bin.step[1] * (double(y_pos) + 0.5)
+       << "})\n";
+
+  uint empty;
+  emptybins(bin, empty);
+  cerr << "info: " << empty << " from " << bin.numbin[0] * bin.numbin[1]
+       << " total bins are empty ("
+       << 100.0 * double(empty) / double(bin.numbin[0] * bin.numbin[1])
+       << "%)" << endl;
 }
 
 void Common::histogramBinning(const dlist& input, BinningData& output) {
@@ -1006,8 +1126,69 @@ void Common::histogramBinning(const dlist& input, BinningData& output) {
   output.catched = catched;
 }
 
+void Common::histogramBinning(const vec2dlist& input, BinningData2D& output) {
+  if (input.empty()) return;
+
+  uint catched = 0;
+
+  const double x_a = output.range[0][0];
+  const double x_b = output.range[1][0];
+
+  const double y_a = output.range[0][1];
+  const double y_b = output.range[1][1];
+
+  const double x_step = output.step[0];
+  const double y_step = output.step[1];
+
+  const uint numbin[2] = {
+    (x_b - x_a) / x_step,
+    (y_b - y_a) / y_step};
+
+  vector<uint>& data = output.data;
+  data.clear();
+  data.resize(numbin[0] * numbin[1], 0);
+
+  for (vec2dlist::const_iterator i = input.begin(); i != input.end(); ++i) {
+    const vec2d cur(*i);
+
+    if (cur[0] < x_a || cur[0] >= x_b) continue;
+    if (cur[1] < y_a || cur[1] >= y_b) continue;
+
+    const uint x_pos = (cur[0] - x_a) / x_step;
+    const uint y_pos = (cur[1] - y_a) / y_step;
+
+    ++data[y_pos * numbin[0] + x_pos];
+    ++catched;
+  }
+
+  cerr << "info: computed histogram with " << numbin[0]
+       << " bins (interval = [" << x_a << ',' << x_b
+       << ")) in x-direction, " << numbin[0]
+       << " bins (interval = [" << y_a << ',' << y_b
+       << ")) in y-direction, step width = {" << x_step
+       << ", " << y_step << "}\n";
+  cerr << "statistics: " << catched << " data points (from " << input.size()
+       << ") fall into the binning area\n";
+
+  output.numbin[0] = numbin[0];
+  output.numbin[1] = numbin[1];
+  output.catched = catched;
+}
+
 template <typename T>
 void Common::histogramScale(const BinningData& input,
+                            vector<T>& output, T scale) {
+  output.clear();
+  output.reserve(input.data.size());
+
+  for (vector<uint>::const_iterator i = input.data.begin();
+       i != input.data.end(); ++i) {
+    output.push_back(T(*i) * scale);
+  }
+}
+
+template <typename T>
+void Common::histogramScale(const BinningData2D& input,
                             vector<T>& output, T scale) {
   output.clear();
   output.reserve(input.data.size());
@@ -1037,6 +1218,31 @@ void Common::histogramEnvelope(double a, double b, double step, bool stats) {
   // convert to envelope by applying scaling
   dlist envelopeData;
   histogramScale(binData, envelopeData, 1.0 / (double(inputData.size()) * step));
+
+  if (stats) printstats(inputData, binData);
+
+  // output to console
+  writeRawConsole(envelopeData);
+}
+
+void Common::histogramEnvelope2D(const vec2d& min, const vec2d& max,
+                                 const vec2d& step, bool stats) {
+  // fetch input data from console
+  vec2dlist inputData;
+  readRawConsole(inputData);
+
+  // compute histogram binning
+  BinningData2D binData;
+  binData.range[0] = min;
+  binData.range[1] = max;
+  binData.step[0] = step[0];
+  binData.step[1] = step[1];
+  histogramBinning(inputData, binData);
+
+  // convert to envelope by applying scaling
+  const double f0 = 1.0 / (double(inputData.size()) * step[0] * step[1]);
+  dlist envelopeData;
+  histogramScale(binData, envelopeData, f0);
 
   if (stats) printstats(inputData, binData);
 
