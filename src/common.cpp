@@ -905,11 +905,11 @@ void Common::readRawConsole(vec4ilist& output) {
   return;
 signfail:
   cerr << "error: verifying signature failed\n";
-  return ;
+  return;
 
 readfail:
   cerr << "error: reading signature failed\n";
-  return ;
+  return;
 }
 
 void Common::writeRawConsole(const vec2dlist& input) {
