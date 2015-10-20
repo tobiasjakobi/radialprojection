@@ -1029,6 +1029,22 @@ void Common::emptybins(const T& input, uint& num) {
   num = nbins;
 }
 
+void Common::emptybinpos(const BinningData2D& input, vec2dlist& pos) {
+  uint j = 0;
+
+  for (vector<uint>::const_iterator i = input.data.begin();
+       i != input.data.end(); ++i, ++j) {
+    if (*i != 0) continue;
+
+    const uint y_pos = j / input.numbin[0];
+    const uint x_pos = j % input.numbin[0];
+
+    pos.push_back(
+      vec2d(input.range[0][0] + input.step[0] * (double(x_pos) + 0.5),
+            input.range[0][1] + input.step[1] * (double(y_pos) + 0.5)));
+  }
+}
+
 void Common::printstats(const dlist& data, const BinningData& bin) {
   double min, max;
   minmax(data, min, max);

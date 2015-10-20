@@ -1718,6 +1718,10 @@ namespace Common {
   template <typename T>
   void emptybins(const T& input, uint& num);
 
+  /* Search for empty bins and store their 'physical' coordinates
+   * in the 'pos' list. */
+  void emptybinpos(const BinningData2D& input, vec2dlist& pos);
+
   // Compute statistics for 'data' and 'bin' and print to console
   void printstats(const dlist& data, const BinningData& bin);
 
