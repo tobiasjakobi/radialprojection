@@ -1431,6 +1431,17 @@ void Common::normalizeAngDists(dlist& input, double mean) {
   }
 }
 
+void Common::secondOrderSpacings(const dlist& input, vec2dlist& output) {
+  if (input.size() < 2)
+    return;
+
+  dlist::const_iterator i = input.begin();
+  dlist::const_iterator j = i + 1;
+
+  for (; j != input.end(); ++i, ++j)
+    output.push_back(vec2d(*i, *j));
+}
+
 void Common::radialProj(const vec2dlist& input,
                 dlist& output, double& meandist) {
   output.clear();
