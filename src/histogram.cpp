@@ -17,6 +17,8 @@
 
 #include <sstream>
 
+bool output_stats = false;
+
 void print_usage() {
   cerr << "histogram: usage:" << endl;
 
@@ -159,7 +161,7 @@ int main_2d(int argc, char* argv[]) {
 
   print_info(true);
 
-  Common::histogramEnvelope2D(vec2d(0.0, 0.0), range, stepsize, false);
+  Common::histogramEnvelope2D(vec2d(0.0, 0.0), range, stepsize, output_stats);
 
   return 0;
 }
@@ -174,6 +176,20 @@ int main(int argc, char* argv[]) {
     parser.str(argv[1]);
     parser.clear();
     parser >> tempstr;
+  }
+
+  if (tempstr == "--stats") {
+    output_stats = true;
+
+    argc--;
+    argv++;
+    tempstr.clear();
+
+    if (argc >= 2) {
+      parser.str(argv[1]);
+      parser.clear();
+      parser >> tempstr;
+    }
   }
 
   if (tempstr == "--normal")
