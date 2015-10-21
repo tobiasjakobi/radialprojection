@@ -52,8 +52,7 @@ void highprecision_poisson(uint steps) {
     vector<__float128>::const_iterator j = angles.begin();
     __float128 mean = *j;
 
-    vector<__float128>::const_iterator k = j;
-    ++k;
+    vector<__float128>::const_iterator k = j + 1;
     while (k != angles.end()) {
       output.push_back(*k - *j);
       ++j;
@@ -66,6 +65,11 @@ void highprecision_poisson(uint steps) {
     cerr << "mean = " << double(mean) << endl;
   }
 
+  /*
+   * Histogram binning parameters are hardcoded to:
+   * range: [0.0, 4.0]
+   * stepsize: 0.01
+   */
   uint num_bin = uint(4.0 / 0.01);
   uint in_bin = 0;
 
@@ -98,90 +102,205 @@ void highprecision_poisson(uint steps) {
   Common::writeRawConsole(envelopeData);
 }
 
-int main(int argc, char* argv[]) {
+void print_usage() {
+  cerr << "corner_cases: usage:" << endl;
+
+  cerr << "corner_cases --integer: selects integer lattice mode" << endl;
+  cerr << "\tparameter 1: spacings mode (0 = 1st order; 1 = 2nd order)" << endl;
+  cerr << "\tparameter 2: steps (determines size of the lattice)" << endl;
+
+  cerr << endl;
+
+  cerr << "corner_cases --poisson: selects Poisson mode" << endl;
+  cerr << "\tparameter 1: spacings mode" << endl;
+  cerr << "\t\t(0 = 1st order; 1 = 2nd order; 2 = high-precision 1st order)" << endl;
+  cerr << "\tparameter 2: steps (determines number of points)" << endl;
+  cerr << "High-precision mode automatically computes the histogram binning " << endl
+       << "and outputs its envelope data." << endl;
+}
+
+int main_poisson(int argc, char* argv[]) {
+  using namespace Common;
+
+  stringstream parser;
+
   uint steps = 100;
   uint mode = 0;
 
+  dlist angles, output;
+  double meandist;
+
   if (argc >= 2) {
-    stringstream ss(argv[1]);
-    ss >> steps;
-  }
+    parser.str(argv[1]);
+    parser.clear();
+    parser >> mode;
 
-  if (argc >= 3) {
-    stringstream ss(argv[2]);
-    ss >> mode;
-  }
-
-  // Integer lattice
-  if (mode == 0) {
-    using namespace Common;
-
-    vector<vec2i> vertices;
-    dlist angles, output;
-    double meandist;
-
-    cerr << "info: reserving space for " << uint(double(steps*steps) * 0.3)
-         << " vertices.\n";
-    vertices.reserve(double(steps*steps) * 0.3);
-
-    for (uint y = 0; y <= steps; ++y) {
-      for (uint x = y; x <= steps; ++x) {
-        if (x == 0 && y == 0) continue;
-        if (x*x + y*y > steps*steps) continue;
-        if (Coprime::gcdZFast(x, y) != 1) continue;
-
-        vertices.push_back(vec2i(x, y));
-      }
+    if (argc >= 3) {
+      parser.str(argv[2]);
+      parser.clear();
+      parser >> steps;
     }
-
-    cerr << "Constructed " << vertices.size()
-         << " vertices of the visible lattice points.\n";
-
-    angles.reserve(vertices.size());
-    output.reserve(vertices.size() - 1);
-
-    for (vector<vec2i>::const_iterator i = vertices.begin();
-         i != vertices.end(); ++i) {
-      angles.push_back(i->angle());
-    }
-
-    sort(angles.begin(), angles.end());
-    neighbourDiff(angles, output, meandist);
-    normalizeAngDists(output, meandist);
-
-    writeRawConsole(output);
   }
 
-  // Poisson case
-  if (mode == 1) {
-    using namespace Common;
-
-    dlist angles, output;
-    double meandist;
-
-    angles.resize(steps * steps);
-    output.reserve(steps * steps - 1);
-
-    // construct n randomly distributed points in the interval [0,n]
-    // this way the mean distance between two consecutive points
-    // automatically becomes one (n = steps*steps here).
-    random(steps * steps, double(steps * steps), &angles[0]);
-
-    cerr << "Constructed " << angles.size()
-         << " Poisson distributed vertices.\n";
-
-    sort(angles.begin(), angles.end());
-    neighbourDiff(angles, output, meandist);
-
-    meanDistanceMessage(angles.size(), meandist);
-
-    writeRawConsole(output);
+  if (mode > 2) {
+    cerr << "error: unsupported mode selected.\n";
+    return 1;
   }
 
+  /*
+   * The high-precison Poisson mode computes everything internally as
+   * 128-bit IEEE float (quad precision). This is slow since most CPUs
+   * have to emulate this.
+   * Still it's useful since it rules out numerical precision problems
+   * when dealing with large Poisson configurations.
+   */
   if (mode == 2) {
     highprecision_poisson(steps);
+    return 0;
   }
+
+  angles.resize(steps * steps);
+  output.reserve(steps * steps - 1);
+
+  /*
+   * Construct n randomly distributed points in the interval [0,n].
+   * This way the mean distance between two consecutive points
+   * automatically becomes one (n = steps*steps here).
+   */
+  random(steps * steps, double(steps * steps), &angles[0]);
+
+  cerr << "Constructed " << angles.size()
+       << " Poisson distributed vertices.\n";
+
+  sort(angles.begin(), angles.end());
+  neighbourDiff(angles, output, meandist);
+
+  meanDistanceMessage(angles.size(), meandist);
+
+  if (mode == 0) {
+    writeRawConsole(output);
+
+    return 0;
+  }
+
+  cerr << "info: computing second-order spacings." << endl;
+
+  vec2dlist output2;
+  output2.reserve(output.size() - 1);
+
+  secondOrderSpacings(output, output2);
+  writeRawConsole(output2);
 
   return 0;
 }
 
+int main_integer(int argc, char* argv[]) {
+  using namespace Common;
+
+  stringstream parser;
+
+  uint steps = 100;
+  uint mode = 0;
+
+  vec2ilist vertices;
+  dlist angles, output;
+  double meandist;
+
+  if (argc >= 2) {
+    parser.str(argv[1]);
+    parser.clear();
+    parser >> mode;
+
+    if (argc >= 3) {
+      parser.str(argv[2]);
+      parser.clear();
+      parser >> steps;
+    }
+  }
+
+  if (mode > 1) {
+    cerr << "error: unsupported mode selected.\n";
+    return 1;
+  }
+
+  cerr << "info: reserving space for " << uint(double(steps*steps) * 0.25)
+        << " vertices.\n";
+  vertices.reserve(double(steps*steps) * 0.25);
+
+  for (uint y = 0; y <= steps; ++y) {
+    for (uint x = y; x <= steps; ++x) {
+      if (x == 0 && y == 0) continue;
+      if (x*x + y*y > steps*steps) continue;
+      if (Coprime::gcdZFast(x, y) != 1) continue;
+
+      vertices.push_back(vec2i(x, y));
+    }
+  }
+
+  cerr << "Constructed " << vertices.size()
+       << " vertices of the visible lattice points.\n";
+
+  angles.reserve(vertices.size());
+  output.reserve(vertices.size() - 1);
+
+  for (vec2ilist::const_iterator i = vertices.begin(); i != vertices.end(); ++i)
+    angles.push_back(i->angle());
+
+  sort(angles.begin(), angles.end());
+  neighbourDiff(angles, output, meandist);
+  normalizeAngDists(output, meandist);
+
+  // For 1st order spacings we can exit here:
+  if (mode == 0) {
+    writeRawConsole(output);
+
+    return 0;
+  }
+
+  cerr << "info: computing second-order spacings." << endl;
+
+  vec2dlist output2;
+  output2.reserve(output.size() - 1);
+
+  secondOrderSpacings(output, output2);
+  writeRawConsole(output2);
+
+  return 0;
+}
+
+int main(int argc, char* argv[]) {
+  stringstream parser;
+  string tempstr;
+
+  int main_mode = -1;
+
+  if (argc >= 2) {
+    parser.str(argv[1]);
+    parser.clear();
+    parser >> tempstr;
+  }
+
+  if (tempstr == "--integer")
+    main_mode = 0;
+  else if (tempstr == "--poisson")
+    main_mode = 1;
+
+  if (main_mode == -1) {
+    print_usage();
+    return 0;
+  }
+
+  switch (main_mode) {
+  case 0:
+    // integer lattice mode
+    return main_integer(argc - 1, argv + 1);
+
+  case 1:
+    // poisson distributed points mode
+    return main_poisson(argc - 1, argv + 1);
+
+  default:
+    assert(false);
+    return 0;
+  }
+}
