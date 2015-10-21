@@ -1704,6 +1704,9 @@ namespace Common {
     uint catched;
   };
 
+  // Access helper function
+  uint access(const BinningData2D& bin, uint x, uint y);
+
   // Compute the minimum/maximum value of the input list
   void minmax(const dlist& input, double& min, double& max);
 
@@ -1737,6 +1740,11 @@ namespace Common {
 
   template <typename T>
   void histogramScale(const BinningData2D& input, vector<T>& output, T scale);
+
+  /* For a 2D binning with matching x- and y-settings this computes
+   * the computes the number of points in bins in each region
+     [0, i] x [0, i].*/
+  bool massDistribution(const BinningData2D& input, vector<uint>& out);
 
   /* Creates "envelope" data for given histogram input:                 *
    * Can be used for ListPlot to visualize the distributions coming     *

@@ -965,6 +965,12 @@ readfail:
   return;
 }
 
+uint Common::access(const BinningData2D& bin, uint x, uint y) {
+  assert(x < bin.numbin[0] && y < bin.numbin[1]);
+
+  return bin.data[y * bin.numbin[0] + x];
+}
+
 void Common::minmax(const dlist& input, double& min, double& max) {
   double a, b;
 
@@ -1092,6 +1098,30 @@ void Common::printstats(const vec2dlist& data, const BinningData2D& bin) {
        << " total bins are empty ("
        << 100.0 * double(empty) / double(bin.numbin[0] * bin.numbin[1])
        << "%)" << endl;
+
+  // Show distribution of histogram mass, if the binning is 'quadratic'.
+  vector<uint> mdistr;
+  if (!massDistribution(bin, mdistr))
+    return;
+
+  cerr << "Distribution of two-dimensional histogram mass:" << endl;
+
+  uint j = 0;
+  for (vector<uint>::const_iterator i = mdistr.begin();
+       i != mdistr.end(); ++i, ++j) {
+    const double mass = double(*i) / double(data.size());
+
+    cerr << '[' << bin.range[0][0] << ", " << bin.range[0][0] + bin.step[0] * (j + 1)
+         << ")^2: " << mass;
+
+    if (j % 4 == 3)
+      cerr << endl;
+    else
+      cerr << "; ";
+  }
+
+  if (j % 4 != 3)
+    cerr << endl;
 }
 
 void Common::histogramBinning(const dlist& input, BinningData& output) {
@@ -1213,6 +1243,31 @@ void Common::histogramScale(const BinningData2D& input,
        i != input.data.end(); ++i) {
     output.push_back(T(*i) * scale);
   }
+}
+
+bool Common::massDistribution(const BinningData2D& input, vector<uint>& out) {
+  if (input.range[0][0] != input.range[0][1] ||
+      input.range[1][0] != input.range[1][1] ||
+      input.step[0] != input.step[1])
+    return false;
+
+  uint num = 0;
+
+  assert(input.numbin[0] == input.numbin[1]);
+
+  for (uint i = 0; i < input.numbin[0]; ++i) {
+    for (uint j = 0; j <= i; ++j) {
+      num += access(input, i, j);
+      num += access(input, j, i);
+    }
+
+    // we count the index (i,i) double in the for-loop above
+    num -= access(input, i, i);
+
+    out.push_back(num);
+  }
+
+  return true;
 }
 
 /* Creates "envelope" data for given histogram input:                 *
