@@ -9,7 +9,85 @@ typedef unsigned int uint;
 
 // Disable C++ name mangling so that exporting to mathematica works
 extern "C" {
-   #include "mathlink.h"
+  #include "mathlink.h"
+
+  struct vec2d {
+    double a[2];
+  };
+
+  void ReadDoubleVec2Data(const char* inputfile) {
+    vec2d buffer[512];
+    unsigned temp;
+    int dims[2];
+    vector<vec2d> data;
+
+    ifstream input(inputfile, ios::in | ios::binary);
+
+    if (!input.is_open()) {
+      cerr << "error: opening file failed\n";
+      MLPutMessage(stdlink, MLAbortMessage);
+      return;
+    }
+
+    cerr << "status: reading from file " << inputfile << endl;
+    input.seekg(0, ios::beg);
+
+    input.read(reinterpret_cast<char*>(&temp), sizeof(unsigned));
+    if (input.eof() && input.fail()) goto readfail;
+    if (temp != sizeof(double)) goto signfail;
+
+    input.read(reinterpret_cast<char*>(&temp), sizeof(unsigned));
+    if (input.eof() && input.fail()) goto readfail;
+    if (temp != 2) goto signfail;
+
+    input.read(reinterpret_cast<char*>(&temp), sizeof(unsigned));
+    if (input.eof() && input.fail()) goto readfail;
+
+    data.reserve(temp);
+
+    while (true) {
+      input.read(reinterpret_cast<char*>(buffer), sizeof(vec2d) * 512);
+
+      if (!input) {
+        const int bytesread = input.gcount();
+
+        if (bytesread % sizeof(vec2d) != 0) {
+          cerr << "error: failed to read full double vec2ds\n.";
+          break;
+        }
+
+        for (uint k = 0; k < (bytesread/sizeof(vec2d)); ++k)
+          data.push_back(buffer[k]);
+
+        break;
+
+      } else {
+        for (uint k = 0; k < 512; ++k)
+          data.push_back(buffer[k]);
+      }
+    }
+
+    input.close();
+    dims[0] = data.size();
+    dims[1] = 2;
+
+    if (data.size() != temp)
+      cerr << "warning: length mismatch after reading data.\n";
+
+    // Send data to mathematica
+    MLPutReal64Array(stdlink, reinterpret_cast<double*>(&(*data.begin())), dims, 0, 2);
+    return;
+
+  signfail:
+    cerr << "error: verifying signature failed\n";
+    MLPutMessage(stdlink, MLAbortMessage);
+    return;
+
+  readfail:
+    cerr << "error: reading signature failed\n";
+    MLPutMessage(stdlink, MLAbortMessage);
+    return;
+  }
 
   void ReadDoubleData(const char* inputfile) {
     double buffer[1024];

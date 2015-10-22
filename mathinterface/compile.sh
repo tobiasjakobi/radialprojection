@@ -1,6 +1,6 @@
 #!/bin/bash
 
-mlinkdir="/usr/local/Wolfram/Mathematica/9.0/SystemFiles/Links/MathLink/DeveloperKit"
+mlinkdir="/var/tmp/Mathematica/9.0.1/SystemFiles/Links/MathLink/DeveloperKit"
 mlinkfiles="${mlinkdir}/Linux-x86-64/CompilerAdditions"
 mprep="${mlinkfiles}/mprep"
 

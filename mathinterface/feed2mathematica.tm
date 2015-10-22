@@ -1,4 +1,12 @@
 :Begin:
+:Function:      ReadDoubleVec2Data
+:Pattern:       ReadDoubleVec2Data[x_]
+:Arguments:     {x}
+:ArgumentTypes: {String}
+:ReturnType:    Manual
+:End:
+
+:Begin:
 :Function:      ReadDoubleData
 :Pattern:       ReadDoubleData[x_]
 :Arguments:     {x}

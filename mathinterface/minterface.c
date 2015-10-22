@@ -1,5 +1,5 @@
 /*
- * This file automatically produced by /usr/local/Wolfram/Mathematica/9.0/SystemFiles/Links/MathLink/DeveloperKit/Linux-x86-64/CompilerAdditions/mprep from:
+ * This file automatically produced by /var/tmp/Mathematica/9.0.1/SystemFiles/Links/MathLink/DeveloperKit/Linux-x86-64/CompilerAdditions/mprep from:
  *	feed2mathematica.tm
  * mprep Revision 16 Copyright (c) Wolfram Research, Inc. 1990-2009
  */
@@ -25,12 +25,34 @@ MLMessageHandlerObject stdhandler = 0;
 /********************************* end header *********************************/
 
 
-void ReadDoubleData P(( const char * _tp1));
+void ReadDoubleVec2Data P(( const char * _tp1));
 
 #if MLPROTOTYPES
 static int _tr0( MLINK mlp)
 #else
 static int _tr0(mlp) MLINK mlp;
+#endif
+{
+	int	res = 0;
+	const char * _tp1;
+	if ( ! MLGetString( mlp, &_tp1) ) goto L0;
+	if ( ! MLNewPacket(mlp) ) goto L1;
+
+	ReadDoubleVec2Data(_tp1);
+
+	res = 1;
+L1:	MLDisownString(mlp, _tp1);
+
+L0:	return res;
+} /* _tr0 */
+
+
+void ReadDoubleData P(( const char * _tp1));
+
+#if MLPROTOTYPES
+static int _tr1( MLINK mlp)
+#else
+static int _tr1(mlp) MLINK mlp;
 #endif
 {
 	int	res = 0;
@@ -44,15 +66,15 @@ static int _tr0(mlp) MLINK mlp;
 L1:	MLDisownString(mlp, _tp1);
 
 L0:	return res;
-} /* _tr0 */
+} /* _tr1 */
 
 
 void ReadExtFloatData P(( const char * _tp1));
 
 #if MLPROTOTYPES
-static int _tr1( MLINK mlp)
+static int _tr2( MLINK mlp)
 #else
-static int _tr1(mlp) MLINK mlp;
+static int _tr2(mlp) MLINK mlp;
 #endif
 {
 	int	res = 0;
@@ -66,15 +88,15 @@ static int _tr1(mlp) MLINK mlp;
 L1:	MLDisownString(mlp, _tp1);
 
 L0:	return res;
-} /* _tr1 */
+} /* _tr2 */
 
 
 void ReadLongIntData P(( const char * _tp1));
 
 #if MLPROTOTYPES
-static int _tr2( MLINK mlp)
+static int _tr3( MLINK mlp)
 #else
-static int _tr2(mlp) MLINK mlp;
+static int _tr3(mlp) MLINK mlp;
 #endif
 {
 	int	res = 0;
@@ -88,7 +110,7 @@ static int _tr2(mlp) MLINK mlp;
 L1:	MLDisownString(mlp, _tp1);
 
 L0:	return res;
-} /* _tr2 */
+} /* _tr3 */
 
 
 static struct func {
@@ -96,10 +118,11 @@ static struct func {
 	int   manual;
 	int   (*f_func)P((MLINK));
 	const char  *f_name;
-	} _tramps[3] = {
-		{ 1, 0, _tr0, "ReadDoubleData" },
-		{ 1, 0, _tr1, "ReadExtFloatData" },
-		{ 1, 0, _tr2, "ReadLongIntData" }
+	} _tramps[4] = {
+		{ 1, 0, _tr0, "ReadDoubleVec2Data" },
+		{ 1, 0, _tr1, "ReadDoubleData" },
+		{ 1, 0, _tr2, "ReadExtFloatData" },
+		{ 1, 0, _tr3, "ReadLongIntData" }
 		};
 
 #define CARDOF_EVALSTRS 0
@@ -117,9 +140,10 @@ int MLInstall(mlp) MLINK mlp;
 {
 	int _res;
 	_res = MLConnect(mlp);
-	if (_res) _res = _definepattern(mlp, (char *)"ReadDoubleData[x_]", (char *)"{x}", 0);
-	if (_res) _res = _definepattern(mlp, (char *)"ReadExtFloatData[x_]", (char *)"{x}", 1);
-	if (_res) _res = _definepattern(mlp, (char *)"ReadLongIntData[x_]", (char *)"{x}", 2);
+	if (_res) _res = _definepattern(mlp, (char *)"ReadDoubleVec2Data[x_]", (char *)"{x}", 0);
+	if (_res) _res = _definepattern(mlp, (char *)"ReadDoubleData[x_]", (char *)"{x}", 1);
+	if (_res) _res = _definepattern(mlp, (char *)"ReadExtFloatData[x_]", (char *)"{x}", 2);
+	if (_res) _res = _definepattern(mlp, (char *)"ReadLongIntData[x_]", (char *)"{x}", 3);
 	if (_res) _res = MLPutSymbol( mlp, "End");
 	if (_res) _res = MLFlush( mlp);
 	return _res;
@@ -132,7 +156,7 @@ int MLDoCallPacket( MLINK mlp)
 int MLDoCallPacket( mlp) MLINK mlp;
 #endif
 {
-	return _MLDoCallPacket( mlp, _tramps, 3);
+	return _MLDoCallPacket( mlp, _tramps, 4);
 } /* MLDoCallPacket */
 
 /******************************* begin trailer ********************************/
