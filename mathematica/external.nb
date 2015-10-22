@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[     17461,        509]
-NotebookOptionsPosition[     16686,        483]
-NotebookOutlinePosition[     17120,        500]
-CellTagsIndexPosition[     17077,        497]
+NotebookDataLength[     21094,        610]
+NotebookOptionsPosition[     20236,        582]
+NotebookOutlinePosition[     20670,        599]
+CellTagsIndexPosition[     20627,        596]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -141,11 +141,40 @@ Cell[BoxData[
       RowBox[{
        RowBox[{"-", "lambda"}], "*", "r"}], "]"}]}]}], ";"}]}]], "Input"],
 
-Cell[BoxData[
+Cell[BoxData[{
  RowBox[{
   RowBox[{"histoParams", ":=", 
    RowBox[{"{", 
-    RowBox[{"4", ",", "0.01"}], "}"}]}], ";"}]], "Input"],
+    RowBox[{"4", ",", "0.01"}], "}"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"histoParams2D", ":=", 
+   RowBox[{"{", 
+    RowBox[{"2", ",", "2", ",", "0.01", ",", "0.01", ",", "200", ",", "200"}],
+     "}"}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.654501569764007*^9, 3.654501607541196*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "Guess", " ", "the", " ", "full", " ", "parameters", " ", "for", " ", 
+    RowBox[{"a", " ", "'"}], 
+    RowBox[{"quadratic", "'"}], " ", "2", "D", " ", 
+    RowBox[{"binning", "."}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"guessHisto2DParams", "[", 
+     RowBox[{"range_", ",", "step_"}], "]"}], ":=", 
+    RowBox[{"{", 
+     RowBox[{
+     "range", ",", "range", ",", "step", ",", "step", ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"IntegerPart", "[", 
+       RowBox[{"range", "/", "step"}], "]"}], ",", 
+      RowBox[{"IntegerPart", "[", 
+       RowBox[{"range", "/", "step"}], "]"}]}], "}"}]}], ";"}]}]], "Input",
+ CellChangeTimes->{{3.654501619714539*^9, 3.65450172278769*^9}, {
+  3.654502339704588*^9, 3.654502363304699*^9}}],
 
 Cell[BoxData[{
  RowBox[{
@@ -479,7 +508,77 @@ Cell[BoxData[
            "&"}], ",", "list"}], "]"}]}], "]"}], "/", 
       RowBox[{"Length", "[", "list", "]"}]}]}], ";"}]}]}]], "Input",
  CellChangeTimes->{{3.636982435092785*^9, 3.6369824541836643`*^9}, {
-  3.636982839659565*^9, 3.6369828401141443`*^9}}]
+  3.636982839659565*^9, 3.6369828401141443`*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"transformBin2D", "[", 
+    RowBox[{"i_", ",", "data_", ",", "params_"}], "]"}], ":=", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"i", "[", 
+       RowBox[{"[", "1", "]"}], "]"}], "*", 
+      RowBox[{"params", "[", 
+       RowBox[{"[", "3", "]"}], "]"}]}], ",", 
+     RowBox[{
+      RowBox[{"i", "[", 
+       RowBox[{"[", "2", "]"}], "]"}], "*", 
+      RowBox[{"params", "[", 
+       RowBox[{"[", "4", "]"}], "]"}]}], ",", "\[IndentingNewLine]", 
+     RowBox[{"data", "[", 
+      RowBox[{"[", 
+       RowBox[{"1", " ", "+", " ", 
+        RowBox[{
+         RowBox[{"i", "[", 
+          RowBox[{"[", "2", "]"}], "]"}], " ", "*", " ", 
+         RowBox[{"params", "[", 
+          RowBox[{"[", "5", "]"}], "]"}]}], " ", "+", " ", 
+        RowBox[{"i", "[", 
+         RowBox[{"[", "1", "]"}], "]"}]}], "]"}], "]"}]}], "}"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"transformEnvData2D", "[", 
+    RowBox[{"data_", ",", 
+     RowBox[{"params_:", "Null"}]}], "]"}], ":=", 
+   RowBox[{"Block", "[", 
+    RowBox[{
+     RowBox[{"{", "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"params", "===", "Null"}], ",", 
+        RowBox[{"params", "=", "histoParams2D"}]}], "]"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"Map", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"transformBin2D", "[", 
+          RowBox[{"#", ",", "data", ",", "params"}], "]"}], "&"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"Flatten", "[", 
+         RowBox[{
+          RowBox[{"Table", "[", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"i", ",", "j"}], "}"}], ",", 
+            RowBox[{"{", 
+             RowBox[{"i", ",", "0", ",", 
+              RowBox[{
+               RowBox[{"params", "[", 
+                RowBox[{"[", "5", "]"}], "]"}], "-", "1"}]}], "}"}], ",", 
+            RowBox[{"{", 
+             RowBox[{"j", ",", "0", ",", 
+              RowBox[{
+               RowBox[{"params", "[", 
+                RowBox[{"[", "6", "]"}], "]"}], "-", "1"}]}], "}"}]}], "]"}], 
+          ",", "1"}], "]"}]}], "]"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+  ";"}]}], "Input",
+ CellChangeTimes->{{3.654501809226591*^9, 3.654501828252541*^9}, {
+  3.6545019083112307`*^9, 3.654501913545073*^9}, {3.654501944263101*^9, 
+  3.654502191236598*^9}, {3.654502252129809*^9, 3.6545022980469847`*^9}}]
 },
 WindowSize->{1600, 1136},
 WindowMargins->{{0, Automatic}, {Automatic, 0}},
@@ -502,15 +601,17 @@ Notebook[{
 Cell[557, 20, 646, 17, 133, "Input"],
 Cell[1206, 39, 3036, 88, 278, "Input"],
 Cell[4245, 129, 460, 12, 75, "Input"],
-Cell[4708, 143, 130, 4, 45, "Input"],
-Cell[4841, 149, 265, 7, 75, "Input"],
-Cell[5109, 158, 892, 25, 104, "Input"],
-Cell[6004, 185, 834, 23, 104, "Input"],
-Cell[6841, 210, 1728, 45, 162, "Input"],
-Cell[8572, 257, 1920, 49, 191, "Input"],
-Cell[10495, 308, 2546, 67, 307, "Input"],
-Cell[13044, 377, 1919, 54, 162, "Input"],
-Cell[14966, 433, 1716, 48, 133, "Input"]
+Cell[4708, 143, 383, 10, 75, "Input"],
+Cell[5094, 155, 833, 21, 104, "Input"],
+Cell[5930, 178, 265, 7, 75, "Input"],
+Cell[6198, 187, 892, 25, 104, "Input"],
+Cell[7093, 214, 834, 23, 104, "Input"],
+Cell[7930, 239, 1728, 45, 162, "Input"],
+Cell[9661, 286, 1920, 49, 191, "Input"],
+Cell[11584, 337, 2546, 67, 307, "Input"],
+Cell[14133, 406, 1919, 54, 162, "Input"],
+Cell[16055, 462, 1716, 48, 133, "Input"],
+Cell[17774, 512, 2458, 68, 220, "Input"]
 }
 ]
 *)
