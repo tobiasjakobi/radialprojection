@@ -1,0 +1,190 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 9.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[      6421,        181]
+NotebookOptionsPosition[      5900,        160]
+NotebookOutlinePosition[      6257,        176]
+CellTagsIndexPosition[      6214,        173]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"(*", " ", 
+  RowBox[{"WARNING", ":", " ", 
+   RowBox[{"This", " ", "notebook", " ", "needs", " ", "GeneratePointsFast", 
+    RowBox[{"(", ")"}], " ", 
+    RowBox[{"from", " ", "'"}], 
+    RowBox[{
+     RowBox[{"square_lattice", "'"}], "."}]}]}], " ", "*)"}]], "Input",
+ CellChangeTimes->{{3.654509791104629*^9, 3.6545098148982973`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"dataFilesDir", "=", 
+   RowBox[{
+   "$HomeDirectory", "<>", 
+    "\"\</PhD_Work/radialprojection/datafiles/\>\""}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.6545884835212107`*^9, 3.654588507272256*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"PlotDistChart2D", "[", 
+    RowBox[{"R_", ",", 
+     RowBox[{"{", 
+      RowBox[{"CutOff_", ",", "Step_"}], "}"}], ",", "nbidx_"}], "]"}], ":=", 
+   
+   RowBox[{"Module", "[", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"angles", ",", "mdist", ",", "distances", ",", "secondOrder"}], 
+      "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"angles", ":=", 
+       RowBox[{"Sort", "[", 
+        RowBox[{
+         RowBox[{"Map", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"ArcTan", "[", 
+             RowBox[{
+              RowBox[{"Part", "[", 
+               RowBox[{"#", ",", "1"}], "]"}], ",", 
+              RowBox[{"Part", "[", 
+               RowBox[{"#", ",", "2"}], "]"}]}], "]"}], "&"}], ",", 
+           RowBox[{"GeneratePointsFast", "[", "R", "]"}]}], "]"}], ",", 
+         "Greater"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"mdist", "=", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{"Part", "[", 
+           RowBox[{"angles", ",", "1"}], "]"}], "-", 
+          RowBox[{"Part", "[", 
+           RowBox[{"angles", ",", 
+            RowBox[{"-", "1"}]}], "]"}]}], ")"}], "/", 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{"Length", "[", "angles", "]"}], "-", "1"}], ")"}]}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"distances", "=", 
+       RowBox[{"Drop", "[", 
+        RowBox[{
+         RowBox[{"angles", "-", 
+          RowBox[{"RotateLeft", "[", "angles", "]"}]}], ",", 
+         RowBox[{"-", "1"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"Clear", "[", "angles", "]"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"secondOrder", "=", 
+       RowBox[{"Transpose", "[", 
+        RowBox[{"{", 
+         RowBox[{"distances", ",", 
+          RowBox[{"RotateLeft", "[", 
+           RowBox[{"distances", ",", "nbidx"}], "]"}]}], "}"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"Clear", "[", "distances", "]"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"Histogram3D", "[", 
+       RowBox[{
+        RowBox[{"secondOrder", "/", "mdist"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"0", ",", "CutOff", ",", "Step"}], "}"}], ",", "\"\<PDF\>\"",
+         ",", 
+        RowBox[{"ChartBaseStyle", "\[Rule]", 
+         RowBox[{"{", 
+          RowBox[{"Red", ",", 
+           RowBox[{"EdgeForm", "[", "Black", "]"}]}], "}"}]}]}], "]"}]}]}], 
+    "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.654507383592157*^9, 3.654507385623588*^9}, {
+  3.65450794117118*^9, 3.654508001937334*^9}, {3.654508099020317*^9, 
+  3.6545080993078947`*^9}, {3.654508185708564*^9, 3.654508191352058*^9}}],
+
+Cell[BoxData[
+ RowBox[{"PlotDistChart2D", "[", 
+  RowBox[{"400", ",", 
+   RowBox[{"{", 
+    RowBox[{"3.0", ",", "0.04"}], "}"}], ",", "2"}], "]"}]], "Input",
+ CellChangeTimes->{{3.654508009817115*^9, 3.654508040454995*^9}, {
+  3.6545081946756372`*^9, 3.654508194761244*^9}, {3.6545082359534597`*^9, 
+  3.6545082361389723`*^9}, {3.654508272546852*^9, 3.65450827275176*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"intLat2nd", "=", 
+   RowBox[{"ReadUnXZData", "[", 
+    RowBox[{
+     RowBox[{"dataFilesDir", "<>", "\"\<secorder/z2lat.env.xz\>\""}], ",", 
+     "ReadDoubleData"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Length", "[", "intLat2nd", "]"}]}], "Input",
+ CellChangeTimes->{{3.6545069882370663`*^9, 3.654507006813652*^9}, {
+  3.65451306453104*^9, 3.654513068592998*^9}, {3.654588253621125*^9, 
+  3.65458825394692*^9}, {3.654588394813765*^9, 3.654588414268839*^9}, {
+  3.654588500166581*^9, 3.654588513674575*^9}}],
+
+Cell[BoxData[
+ RowBox[{"ListPlot3D", "[", 
+  RowBox[{
+   RowBox[{"transformEnvData2D", "[", 
+    RowBox[{"intLat2nd", ",", 
+     RowBox[{"guessHisto2DParams", "[", 
+      RowBox[{"4.0", ",", "0.01"}], "]"}]}], "]"}], ",", 
+   RowBox[{"PlotRange", "\[Rule]", "Full"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.654507023035431*^9, 3.654507084622108*^9}, 
+   3.6545130733505898`*^9}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"emptyBin2nd", "=", 
+   RowBox[{"ReadUnXZData", "[", 
+    RowBox[{
+     RowBox[{"dataFilesDir", "<>", "\"\<secorder/z2lat.empty.xz\>\""}], ",", 
+     "ReadDoubleVec2Data"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Length", "[", "emptyBin2nd", "]"}]}], "Input",
+ CellChangeTimes->{{3.6545098391743803`*^9, 3.6545098527190113`*^9}, {
+   3.6545133523578*^9, 3.654513352533453*^9}, {3.654514191092807*^9, 
+   3.654514197812087*^9}, 3.654588549473116*^9}],
+
+Cell[BoxData[
+ RowBox[{"ListPlot", "[", 
+  RowBox[{"emptyBin2nd", ",", 
+   RowBox[{"AspectRatio", "\[Rule]", "1.0"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.6545098512586412`*^9, 3.654509854770549*^9}}]
+},
+WindowSize->{1920, 1140},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+Magnification->1.25,
+FrontEndVersion->"9.0 for Linux x86 (64-bit) (January 25, 2013)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[557, 20, 360, 8, 38, "Input"],
+Cell[920, 30, 237, 6, 38, "Input"],
+Cell[1160, 38, 2716, 69, 264, "Input"],
+Cell[3879, 109, 372, 7, 38, "Input"],
+Cell[4254, 118, 554, 11, 64, "Input"],
+Cell[4811, 131, 380, 9, 38, "Input"],
+Cell[5194, 142, 495, 10, 64, "Input"],
+Cell[5692, 154, 204, 4, 38, "Input"]
+}
+]
+*)
+
+(* End of internal cache information *)
