@@ -1321,6 +1321,30 @@ void Common::histogramEnvelope2D(const vec2d& min, const vec2d& max,
   writeRawConsole(envelopeData);
 }
 
+void Common::histogramEmptyBins2D(const vec2d& min, const vec2d& max,
+                                  const vec2d& step, bool stats) {
+  // fetch input data from console
+  vec2dlist inputData;
+  readRawConsole(inputData);
+
+  // compute histogram binning
+  BinningData2D binData;
+  binData.range[0] = min;
+  binData.range[1] = max;
+  binData.step[0] = step[0];
+  binData.step[1] = step[1];
+  histogramBinning(inputData, binData);
+
+  // compute the position of the empty bins
+  vec2dlist binpos;
+  emptybinpos(binData, binpos);
+
+  if (stats) printstats(inputData, binData);
+
+  // output to console
+  writeRawConsole(binpos);
+}
+
 // Same as histogramEnvelope but processes the "tail" of the data.
 void Common::histoTailEnvelope(double a, double step, bool stats) {
   dlist inputData;

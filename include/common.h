@@ -1753,6 +1753,8 @@ namespace Common {
 
   void histogramEnvelope2D(const vec2d& min, const vec2d& max,
     const vec2d& step, bool stats);
+  void histogramEmptyBins2D(const vec2d& min, const vec2d& max,
+    const vec2d& step, bool stats);
 
   // Same as histogramEnvelope but processes the "tail" of the data.
   void histoTailEnvelope(double a, double step, bool stats);

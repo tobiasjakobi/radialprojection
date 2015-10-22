@@ -35,6 +35,9 @@ void print_usage() {
   cerr << "histogram --2d: selects two-dimensional main mode" << endl;
   cerr << "(this mode only supports bulk mode)" << endl;
 
+  cerr << "Passing --empty has second argument enables empty bin mode"
+       << endl << "(physical positions of empty bins are computed)." << endl;
+
   cerr << "\tparameter 1: step size in x-direction" << endl;
   cerr << "\tparameter 2: step size in y-direction" << endl;
   cerr << "\tparameter 3: range in x-direction" << endl;
@@ -121,10 +124,26 @@ int main_1d(int argc, char* argv[], bool largedata) {
 
 int main_2d(int argc, char* argv[]) {
   stringstream parser;
+  string tempstr;
+
+  bool empty_bins = false;
 
   // The defaults create a 30x30 binning grid
   vec2d stepsize(0.1, 0.1);
   vec2d range(3.0, 3.0);
+
+  if (argc >= 2) {
+    parser.str(argv[1]);
+    parser.clear();
+    parser >> tempstr;
+  }
+
+  if (tempstr == "--empty") {
+    empty_bins = true;
+
+    argc--;
+    argv++;
+  }
 
   if (argc >= 2) {
     // x-step
@@ -166,7 +185,10 @@ int main_2d(int argc, char* argv[]) {
 
   print_info(true);
 
-  Common::histogramEnvelope2D(vec2d(0.0, 0.0), range, stepsize, output_stats);
+  if (empty_bins)
+    Common::histogramEmptyBins2D(vec2d(0.0, 0.0), range, stepsize, output_stats);
+  else
+    Common::histogramEnvelope2D(vec2d(0.0, 0.0), range, stepsize, output_stats);
 
   return 0;
 }
