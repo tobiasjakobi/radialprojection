@@ -39,6 +39,11 @@ void print_usage() {
   cerr << "\tparameter 2: step size in y-direction" << endl;
   cerr << "\tparameter 3: range in x-direction" << endl;
   cerr << "\tparameter 4: range in y-direction" << endl;
+
+  cerr << endl;
+
+  cerr << "Passing --stats as first argument enables (verbose) output"
+       << endl << "of histogram statistics." << endl;
 }
 
 void print_info(bool bulk) {
