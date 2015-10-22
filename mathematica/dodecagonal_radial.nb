@@ -1,19 +1,12 @@
-(* Content-type: application/vnd.wolfram.mathematica *)
-
-(*** Wolfram Notebook File ***)
-(* http://www.wolfram.com/nb *)
-
-(* CreatedBy='Mathematica 8.0' *)
-
 (*CacheID: 234*)
 (* Internal cache information:
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
-NotebookDataPosition[       157,          7]
-NotebookDataLength[     42366,       1111]
-NotebookOptionsPosition[     40358,       1054]
-NotebookOutlinePosition[     40837,       1072]
-CellTagsIndexPosition[     40794,       1069]
+NotebookDataPosition[         0,          0]
+NotebookDataLength[     58163,       1487]
+NotebookOptionsPosition[     55853,       1420]
+NotebookOutlinePosition[     56332,       1438]
+CellTagsIndexPosition[     56289,       1435]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -476,6 +469,40 @@ Cell[BoxData[{
     "]"}]}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
+   RowBox[{"compareLocalVsRay2", "[", "steps_", "]"}], ":=", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"cmd", ",", "ray", ",", "local"}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"cmd", "=", 
+       RowBox[{"StringReplace", "[", 
+        RowBox[{"\"\<./cyclotomic_radial --single 4 steps 0\>\"", ",", 
+         RowBox[{"{", 
+          RowBox[{"\"\<steps\>\"", "\[Rule]", 
+           RowBox[{"ToString", "[", "steps", "]"}]}], "}"}]}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"local", "=", 
+       RowBox[{"RunThrough", "[", 
+        RowBox[{"cmd", ",", "Null"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"ray", "=", 
+       RowBox[{"RunThrough", "[", 
+        RowBox[{
+         RowBox[{"StringJoin", "[", 
+          RowBox[{"cmd", ",", "\"\< nonlocal\>\""}], "]"}], ",", "Null"}], 
+        "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"Intersection", "[", 
+         RowBox[{"ray", ",", "local"}], "]"}], ",", 
+        RowBox[{"Complement", "[", 
+         RowBox[{"ray", ",", "local"}], "]"}], ",", 
+        RowBox[{"Complement", "[", 
+         RowBox[{"local", ",", "ray"}], "]"}]}], "}"}]}]}], 
+    "\[IndentingNewLine]", "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
    RowBox[{"compareLocalVsRayVisual", "[", 
     RowBox[{"steps_", ",", "psize_"}], "]"}], ":=", 
    RowBox[{"Module", "[", 
@@ -537,7 +564,14 @@ Cell[BoxData[{
           RowBox[{
            RowBox[{"AbsoluteThickness", "[", "0.5", "]"}], ",", "Black", ",", 
            
-           RowBox[{"Line", "[", "windowDodecagonStd", "]"}], ",", 
+           RowBox[{"Line", "[", 
+            RowBox[{"Map", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"#", "+", 
+                RowBox[{"{", 
+                 RowBox[{"0.0001", ",", "0.0001"}], "}"}]}], "&"}], ",", 
+              "windowDodecagonStd"}], "]"}], "]"}], ",", 
            "\[IndentingNewLine]", "Red", ",", 
            RowBox[{"Line", "[", 
             RowBox[{"Map", "[", 
@@ -545,13 +579,23 @@ Cell[BoxData[{
               RowBox[{
                RowBox[{"#", "+", 
                 RowBox[{"{", 
-                 RowBox[{"0", ",", "0"}], "}"}]}], "&"}], ",", 
-              RowBox[{"1.01756", "*", 
+                 RowBox[{"0.0001", ",", "0.0001"}], "}"}]}], "&"}], ",", 
+              RowBox[{"windowDodecagonStd", "/", 
                RowBox[{"Sqrt", "[", 
-                RowBox[{"Sqrt", "[", "fundUnitZ3", "]"}], "]"}], "*", 
-               "windowDodecagonNormalized"}]}], "]"}], "]"}]}], "}"}], 
-         "]"}]}], "]"}]}]}], "\[IndentingNewLine]", "]"}]}], ";"}]}], "Input",\
-
+                RowBox[{"fundUnitZ3", "/", "2"}], "]"}]}]}], "]"}], "]"}], 
+           ",", "\[IndentingNewLine]", "Green", ",", 
+           RowBox[{"Line", "[", 
+            RowBox[{"Map", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"#", "+", 
+                RowBox[{"{", 
+                 RowBox[{"0.0001", ",", "0.0001"}], "}"}]}], "&"}], ",", 
+              RowBox[{"windowDodecagonStd", "/", 
+               RowBox[{"Sqrt", "[", 
+                RowBox[{"fundUnitZ3", "*", "2"}], "]"}]}]}], "]"}], "]"}]}], 
+          "}"}], "]"}]}], "]"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+  ";"}]}], "Input",
  CellChangeTimes->{{3.568119863599972*^9, 3.568120040934711*^9}, {
    3.56812012365439*^9, 3.568120146969045*^9}, {3.56835207268659*^9, 
    3.568352144422837*^9}, {3.568635769443781*^9, 3.568635816665513*^9}, {
@@ -569,7 +613,11 @@ Cell[BoxData[{
    3.633437038014536*^9, 3.633437067790724*^9}, {3.641275242516645*^9, 
    3.6412752465653467`*^9}, {3.641275990286519*^9, 3.641275990520722*^9}, {
    3.653316545467519*^9, 3.6533165487950077`*^9}, {3.653316743635477*^9, 
-   3.653316751522481*^9}}],
+   3.653316751522481*^9}, {3.6533830947470512`*^9, 3.6533831004984293`*^9}, {
+   3.653383133424396*^9, 3.653383179263072*^9}, {3.653385900356461*^9, 
+   3.653385941517262*^9}, {3.653386075144019*^9, 3.653386075351316*^9}, {
+   3.653386196381036*^9, 3.653386359102943*^9}, {3.6533863998986397`*^9, 
+   3.6533864296271763`*^9}}],
 
 Cell[BoxData[
  RowBox[{
@@ -708,36 +756,354 @@ Cell[BoxData[
 Cell[BoxData[
  RowBox[{
   RowBox[{"(*", " ", 
-   RowBox[{"TODO", ":", " ", 
-    RowBox[{
-     RowBox[{
-     "for", " ", "this", " ", "we", " ", "need", " ", "to", " ", "re"}], "-", 
-     
-     RowBox[{"implement", " ", "parsing", " ", 
-      RowBox[{"of", " ", "'"}], 
-      RowBox[{"local", "'"}], " ", "in", " ", 
-      RowBox[{"cyclotomic_radial", "."}]}]}]}], " ", "*)"}], 
+   RowBox[{
+   "Enable", " ", "the", " ", "DODECAGONAL_VISIBILITY", "_DEBUG", " ", 
+    "define", " ", "when", " ", "building", " ", "the"}], " ", "*)"}], 
   "\[IndentingNewLine]", 
   RowBox[{"(*", " ", 
-   RowBox[{"See", " ", "in", " ", "compareLocalVsRay", 
-    RowBox[{"(", ")"}], " ", "in", " ", 
-    RowBox[{"particular", "."}]}], " ", "*)"}], "\[IndentingNewLine]", 
-  RowBox[{"(*", 
-   RowBox[{"compareLocalVsRay", "[", "120", "]"}], "*)"}]}]], "Input",
+   RowBox[{
+    RowBox[{"C", "++"}], " ", "code", " ", "to", " ", "enable", " ", "the", 
+    " ", 
+    RowBox[{"old", "/", "wrong"}], " ", "visibility", " ", 
+    RowBox[{"behaviour", "."}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "This", " ", "also", " ", "illustrates", " ", "why", " ", "the", " ", 
+    "shift", " ", "of", " ", "the", " ", "window", " ", "has", " ", "to", " ",
+     "be"}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{"inverted", " ", "when", " ", "computing", " ", 
+    RowBox[{"(", "local", ")"}], " ", "visibility", " ", "for", " ", "_both", 
+    "_"}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{"vertex", " ", "types", " ", 
+    RowBox[{"(", 
+     RowBox[{"norm", " ", "1", " ", "and", " ", "norm", " ", "2"}], ")"}]}], 
+   " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"compareLocalVsRay", "[", "10", "]"}]}]], "Input",
  CellChangeTimes->{{3.568733223685572*^9, 3.568733231455038*^9}, {
-  3.568969225123127*^9, 3.56896922538054*^9}, {3.568969590566138*^9, 
-  3.568969591366176*^9}, {3.568969725417064*^9, 3.568969746647097*^9}, {
-  3.568970169246332*^9, 3.568970169580686*^9}, {3.568970553604151*^9, 
-  3.568970553810219*^9}, {3.568974036900508*^9, 3.568974046878759*^9}, {
-  3.641275995977085*^9, 3.641276050857315*^9}}],
+   3.568969225123127*^9, 3.56896922538054*^9}, {3.568969590566138*^9, 
+   3.568969591366176*^9}, {3.568969725417064*^9, 3.568969746647097*^9}, {
+   3.568970169246332*^9, 3.568970169580686*^9}, {3.568970553604151*^9, 
+   3.568970553810219*^9}, {3.568974036900508*^9, 3.568974046878759*^9}, {
+   3.641275995977085*^9, 3.641276050857315*^9}, {3.6533830197640676`*^9, 
+   3.653383031426476*^9}, {3.6537281740445757`*^9, 3.653728179312208*^9}, 
+   3.653728322086918*^9, {3.6537306538807592`*^9, 3.653730759520207*^9}, {
+   3.65373916972512*^9, 3.6537391702686234`*^9}}],
 
 Cell[BoxData[
- RowBox[{"compareLocalVsRayVisual", "[", 
-  RowBox[{"100", ",", "0.005"}], "]"}]], "Input",
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{"list", " ", "part", " ", "1"}], ":", " ", 
+    RowBox[{
+    "vertices", " ", "that", " ", "are", " ", "identical", " ", "when", " ", 
+     "creating"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", "   ", 
+   RowBox[{
+    RowBox[{
+    "visible", " ", "vertices", " ", "with", " ", "both", " ", "the", " ", 
+     "local", " ", "and", " ", "non"}], "-", 
+    RowBox[{"local", " ", 
+     RowBox[{"method", "."}]}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{"list", " ", "part", " ", "2"}], ":", " ", 
+    RowBox[{
+    "vertices", " ", "that", " ", "are", " ", "just", " ", "produces", " ", 
+     "by", " ", "the"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", "   ", 
+   RowBox[{"non", "-", 
+    RowBox[{"local", " ", 
+     RowBox[{"(", "correct", ")"}], " ", 
+     RowBox[{"method", ".", " ", "These"}], " ", "vertices", " ", "are", " ", 
+     
+     RowBox[{"CORRECT", "!"}]}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{"list", " ", "part", " ", "3"}], ":", " ", 
+    RowBox[{
+    "vertices", " ", "that", " ", "are", " ", "just", " ", "produces", " ", 
+     "by", " ", "the"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", "   ", 
+   RowBox[{"local", " ", 
+    RowBox[{"(", "incorrect", ")"}], " ", 
+    RowBox[{"method", ".", " ", "These"}], " ", "vertices", " ", "are", " ", 
+    RowBox[{"WRONG", "!"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"vtxClassification0", "=", 
+    RowBox[{"compareLocalVsRay2", "[", "10", "]"}]}], ";"}]}]], "Input",
+ CellChangeTimes->{{3.6533831674813623`*^9, 3.65338316768891*^9}, {
+   3.6533836613228197`*^9, 3.653383830262803*^9}, {3.6533888616695747`*^9, 
+   3.653388874555418*^9}, {3.653390444725833*^9, 3.6533904477614727`*^9}, {
+   3.653390865318035*^9, 3.6533908702364807`*^9}, {3.653648856111868*^9, 
+   3.653648856614318*^9}, 3.653650131902581*^9, 3.653728324600946*^9, {
+   3.653739175069229*^9, 3.6537391825379877`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"red", " ", "=", " ", 
+    RowBox[{
+     RowBox[{"correct", " ", 
+      RowBox[{"vertices", " ", "/", " ", "blue"}]}], " ", "=", " ", 
+     RowBox[{"wrong", " ", "vertices"}]}]}], " ", "*)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{"compareLocalVsRayVisual", "[", 
+   RowBox[{"10", ",", "0.02"}], "]"}]}]], "Input",
  CellChangeTimes->{{3.568730086195211*^9, 3.568730089715956*^9}, {
   3.568730809838923*^9, 3.568730810125203*^9}, {3.568731051315174*^9, 
   3.568731051985021*^9}, {3.568969275219594*^9, 3.568969275473774*^9}, {
-  3.568969577335642*^9, 3.568969577687476*^9}}],
+  3.568969577335642*^9, 3.568969577687476*^9}, {3.653375567273031*^9, 
+  3.653375610183674*^9}, {3.65338598087834*^9, 3.653385993936845*^9}, {
+  3.653386374754792*^9, 3.653386374882128*^9}, {3.653391007308834*^9, 
+  3.653391011962302*^9}, {3.6536488062643557`*^9, 3.6536488462392063`*^9}, {
+  3.653650136155037*^9, 3.653650139912242*^9}, {3.653728376598052*^9, 
+  3.653728376916869*^9}, {3.653739154491556*^9, 3.653739157345582*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"Another", " ", 
+    RowBox[{"comparison", ":"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "This", " ", "time", " ", "vertices", " ", "that", " ", "are", " ", 
+    "correctly", " ", "computed", " ", "by", " ", "both", " ", "methods"}], 
+   " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{"are", " ", "displayed", " ", "as", " ", "black", " ", 
+    RowBox[{"circles", "."}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{"left", ":", " ", 
+    RowBox[{"internal", " ", 
+     RowBox[{"space", " ", "/", " ", "right"}]}], ":", " ", 
+    RowBox[{"physical", " ", "space"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  
+  RowBox[{"GraphicsRow", "[", "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"Show", "[", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{
+        RowBox[{
+         RowBox[{"Graphics", "[", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"EdgeForm", "[", "Thick", "]"}], ",", "White", ",", 
+            RowBox[{"Rectangle", "[", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{"-", "#"}], ",", 
+                RowBox[{"-", "#"}]}], "}"}], ",", 
+              RowBox[{"{", 
+               RowBox[{"#", ",", "#"}], "}"}]}], "]"}]}], "}"}], "]"}], "&"}],
+         "[", "2.5", "]"}], ",", "\[IndentingNewLine]", 
+       RowBox[{"Graphics", "[", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"AbsoluteThickness", "[", "0.5", "]"}], ",", "Black", ",", 
+          RowBox[{"Line", "[", 
+           RowBox[{"Map", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"#", "+", 
+               RowBox[{"{", 
+                RowBox[{"0.0001", ",", "0.0001"}], "}"}]}], "&"}], ",", 
+             "windowDodecagonStd"}], "]"}], "]"}]}], "}"}], "]"}], ",", 
+       RowBox[{"PlotOrthogonalProjection", "[", 
+        RowBox[{
+         RowBox[{"vtxClassification0", "[", 
+          RowBox[{"[", "1", "]"}], "]"}], ",", "0.016", ",", 
+         RowBox[{"{", 
+          RowBox[{"0", ",", "0", ",", "0"}], "}"}]}], "]"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"PlotOrthogonalProjection", "[", 
+        RowBox[{
+         RowBox[{"vtxClassification0", "[", 
+          RowBox[{"[", "2", "]"}], "]"}], ",", "0.016", ",", 
+         RowBox[{"{", 
+          RowBox[{"1", ",", "0", ",", "0"}], "}"}]}], "]"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"PlotOrthogonalProjection", "[", 
+        RowBox[{
+         RowBox[{"vtxClassification0", "[", 
+          RowBox[{"[", "3", "]"}], "]"}], ",", "0.016", ",", 
+         RowBox[{"{", 
+          RowBox[{"0", ",", "0", ",", "1"}], "}"}]}], "]"}]}], "]"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Show", "[", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"Graphics", "[", 
+        RowBox[{"{", 
+         RowBox[{"Black", ",", 
+          RowBox[{"Circle", "[", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"0", ",", "0"}], "}"}], ",", "0.06"}], "]"}]}], "}"}], 
+        "]"}], ",", "\[IndentingNewLine]", 
+       RowBox[{"PlotParallelProjection", "[", 
+        RowBox[{
+         RowBox[{"vtxClassification0", "[", 
+          RowBox[{"[", "1", "]"}], "]"}], ",", "0.016", ",", "False", ",", 
+         RowBox[{"{", 
+          RowBox[{"0", ",", "0", ",", "0"}], "}"}]}], "]"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"PlotParallelProjection", "[", 
+        RowBox[{
+         RowBox[{"vtxClassification0", "[", 
+          RowBox[{"[", "2", "]"}], "]"}], ",", "0.016", ",", "False", ",", 
+         RowBox[{"{", 
+          RowBox[{"1", ",", "0", ",", "0"}], "}"}]}], "]"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"PlotParallelProjection", "[", 
+        RowBox[{
+         RowBox[{"vtxClassification0", "[", 
+          RowBox[{"[", "3", "]"}], "]"}], ",", "0.016", ",", "False", ",", 
+         RowBox[{"{", 
+          RowBox[{"0", ",", "0", ",", "1"}], "}"}]}], "]"}]}], 
+      "\[IndentingNewLine]", "]"}]}], "}"}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.6533904579802*^9, 3.653390552610772*^9}, {
+  3.653390675267679*^9, 3.653390706684108*^9}, {3.653390752953508*^9, 
+  3.653390818163454*^9}, {3.653390882345057*^9, 3.653390886386262*^9}, {
+  3.6533912018826427`*^9, 3.653391257625978*^9}, {3.653637827227862*^9, 
+  3.6536379707426233`*^9}, {3.653638393750532*^9, 3.653638469808983*^9}, {
+  3.653739190981298*^9, 3.6537391933994083`*^9}, {3.653739224834495*^9, 
+  3.653739235863456*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "These", " ", "are", " ", "the", " ", "vertices", " ", "in", " ", 
+    "internal", " ", "space", " ", "after", " ", "applying"}], " ", "*)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "the", " ", "corresponding", " ", "scaling", " ", "factors", " ", "to", 
+    " ", "implement", " ", "computation"}], " ", "*)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{"of", " ", "the", " ", "local", " ", "visibility", " ", 
+    RowBox[{"condition", "."}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "One", " ", "can", " ", "see", " ", "that", " ", "the", " ", "only", " ", 
+    "vertices", " ", "of", " ", "norm", " ", "1", " ", "type", " ", "that", 
+    " ", "could"}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{"be", " ", "affected", " ", "by", " ", "the", " ", "shift", " ", 
+    RowBox[{"(", 
+     RowBox[{
+     "that", " ", "are", " ", "near", " ", "the", " ", "window", " ", 
+      "after"}], " "}]}], "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{" ", "scaling", ")"}], " ", "are", " ", "the", " ", "two", " ", 
+    "that", " ", "lie", " ", "on", " ", "the", " ", "diagonal", " ", 
+    "through", " ", "the"}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{"window", ".", " ", "Since"}], " ", "our", " ", "shift", " ", 
+    "always", " ", "is", " ", "of", " ", "the", " ", "form", " ", 
+    RowBox[{"(", 
+     RowBox[{"eps", ",", " ", "eps"}], ")"}]}], " ", "*)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{"it", " ", "obviously", " ", 
+    RowBox[{"doesn", "'"}], "t", " ", "matter", " ", "for", " ", "these", " ",
+     "two", " ", "vertices", " ", "in", " ", "which"}], " ", "*)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{"direction", " ", "the", " ", "shift", " ", 
+    RowBox[{"goes", ".", " ", "After"}], " ", "the", " ", "shift", " ", 
+    "both", " ", "always", " ", "lie"}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{"outside", " ", "the", " ", 
+    RowBox[{"window", "."}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"Show", "[", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      RowBox[{"Graphics", "[", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"EdgeForm", "[", 
+          RowBox[{"{", 
+           RowBox[{"Thick", ",", "Green"}], "}"}], "]"}], ",", "White", ",", 
+         RowBox[{"Rectangle", "[", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"-", "#"}], ",", 
+             RowBox[{"-", "#"}]}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"#", ",", "#"}], "}"}]}], "]"}]}], "}"}], "]"}], "&"}], 
+     "[", "3.5", "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Graphics", "[", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"AbsoluteThickness", "[", "0.5", "]"}], ",", "Black", ",", 
+       RowBox[{"Line", "[", 
+        RowBox[{"Map", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"#", "+", 
+            RowBox[{"{", 
+             RowBox[{"0.0001", ",", "0.0001"}], "}"}]}], "&"}], ",", 
+          "windowDodecagonStd"}], "]"}], "]"}]}], "}"}], "]"}], ",", 
+    RowBox[{"PlotOrthogonalProjection", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Sqrt", "[", 
+        RowBox[{"fundUnitZ3", "*", "2"}], "]"}], "*", 
+       RowBox[{"DodecagonalSelectVertices", "[", 
+        RowBox[{
+         RowBox[{"vtxClassification0", "[", 
+          RowBox[{"[", "1", "]"}], "]"}], ",", "1"}], "]"}]}], ",", "0.016", 
+      ",", 
+      RowBox[{"{", 
+       RowBox[{"0", ",", "0", ",", "0"}], "}"}]}], "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"PlotOrthogonalProjection", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Sqrt", "[", 
+        RowBox[{"fundUnitZ3", "/", "2"}], "]"}], "*", 
+       RowBox[{"DodecagonalSelectVertices", "[", 
+        RowBox[{
+         RowBox[{"vtxClassification0", "[", 
+          RowBox[{"[", "1", "]"}], "]"}], ",", "2"}], "]"}]}], ",", "0.016", 
+      ",", 
+      RowBox[{"{", 
+       RowBox[{"0.5", ",", "0.5", ",", "0.5"}], "}"}]}], "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"PlotOrthogonalProjection", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Sqrt", "[", 
+        RowBox[{"fundUnitZ3", "/", "2"}], "]"}], "*", 
+       RowBox[{"vtxClassification0", "[", 
+        RowBox[{"[", "2", "]"}], "]"}]}], ",", "0.016", ",", 
+      RowBox[{"{", 
+       RowBox[{"1", ",", "0", ",", "0"}], "}"}]}], "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"PlotOrthogonalProjection", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Sqrt", "[", 
+        RowBox[{"fundUnitZ3", "/", "2"}], "]"}], "*", 
+       RowBox[{"vtxClassification0", "[", 
+        RowBox[{"[", "3", "]"}], "]"}]}], ",", "0.016", ",", 
+      RowBox[{"{", 
+       RowBox[{"0", ",", "0", ",", "1"}], "}"}]}], "]"}]}], "]"}]}]], "Input",\
+
+ CellChangeTimes->{{3.6536344303703833`*^9, 3.65363449469781*^9}, {
+  3.653637613414332*^9, 3.653637735676765*^9}, {3.653637986385714*^9, 
+  3.6536380277629547`*^9}, {3.6537307773576202`*^9, 3.653730977766263*^9}, {
+  3.653738258315083*^9, 3.653738264581175*^9}, {3.653738352502342*^9, 
+  3.653738356469123*^9}, {3.653739280273307*^9, 3.653739297968487*^9}}],
 
 Cell[BoxData[
  RowBox[{
@@ -1071,50 +1437,52 @@ CellTagsIndex->{}
 *)
 (*NotebookFileOutline
 Notebook[{
-Cell[557, 20, 205, 5, 45, "Input"],
-Cell[765, 27, 423, 10, 75, "Input"],
-Cell[1191, 39, 341, 10, 75, "Input"],
-Cell[1535, 51, 867, 19, 104, "Input"],
-Cell[2405, 72, 1600, 28, 75, "Input"],
-Cell[4008, 102, 235, 6, 45, "Input"],
-Cell[4246, 110, 2291, 71, 133, "Input"],
-Cell[6540, 183, 345, 8, 45, "Input"],
-Cell[6888, 193, 177, 4, 45, "Input"],
-Cell[7068, 199, 285, 6, 45, "Input"],
-Cell[7356, 207, 257, 6, 45, "Input"],
-Cell[7616, 215, 137, 4, 45, "Input"],
-Cell[7756, 221, 2883, 60, 191, "Input"],
-Cell[10642, 283, 937, 29, 104, "Input"],
-Cell[11582, 314, 1954, 41, 104, "Input"],
-Cell[13539, 357, 1279, 33, 104, "Input"],
-Cell[14821, 392, 247, 6, 45, "Input"],
-Cell[15071, 400, 7339, 171, 771, "Input"],
-Cell[22413, 573, 237, 6, 45, "Input"],
-Cell[22653, 581, 808, 25, 75, "Input"],
-Cell[23464, 608, 4223, 97, 510, "Input"],
-Cell[27690, 707, 1084, 24, 104, "Input"],
-Cell[28777, 733, 364, 6, 45, "Input"],
-Cell[29144, 741, 271, 6, 45, "Input"],
-Cell[29418, 749, 399, 13, 45, "Input"],
-Cell[29820, 764, 606, 16, 75, "Input"],
-Cell[30429, 782, 321, 7, 45, "Input"],
-Cell[30753, 791, 2448, 60, 220, "Input"],
-Cell[33204, 853, 860, 21, 162, "Input"],
-Cell[34067, 876, 343, 7, 45, "Input"],
-Cell[34413, 885, 210, 5, 45, "Input"],
-Cell[34626, 892, 529, 14, 75, "Input"],
-Cell[35158, 908, 570, 15, 75, "Input"],
-Cell[35731, 925, 542, 12, 75, "Input"],
-Cell[36276, 939, 363, 8, 45, "Input"],
-Cell[36642, 949, 164, 4, 45, "Input"],
-Cell[36809, 955, 522, 14, 75, "Input"],
-Cell[37334, 971, 154, 3, 45, "Input"],
-Cell[37491, 976, 1117, 28, 104, "Input"],
-Cell[38611, 1006, 872, 23, 104, "Input"],
-Cell[39486, 1031, 535, 10, 45, "Input"],
-Cell[40024, 1043, 330, 9, 75, "Input"]
+Cell[400, 13, 205, 5, 45, "Input"],
+Cell[608, 20, 423, 10, 75, "Input"],
+Cell[1034, 32, 341, 10, 75, "Input"],
+Cell[1378, 44, 867, 19, 104, "Input"],
+Cell[2248, 65, 1600, 28, 75, "Input"],
+Cell[3851, 95, 235, 6, 45, "Input"],
+Cell[4089, 103, 2291, 71, 133, "Input"],
+Cell[6383, 176, 345, 8, 45, "Input"],
+Cell[6731, 186, 177, 4, 45, "Input"],
+Cell[6911, 192, 285, 6, 45, "Input"],
+Cell[7199, 200, 257, 6, 45, "Input"],
+Cell[7459, 208, 137, 4, 45, "Input"],
+Cell[7599, 214, 2883, 60, 191, "Input"],
+Cell[10485, 276, 937, 29, 104, "Input"],
+Cell[11425, 307, 1954, 41, 104, "Input"],
+Cell[13382, 350, 1279, 33, 104, "Input"],
+Cell[14664, 385, 247, 6, 45, "Input"],
+Cell[14914, 393, 9630, 226, 974, "Input"],
+Cell[24547, 621, 237, 6, 45, "Input"],
+Cell[24787, 629, 808, 25, 75, "Input"],
+Cell[25598, 656, 4223, 97, 510, "Input"],
+Cell[29824, 755, 1817, 36, 191, "Input"],
+Cell[31644, 793, 2071, 47, 220, "Input"],
+Cell[33718, 842, 1015, 19, 75, "Input"],
+Cell[34736, 863, 4567, 109, 510, "Input"],
+Cell[39306, 974, 5330, 131, 510, "Input"],
+Cell[44639, 1107, 271, 6, 45, "Input"],
+Cell[44913, 1115, 399, 13, 45, "Input"],
+Cell[45315, 1130, 606, 16, 75, "Input"],
+Cell[45924, 1148, 321, 7, 45, "Input"],
+Cell[46248, 1157, 2448, 60, 220, "Input"],
+Cell[48699, 1219, 860, 21, 162, "Input"],
+Cell[49562, 1242, 343, 7, 45, "Input"],
+Cell[49908, 1251, 210, 5, 45, "Input"],
+Cell[50121, 1258, 529, 14, 75, "Input"],
+Cell[50653, 1274, 570, 15, 75, "Input"],
+Cell[51226, 1291, 542, 12, 75, "Input"],
+Cell[51771, 1305, 363, 8, 45, "Input"],
+Cell[52137, 1315, 164, 4, 45, "Input"],
+Cell[52304, 1321, 522, 14, 75, "Input"],
+Cell[52829, 1337, 154, 3, 45, "Input"],
+Cell[52986, 1342, 1117, 28, 104, "Input"],
+Cell[54106, 1372, 872, 23, 104, "Input"],
+Cell[54981, 1397, 535, 10, 45, "Input"],
+Cell[55519, 1409, 330, 9, 75, "Input"]
 }
 ]
 *)
 
-(* End of internal cache information *)
