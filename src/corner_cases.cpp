@@ -269,20 +269,16 @@ int main_integer(int argc, char* argv[]) {
 }
 
 int main(int argc, char* argv[]) {
-  stringstream parser;
-  string tempstr;
+  string arg;
 
   int main_mode = -1;
 
-  if (argc >= 2) {
-    parser.str(argv[1]);
-    parser.clear();
-    parser >> tempstr;
-  }
+  if (argc >= 2)
+    arg = argv[1];
 
-  if (tempstr == "--integer")
+  if (arg == "--integer")
     main_mode = 0;
-  else if (tempstr == "--poisson")
+  else if (arg == "--poisson")
     main_mode = 1;
 
   if (main_mode == -1) {
