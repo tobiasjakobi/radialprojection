@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[     21094,        610]
-NotebookOptionsPosition[     20236,        582]
-NotebookOutlinePosition[     20670,        599]
-CellTagsIndexPosition[     20627,        596]
+NotebookDataLength[     23342,        676]
+NotebookOptionsPosition[     22368,        644]
+NotebookOutlinePosition[     22802,        661]
+CellTagsIndexPosition[     22759,        658]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -176,6 +176,8 @@ Cell[BoxData[
  CellChangeTimes->{{3.654501619714539*^9, 3.65450172278769*^9}, {
   3.654502339704588*^9, 3.654502363304699*^9}}],
 
+Cell[CellGroupData[{
+
 Cell[BoxData[{
  RowBox[{
   RowBox[{"link", "=", 
@@ -184,6 +186,24 @@ Cell[BoxData[{
     "\"\</homes/tjakobi/PhD_Work/radialprojection/mathinterface/\
 feed2mathematica\>\"", "]"}]}], ";"}], "\[IndentingNewLine]", 
  RowBox[{"LinkPatterns", "[", "link", "]"}]}], "Input"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   TagBox[
+    RowBox[{"ReadDoubleVec2Data", "[", "x_", "]"}],
+    HoldForm], ",", 
+   TagBox[
+    RowBox[{"ReadDoubleData", "[", "x_", "]"}],
+    HoldForm], ",", 
+   TagBox[
+    RowBox[{"ReadExtFloatData", "[", "x_", "]"}],
+    HoldForm], ",", 
+   TagBox[
+    RowBox[{"ReadLongIntData", "[", "x_", "]"}],
+    HoldForm]}], "}"}]], "Output",
+ CellChangeTimes->{3.6545128631551323`*^9}]
+}, Open  ]],
 
 Cell[BoxData[
  RowBox[{
@@ -518,13 +538,17 @@ Cell[BoxData[{
    RowBox[{"{", 
     RowBox[{
      RowBox[{
-      RowBox[{"i", "[", 
-       RowBox[{"[", "1", "]"}], "]"}], "*", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"i", "[", 
+         RowBox[{"[", "1", "]"}], "]"}], "+", "0.5"}], ")"}], "*", 
       RowBox[{"params", "[", 
        RowBox[{"[", "3", "]"}], "]"}]}], ",", 
      RowBox[{
-      RowBox[{"i", "[", 
-       RowBox[{"[", "2", "]"}], "]"}], "*", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"i", "[", 
+         RowBox[{"[", "2", "]"}], "]"}], "+", "0.5"}], ")"}], "*", 
       RowBox[{"params", "[", 
        RowBox[{"[", "4", "]"}], "]"}]}], ",", "\[IndentingNewLine]", 
      RowBox[{"data", "[", 
@@ -578,7 +602,45 @@ Cell[BoxData[{
   ";"}]}], "Input",
  CellChangeTimes->{{3.654501809226591*^9, 3.654501828252541*^9}, {
   3.6545019083112307`*^9, 3.654501913545073*^9}, {3.654501944263101*^9, 
-  3.654502191236598*^9}, {3.654502252129809*^9, 3.6545022980469847`*^9}}]
+  3.654502191236598*^9}, {3.654502252129809*^9, 3.6545022980469847`*^9}, {
+  3.6545096032336283`*^9, 3.6545096129914227`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "Read", " ", "raw", " ", "data", " ", "from", " ", "a", " ", "XZ", " ", 
+    "compressed", " ", 
+    RowBox[{"file", "."}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"ReadUnXZData", "[", 
+     RowBox[{"file_", ",", "readcmd_"}], "]"}], ":=", 
+    RowBox[{"Block", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"tmpfile", ",", "out"}], "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"tmpfile", "=", 
+        RowBox[{
+         RowBox[{"ReadList", "[", 
+          RowBox[{"\"\<!mktemp --tmpdir=/dev/shm/\>\"", ",", "String"}], 
+          "]"}], "[", 
+         RowBox[{"[", "1", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Run", "[", 
+        RowBox[{
+        "\"\<xz -d -c \>\"", "<>", "file", "<>", "\"\< > \>\"", "<>", 
+         "tmpfile"}], "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"out", "=", 
+        RowBox[{"readcmd", "[", "tmpfile", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"DeleteFile", "[", "tmpfile", "]"}], ";", 
+       "\[IndentingNewLine]", "out"}]}], "]"}]}], ";"}]}]], "Input",
+ CellChangeTimes->{{3.654584548412421*^9, 3.654584573712126*^9}, {
+   3.654584631141869*^9, 3.654584638625318*^9}, {3.654584668705249*^9, 
+   3.65458466982693*^9}, {3.654584707215129*^9, 3.654584805421137*^9}, {
+   3.654584977462885*^9, 3.654585005829154*^9}, 3.654585036488929*^9, {
+   3.654588079246256*^9, 3.6545881055492697`*^9}}]
 },
 WindowSize->{1600, 1136},
 WindowMargins->{{0, Automatic}, {Automatic, 0}},
@@ -603,15 +665,19 @@ Cell[1206, 39, 3036, 88, 278, "Input"],
 Cell[4245, 129, 460, 12, 75, "Input"],
 Cell[4708, 143, 383, 10, 75, "Input"],
 Cell[5094, 155, 833, 21, 104, "Input"],
-Cell[5930, 178, 265, 7, 75, "Input"],
-Cell[6198, 187, 892, 25, 104, "Input"],
-Cell[7093, 214, 834, 23, 104, "Input"],
-Cell[7930, 239, 1728, 45, 162, "Input"],
-Cell[9661, 286, 1920, 49, 191, "Input"],
-Cell[11584, 337, 2546, 67, 307, "Input"],
-Cell[14133, 406, 1919, 54, 162, "Input"],
-Cell[16055, 462, 1716, 48, 133, "Input"],
-Cell[17774, 512, 2458, 68, 220, "Input"]
+Cell[CellGroupData[{
+Cell[5952, 180, 265, 7, 75, "Input"],
+Cell[6220, 189, 424, 15, 45, "Output"]
+}, Open  ]],
+Cell[6659, 207, 892, 25, 104, "Input"],
+Cell[7554, 234, 834, 23, 104, "Input"],
+Cell[8391, 259, 1728, 45, 162, "Input"],
+Cell[10122, 306, 1920, 49, 191, "Input"],
+Cell[12045, 357, 2546, 67, 307, "Input"],
+Cell[14594, 426, 1919, 54, 162, "Input"],
+Cell[16516, 482, 1716, 48, 133, "Input"],
+Cell[18235, 532, 2633, 73, 220, "Input"],
+Cell[20871, 607, 1493, 35, 220, "Input"]
 }
 ]
 *)
