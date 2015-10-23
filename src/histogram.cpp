@@ -35,7 +35,7 @@ void print_usage() {
   cerr << "histogram --2d: selects two-dimensional main mode" << endl;
   cerr << "(this mode only supports bulk mode)" << endl;
 
-  cerr << "Passing --empty has second argument enables empty bin mode"
+  cerr << "Passing --empty as second argument enables empty bin mode"
        << endl << "(physical positions of empty bins are computed)." << endl;
 
   cerr << "\tparameter 1: step size in x-direction" << endl;
