@@ -67,11 +67,23 @@ int SingleMachine::main(int argc, char* argv[]) {
 
   bool use_default_origin = true;
   bool force_nonlocal_test = false;
+  bool second_order = false;
 
   // outputs
   Common::vec4ilist tiling, visible;
   Common::dlist spacings;
   double mean;
+
+  if (argc >= 2) {
+    const string arg(argv[1]);
+
+    if (arg == "--second-order") {
+      second_order = true;
+
+      argc--;
+      argv++;
+    }
+  }
 
   /* create dodecagonal tiling with edges
   {
@@ -245,7 +257,17 @@ int SingleMachine::main(int argc, char* argv[]) {
 
     Common::meanDistanceMessage(spacings.size() + 1, mean);
 
-    Common::writeRawConsole(spacings);
+    if (second_order) {
+      cerr << "info: computing second-order spacings." << endl;
+
+      Common::vec2dlist spacings2;
+      spacings2.reserve(spacings.size() - 1);
+
+      Common::secondOrderSpacings(spacings, spacings2);
+      Common::writeRawConsole(spacings2);
+    } else {
+      Common::writeRawConsole(spacings);
+    }
   }
 
   return 0;
@@ -338,6 +360,11 @@ void print_usage() {
   cerr << "cyclotomic_radial: usage:" << endl;
 
   cerr << "cyclotomic_radial --single: selects single main mode" << endl;
+
+  cerr << "Passing --second-order as second argument switches from first to second"
+       << endl << "order spacings (this only affects the radial projection modes)."
+       << endl;
+
   cerr << "\tparameter 1: mode (even = point set; odd = radial projection)" << endl;
     cerr << "\t\t" << "0/1 = octagonal (Ammann-Beenker)" << endl;
     cerr << "\t\t" << "2/3 = decagonal (Tübingen triangle)" << endl;
