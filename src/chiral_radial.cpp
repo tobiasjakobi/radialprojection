@@ -785,8 +785,10 @@ void print_usage() {
   cerr << endl;
 
   cerr << "Passing --second-order as second argument switches from first to second"
-       << endl << "order spacings (this only affects the radial projection modes)."
+       << endl << "order spacings (this only affects the radial projection mode)."
        << endl;
+  cerr << "Passing --visible-vertex as second argument computes only visible"
+       << endl << "vertices for mode 1." << endl;
 }
 
 int main_chiral(int argc, char* argv[]) {
@@ -796,19 +798,26 @@ int main_chiral(int argc, char* argv[]) {
   uint mode = 0;
   bool cut = false;
   bool second_order = false;
+  bool visible_vertex = false;
 
   using namespace ChiralLB;
   using namespace Common;
 
-  if (argc >= 2) {
+  while (argc >= 2) {
     const string arg(argv[1]);
+    bool parsefail = false;
 
-    if (arg == "--second-order") {
+    if (arg == "--second-order")
       second_order = true;
+    else if (arg == "--visible-vertex")
+      visible_vertex = true;
+    else
+      parsefail = true;
 
-      argc--;
-      argv++;
-    }
+    if (parsefail) break;
+
+    argc--;
+    argv++;
   }
 
   if (argc >= 2) {
@@ -854,14 +863,17 @@ int main_chiral(int argc, char* argv[]) {
 
   // Output vertex data in Mathematica style
   case 1:
-    createVerticesVisFast(verts, initialChiral, steps, cut);
-    //createVertices(output, initialChiral, steps);
+    if (visible_vertex)
+      createVerticesVis(verts, initialChiral, steps, cut);
+    else
+      createVertices(verts, initialChiral, steps);
+
     cout << verts;
     break;
 
   // Do radial projection and output data in raw mode
   case 2:
-    createVerticesVis(verts, initialChiral, steps, cut);
+    createVerticesVisFast(verts, initialChiral, steps, cut);
     radialProj(verts, spacings, mean);
 
     meanDistanceMessage(verts.size(), mean);
@@ -894,19 +906,26 @@ int main_chair(int argc, char* argv[]) {
   uint mode = 0;
   bool cut = false;
   bool second_order = false;
+  bool visible_vertex = false;
 
   using namespace Chair2D;
   using namespace Common;
 
-  if (argc >= 2) {
+ while (argc >= 2) {
     const string arg(argv[1]);
+    bool parsefail = false;
 
-    if (arg == "--second-order") {
+    if (arg == "--second-order")
       second_order = true;
+    else if (arg == "--visible-vertex")
+      visible_vertex = true;
+    else
+      parsefail = true;
 
-      argc--;
-      argv++;
-    }
+    if (parsefail) break;
+
+    argc--;
+    argv++;
   }
 
   if (argc >= 2) {
@@ -948,7 +967,11 @@ int main_chair(int argc, char* argv[]) {
 
   // Output vertex data in Mathematica style
   case 1:
-    createVerticesVis(verts, initialChair, steps, cut);
+    if (visible_vertex)
+      createVerticesVis(verts, initialChair, steps, cut);
+    else
+      createVertices(verts, initialChair, steps);
+
     cout << verts;
     break;
 
