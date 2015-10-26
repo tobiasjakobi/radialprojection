@@ -24,7 +24,7 @@ void print_usage() {
 
   cerr << "histogram --normal: selects normal main mode" << endl;
   cerr << "histogram --largedata: selects large data main mode" << endl;
-  cerr << "(both modes share the same set of parameters" << endl;
+  cerr << "(both modes share the same set of parameters)" << endl;
 
   cerr << "\tparameter 1: mode (0 = bulk; 1 = tail)" << endl;
   cerr << "\tparameter 2: step size (binning resolution)" << endl;
