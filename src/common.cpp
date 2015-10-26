@@ -1310,6 +1310,13 @@ void Common::histogramEnvelope2D(const vec2d& min, const vec2d& max,
   binData.step[1] = step[1];
   histogramBinning(inputData, binData);
 
+  /* TODO:
+   * The scaling factor 'f0' below is problematic. If the input data size
+   * is very large the factor can become very small, which produces
+   * numerical precision issues.
+   * Maybe use quad-precision here.
+   */
+
   // convert to envelope by applying scaling
   const double f0 = 1.0 / (double(inputData.size()) * step[0] * step[1]);
   dlist envelopeData;
