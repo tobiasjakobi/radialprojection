@@ -374,6 +374,8 @@ void print_usage() {
   cerr << "\tparameter 3: sector (if possible reduce point set to sector)" << endl;
   cerr << "\tparameter {4,5,6,7}: custom origin (for visibility computation)" << endl;
 
+  cerr << endl;
+
   cerr << "cyclotomic_radial --multi: selects multi main mode" << endl;
   cerr << "\tparameter 1: multi type (0 = master; 1 = slave)" << endl;
   cerr << "\t\t" << "(parameters below are shifted)" << endl;
