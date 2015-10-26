@@ -74,9 +74,6 @@ namespace ChiralLB {
   void cutSector(const Common::vec2dlist& input,
                  Common::vec2dlist& output, uint steps);
 
-  void radialProj(const Common::vec2dlist& input, Common::dlist& output,
-                  double& meandist);
-
 };
 
 namespace Chair2D {
@@ -107,9 +104,6 @@ namespace Chair2D {
   // Cut a sector from the patch generated from inflating the cross:
   void cutSector(const Common::vec2dlist& input,
                  Common::vec2dlist& output, uint steps);
-
-  void radialProj(const Common::vec2dlist& input,
-                  Common::dlist& output, double& meandist);
 
 };
 
@@ -773,119 +767,250 @@ void Chair2D::cutSector(const Common::vec2dlist& input,
   cerr << "After cutting off procedure " << output.size() << " vertices remain.\n";
 }
 
-int main(int argc, char* argv[]) {
+void print_usage() {
+  cerr << "chiral_radial: usage:" << endl;
+
+  cerr << "chiral_radial --chiral: selects chiral LB main mode" << endl;
+  cerr << "chiral_radial --chair: selects 2D chair main mode" << endl;
+  cerr << "(both modes share the same set of parameters)" << endl;
+
+  cerr << "\tparameter 1: mode" << endl;
+  cerr << "\t\t" "0 = tiles in Mathematica format" << endl;
+  cerr << "\t\t" "1 = vertices in Mathematica format" << endl;
+  cerr << "\t\t" "2 = spacings from radial projection" << endl;
+
+  cerr << "\tparameter 2: steps (increase size of the patch)" << endl;
+  cerr << "\tparameter 3: cut patch to circular shape" << endl;
+
+  cerr << endl;
+
+  cerr << "Passing --second-order as second argument switches from first to second"
+       << endl << "order spacings (this only affects the radial projection modes)."
+       << endl;
+}
+
+int main_chiral(int argc, char* argv[]) {
+  stringstream parser;
+
   uint steps = 2;
   uint mode = 0;
   bool cut = false;
+  bool second_order = false;
 
+  using namespace ChiralLB;
   using namespace Common;
 
   if (argc >= 2) {
-    stringstream ss(argv[1]);
-    ss >> steps;
+    const string arg(argv[1]);
+
+    if (arg == "--second-order") {
+      second_order = true;
+
+      argc--;
+      argv++;
+    }
   }
 
-  if (argc >= 3) {
-    stringstream ss(argv[2]);
-    ss >> mode;
+  if (argc >= 2) {
+    parser.str(argv[1]);
+    parser.clear();
+    parser >> mode;
+
+    if (argc >= 3) {
+      parser.str(argv[2]);
+      parser.clear();
+      parser >> steps;
+
+      if (argc >= 4) {
+        parser.str(argv[3]);
+        parser.clear();
+        parser >> cut;
+      }
+    }
   }
 
-  if (argc >= 4) {
-    stringstream ss(argv[3]);
-    ss >> cut;
-  }
-
-  cerr << "Information: Size of a single rhomb is "
-       << sizeof(ChiralLB::rhomb) << " bytes.\n";
+  cerr << "info: size of a single rhomb is " << sizeof(rhomb) << " bytes.\n";
 
   // We always use the "sun" (patch consisting of five rhombs
   // of type A) as the initial patch:
-  ChiralLB::rhomblist initialChiral;
-  ChiralLB::constructSun(initialChiral);
+  rhomblist initialChiral;
+  constructSun(initialChiral);
 
-  Chair2D::llist initialChair;
-  Chair2D::constructCross(initialChair);
+  rhomblist rhombs;
+  vec2dlist verts;
+  dlist spacings;
+  double mean;
+  vec8s min, max;
 
-  // First three modes are for the chiral LB tiling. The other
-  // three modes are for the two-dimensional chair tiling.
   switch (mode) {
+  // Output rhomb data in Mathematica style (cut is ignored)
+  case 0:
+    iterate(initialChiral, steps, rhombs);
+    minmax(rhombs, min, max);
 
-    // Output rhomb data in Mathematica style (cut is ignored)
-    case 0: {
-              ChiralLB::rhomblist output;
+    cerr << "statistics: min = " << min << ", max = " << max << endl;
+    cout << rhombs;
+    break;
 
-              vec8s min, max;
-              iterate(initialChiral, steps, output);
-              minmax(output, min, max);
+  // Output vertex data in Mathematica style
+  case 1:
+    createVerticesVisFast(verts, initialChiral, steps, cut);
+    //createVertices(output, initialChiral, steps);
+    cout << verts;
+    break;
 
-              cerr << "statistics: min = " << min
-                   << ", max = " << max << endl;
-              cout << output;
-            }
-            break;
+  // Do radial projection and output data in raw mode
+  case 2:
+    createVerticesVis(verts, initialChiral, steps, cut);
+    radialProj(verts, spacings, mean);
 
-    // Output vertex data in Mathematica style
-    case 1: {
-              vec2dlist output;
+    meanDistanceMessage(verts.size(), mean);
 
-              createVerticesVisFast(output, initialChiral, steps, cut);
-              //createVertices(output, initialChiral, steps);
-              cout << output;
-            }
-            break;
+    if (second_order) {
+      cerr << "info: computing second-order spacings." << endl;
 
-    // Do radial projection and output data in raw mode
-    case 2: {
-              dlist output;
-              double mean;
+      vec2dlist spacings2;
+      spacings2.reserve(spacings.size() - 1);
 
-              vec2dlist verts;
-              createVerticesVis(verts, initialChiral, steps, cut);
-              radialProj(verts, output, mean);
+      secondOrderSpacings(spacings, spacings2);
+      writeRawConsole(spacings2);
+    } else {
+      writeRawConsole(spacings);
+    }
+    break;
 
-              meanDistanceMessage(verts.size(), mean);
-              writeRawConsole(output);
-            }
-            break;
-
-    case 3: {
-              Chair2D::llist output;
-
-              vec2s min, max;
-              iterate(initialChair, steps, output);
-              minmax(output, min, max);
-
-              cerr << "statistics: min = " << min
-                   << ", max = " << max << endl;
-              cout << output;
-            }
-            break;
-
-    case 4: {
-              vec2dlist output;
-
-              createVerticesVis(output, initialChair, steps, cut);
-              cout << output;
-            }
-            break;
-
-    case 5: {
-              dlist output;
-              double mean;
-
-              vec2dlist verts;
-              createVerticesVis(verts, initialChair, steps, cut);
-              radialProj(verts, output, mean);
-
-              meanDistanceMessage(verts.size(), mean);
-              writeRawConsole(output);
-            }
-            break;
-
-    default: cerr << "error: unsupported mode selected!\n";
-             return 0;
+  default:
+    cerr << "error: unsupported mode selected!\n";
+    return 1;
   }
 
   return 0;
 }
 
+int main_chair(int argc, char* argv[]) {
+  stringstream parser;
+
+  uint steps = 2;
+  uint mode = 0;
+  bool cut = false;
+  bool second_order = false;
+
+  using namespace Chair2D;
+  using namespace Common;
+
+  if (argc >= 2) {
+    const string arg(argv[1]);
+
+    if (arg == "--second-order") {
+      second_order = true;
+
+      argc--;
+      argv++;
+    }
+  }
+
+  if (argc >= 2) {
+    parser.str(argv[1]);
+    parser.clear();
+    parser >> mode;
+
+    if (argc >= 3) {
+      parser.str(argv[2]);
+      parser.clear();
+      parser >> steps;
+
+      if (argc >= 4) {
+        parser.str(argv[3]);
+        parser.clear();
+        parser >> cut;
+      }
+    }
+  }
+
+  llist initialChair;
+  constructCross(initialChair);
+
+  llist tiles;
+  vec2dlist verts;
+  dlist spacings;
+  double mean;
+  vec2s min, max;
+
+  switch (mode) {
+  // Output rhomb data in Mathematica style (cut is ignored)
+  case 0:
+    iterate(initialChair, steps, tiles);
+    minmax(tiles, min, max);
+
+    cerr << "statistics: min = " << min << ", max = " << max << endl;
+    cout << tiles;
+    break;
+
+  // Output vertex data in Mathematica style
+  case 1:
+    createVerticesVis(verts, initialChair, steps, cut);
+    cout << verts;
+    break;
+
+  // Do radial projection and output data in raw mode
+  case 2:
+    createVerticesVis(verts, initialChair, steps, cut);
+    radialProj(verts, spacings, mean);
+
+    meanDistanceMessage(verts.size(), mean);
+
+    if (second_order) {
+      cerr << "info: computing second-order spacings." << endl;
+
+      vec2dlist spacings2;
+      spacings2.reserve(spacings.size() - 1);
+
+      secondOrderSpacings(spacings, spacings2);
+      writeRawConsole(spacings2);
+    } else {
+      writeRawConsole(spacings);
+    }
+    break;
+
+  default:
+    cerr << "error: unsupported mode selected!\n";
+    return 1;
+  }
+
+  return 0;
+}
+
+int main(int argc, char* argv[]) {
+  stringstream parser;
+  string tempstr;
+
+  int main_mode = -1;
+
+  if (argc >= 2) {
+    parser.str(argv[1]);
+    parser.clear();
+    parser >> tempstr;
+  }
+
+  if (tempstr == "--chiral")
+    main_mode = 0;
+  else if (tempstr == "--chair")
+    main_mode = 1;
+
+  if (main_mode == -1) {
+    print_usage();
+    return 0;
+  }
+
+  switch (main_mode) {
+  case 0:
+    return main_chiral(argc - 1, argv + 1);
+
+  case 1:
+    return main_chair(argc - 1, argv + 1);
+
+  default:
+    assert(false);
+    return 0;
+  }
+}
