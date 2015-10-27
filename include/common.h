@@ -39,6 +39,15 @@ typedef unsigned long long ullong;
 
 using namespace std;
 
+template <typename T>
+bool check_limits(const int& val) {
+  if (val < numeric_limits<T>::min() ||
+      val > numeric_limits<T>::max())
+    return false;
+  else
+    return true;
+}
+
 class vec2d;
 
 namespace Constants {
@@ -980,9 +989,19 @@ public:
 
   // Transform from L10 to direct-sum representation
   vec4s transL10ToDirect() const {
+#if 0
     const short b[4] = {a[0] + a[3], a[2] + a[3], a[3], a[3] - a[1]}; // L10 -> L5
 
     return vec4s(b[0] - b[2] + b[3], -b[3], b[1] - b[2] + b[3], b[2] - b[3]);
+#endif
+    // Aggressively check here for range under- and overflow.
+    assert(check_limits<short>(int(a[1]) - int(a[3])));
+    const short t0 = a[1] - a[3];
+
+    assert(check_limits<short>(int(a[0]) - int(t0)) &&
+           check_limits<short>(int(a[2]) - int(t0)));
+
+    return vec4s(a[0] - t0, t0, a[2] - t0, a[1]);
   }
 
   void transL10ToDirect(vec2i& v0, vec2i& v1) const {
