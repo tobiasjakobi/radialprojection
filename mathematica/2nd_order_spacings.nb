@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[      6421,        181]
-NotebookOptionsPosition[      5900,        160]
-NotebookOutlinePosition[      6257,        176]
-CellTagsIndexPosition[      6214,        173]
+NotebookDataLength[      8113,        230]
+NotebookOptionsPosition[      7439,        205]
+NotebookOutlinePosition[      7796,        221]
+CellTagsIndexPosition[      7753,        218]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -111,10 +111,20 @@ Cell[BoxData[
  RowBox[{"PlotDistChart2D", "[", 
   RowBox[{"400", ",", 
    RowBox[{"{", 
-    RowBox[{"3.0", ",", "0.04"}], "}"}], ",", "2"}], "]"}]], "Input",
+    RowBox[{"3.0", ",", "0.04"}], "}"}], ",", "1"}], "]"}]], "Input",
  CellChangeTimes->{{3.654508009817115*^9, 3.654508040454995*^9}, {
   3.6545081946756372`*^9, 3.654508194761244*^9}, {3.6545082359534597`*^9, 
-  3.6545082361389723`*^9}, {3.654508272546852*^9, 3.65450827275176*^9}}],
+  3.6545082361389723`*^9}, {3.654508272546852*^9, 3.65450827275176*^9}, {
+  3.654598689046383*^9, 3.6545986892524548`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"PlotDistChart2D", "[", 
+  RowBox[{"400", ",", 
+   RowBox[{"{", 
+    RowBox[{"3.0", ",", "0.04"}], "}"}], ",", "10"}], "]"}]], "Input",
+ CellChangeTimes->{
+  3.654598738513052*^9, {3.654599258897728*^9, 3.654599259120097*^9}, {
+   3.654599292223805*^9, 3.654599292796768*^9}}],
 
 Cell[BoxData[{
  RowBox[{
@@ -156,7 +166,42 @@ Cell[BoxData[
  RowBox[{"ListPlot", "[", 
   RowBox[{"emptyBin2nd", ",", 
    RowBox[{"AspectRatio", "\[Rule]", "1.0"}]}], "]"}]], "Input",
- CellChangeTimes->{{3.6545098512586412`*^9, 3.654509854770549*^9}}]
+ CellChangeTimes->{{3.6545098512586412`*^9, 3.654509854770549*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"chiral2nd", "=", 
+   RowBox[{"ReadUnXZData", "[", 
+    RowBox[{
+     RowBox[{"dataFilesDir", "<>", "\"\<secorder/chiral.env.xz\>\""}], ",", 
+     "ReadDoubleData"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Length", "[", "chiral2nd", "]"}]}], "Input",
+ CellChangeTimes->{{3.654957007384901*^9, 3.6549570153100357`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"ListPlot3D", "[", 
+  RowBox[{
+   RowBox[{"transformEnvData2D", "[", 
+    RowBox[{"chiral2nd", ",", 
+     RowBox[{"guessHisto2DParams", "[", 
+      RowBox[{"4.0", ",", "0.02"}], "]"}]}], "]"}], ",", 
+   RowBox[{"PlotRange", "\[Rule]", "Full"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.6549570292552557`*^9, 3.6549570340070477`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Plot3D", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"Exp", "[", 
+     RowBox[{"-", "s"}], "]"}], "*", 
+    RowBox[{"Exp", "[", 
+     RowBox[{"-", "t"}], "]"}]}], ",", 
+   RowBox[{"{", 
+    RowBox[{"s", ",", "0", ",", "4"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"t", ",", "0", ",", "4"}], "}"}], ",", 
+   RowBox[{"PlotRange", "\[Rule]", "Full"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.654957045111082*^9, 3.654957047878436*^9}}]
 },
 WindowSize->{1920, 1140},
 WindowMargins->{{0, Automatic}, {Automatic, 0}},
@@ -178,11 +223,15 @@ Notebook[{
 Cell[557, 20, 360, 8, 38, "Input"],
 Cell[920, 30, 237, 6, 38, "Input"],
 Cell[1160, 38, 2716, 69, 264, "Input"],
-Cell[3879, 109, 372, 7, 38, "Input"],
-Cell[4254, 118, 554, 11, 64, "Input"],
-Cell[4811, 131, 380, 9, 38, "Input"],
-Cell[5194, 142, 495, 10, 64, "Input"],
-Cell[5692, 154, 204, 4, 38, "Input"]
+Cell[3879, 109, 423, 8, 38, "Input"],
+Cell[4305, 119, 299, 7, 38, "Input"],
+Cell[4607, 128, 554, 11, 64, "Input"],
+Cell[5164, 141, 380, 9, 38, "Input"],
+Cell[5547, 152, 495, 10, 64, "Input"],
+Cell[6045, 164, 204, 4, 38, "Input"],
+Cell[6252, 170, 364, 8, 64, "Input"],
+Cell[6619, 180, 356, 8, 38, "Input"],
+Cell[6978, 190, 457, 13, 38, "Input"]
 }
 ]
 *)
