@@ -738,6 +738,17 @@ public:
     return vec4i(a[0] + a[3], 2*a[1] + a[2], a[3], -a[1]);
   }
 
+  vec2d directL10ToR2() const {
+    static const double zeta5[2] = {(-1.0 + sqrt(5.0)) / 4.0,
+                                    sqrt((5.0 + sqrt(5.0)) / 8.0)};
+
+    const double z0 = double(a[0]) + double(a[1]) * Constants::unitGM;
+    const double z1 = double(a[2]) + double(a[3]) * Constants::unitGM;
+
+    return vec2d(z0 + z1 * zeta5[0],
+                 z1 * zeta5[1]);
+  }
+
   // Perform a multiplication in L12
   vec4i multL12(const vec4i& vec) const {
     const int k0 = a[1] * vec.a[3] + a[3] * vec.a[1] + a[2] * vec.a[2]; // xi^4

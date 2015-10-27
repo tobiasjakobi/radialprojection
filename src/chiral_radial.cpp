@@ -64,6 +64,7 @@ namespace ChiralLB {
   /* An optimized (and vastly faster) version of 'createVerticesVis', which also *
    * works satisfactory for "large" inflation multipliers. Currenly only the     *
    * "incorrect" visibility computation is implemented.                          */
+  template <typename T>
   void createVerticesVisFast(Common::vec2dlist& vertices, const rhomblist& initial,
                       uint steps, bool cutAndReduce);
 
@@ -432,10 +433,11 @@ void ChiralLB::createVerticesVis(Common::vec2dlist& vertices,
   vlist = NULL;
 }
 
+template <typename T>
 void ChiralLB::createVerticesVisFast(Common::vec2dlist& vertices,
                         const rhomblist& initial,
                         uint steps, bool cutAndReduce) {
-if (initial.empty())
+  if (initial.empty())
     return;
 
   rhomblist* patch = new rhomblist;
@@ -470,7 +472,7 @@ if (initial.empty())
     }
   }
 
-  vector<vec4s> vlist;
+  vector<T> vlist;
   vlist.reserve(patch->size() * 4);
 
   if (cutAndReduce) {
@@ -522,7 +524,7 @@ if (initial.empty())
   // TODO: implement correct visibility computation
 
   // TODO: use threads to process this vector
-  for (vector<vec4s>::iterator i = vlist.begin(); i != vlist.end(); ++i)
+  for (typename vector<T>::iterator i = vlist.begin(); i != vlist.end(); ++i)
     *i = i->transL10ToDirect().directL10ToUnique();
 
   // Second removal pass
@@ -535,7 +537,7 @@ if (initial.empty())
   vertices.clear();
   vertices.reserve(vlist.size());
 
-  for (vector<vec4s>::const_iterator i = vlist.begin(); i != vlist.end(); ++i)
+  for (typename vector<T>::const_iterator i = vlist.begin(); i != vlist.end(); ++i)
     vertices.push_back(i->directL10ToR2());
 }
 
@@ -873,12 +875,12 @@ int main_chiral(int argc, char* argv[]) {
 
   // Do radial projection and output data in raw mode
   case 2:
-    // TODO: Fix this by re-implementing the code with vec4i.
-    if (steps > 12) {
-      cerr << "warning: too many inflation steps for chiral LB tiling." << endl;
-    }
+    // Switch to higher internal accuracy when using a least 13 inflation steps.
+    if (steps > 12)
+      createVerticesVisFast<vec4i>(verts, initialChiral, steps, cut);
+    else
+      createVerticesVisFast<vec4s>(verts, initialChiral, steps, cut);
 
-    createVerticesVisFast(verts, initialChiral, steps, cut);
     radialProj(verts, spacings, mean);
 
     meanDistanceMessage(verts.size(), mean);
