@@ -854,6 +854,17 @@ class vec4s {
 private:
   short a[4];
 
+  static bool check_precision(const vec2i& v) {
+    if (v.x < numeric_limits<short>::min() ||
+        v.x > numeric_limits<short>::max() ||
+        v.y < numeric_limits<short>::min() ||
+        v.y > numeric_limits<short>::max()) {
+      cerr << "error: precision check failed in vec4s constructor" << endl;
+      return false;
+    } else
+      return true;
+  }
+
 public:
   vec4s() {}
   vec4s(short x0, short x1, short x2, short x3) {
@@ -862,6 +873,8 @@ public:
   }
 
   vec4s(const vec2i& x0, const vec2i& x1) {
+    assert(check_precision(x0) && check_precision(x1));
+
     a[0] = x0.x; a[1] = x0.y;
     a[2] = x1.x; a[3] = x1.y;
   }
