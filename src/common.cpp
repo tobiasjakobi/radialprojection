@@ -1497,8 +1497,7 @@ void Common::neighbourDiff(const dlist& input, dlist& output, double& mean) {
   dlist::const_iterator j = input.begin();
   mean = *j;
 
-  dlist::const_iterator k = j;
-  ++k;
+  dlist::const_iterator k = j + 1;
   while (k != input.end()) {
     output.push_back(*k - *j);
     ++j;
