@@ -49,6 +49,7 @@ bool check_limits(const int& val) {
 }
 
 class vec2d;
+class vec4s;
 
 namespace Constants {
   /* The unit in Z[tau], with tau the golden mean.
@@ -579,6 +580,8 @@ public:
   }
 #endif
 
+  vec4i(const vec4s& v);
+
 #ifdef COMMON_USE_SSE
   vec4i(const __m128i& sse) : vsse(sse) {}
 #endif
@@ -704,6 +707,15 @@ public:
   // Transform from L5 to direct-sum representation
   vec4i transL5ToDirect() const {
     return vec4i(a[0] - a[2] + a[3], -a[3], a[1] - a[2] + a[3], a[2] - a[3]);
+  }
+
+  /*
+   * Transform from L10 to direct-sum representation.
+   * Keep in mind that L5-direct and L10-direct representation are the same.
+   */
+  vec4i transL10ToDirect() const {
+    const short t0 = a[1] - a[3];
+    return vec4i(a[0] - t0, t0, a[2] - t0, a[1]);
   }
 
   // Transform from L12 to direct-sum representation
@@ -853,6 +865,7 @@ public:
   // For comments see vec4s::directL10ToUnique in this header.
   vec4i directL8ToUnique() const;
   vec4i directL5ToUnique() const;
+  vec4i directL10ToUnique() const;
   vec4i directL12ToUnique() const;
 
   static vec2d shift;

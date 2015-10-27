@@ -343,6 +343,11 @@ vec2i vec2i::primitive() const {
   return vec2i(x / g, y / g);
 }
 
+vec4i::vec4i(const vec4s& v) {
+  a[0] = v[0]; a[1] = v[1];
+  a[2] = v[2]; a[3] = v[3];
+}
+
 vec4i vec4i::directL8ToUnique() const {
   if (this->isZero()) return *this;
 
@@ -386,6 +391,11 @@ vec4i vec4i::directL5ToUnique() const {
   const vec2i ry(y.divGM(g).multUnitGM(k));
 
   return vec4i(rx, ry);
+}
+
+vec4i vec4i::directL10ToUnique() const {
+  // L5-direct and L10-direct representation are the same.
+  return this->directL5ToUnique();
 }
 
 vec4i vec4i::directL12ToUnique() const {

@@ -873,6 +873,11 @@ int main_chiral(int argc, char* argv[]) {
 
   // Do radial projection and output data in raw mode
   case 2:
+    // TODO: Fix this by re-implementing the code with vec4i.
+    if (steps > 12) {
+      cerr << "warning: too many inflation steps for chiral LB tiling." << endl;
+    }
+
     createVerticesVisFast(verts, initialChiral, steps, cut);
     radialProj(verts, spacings, mean);
 
