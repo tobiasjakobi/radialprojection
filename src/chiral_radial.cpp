@@ -523,7 +523,10 @@ void ChiralLB::createVerticesVisFast(Common::vec2dlist& vertices,
 
   // TODO: implement correct visibility computation
 
-  // TODO: use threads to process this vector
+  /*
+   * This vector looks like it can be processed faster by using threads, but
+   * performance evaluation has shown that the advantage is negligible at best.
+   */
   for (typename vector<T>::iterator i = vlist.begin(); i != vlist.end(); ++i)
     *i = i->transL10ToDirect().directL10ToUnique();
 
