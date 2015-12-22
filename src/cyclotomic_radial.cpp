@@ -65,9 +65,9 @@ int SingleMachine::main(int argc, char* argv[]) {
   uint mode = 0;
   vec4i origin(0, 0, 0, 0);
 
-  bool use_default_origin = true;
   bool force_nonlocal_test = false;
   bool second_order = false;
+  bool zero_origin;
 
   // outputs
   Common::vec4ilist tiling, visible;
@@ -109,13 +109,12 @@ int SingleMachine::main(int argc, char* argv[]) {
   if (argc < 8) argc = min(argc, 4);
 
   switch (argc) {
-    default: /* this should catch cases 5, 6, 7 and 8 */
+    default:
       for (uint k = 0; k < 4; ++k) {
         parser.str(argv[4 + k]);
         parser.clear();
         parser >> origin[k];
       }
-      if (origin != vec4i(0, 0, 0, 0)) use_default_origin = false;
 
     /* fall-through is intended in all cases */
     case 4:
@@ -144,27 +143,34 @@ int SingleMachine::main(int argc, char* argv[]) {
     return 1;
   }
 
+  // Check for zero origin and sanitize 'sector' input.
+  zero_origin = origin.isZero();
+  if (!zero_origin && sector) {
+    cerr << "warn: reduction to sector only available with zero origin.\n";
+    sector = false;
+  }
+
   apply_shift(mode);
 
   switch (mode) {
     case octagonal_tiling:
-      if (use_default_origin && !force_nonlocal_test)
+      if (zero_origin && !force_nonlocal_test)
         Octagonal::projTilingVisLocal(init, steps, sector, tiling, visible);
       else
-        Octagonal::projTilingVis(init, origin, steps, false, tiling, visible); // onlySector is ignored
+        Octagonal::projTilingVis(init, origin, steps, false, tiling, visible);
     break;
 
     case octagonal_radprj:
-      if (use_default_origin && !force_nonlocal_test)
+      if (zero_origin && !force_nonlocal_test)
         Octagonal::projTilingVisLocal(init, steps, sector, tiling, visible);
       else
-        Octagonal::projTilingVis(init, origin, steps, true, tiling, visible); // onlySector is ignored
+        Octagonal::projTilingVis(init, origin, steps, true, tiling, visible);
 
       Octagonal::radialProj(visible, spacings, mean, sector);
     break;
 
     case decagonal_tiling:
-      if (use_default_origin && !force_nonlocal_test) {
+      if (zero_origin && !force_nonlocal_test) {
         Decagonal::projTilingVisLocal(init, steps, tiling, visible);
 
         if (sector) {
@@ -175,11 +181,11 @@ int SingleMachine::main(int argc, char* argv[]) {
                << visible.size() << " vertices.\n";
         }
       } else
-        Decagonal::projTilingVis(init, origin, steps, false, tiling, visible); // onlySector is ignored
+        Decagonal::projTilingVis(init, origin, steps, false, tiling, visible);
     break;
 
     case decagonal_radprj:
-      if (use_default_origin && !force_nonlocal_test) {
+      if (zero_origin && !force_nonlocal_test) {
         Common::vec4ilist vistilSector;
 
         Decagonal::projTilingVisLocal(init, steps, tiling, visible);
@@ -192,7 +198,7 @@ int SingleMachine::main(int argc, char* argv[]) {
     break;
 
     case dodecagonal_tiling:
-      if (use_default_origin && !force_nonlocal_test) {
+      if (zero_origin && !force_nonlocal_test) {
         Dodecagonal::projTilingVisLocal(init, steps, tiling, visible);
 
         if (sector) {
@@ -203,11 +209,11 @@ int SingleMachine::main(int argc, char* argv[]) {
                << visible.size() << " vertices.\n";
         }
       } else
-        Dodecagonal::projTilingVis(init, origin, steps, false, tiling, visible); // onlySector is ignored
+        Dodecagonal::projTilingVis(init, origin, steps, false, tiling, visible);
     break;
 
     case dodecagonal_radprj:
-      if (use_default_origin && !force_nonlocal_test) {
+      if (zero_origin && !force_nonlocal_test) {
         Common::vec4ilist vistilSector;
 
         Dodecagonal::projTilingVisLocal(init, steps, tiling, visible);
@@ -220,16 +226,9 @@ int SingleMachine::main(int argc, char* argv[]) {
     break;
 
     case rhmbpenrose_tiling:
-      RhombicPenrose::projTilingVis(init, origin, steps, Common::proj_tiling_none, // TODO: better onlySector handling
-                                    tiling, visible);
-
-      if (sector && use_default_origin) {
-        Common::vec4ilist vistilSector;
-        RhombicPenrose::extractSector(visible, vistilSector);
-        visible.swap(vistilSector);
-        cerr << "Reduced visible tiling to a sector containing "
-             << visible.size() << " vertices.\n";
-      }
+      RhombicPenrose::projTilingVis(init, origin, steps,
+        sector ? Common::proj_tiling_onlysector : Common::proj_tiling_none,
+        tiling, visible);
     break;
 
     case rhmbpenrose_radprj:

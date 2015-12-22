@@ -150,10 +150,12 @@ void RhombicPenrose::projTiling(const vec4i& initpoint, uint maxstep,
 
 void RhombicPenrose::projTilingVis(const vec4i& initpoint,
              const vec4i& origin,
-             uint maxstep, uint flags,
+             uint maxstep, enum Common::proj_tiling_hint hint,
              Common::vec4ilist& tilingpoints,
              Common::vec4ilist& visiblepoints) {
   using namespace Common;
+
+  vec4ilist tiling_sector;
 
   vec4i p, pp;
   const uint numsteps = 10;
@@ -196,12 +198,32 @@ void RhombicPenrose::projTilingVis(const vec4i& initpoint,
   cerr << "Constructed patch of rhombic penrose tiling with "
        << tilingpoints.size() << " vertices.\n";
 
-  /* If tiling vertices are going to used for radial projection, we can
-   * proceed using the fastvis routines. */
-  if (flags & proj_tiling_radialprojection)
+  switch (hint) {
+  case proj_tiling_none:
+    extractVisible(origin, false, tilingpoints, visiblepoints);
+
+  case proj_tiling_radialprojection:
+    /* Visibility computation is expensive here, so reduce the tiling
+     * to a sector before proceeding. */
+    extractSector(tilingpoints, tiling_sector);
+    tilingpoints.swap(tiling_sector);
+    cerr << "Reduced full tiling to a sector containing "
+         << tilingpoints.size() << " vertices.\n";
+
+    /* If tiling vertices are going to be used for radial projection, we can
+     * proceed using the fastvis routines. */
     extractVisibleFast(origin, tilingpoints, visiblepoints);
-  else
-    extractVisible(origin, flags, tilingpoints, visiblepoints);
+    break;
+
+  case proj_tiling_onlysector:
+    assert(origin.isZero());
+    extractVisible(origin, true, tilingpoints, visiblepoints);
+    break;
+
+  default:
+    assert(false);
+    break;
+  }
 }
 
 void RhombicPenrose::extractSector(const Common::vec4ilist& input,
@@ -210,23 +232,24 @@ void RhombicPenrose::extractSector(const Common::vec4ilist& input,
   Decagonal::extractSector(input, output);
 }
 
-void RhombicPenrose::extractVisible(const vec4i& origin, uint flags,
+void RhombicPenrose::extractVisible(const vec4i& origin, bool sector,
                       const Common::vec4ilist& input, Common::vec4ilist& output) {
   using namespace Common;
 
-  const bool radialproj = flags & proj_tiling_radialprojection;
-  const bool onlysector = flags & proj_tiling_onlysector;
-
   VisList* vlist = new VisList;
 
-  if (radialproj && origin.isZero())
+  // Assert that we're called with valid input parameters.
+  if (sector)
+    assert(origin.isZero());
+
+  if (sector)
     vlist->reserve((input.size() - 1) / 5);
   else
     vlist->reserve(input.size() - 1);
 
   vlist->init();
 
-  if (radialproj && onlysector) {
+  if (sector) {
     for (vec4ilist::const_iterator i = input.begin(); i != input.end(); ++i) {
       if (i->isZero()) continue;
 
@@ -245,10 +268,9 @@ void RhombicPenrose::extractVisible(const vec4i& origin, uint flags,
     }
   }
 
-  if (radialproj)
-    vlist->removeInvisibleFast();
-  else
-    vlist->removeInvisibleProper();
+  /* This function is never used for radial projection, so always
+   * apply proper/correct visibility computation. */
+  vlist->removeInvisibleProper();
 
   output.clear();
   output.reserve(vlist->size());

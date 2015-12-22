@@ -82,7 +82,7 @@ namespace RhombicPenrose {
 
   void projTilingVis(const vec4i& initpoint,
                      const vec4i& origin,
-                     uint maxstep, uint flags,
+                     uint maxstep, enum Common::proj_tiling_hint hint,
                      Common::vec4ilist& tilingpoints,
                      Common::vec4ilist& visiblepoints);
 
@@ -91,7 +91,7 @@ namespace RhombicPenrose {
   void extractSector(const Common::vec4ilist& input,
                      Common::vec4ilist& output);
 
-  void extractVisible(const vec4i& origin, uint flags, const Common::vec4ilist& input,
+  void extractVisible(const vec4i& origin, bool sector, const Common::vec4ilist& input,
                       Common::vec4ilist& output);
 
   // Fast computation of (incorrect) visibility, useful for radial projection.
