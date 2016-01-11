@@ -1,5 +1,5 @@
 /*  radialprojection - tools to numerically compute the radial projection of point sets
- *  Copyright (C) 2012-2014 - Tobias Jakobi <tjakobi at math dot uni dash bielefeld dot de>
+ *  Copyright (C) 2012-2016 - Tobias Jakobi <tjakobi at math dot uni dash bielefeld dot de>
  *
  *  radialprojection is free software: you can redistribute it and/or modify it under the terms
  *  of the GNU General Public License as published by the Free Software Foundation, either
