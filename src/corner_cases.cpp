@@ -243,8 +243,13 @@ int main_integer(int argc, char* argv[]) {
   angles.reserve(vertices.size());
   output.reserve(vertices.size() - 1);
 
+#ifdef SLOPE_ANGLE_DEBUG
+  for (vec2ilist::const_iterator i = vertices.begin(); i != vertices.end(); ++i)
+    angles.push_back(i->slope());
+#else
   for (vec2ilist::const_iterator i = vertices.begin(); i != vertices.end(); ++i)
     angles.push_back(i->angle());
+#endif
 
   sort(angles.begin(), angles.end());
   neighbourDiff(angles, output, meandist);

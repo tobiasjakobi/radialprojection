@@ -32,6 +32,14 @@ ifeq (1,$(visibility_debug))
 cflags += -DDODECAGONAL_VISIBILITY_DEBUG
 endif
 
+# Computes the slope of a point instead of the angle, so omitting
+# the application of the arctan().
+# Currently we only consider this useful for debugging purpose.
+# Also only implemented in some modules.
+ifeq (1,$(slope_debug))
+cflags += -DSLOPE_ANGLE_DEBUG
+endif
+
 objects := cyclotomic_radial chiral_radial corner_cases \
            griddual hexagonal higher_cyclo histogram \
            tuebingen arith_visibility pdf_writer random \
