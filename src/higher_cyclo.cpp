@@ -32,8 +32,8 @@ namespace Heptagonal {
   // Minimal polynomial is p(x) = x^3 + x^2 - 2*x - 1
   const double lambda = 2.0 * cos(2.0 * Constants::pi / 7.0);
 
-  // Use a ball of radius R in 4-space
-  const double refBallRadiusSquared = 7.25; // TODO: adjust
+  // Use a ball of radius R in 4-space.
+  const double refBallRadiusSquared = 6.5;
 
   const double VisOp::epsilon = 2.0 * numeric_limits<double>::epsilon();
 
@@ -52,6 +52,31 @@ namespace Heptagonal {
   void radialProj(const Common::vec6slist& input,
                   Common::dlist& output, double& meandist);
 
+};
+
+namespace Elevenfold {
+
+  // Minimal polynomial is p(x) = x^5 + x^4 - 4*x^3 - 3*x^2 + 3*x + 1
+  const double lambda = 2.0 * cos(2.0 * Constants::pi / 11.0);
+
+  // Use a ball of radius R in 8-space
+  const double refBallRadiusSquared = 10.5;
+
+  const double VisOp::epsilon = 2.0 * numeric_limits<double>::epsilon();
+
+  bool checkProjInWindow(const vec10s& point);
+
+  void projTiling(const vec10s& initpoint, uint maxstep,
+                  Common::vec10slist& tilingpoints);
+
+  void projTilingVis(const vec10s& initpoint,
+                     const vec10s& origin,
+                     uint maxstep, bool radialproj,
+                     Common::vec10slist& tilingpoints,
+                     Common::vec10slist& visiblepoints);
+
+  void radialProj(const Common::vec10slist& input,
+                  Common::dlist& output, double& meandist);
 };
 
 bool Common::locate(const vec6slist& list, const vec6s& target,
@@ -82,19 +107,12 @@ bool Heptagonal::checkProjInWindow(const vec6s& point) {
   return false;
 }
 
-/*bool HeptagonalRadial::checkScaledProjInWindow(const vec6s& point) {
-}*/
-
 void Heptagonal::projTiling(const vec6s& initpoint, uint maxstep, 
                    Common::vec6slist& tilingpoints) {
   using namespace Common;
 
-  vec6s p, pp;
+  vec6s p, pp[2];
   const uint numsteps = 7;
-  const vec6s hyperstep[7] = {vec6s(1,0,0,0,0,0), vec6s(0,1,0,0,0,0),
-                              vec6s(0,0,1,0,0,0), vec6s(0,0,0,1,0,0),
-                              vec6s(0,0,0,0,1,0), vec6s(0,0,0,0,0,1),
-                              vec6s(-1,-1,-1,-1,-1,-1)};
 
   tilingpoints.clear();
   tilingpoints.push_back(initpoint);
@@ -104,16 +122,18 @@ void Heptagonal::projTiling(const vec6s& initpoint, uint maxstep,
     return;
   }
 
-  TVLManager<vec6slist, 7 + 1> lvlman(tilingpoints);
+  TVLManager<vec6slist, 2 + 1> lvlman(tilingpoints);
 
   for (uint n = 0; n < maxstep; ++n) {
     for (uint i = lvlman.begin(); i < lvlman.end(); ++i) {
       p = tilingpoints[i];
 
       for (uint j = 0; j < numsteps; ++j) {
-        pp = p + hyperstep[j];
+        pp[0] = p.step(j, false);
+        pp[1] = p.step(j, true);
 
-        if (checkProjInWindow(pp)) lvlman.insert(pp);
+        if (checkProjInWindow(pp[0])) lvlman.insert(pp[0]);
+        if (checkProjInWindow(pp[1])) lvlman.insert(pp[1]);
       }
     }
 
@@ -130,12 +150,8 @@ void Heptagonal::projTilingVis(const vec6s& initpoint,
                    Common::vec6slist& visiblepoints) {
   using namespace Common;
 
-  vec6s p, pp;
+  vec6s p, pp[2];
   const uint numsteps = 7;
-  const vec6s hyperstep[7] = {vec6s(1,0,0,0,0,0), vec6s(0,1,0,0,0,0),
-                              vec6s(0,0,1,0,0,0), vec6s(0,0,0,1,0,0),
-                              vec6s(0,0,0,0,1,0), vec6s(0,0,0,0,0,1),
-                              vec6s(-1,-1,-1,-1,-1,-1)};
 
   tilingpoints.clear();
   tilingpoints.push_back(initpoint);
@@ -145,16 +161,18 @@ void Heptagonal::projTilingVis(const vec6s& initpoint,
     return;
   }
 
-  TVLManager<vec6slist, 7 + 1> lvlman(tilingpoints);
+  TVLManager<vec6slist, 2 + 1> lvlman(tilingpoints);
 
   for (uint n = 0; n < maxstep; ++n) {
     for (uint i = lvlman.begin(); i < lvlman.end(); ++i) {
       p = tilingpoints[i];
 
       for (uint j = 0; j < numsteps; ++j) {
-        pp = p + hyperstep[j];
+        pp[0] = p.step(j, false);
+        pp[1] = p.step(j, true);
 
-        if (checkProjInWindow(pp)) lvlman.insert(pp);
+        if (checkProjInWindow(pp[0])) lvlman.insert(pp[0]);
+        if (checkProjInWindow(pp[1])) lvlman.insert(pp[1]);
       }
     }
 
@@ -178,7 +196,7 @@ void Heptagonal::projTilingVis(const vec6s& initpoint,
   vlist->init();
 
   if (radialproj) {
-    cerr << "info: processing heptagonal tiling in RP mode.\n";
+    cerr << "info: processing heptagonal tiling in radial projection mode.\n";
 
     // If we use the default origin, we can reduce the patch to the usual sector.
     if (origin.isZero()) {
@@ -236,49 +254,319 @@ void Heptagonal::radialProj(const Common::vec6slist& input,
   normalizeAngDists(output, meandist);
 }
 
-int main(int argc, char* argv[]) {
+bool Elevenfold::checkProjInWindow(const vec10s& point) {
+  using namespace Common;
+
+  const vec8d pt(point.toInternalL11());
+  const double pt1 = pt.lengthSquared();
+
+  if (refBallRadiusSquared - pt1 > Constants::eps) {
+    return true;
+  } else {
+    if (refBallRadiusSquared - pt1 < -Constants::eps) return false;
+  }
+
+  cerr << "Warning: Insufficient accuracy in function checkProjInWindow.\n";
+  return false;
+}
+
+void Elevenfold::projTiling(const vec10s& initpoint, uint maxstep,
+                  Common::vec10slist& tilingpoints) {
+  using namespace Common;
+
+  vec10s p, pp[2];
+  const uint numsteps = 11;
+
+  tilingpoints.clear();
+  tilingpoints.push_back(initpoint);
+
+  if (!checkProjInWindow(initpoint)) {
+    cerr << "Initial point not in projection window.\n";
+    return;
+  }
+
+  TVLManager<vec10slist, 2 + 1> lvlman(tilingpoints);
+
+  for (uint n = 0; n < maxstep; ++n) {
+    for (uint i = lvlman.begin(); i < lvlman.end(); ++i) {
+      p = tilingpoints[i];
+
+      for (uint j = 0; j < numsteps; ++j) {
+        pp[0] = p.step(j, false);
+        pp[1] = p.step(j, true);
+
+        if (checkProjInWindow(pp[0])) lvlman.insert(pp[0]);
+        if (checkProjInWindow(pp[1])) lvlman.insert(pp[1]);
+      }
+    }
+
+    lvlman.advance();
+  }
+
+  cerr << "Constructed patch of elevenfold tiling with "
+       << tilingpoints.size() << " vertices.\n";
+}
+
+void Elevenfold::projTilingVis(const vec10s& initpoint,
+                     const vec10s& origin,
+                     uint maxstep, bool radialproj,
+                     Common::vec10slist& tilingpoints,
+                     Common::vec10slist& visiblepoints) {
+  using namespace Common;
+
+  vec10s p, pp[2];
+  const uint numsteps = 11;
+
+  tilingpoints.clear();
+  tilingpoints.push_back(initpoint);
+
+  if (!checkProjInWindow(initpoint)) {
+    cerr << "Initial point not in projection window.\n";
+    return;
+  }
+
+  TVLManager<vec10slist, 2 + 1> lvlman(tilingpoints);
+
+  for (uint n = 0; n < maxstep; ++n) {
+    for (uint i = lvlman.begin(); i < lvlman.end(); ++i) {
+      p = tilingpoints[i];
+
+      for (uint j = 0; j < numsteps; ++j) {
+        pp[0] = p.step(j, false);
+        pp[1] = p.step(j, true);
+
+        if (checkProjInWindow(pp[0])) lvlman.insert(pp[0]);
+        if (checkProjInWindow(pp[1])) lvlman.insert(pp[1]);
+      }
+    }
+
+    lvlman.advance();
+  }
+
+  cerr << "Constructed patch of elevenfold tiling with "
+       << tilingpoints.size() << " vertices.\n";
+
+  VisList* vlist = new VisList;
+
+  // For RP-mode with the default origin, we can apply the usual
+  // sector-reduction optimization.
+  if (radialproj && origin.isZero()) {
+    assert((tilingpoints.size() - 1) % 11 == 0);
+    vlist->reserve((tilingpoints.size() - 1) / 11);
+  } else {
+    vlist->reserve(tilingpoints.size() - 1);
+  }
+
+  vlist->init();
+
+  if (radialproj) {
+    cerr << "info: processing elevenfold tiling in radial projection mode.\n";
+
+    // If we use the default origin, we can reduce the patch to the usual sector.
+    if (origin.isZero()) {
+      for (vec10slist::const_iterator i = tilingpoints.begin(); i != tilingpoints.end(); ++i) {
+        if (i->isZero()) continue;
+
+        const vec2d phys(i->toPhysicalL11());
+
+        if (phys.inFirstQuadOpen() && phys.inSectorL11()) {
+          vlist->insertSorted(*i);
+        }
+      }
+    } else {
+      for (vec10slist::const_iterator i = tilingpoints.begin(); i != tilingpoints.end(); ++i) {
+        const vec10s shifted(*i - origin);
+        if (!shifted.isZero()) vlist->insertSorted(shifted);
+      }
+    }
+
+    vlist->removeInvisibleFast();
+  } else {
+    for (vec10slist::const_iterator i = tilingpoints.begin(); i != tilingpoints.end(); ++i) {
+      const vec10s shifted(*i - origin);
+
+      if (!shifted.isZero()) vlist->insertSorted(shifted);
+    }
+    vlist->removeInvisibleProper();
+  }
+
+  visiblepoints.clear();
+  visiblepoints.reserve(vlist->size());
+  vlist->dump(visiblepoints);
+
+  delete vlist;
+  vlist = NULL;
+}
+
+void Elevenfold::radialProj(const Common::vec10slist& input,
+                  Common::dlist& output, double& meandist) {
+  // TODO: implement
+}
+
+ostream& operator<<(ostream &os, const vec4d& v) {
+  os << '{' << fixed << setprecision(3) << v[0];
+  for (uint i = 1; i < 4; ++i)
+    os << ',' << v[i];
+  os << '}';
+
+  return os;
+}
+
+ostream& operator<<(ostream &os, const vec8d& v) {
+  os << '{' << fixed << setprecision(3) << v[0];
+  for (uint i = 1; i < 8; ++i)
+    os << ',' << v[i];
+  os << '}';
+
+  return os;
+}
+
+void print_usage() {
+  cerr << "higher_cyclo: usage:" << endl;
+
+  cerr << "higher_cyclo --hepta: selects heptagonal (n=7) tiling" << endl;
+  cerr << "higher_cyclo --eleven: selects elevenfold tiling (n=11)" << endl;
+
+  cerr << "\tparameter 1: mode" << endl;
+    cerr << "\t\t" << "0 = tiling vertices" << endl;
+    cerr << "\t\t" << "1 = visible vertices" << endl;
+    cerr << "\t\t" << "2 = radial projection" << endl;
+  cerr << "\tparameter 2: steps" << endl;
+  cerr << "\tparameter 3: sector (if possible reduce point set to sector)" << endl;
+
+  cerr << endl;
+}
+
+int main_hepta(int argc, char* argv[]) {
   const vec6s init(0, 0, 0, 0, 0, 0);
-  uint steps = 10;
+
+  stringstream parser;
+
+  uint steps = 20;
   uint mode = 0;
 
+  using namespace Heptagonal;
+
   if (argc >= 2) {
-    stringstream ss(argv[1]);
-    ss >> steps;
+    parser.str(argv[1]);
+    parser.clear();
+    parser >> steps;
   }
 
   if (argc >= 3) {
-    stringstream ss(argv[2]);
-    ss >> mode;
+    parser.str(argv[2]);
+    parser.clear();
+    parser >> mode;
   }
 
   Common::vec6slist tiling, visible;
+  Common::dlist spacings;
+  double mean;
 
   if (mode >= 3) {
-    cerr << "Unknown mode selected:\n"
-         << "0 = generate full tiling\n"
-         << "1 = only visible points\n"
-         << "2 = radial projection\n";
-    return 0;
+    cerr << "error: unknown mode " << mode << " selected for heptagonal tiling.\n";
+    return 1;
   }
 
-  if (mode == 0) {
-    Heptagonal::projTiling(init, steps, tiling);
+  switch (mode) {
+  case 0:
+    projTiling(init, steps, tiling);
     cout << tiling;
-  } else
-  if (mode == 1) {
-    Heptagonal::projTilingVis(init, init, steps, false, tiling, visible);
+    break;
+
+  case 1:
+    projTilingVis(init, init, steps, false, tiling, visible);
     cout << visible;
-  } else {
-    Common::dlist out;
-    double mean;
+    break;
 
-    Heptagonal::projTilingVis(init, init, steps, true, tiling, visible);
-    Heptagonal::radialProj(visible, out, mean);
+  case 2:
+    projTilingVis(init, init, steps, true, tiling, visible);
+    radialProj(visible, spacings, mean);
+    Common::meanDistanceMessage(spacings.size() + 1, mean);
+    Common::writeRawConsole(spacings);
+    break;
 
-    Common::meanDistanceMessage(out.size() + 1, mean);
-    Common::writeRawConsole(out);
+  default:
+    assert(false);
+    return 1;
   }
 
   return 0;
 }
 
+int main_eleven(int argc, char* argv[]) {
+  const vec10s init(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+
+  stringstream parser;
+
+  uint steps = 10;
+  uint mode = 0;
+
+  using namespace Elevenfold;
+
+  if (argc >= 2) {
+    parser.str(argv[1]);
+    parser.clear();
+    parser >> steps;
+  }
+
+  if (argc >= 3) {
+    parser.str(argv[2]);
+    parser.clear();
+    parser >> mode;
+  }
+
+  Common::vec10slist tiling, visible;
+  Common::dlist spacings;
+  double mean;
+
+  if (mode >= 3) {
+    cerr << "error: unknown mode " << mode << " selected for elevenfold tiling.\n";
+    return 1;
+  }
+
+  switch (mode) {
+  case 0:
+    projTiling(init, steps, tiling);
+    cout << tiling;
+    break;
+
+  case 1:
+    projTilingVis(init, init, steps, false, tiling, visible);
+    cout << visible;
+    break;
+
+  case 2:
+    projTilingVis(init, init, steps, true, tiling, visible);
+    radialProj(visible, spacings, mean);
+    Common::meanDistanceMessage(spacings.size() + 1, mean);
+    Common::writeRawConsole(spacings);
+  break;
+
+  default:
+    assert(false);
+    return 1;
+  }
+
+  return 0;
+}
+
+int main(int argc, char* argv[]) {
+  stringstream parser;
+  string main_mode;
+
+  if (argc >= 2) {
+    parser.str(argv[1]);
+    parser.clear();
+    parser >> main_mode;
+  }
+
+  if (main_mode == "--hepta")
+    return main_hepta(argc - 1, argv + 1);
+  else if (main_mode == "--eleven")
+    return main_eleven(argc - 1, argv + 1);
+  else
+    print_usage();
+
+  return 0;
+}

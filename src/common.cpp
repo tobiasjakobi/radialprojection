@@ -26,6 +26,7 @@ const double vec2d::sectorL12 = sqrt(3.0); /* = tan(2*pi/6) */
 
 // Used for the higher-order cyclotomic cases:
 const double vec2d::sectorL7 = tan(2.0 * Constants::pi / 7.0);
+const double vec2d::sectorL11 = tan(2.0 * Constants::pi / 11.0);
 
 double Common::RadiusSelector::radiusSq = 0.0;
 

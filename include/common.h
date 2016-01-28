@@ -515,6 +515,11 @@ public:
     return (a[1]/a[0] <= sectorL7);
   }
 
+  // Checks for phi(x,y) <= 2*pi/11 (around 33 degree):
+  bool inSectorL11() const {
+    return (a[1]/a[0] <= sectorL11);
+  }
+
   vec2d reduceIntoSectorL12() const {
     const double absvals[2] = {std::abs(a[0]), std::abs(a[1])};
 
@@ -546,6 +551,7 @@ private:
   static const double sectorL12;
 
   static const double sectorL7;
+  static const double sectorL11;
 
 };
 
