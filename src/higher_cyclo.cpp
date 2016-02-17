@@ -38,7 +38,6 @@ namespace Heptagonal {
   const double VisOp::epsilon = 2.0 * numeric_limits<double>::epsilon();
 
   bool checkProjInWindow(const vec6s& point);
-  //bool checkScaledProjInWindow(const vec6s& point);
 
   void projTiling(const vec6s& initpoint, uint maxstep,
                   Common::vec6slist& tilingpoints);
