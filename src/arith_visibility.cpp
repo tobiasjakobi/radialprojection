@@ -1516,7 +1516,7 @@ ostream& operator<<(ostream &os, const ArithVisibility::bragg& b) {
 void vTableZ2(const uint r, Common::vec2ilist& table) {
   const int temp = int(ceil(double(r) / sqrt(2.0)));
   table.clear();
-  table.reserve((r + 1) * (temp + 1));
+  table.reserve((2*r + 1) * (2*temp + 1));
 
   for (int i = -int(r); i <= int(r); ++i) {
     for (int j = -temp; j <= temp; ++j) {
@@ -1548,7 +1548,7 @@ void vqTableRecipZ2(const uint r, const uint s,
 
 void vTableGI(const uint r, Common::vec2ilist& table) {
   table.clear();
-  table.reserve((r + 1) * (r + 1));
+  table.reserve((2*r + 1) * (2*r + 1));
 
   for (int i = -int(r); i <= int(r); ++i) {
     for (int j = -int(r); j <= int(r); ++j) {
@@ -1580,7 +1580,7 @@ void vqTableRecipGI(const uint r, const uint s,
 
 void vTableES(const uint r, Common::vec2ilist& table) {
   table.clear();
-  table.reserve((r + 1) * (r + 1));
+  table.reserve((2*r + 1) * (2*r + 1));
 
   for (int i = -int(r); i <= int(r); ++i) {
     for (int j = -int(r); j <= int(r); ++j) {
@@ -1612,7 +1612,7 @@ void vqTableRecipES(const uint r, const uint s,
 
 void vTableGM(const uint r, Common::vec2ilist& table) {
   table.clear();
-  table.reserve((r + 1) * (r + 1));
+  table.reserve((2*r + 1) * (2*r + 1));
 
   for (int i = -int(r); i <= int(r); ++i) {
     for (int j = -int(r); j <= int(r); ++j) {
@@ -1645,7 +1645,7 @@ void vqTableRecipGM(const uint r, const uint s,
 void vCircleZ2(const uint r, Common::vec2ilist& table) {
   const int temp = int(ceil(double(r) / sqrt(2.0)));
   table.clear();
-  table.reserve((r + 1) * (temp + 1));
+  table.reserve((2*r + 1) * (2*temp + 1));
 
   const double cradSq = double(r * r) * 2.0;
 
@@ -1661,7 +1661,7 @@ void vCircleZ2(const uint r, Common::vec2ilist& table) {
 
 void vCircleGI(const uint r, Common::vec2ilist& table) {
   table.clear();
-  table.reserve((r + 1) * (r + 1));
+  table.reserve((2*r + 1) * (2*r + 1));
 
   const double cradSq = double(r * r);
 
@@ -1675,7 +1675,7 @@ void vCircleGI(const uint r, Common::vec2ilist& table) {
 
 void vCircleES(const uint r, Common::vec2ilist& table) {
   table.clear();
-  table.reserve((r + 1) * (r + 1));
+  table.reserve((2*r + 1) * (2*r + 1));
 
   const double cradSq = double(r * r) * 0.75;
 
@@ -1691,7 +1691,7 @@ void vCircleES(const uint r, Common::vec2ilist& table) {
 
 void vCircleGM(const uint r, Common::vec2ilist& table) {
   table.clear();
-  table.reserve((r + 1) * (r + 1));
+  table.reserve((2*r + 1) * (2*r + 1));
 
   /* Computation of the cut-off radius (geometry in parallelogram): *
    * R_max = Cos[ArcTan[1, 1] + ArcTan[tau, 1 - tau]] * Sqrt[2]     *
