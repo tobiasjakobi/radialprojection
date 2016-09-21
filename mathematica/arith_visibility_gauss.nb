@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[     49736,       1412]
-NotebookOptionsPosition[     47665,       1353]
-NotebookOutlinePosition[     48022,       1369]
-CellTagsIndexPosition[     47979,       1366]
+NotebookDataLength[     49839,       1414]
+NotebookOptionsPosition[     47768,       1355]
+NotebookOutlinePosition[     48125,       1371]
+CellTagsIndexPosition[     48082,       1368]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -539,9 +539,11 @@ Cell[BoxData[
    RowBox[{"ListPlot", "[", 
     RowBox[{"in", ",", 
      RowBox[{"Axes", "\[Rule]", "axes"}], ",", 
-     RowBox[{"PlotStyle", "\[Rule]", "pstyle"}]}], "]"}]}], ";"}]], "Input",
+     RowBox[{"PlotStyle", "\[Rule]", "pstyle"}], ",", 
+     RowBox[{"AspectRatio", "\[Rule]", "1.0"}]}], "]"}]}], ";"}]], "Input",
  CellChangeTimes->{{3.621851987104624*^9, 3.6218519882418737`*^9}, {
-  3.6221993864567738`*^9, 3.6221993866159782`*^9}}],
+  3.6221993864567738`*^9, 3.6221993866159782`*^9}, {3.683457628040619*^9, 
+  3.683457632822143*^9}}],
 
 Cell[BoxData[
  RowBox[{"Show", "[", 
@@ -1351,7 +1353,7 @@ Cell[BoxData[
   "]"}]], "Input",
  CellChangeTimes->{3.622289975791819*^9}]
 },
-WindowSize->{1920, 1145},
+WindowSize->{1920, 1140},
 WindowMargins->{{0, Automatic}, {Automatic, 0}},
 Magnification->1.25,
 FrontEndVersion->"9.0 for Linux x86 (64-bit) (January 25, 2013)",
@@ -1385,35 +1387,35 @@ Cell[11836, 340, 2444, 65, 214, "Input"],
 Cell[14283, 407, 552, 16, 38, "Input"],
 Cell[14838, 425, 3279, 84, 289, "Input"],
 Cell[18120, 511, 632, 18, 38, "Input"],
-Cell[18755, 531, 481, 12, 38, "Input"],
-Cell[19239, 545, 524, 12, 38, "Input"],
-Cell[19766, 559, 1177, 29, 38, "Input"],
-Cell[20946, 590, 225, 6, 38, "Input"],
-Cell[21174, 598, 566, 16, 38, "Input"],
-Cell[21743, 616, 287, 7, 38, "Input"],
-Cell[22033, 625, 1406, 38, 164, "Input"],
-Cell[23442, 665, 1437, 39, 164, "Input"],
-Cell[24882, 706, 1514, 40, 139, "Input"],
-Cell[26399, 748, 959, 27, 114, "Input"],
-Cell[27361, 777, 3220, 78, 264, "Input"],
-Cell[30584, 857, 224, 5, 38, "Input"],
-Cell[30811, 864, 293, 6, 38, "Input"],
-Cell[31107, 872, 1716, 48, 164, "Input"],
-Cell[32826, 922, 936, 27, 38, "Input"],
-Cell[33765, 951, 232, 6, 38, "Input"],
-Cell[34000, 959, 2278, 63, 214, "Input"],
-Cell[36281, 1024, 476, 15, 38, "Input"],
-Cell[36760, 1041, 3419, 87, 289, "Input"],
-Cell[40182, 1130, 194, 5, 38, "Input"],
-Cell[40379, 1137, 212, 5, 38, "Input"],
-Cell[40594, 1144, 386, 12, 38, "Input"],
-Cell[40983, 1158, 1676, 44, 189, "Input"],
-Cell[42662, 1204, 370, 10, 38, "Input"],
-Cell[43035, 1216, 946, 23, 64, "Input"],
-Cell[43984, 1241, 204, 5, 38, "Input"],
-Cell[44191, 1248, 368, 10, 64, "Input"],
-Cell[44562, 1260, 2522, 71, 214, "Input"],
-Cell[47087, 1333, 574, 18, 64, "Input"]
+Cell[18755, 531, 584, 14, 38, "Input"],
+Cell[19342, 547, 524, 12, 38, "Input"],
+Cell[19869, 561, 1177, 29, 38, "Input"],
+Cell[21049, 592, 225, 6, 38, "Input"],
+Cell[21277, 600, 566, 16, 38, "Input"],
+Cell[21846, 618, 287, 7, 38, "Input"],
+Cell[22136, 627, 1406, 38, 164, "Input"],
+Cell[23545, 667, 1437, 39, 164, "Input"],
+Cell[24985, 708, 1514, 40, 139, "Input"],
+Cell[26502, 750, 959, 27, 114, "Input"],
+Cell[27464, 779, 3220, 78, 264, "Input"],
+Cell[30687, 859, 224, 5, 38, "Input"],
+Cell[30914, 866, 293, 6, 38, "Input"],
+Cell[31210, 874, 1716, 48, 164, "Input"],
+Cell[32929, 924, 936, 27, 38, "Input"],
+Cell[33868, 953, 232, 6, 38, "Input"],
+Cell[34103, 961, 2278, 63, 214, "Input"],
+Cell[36384, 1026, 476, 15, 38, "Input"],
+Cell[36863, 1043, 3419, 87, 289, "Input"],
+Cell[40285, 1132, 194, 5, 38, "Input"],
+Cell[40482, 1139, 212, 5, 38, "Input"],
+Cell[40697, 1146, 386, 12, 38, "Input"],
+Cell[41086, 1160, 1676, 44, 189, "Input"],
+Cell[42765, 1206, 370, 10, 38, "Input"],
+Cell[43138, 1218, 946, 23, 64, "Input"],
+Cell[44087, 1243, 204, 5, 38, "Input"],
+Cell[44294, 1250, 368, 10, 80, "Input"],
+Cell[44665, 1262, 2522, 71, 267, "Input"],
+Cell[47190, 1335, 574, 18, 80, "Input"]
 }
 ]
 *)

@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[     52619,       1514]
-NotebookOptionsPosition[     50426,       1452]
-NotebookOutlinePosition[     50783,       1468]
-CellTagsIndexPosition[     50740,       1465]
+NotebookDataLength[     52794,       1517]
+NotebookOptionsPosition[     50601,       1455]
+NotebookOutlinePosition[     50958,       1471]
+CellTagsIndexPosition[     50915,       1468]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -617,10 +617,12 @@ Cell[BoxData[
        RowBox[{
         RowBox[{"BasisES", ".", "#"}], "&"}], ",", "in"}], "]"}], ",", 
      RowBox[{"Axes", "\[Rule]", "axes"}], ",", 
-     RowBox[{"PlotStyle", "\[Rule]", "pstyle"}]}], "]"}]}], ";"}]], "Input",
+     RowBox[{"PlotStyle", "\[Rule]", "pstyle"}], ",", 
+     RowBox[{"AspectRatio", "\[Rule]", "1.0"}]}], "]"}]}], ";"}]], "Input",
  CellChangeTimes->{
   3.62219091300189*^9, 3.622190954471796*^9, {3.6221911437062273`*^9, 
-   3.622191149383917*^9}, {3.6221971203699427`*^9, 3.6221971205901537`*^9}}],
+   3.622191149383917*^9}, {3.6221971203699427`*^9, 3.6221971205901537`*^9}, {
+   3.683457672235086*^9, 3.683457672451232*^9}}],
 
 Cell[BoxData[
  RowBox[{"Show", "[", 
@@ -776,9 +778,10 @@ Cell[BoxData[
        RowBox[{"{", 
         RowBox[{
          RowBox[{
-          RowBox[{"2", "*", "b"}], "-", "a"}], ",", 
-         RowBox[{"b", "-", 
-          RowBox[{"2", "*", "a"}]}]}], "}"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"2", "*", "a"}], "-", "b"}], ",", 
+         RowBox[{
+          RowBox[{"-", "a"}], "+", 
+          RowBox[{"2", "*", "b"}]}]}], "}"}]}], ";", "\[IndentingNewLine]", 
       RowBox[{"d", "=", 
        RowBox[{"2", "*", "c"}]}], ";", "\[IndentingNewLine]", 
       RowBox[{"g", "=", 
@@ -795,7 +798,7 @@ Cell[BoxData[
     "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
  CellChangeTimes->{{3.622291987746256*^9, 3.6222920245917177`*^9}, {
   3.62229207062514*^9, 3.62229207081316*^9}, {3.6223709025821342`*^9, 
-  3.622370931395831*^9}}],
+  3.622370931395831*^9}, {3.683457700943877*^9, 3.68345771528201*^9}}],
 
 Cell[BoxData[
  RowBox[{
@@ -1450,7 +1453,7 @@ Cell[BoxData[
  CellChangeTimes->{{3.623059993291703*^9, 3.623059997114831*^9}, {
   3.6230601371283712`*^9, 3.623060138921565*^9}}]
 },
-WindowSize->{1920, 1145},
+WindowSize->{1920, 1140},
 WindowMargins->{{0, Automatic}, {Automatic, 0}},
 Magnification->1.25,
 FrontEndVersion->"9.0 for Linux x86 (64-bit) (January 25, 2013)",
@@ -1489,33 +1492,33 @@ Cell[18821, 544, 319, 7, 38, "Input"],
 Cell[19143, 553, 704, 18, 89, "Input"],
 Cell[19850, 573, 401, 10, 64, "Input"],
 Cell[20254, 585, 628, 18, 38, "Input"],
-Cell[20885, 605, 646, 17, 38, "Input"],
-Cell[21534, 624, 740, 18, 64, "Input"],
-Cell[22277, 644, 237, 7, 38, "Input"],
-Cell[22517, 653, 667, 17, 38, "Input"],
-Cell[23187, 672, 237, 6, 38, "Input"],
-Cell[23427, 680, 1367, 38, 164, "Input"],
-Cell[24797, 720, 1353, 38, 164, "Input"],
-Cell[26153, 760, 1283, 37, 164, "Input"],
-Cell[27439, 799, 909, 26, 114, "Input"],
-Cell[28351, 827, 3031, 76, 264, "Input"],
-Cell[31385, 905, 179, 4, 38, "Input"],
-Cell[31567, 911, 193, 4, 38, "Input"],
-Cell[31763, 917, 1904, 51, 164, "Input"],
-Cell[33670, 970, 1574, 45, 64, "Input"],
-Cell[35247, 1017, 230, 6, 38, "Input"],
-Cell[35480, 1025, 2227, 62, 214, "Input"],
-Cell[37710, 1089, 427, 13, 38, "Input"],
-Cell[38140, 1104, 3345, 86, 289, "Input"],
-Cell[41488, 1192, 240, 6, 38, "Input"],
-Cell[41731, 1200, 447, 15, 38, "Input"],
-Cell[42181, 1217, 1628, 43, 189, "Input"],
-Cell[43812, 1262, 369, 10, 38, "Input"],
-Cell[44184, 1274, 1876, 46, 89, "Input"],
-Cell[46063, 1322, 798, 21, 64, "Input"],
-Cell[46864, 1345, 379, 11, 64, "Input"],
-Cell[47246, 1358, 2525, 71, 214, "Input"],
-Cell[49774, 1431, 648, 19, 64, "Input"]
+Cell[20885, 605, 750, 19, 38, "Input"],
+Cell[21638, 626, 740, 18, 64, "Input"],
+Cell[22381, 646, 237, 7, 38, "Input"],
+Cell[22621, 655, 667, 17, 38, "Input"],
+Cell[23291, 674, 237, 6, 38, "Input"],
+Cell[23531, 682, 1367, 38, 164, "Input"],
+Cell[24901, 722, 1353, 38, 164, "Input"],
+Cell[26257, 762, 1354, 38, 164, "Input"],
+Cell[27614, 802, 909, 26, 114, "Input"],
+Cell[28526, 830, 3031, 76, 264, "Input"],
+Cell[31560, 908, 179, 4, 38, "Input"],
+Cell[31742, 914, 193, 4, 38, "Input"],
+Cell[31938, 920, 1904, 51, 164, "Input"],
+Cell[33845, 973, 1574, 45, 64, "Input"],
+Cell[35422, 1020, 230, 6, 38, "Input"],
+Cell[35655, 1028, 2227, 62, 214, "Input"],
+Cell[37885, 1092, 427, 13, 38, "Input"],
+Cell[38315, 1107, 3345, 86, 289, "Input"],
+Cell[41663, 1195, 240, 6, 38, "Input"],
+Cell[41906, 1203, 447, 15, 38, "Input"],
+Cell[42356, 1220, 1628, 43, 189, "Input"],
+Cell[43987, 1265, 369, 10, 38, "Input"],
+Cell[44359, 1277, 1876, 46, 89, "Input"],
+Cell[46238, 1325, 798, 21, 64, "Input"],
+Cell[47039, 1348, 379, 11, 64, "Input"],
+Cell[47421, 1361, 2525, 71, 214, "Input"],
+Cell[49949, 1434, 648, 19, 64, "Input"]
 }
 ]
 *)
