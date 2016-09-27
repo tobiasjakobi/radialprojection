@@ -461,7 +461,7 @@ bool ArithVisibility::visibility2FreeGM(const vec2i& in) {
 }
 
 vec2i ArithVisibility::denomZ2Fourier(const vec2i& in, const int in_c) {
-  const vec2i x(in.y * 4, in.x * 2);
+  const vec2i x(in.x * 2, in.y * 4);
   const vec2i c(in_c, 0);
   const vec2i g(Coprime::gcdZ2(c, x));
 
@@ -511,7 +511,7 @@ double ArithVisibility::intensityGI(const vec2i& denom) {
 }
 
 vec2i ArithVisibility::denomESFourier(const vec2i& in, const int in_c) {
-  const vec2i x(in.y * 2 - in.x, in.y - in.x * 2);
+  const vec2i x(in.x * 2 - in.y, -in.x + in.y * 2);
   const vec2i d(in_c * 2, 0);
   const vec2i g(Coprime::gcdES(d, x));
 
@@ -536,7 +536,7 @@ double ArithVisibility::intensityES(const vec2i& denom) {
 }
 
 vec2i ArithVisibility::denomGMFourier(const vec2i& in, const int in_c) {
-  const vec2i x(in.y * 2 - in.x, in.x * 2 + in.y);
+  const vec2i x(in.x * 2 + in.y, in.x + in.y * 3);
   const vec2i c(in_c, 0);
   const vec2i g(Coprime::gcdZTau(c, x));
 
