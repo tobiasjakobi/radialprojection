@@ -324,6 +324,113 @@ namespace ArithVisibility {
   void radialProjGI(const uint r, Common::dlist& out);
   void radialProjES(const uint r, Common::dlist& out);
   void radialProjGM(const uint r, Common::dlist& out);
+
+  /*
+   * Class defining a occupation array belonging to a rectangular
+   * centered (around zero) subset of the Gaussian integers.
+   * We use this class to produce bitmaps in plain PBM format from
+   * patches of square-free Gaussian integers.
+   *
+   * Re-uses code from class vismap (defined in the chiral_radial
+   * header, here used for computing geometric visibility for the
+   * planar chair tiling).
+   */
+  class OccupationArray {
+  private:
+    typedef vector<bool> boolvec;
+
+    int xrange[2];
+    int yrange[2];
+    int rowlen;
+
+    boolvec oarray;
+
+    bool getbit(int x, int y) const {
+      if (xrange[0] <= x && x <= xrange[1] &&
+          yrange[0] <= y && y <= yrange[1]) {
+        const int pos = (y - yrange[0]) * rowlen + (x - xrange[0]);
+        assert(pos >= 0);
+
+        return oarray[pos];
+      } else {
+        // Return 'false' for all positions outside range
+        return false;
+      }
+    }
+
+    void setbit(int x, int y) {
+      if (xrange[0] <= x && x <= xrange[1] &&
+          yrange[0] <= y && y <= yrange[1]) {
+        const int pos = (y - yrange[0]) * rowlen + (x - xrange[0]);
+        assert(pos >= 0);
+
+        oarray[pos] = true;
+      }
+    }
+
+  public:
+    // constructor
+    OccupationArray(const Common::vec2ilist& input) {
+      xrange[0] = -1;
+      xrange[1] = 0;
+      yrange[0] = -1;
+      yrange[1] = 0;
+
+      // extract ranges from input data
+      for (Common::vec2ilist::const_iterator i = input.begin();
+           i != input.end(); ++i) {
+        int x = i->x;
+        int y = i->y;
+
+        if (x < xrange[0])
+          xrange[0] = x;
+        if (x > xrange[1])
+          xrange[1] = x;
+        if (y < yrange[0])
+          yrange[0] = y;
+        if (y > yrange[1])
+          yrange[1] = y;
+      }
+
+      rowlen = xrange[1] - xrange[0] + 1;
+      oarray.resize((yrange[1] - yrange[0] + 1) * rowlen, false);
+
+      for (Common::vec2ilist::const_iterator i = input.begin();
+           i != input.end(); ++i)
+        setbit(i->x, i->y);
+    }
+
+    // destructor
+    ~OccupationArray() {}
+
+    // copy-constructor
+    OccupationArray(const OccupationArray& oa) : rowlen(oa.rowlen),
+                                                 oarray(oa.oarray) {
+      xrange[0] = oa.xrange[0];
+      xrange[1] = oa.xrange[1];
+      yrange[0] = oa.yrange[0];
+      yrange[1] = oa.yrange[1];
+    }
+
+    void writePlainPBM() const {
+      // write header
+      cout << "P1" << endl;
+      cout << rowlen << ' ' << (yrange[1] - yrange[0] + 1) << endl;
+
+      int rowcnt = 0;
+      for (boolvec::const_iterator i = oarray.begin(); i != oarray.end(); ++i) {
+        cout << ((*i) ? '1' : '0') << ' ';
+
+        rowcnt++;
+
+        if (rowcnt == rowlen) {
+          rowcnt = 0;
+          cout << endl;
+        }
+      }
+    }
+  };
+
 };
 
 ostream& operator<<(ostream &os, const ArithVisibility::vec2iq& v);

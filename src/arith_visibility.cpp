@@ -2170,6 +2170,89 @@ int main_radialproj(int argc, char* argv[]) {
   return 0;
 }
 
+int main_sqfree_grid(int argc, char* argv[]) {
+  using namespace ArithVisibility;
+
+  cerr << "info: square-free grid/bitmap main mode selected." << endl;
+
+  stringstream parser;
+
+  uint mode = 0;
+  uint range = 30;
+
+  Common::vec2ilist table, sqfree;
+
+  tablefunc tfunc = NULL;
+  visfunc vfunc = NULL;
+
+  // Parse parameters passed to the application
+  if (argc >= 2) {
+    parser.str(argv[1]);
+    parser.clear();
+    parser >> mode;
+
+    if (argc >= 3) {
+      parser.str(argv[2]);
+      parser.clear();
+      parser >> range;
+    }
+  }
+
+  if (mode > 7) {
+    cerr << "error: unknown mode (" << mode <<  ") selected.\n";
+    return 1;
+  }
+
+  /*
+   * Presenting the square-free integers in grid form (i.e. as bitmap)
+   * might not make so such sense for the cases other than the
+   * Gaussian integers.
+   * We still allow the other cases here though.
+   */
+  switch (mode) {
+    case 0:
+    case 1:
+      tfunc = vTableZ2;
+      vfunc = visibility2FreeZ2;
+    break;
+
+    case 2:
+    case 3:
+      tfunc = vTableGI;
+      vfunc = visibility2FreeGI;
+    break;
+
+    case 4:
+    case 5:
+      tfunc = vTableES;
+      vfunc = visibility2FreeES;
+    break;
+
+    case 6:
+    case 7:
+      tfunc = vTableGM;
+      vfunc = visibility2FreeGM;
+    break;
+
+    default:
+      assert(false);
+    break;
+  }
+
+  tfunc(range, table);
+
+  for (Common::vec2ilist::const_iterator i = table.begin();
+       i != table.end(); ++i) {
+    if (vfunc(*i))
+      sqfree.push_back(*i);
+  }
+
+  const OccupationArray occu(sqfree);
+  occu.writePlainPBM();
+
+  return 0;
+}
+
 void print_usage() {
   cerr << "arithmetic visibility: usage:" << endl;
 
@@ -2184,6 +2267,11 @@ void print_usage() {
 
   cerr << "arith_visibility --radialproj: selects radial projection main mode" << endl;
   cerr << "\t\tparameter 1: mode (even = visible square-free; odd = radial projection)" << endl;
+  cerr << "\t\tparameter 2: range (number of vertices depends on mode)" << endl;
+
+  cerr << "arith_visibility --sqfree-grid: selects square-free grid/bitmap main mode" << endl;
+  cerr << "\t\tparameter 1: mode (see diffraction main mode)" << endl;
+  cerr << "\t\t\t(both even and odd map to the same mode)" << endl;
   cerr << "\t\tparameter 2: range (number of vertices depends on mode)" << endl;
 }
 
@@ -2202,6 +2290,8 @@ int main(int argc, char* argv[]) {
     ret = main_diffraction(argc - 1, argv + 1);
   else if (main_mode == "--radialproj")
     ret = main_radialproj(argc - 1, argv + 1);
+  else if (main_mode == "--sqfree-grid")
+    ret = main_sqfree_grid(argc - 1, argv + 1);
   else
     print_usage();
 
