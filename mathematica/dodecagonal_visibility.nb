@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[     12377,        372]
-NotebookOptionsPosition[     11497,        342]
-NotebookOutlinePosition[     11854,        358]
-CellTagsIndexPosition[     11811,        355]
+NotebookDataLength[     13529,        408]
+NotebookOptionsPosition[     12646,        378]
+NotebookOutlinePosition[     13003,        394]
+CellTagsIndexPosition[     12960,        391]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -95,20 +95,52 @@ Cell[BoxData[{
    RowBox[{"{", 
     RowBox[{"a", ",", 
      RowBox[{"-", "b"}]}], "}"}]}], ";"}], "\[IndentingNewLine]", 
- RowBox[{"SortFunc", ":=", 
-  RowBox[{
+ RowBox[{
+  RowBox[{"SortFunc", ":=", 
    RowBox[{
-    RowBox[{"Abs", "[", 
+    RowBox[{
+     RowBox[{"Abs", "[", 
+      RowBox[{"ToReal", "[", 
+       RowBox[{"AConj", "[", "#1", "]"}], "]"}], "]"}], "<", 
+     RowBox[{"Abs", "[", 
+      RowBox[{"ToReal", "[", 
+       RowBox[{"AConj", "[", "#2", "]"}], "]"}], "]"}]}], "&"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"SortFuncAlt1", ":=", 
+   RowBox[{
+    RowBox[{
      RowBox[{"ToReal", "[", 
-      RowBox[{"AConj", "[", "#1", "]"}], "]"}], "]"}], "<", 
-    RowBox[{"Abs", "[", 
-     RowBox[{"ToReal", "[", 
-      RowBox[{"AConj", "[", "#2", "]"}], "]"}], "]"}]}], "&"}]}]}], "Input",
+      RowBox[{"AConj", "[", "#1", "]"}], "]"}], "<", 
+     RowBox[{"Abs", "[", 
+      RowBox[{"ToReal", "[", 
+       RowBox[{"AConj", "[", "#2", "]"}], "]"}], "]"}]}], "&"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"SortFuncAlt2", ":=", 
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      RowBox[{"ToReal", "[", 
+       RowBox[{"AConj", "[", "#1", "]"}], "]"}], "/", 
+      RowBox[{"ToReal", "[", 
+       RowBox[{"{", 
+        RowBox[{"1", ",", 
+         RowBox[{"-", "1"}]}], "}"}], "]"}]}], "<", 
+     RowBox[{
+      RowBox[{"Abs", "[", 
+       RowBox[{"ToReal", "[", 
+        RowBox[{"AConj", "[", "#2", "]"}], "]"}], "]"}], "/", 
+      RowBox[{"ToReal", "[", 
+       RowBox[{"{", 
+        RowBox[{"1", ",", 
+         RowBox[{"-", "1"}]}], "}"}], "]"}]}]}], "&"}]}], ";"}]}], "Input",
  CellChangeTimes->{{3.645354518232458*^9, 3.645354671256465*^9}, {
    3.645354796677183*^9, 3.645354815797063*^9}, {3.646046722165565*^9, 
    3.646046754603653*^9}, {3.647251078156514*^9, 3.647251118711657*^9}, {
    3.6476858817709217`*^9, 3.647685967886053*^9}, {3.649592045632842*^9, 
-   3.649592057372316*^9}, 3.649592101629779*^9}],
+   3.649592057372316*^9}, 3.649592101629779*^9, {3.650961910694333*^9, 
+   3.6509619838244762`*^9}}],
 
 Cell[BoxData[
  RowBox[{
@@ -288,15 +320,17 @@ Cell[BoxData[
    RowBox[{
     RowBox[{
      RowBox[{"Sort", "[", 
-      RowBox[{"plist0", ",", "SortFunc"}], "]"}], "[", 
+      RowBox[{"plist0", ",", "SortFuncAlt1"}], "]"}], "[", 
      RowBox[{"[", "1", "]"}], "]"}], ",", 
     RowBox[{
      RowBox[{"Sort", "[", 
-      RowBox[{"nlist0", ",", "SortFunc"}], "]"}], "[", 
-     RowBox[{"[", "1", "]"}], "]"}]}], "}"}]}]], "Input",
+      RowBox[{"nlist0", ",", "SortFuncAlt1"}], "]"}], "[", 
+     RowBox[{"[", 
+      RowBox[{"-", "1"}], "]"}], "]"}]}], "}"}]}]], "Input",
  CellChangeTimes->{{3.649595079186728*^9, 3.6495951069314938`*^9}, {
   3.649595143464403*^9, 3.649595145020446*^9}, {3.6495953030518723`*^9, 
-  3.6495953118167257`*^9}, {3.6508821406496153`*^9, 3.650882146745184*^9}}],
+  3.6495953118167257`*^9}, {3.6508821406496153`*^9, 3.650882146745184*^9}, {
+  3.6509620184653053`*^9, 3.650962045281888*^9}}],
 
 Cell[BoxData[
  RowBox[{"{", 
@@ -312,14 +346,16 @@ Cell[BoxData[
    RowBox[{
     RowBox[{
      RowBox[{"Sort", "[", 
-      RowBox[{"plist1", ",", "SortFunc"}], "]"}], "[", 
-     RowBox[{"[", "1", "]"}], "]"}], ",", 
+      RowBox[{"plist1", ",", "SortFuncAlt2"}], "]"}], "[", 
+     RowBox[{"[", 
+      RowBox[{"-", "1"}], "]"}], "]"}], ",", 
     RowBox[{
      RowBox[{"Sort", "[", 
-      RowBox[{"nlist1", ",", "SortFunc"}], "]"}], "[", 
+      RowBox[{"nlist1", ",", "SortFuncAlt2"}], "]"}], "[", 
      RowBox[{"[", "1", "]"}], "]"}]}], "}"}]}]], "Input",
  CellChangeTimes->{{3.649595338085868*^9, 3.649595339335965*^9}, {
-  3.6508821503492002`*^9, 3.6508821527415257`*^9}}],
+  3.6508821503492002`*^9, 3.6508821527415257`*^9}, {3.650962063473948*^9, 
+  3.650962095568514*^9}}],
 
 Cell[BoxData[
  RowBox[{"Map", "[", 
@@ -358,22 +394,22 @@ CellTagsIndex->{}
 (*NotebookFileOutline
 Notebook[{
 Cell[557, 20, 787, 21, 114, "Input"],
-Cell[1347, 43, 2222, 67, 189, "Input"],
-Cell[3572, 112, 547, 17, 38, "Input"],
-Cell[4122, 131, 1129, 23, 64, "Input"],
-Cell[5254, 156, 542, 15, 64, "Input"],
-Cell[5799, 173, 1156, 32, 114, "Input"],
-Cell[6958, 207, 871, 26, 89, "Input"],
-Cell[7832, 235, 418, 9, 38, "Input"],
-Cell[8253, 246, 493, 10, 38, "Input"],
-Cell[8749, 258, 306, 7, 38, "Input"],
-Cell[9058, 267, 279, 7, 38, "Input"],
-Cell[9340, 276, 266, 6, 38, "Input"],
-Cell[9609, 284, 581, 14, 38, "Input"],
-Cell[10193, 300, 264, 6, 38, "Input"],
-Cell[10460, 308, 482, 13, 38, "Input"],
-Cell[10945, 323, 299, 8, 38, "Input"],
-Cell[11247, 333, 246, 7, 38, "Input"]
+Cell[1347, 43, 3211, 99, 239, "Input"],
+Cell[4561, 144, 547, 17, 38, "Input"],
+Cell[5111, 163, 1129, 23, 64, "Input"],
+Cell[6243, 188, 542, 15, 64, "Input"],
+Cell[6788, 205, 1156, 32, 114, "Input"],
+Cell[7947, 239, 871, 26, 89, "Input"],
+Cell[8821, 267, 418, 9, 38, "Input"],
+Cell[9242, 278, 493, 10, 38, "Input"],
+Cell[9738, 290, 306, 7, 38, "Input"],
+Cell[10047, 299, 279, 7, 38, "Input"],
+Cell[10329, 308, 266, 6, 38, "Input"],
+Cell[10598, 316, 662, 16, 38, "Input"],
+Cell[11263, 334, 264, 6, 38, "Input"],
+Cell[11530, 342, 561, 15, 38, "Input"],
+Cell[12094, 359, 299, 8, 38, "Input"],
+Cell[12396, 369, 246, 7, 38, "Input"]
 }
 ]
 *)

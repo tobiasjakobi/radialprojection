@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[     23342,        676]
-NotebookOptionsPosition[     22368,        644]
-NotebookOutlinePosition[     22802,        661]
-CellTagsIndexPosition[     22759,        658]
+NotebookDataLength[     22938,        656]
+NotebookOptionsPosition[     22041,        627]
+NotebookOutlinePosition[     22476,        644]
+CellTagsIndexPosition[     22433,        641]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -176,8 +176,6 @@ Cell[BoxData[
  CellChangeTimes->{{3.654501619714539*^9, 3.65450172278769*^9}, {
   3.654502339704588*^9, 3.654502363304699*^9}}],
 
-Cell[CellGroupData[{
-
 Cell[BoxData[{
  RowBox[{
   RowBox[{"link", "=", 
@@ -186,24 +184,6 @@ Cell[BoxData[{
     "\"\</homes/tjakobi/PhD_Work/radialprojection/mathinterface/\
 feed2mathematica\>\"", "]"}]}], ";"}], "\[IndentingNewLine]", 
  RowBox[{"LinkPatterns", "[", "link", "]"}]}], "Input"],
-
-Cell[BoxData[
- RowBox[{"{", 
-  RowBox[{
-   TagBox[
-    RowBox[{"ReadDoubleVec2Data", "[", "x_", "]"}],
-    HoldForm], ",", 
-   TagBox[
-    RowBox[{"ReadDoubleData", "[", "x_", "]"}],
-    HoldForm], ",", 
-   TagBox[
-    RowBox[{"ReadExtFloatData", "[", "x_", "]"}],
-    HoldForm], ",", 
-   TagBox[
-    RowBox[{"ReadLongIntData", "[", "x_", "]"}],
-    HoldForm]}], "}"}]], "Output",
- CellChangeTimes->{3.6545128631551323`*^9}]
-}, Open  ]],
 
 Cell[BoxData[
  RowBox[{
@@ -435,14 +415,14 @@ Cell[BoxData[
    RowBox[{
     RowBox[{
      RowBox[{"transformBin", "[", 
-      RowBox[{"i_", ",", "data_"}], "]"}], ":=", 
+      RowBox[{"i_", ",", "data_", ",", "p_"}], "]"}], ":=", 
      RowBox[{"{", 
       RowBox[{
        RowBox[{"N", "[", 
         RowBox[{
          RowBox[{"(", 
           RowBox[{"i", "-", "1"}], ")"}], "*", 
-         RowBox[{"histoParams", "[", 
+         RowBox[{"p", "[", 
           RowBox[{"[", "2", "]"}], "]"}]}], "]"}], ",", 
        RowBox[{
         RowBox[{"envelopeData", "[", "data", "]"}], "[", 
@@ -455,30 +435,33 @@ Cell[BoxData[
        RowBox[{"param_:", "Null"}]}], "]"}], ":=", 
      RowBox[{"Block", "[", 
       RowBox[{
-       RowBox[{"{", "rmax", "}"}], ",", "\[IndentingNewLine]", 
+       RowBox[{"{", 
+        RowBox[{"rmax", ",", "p"}], "}"}], ",", "\[IndentingNewLine]", 
        RowBox[{
-        RowBox[{"rmax", "=", 
-         RowBox[{
+        RowBox[{"p", "=", 
+         RowBox[{"If", "[", 
           RowBox[{
-           RowBox[{"Round", "[", 
-            RowBox[{
-             RowBox[{"Part", "[", 
-              RowBox[{"#", ",", "1"}], "]"}], "/", 
-             RowBox[{"Part", "[", 
-              RowBox[{"#", ",", "2"}], "]"}]}], "]"}], "&"}], "[", 
-          RowBox[{"If", "[", 
-           RowBox[{
-            RowBox[{"param", "===", "Null"}], ",", "histoParams", ",", 
-            "param"}], "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+           RowBox[{"param", "===", "Null"}], ",", "histoParams", ",", 
+           "param"}], "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"rmax", "=", 
+         RowBox[{"Round", "[", 
+          RowBox[{
+           RowBox[{"Part", "[", 
+            RowBox[{"p", ",", "1"}], "]"}], "/", 
+           RowBox[{"Part", "[", 
+            RowBox[{"p", ",", "2"}], "]"}]}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
         RowBox[{"Map", "[", 
          RowBox[{
           RowBox[{
            RowBox[{"transformBin", "[", 
-            RowBox[{"#", ",", "data"}], "]"}], "&"}], ",", 
+            RowBox[{"#", ",", "data", ",", "p"}], "]"}], "&"}], ",", 
           RowBox[{"Range", "[", 
            RowBox[{"1", ",", "rmax"}], "]"}]}], "]"}]}]}], "]"}]}], 
     ";"}]}]}]], "Input",
- CellChangeTimes->{{3.6316202882060547`*^9, 3.6316203016811132`*^9}}],
+ CellChangeTimes->{{3.6316202882060547`*^9, 3.6316203016811132`*^9}, {
+  3.661857440242774*^9, 3.661857455057908*^9}, {3.6618575200364647`*^9, 
+  3.661857721271151*^9}}],
 
 Cell[BoxData[
  RowBox[{
@@ -645,7 +628,7 @@ Cell[BoxData[
 WindowSize->{1600, 1136},
 WindowMargins->{{0, Automatic}, {Automatic, 0}},
 PrivateNotebookOptions->{"VersionedStylesheet"->{"Default.nb"[8.] -> False}},
-Magnification->1.5,
+Magnification->1.25,
 FrontEndVersion->"9.0 for Linux x86 (64-bit) (January 25, 2013)",
 StyleDefinitions->"Default.nb"
 ]
@@ -660,24 +643,21 @@ CellTagsIndex->{}
 *)
 (*NotebookFileOutline
 Notebook[{
-Cell[557, 20, 646, 17, 133, "Input"],
-Cell[1206, 39, 3036, 88, 278, "Input"],
-Cell[4245, 129, 460, 12, 75, "Input"],
-Cell[4708, 143, 383, 10, 75, "Input"],
-Cell[5094, 155, 833, 21, 104, "Input"],
-Cell[CellGroupData[{
-Cell[5952, 180, 265, 7, 75, "Input"],
-Cell[6220, 189, 424, 15, 45, "Output"]
-}, Open  ]],
-Cell[6659, 207, 892, 25, 104, "Input"],
-Cell[7554, 234, 834, 23, 104, "Input"],
-Cell[8391, 259, 1728, 45, 162, "Input"],
-Cell[10122, 306, 1920, 49, 191, "Input"],
-Cell[12045, 357, 2546, 67, 307, "Input"],
-Cell[14594, 426, 1919, 54, 162, "Input"],
-Cell[16516, 482, 1716, 48, 133, "Input"],
-Cell[18235, 532, 2633, 73, 220, "Input"],
-Cell[20871, 607, 1493, 35, 220, "Input"]
+Cell[557, 20, 646, 17, 114, "Input"],
+Cell[1206, 39, 3036, 88, 239, "Input"],
+Cell[4245, 129, 460, 12, 64, "Input"],
+Cell[4708, 143, 383, 10, 64, "Input"],
+Cell[5094, 155, 833, 21, 89, "Input"],
+Cell[5930, 178, 265, 7, 64, "Input"],
+Cell[6198, 187, 892, 25, 89, "Input"],
+Cell[7093, 214, 834, 23, 89, "Input"],
+Cell[7930, 239, 1728, 45, 139, "Input"],
+Cell[9661, 286, 1920, 49, 164, "Input"],
+Cell[11584, 337, 2546, 67, 264, "Input"],
+Cell[14133, 406, 2053, 57, 164, "Input"],
+Cell[16189, 465, 1716, 48, 89, "Input"],
+Cell[17908, 515, 2633, 73, 189, "Input"],
+Cell[20544, 590, 1493, 35, 189, "Input"]
 }
 ]
 *)

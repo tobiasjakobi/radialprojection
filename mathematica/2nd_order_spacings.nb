@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[      8113,        230]
-NotebookOptionsPosition[      7439,        205]
-NotebookOutlinePosition[      7796,        221]
-CellTagsIndexPosition[      7753,        218]
+NotebookDataLength[     15792,        445]
+NotebookOptionsPosition[     14307,        399]
+NotebookOutlinePosition[     14664,        415]
+CellTagsIndexPosition[     14621,        412]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -121,6 +121,13 @@ Cell[BoxData[
  RowBox[{"PlotDistChart2D", "[", 
   RowBox[{"400", ",", 
    RowBox[{"{", 
+    RowBox[{"3.0", ",", "0.04"}], "}"}], ",", "5"}], "]"}]], "Input",
+ CellChangeTimes->{3.663058492914063*^9}],
+
+Cell[BoxData[
+ RowBox[{"PlotDistChart2D", "[", 
+  RowBox[{"400", ",", 
+   RowBox[{"{", 
     RowBox[{"3.0", ",", "0.04"}], "}"}], ",", "10"}], "]"}]], "Input",
  CellChangeTimes->{
   3.654598738513052*^9, {3.654599258897728*^9, 3.654599259120097*^9}, {
@@ -128,45 +135,48 @@ Cell[BoxData[
 
 Cell[BoxData[{
  RowBox[{
-  RowBox[{"intLat2nd", "=", 
+  RowBox[{"z2lat2nd", "=", 
    RowBox[{"ReadUnXZData", "[", 
     RowBox[{
      RowBox[{"dataFilesDir", "<>", "\"\<secorder/z2lat.env.xz\>\""}], ",", 
      "ReadDoubleData"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
- RowBox[{"Length", "[", "intLat2nd", "]"}]}], "Input",
+ RowBox[{"Length", "[", "z2lat2nd", "]"}]}], "Input",
  CellChangeTimes->{{3.6545069882370663`*^9, 3.654507006813652*^9}, {
   3.65451306453104*^9, 3.654513068592998*^9}, {3.654588253621125*^9, 
   3.65458825394692*^9}, {3.654588394813765*^9, 3.654588414268839*^9}, {
-  3.654588500166581*^9, 3.654588513674575*^9}}],
+  3.654588500166581*^9, 3.654588513674575*^9}, {3.6554471153044853`*^9, 
+  3.655447118970085*^9}}],
 
 Cell[BoxData[
  RowBox[{"ListPlot3D", "[", 
   RowBox[{
    RowBox[{"transformEnvData2D", "[", 
-    RowBox[{"intLat2nd", ",", 
+    RowBox[{"z2lat2nd", ",", 
      RowBox[{"guessHisto2DParams", "[", 
       RowBox[{"4.0", ",", "0.01"}], "]"}]}], "]"}], ",", 
    RowBox[{"PlotRange", "\[Rule]", "Full"}]}], "]"}]], "Input",
  CellChangeTimes->{{3.654507023035431*^9, 3.654507084622108*^9}, 
-   3.6545130733505898`*^9}],
+   3.6545130733505898`*^9, 3.655447120100068*^9}],
 
 Cell[BoxData[{
  RowBox[{
-  RowBox[{"emptyBin2nd", "=", 
+  RowBox[{"z2lat2ndEmpty", "=", 
    RowBox[{"ReadUnXZData", "[", 
     RowBox[{
      RowBox[{"dataFilesDir", "<>", "\"\<secorder/z2lat.empty.xz\>\""}], ",", 
      "ReadDoubleVec2Data"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
- RowBox[{"Length", "[", "emptyBin2nd", "]"}]}], "Input",
+ RowBox[{"Length", "[", "z2lat2ndEmpty", "]"}]}], "Input",
  CellChangeTimes->{{3.6545098391743803`*^9, 3.6545098527190113`*^9}, {
    3.6545133523578*^9, 3.654513352533453*^9}, {3.654514191092807*^9, 
-   3.654514197812087*^9}, 3.654588549473116*^9}],
+   3.654514197812087*^9}, 3.654588549473116*^9, {3.655447127228135*^9, 
+   3.655447134067614*^9}}],
 
 Cell[BoxData[
  RowBox[{"ListPlot", "[", 
-  RowBox[{"emptyBin2nd", ",", 
+  RowBox[{"z2lat2ndEmpty", ",", 
    RowBox[{"AspectRatio", "\[Rule]", "1.0"}]}], "]"}]], "Input",
- CellChangeTimes->{{3.6545098512586412`*^9, 3.654509854770549*^9}}],
+ CellChangeTimes->{{3.6545098512586412`*^9, 3.654509854770549*^9}, 
+   3.65544713480305*^9}],
 
 Cell[BoxData[{
  RowBox[{
@@ -201,7 +211,191 @@ Cell[BoxData[
    RowBox[{"{", 
     RowBox[{"t", ",", "0", ",", "4"}], "}"}], ",", 
    RowBox[{"PlotRange", "\[Rule]", "Full"}]}], "]"}]], "Input",
- CellChangeTimes->{{3.654957045111082*^9, 3.654957047878436*^9}}]
+ CellChangeTimes->{{3.654957045111082*^9, 3.654957047878436*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"chair2nd", "=", 
+   RowBox[{"ReadUnXZData", "[", 
+    RowBox[{
+     RowBox[{"dataFilesDir", "<>", "\"\<secorder/chair.env.xz\>\""}], ",", 
+     "ReadDoubleData"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Length", "[", "chair2nd", "]"}]}], "Input",
+ CellChangeTimes->{{3.654958622138111*^9, 3.654958629965266*^9}}],
+
+Cell[BoxData[
+ RowBox[{"ListPlot3D", "[", 
+  RowBox[{
+   RowBox[{"transformEnvData2D", "[", 
+    RowBox[{"chair2nd", ",", 
+     RowBox[{"guessHisto2DParams", "[", 
+      RowBox[{"4.0", ",", "0.02"}], "]"}]}], "]"}], ",", 
+   RowBox[{"PlotRange", "\[Rule]", "Full"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.654958635208927*^9, 3.654958636262239*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"chair2ndEmpty", "=", 
+   RowBox[{"ReadUnXZData", "[", 
+    RowBox[{
+     RowBox[{"dataFilesDir", "<>", "\"\<secorder/chair.empty.xz\>\""}], ",", 
+     "ReadDoubleVec2Data"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Length", "[", "chair2ndEmpty", "]"}]}], "Input",
+ CellChangeTimes->{{3.655020298915848*^9, 3.655020313141789*^9}, {
+  3.655020372091548*^9, 3.6550203763610697`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"ListPlot", "[", 
+  RowBox[{"chair2ndEmpty", ",", 
+   RowBox[{"AspectRatio", "\[Rule]", "1.0"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.655020154219508*^9, 3.655020195122463*^9}, 
+   3.655020317046019*^9}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"octa2nd", "=", 
+   RowBox[{"ReadUnXZData", "[", 
+    RowBox[{
+     RowBox[{"dataFilesDir", "<>", "\"\<secorder/octagonal.env.xz\>\""}], ",",
+      "ReadDoubleData"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Length", "[", "octa2nd", "]"}]}], "Input",
+ CellChangeTimes->{{3.6554417733654327`*^9, 3.655441792585281*^9}, 
+   3.6554468717544737`*^9}],
+
+Cell[BoxData[
+ RowBox[{"ListPlot3D", "[", 
+  RowBox[{
+   RowBox[{"transformEnvData2D", "[", 
+    RowBox[{"octa2nd", ",", 
+     RowBox[{"guessHisto2DParams", "[", 
+      RowBox[{"4.0", ",", "0.02"}], "]"}]}], "]"}], ",", 
+   RowBox[{"PlotRange", "\[Rule]", "Full"}]}], "]"}]], "Input",
+ CellChangeTimes->{3.655446856653041*^9}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"octa2ndEmpty", "=", 
+   RowBox[{"ReadUnXZData", "[", 
+    RowBox[{
+     RowBox[{"dataFilesDir", "<>", "\"\<secorder/octagonal.empty.xz\>\""}], 
+     ",", "ReadDoubleVec2Data"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Length", "[", "octa2ndEmpty", "]"}]}], "Input",
+ CellChangeTimes->{{3.655444606150117*^9, 3.6554446195291986`*^9}, {
+  3.655444665466509*^9, 3.6554446663777647`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"ListPlot", "[", 
+  RowBox[{"octa2ndEmpty", ",", 
+   RowBox[{"AspectRatio", "\[Rule]", "1.0"}]}], "]"}]], "Input",
+ CellChangeTimes->{3.655444625497097*^9}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"deca2nd", "=", 
+   RowBox[{"ReadUnXZData", "[", 
+    RowBox[{
+     RowBox[{"dataFilesDir", "<>", "\"\<secorder/decagonal.env.xz\>\""}], ",",
+      "ReadDoubleData"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Length", "[", "deca2nd", "]"}]}], "Input",
+ CellChangeTimes->{{3.655446818432077*^9, 3.655446837236844*^9}}],
+
+Cell[BoxData[
+ RowBox[{"ListPlot3D", "[", 
+  RowBox[{
+   RowBox[{"transformEnvData2D", "[", 
+    RowBox[{"deca2nd", ",", 
+     RowBox[{"guessHisto2DParams", "[", 
+      RowBox[{"4.0", ",", "0.02"}], "]"}]}], "]"}], ",", 
+   RowBox[{"PlotRange", "\[Rule]", "Full"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.655446841803609*^9, 3.655446865325142*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"deca2ndEmpty", "=", 
+   RowBox[{"ReadUnXZData", "[", 
+    RowBox[{
+     RowBox[{"dataFilesDir", "<>", "\"\<secorder/decagonal.empty.xz\>\""}], 
+     ",", "ReadDoubleVec2Data"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Length", "[", "deca2ndEmpty", "]"}]}], "Input",
+ CellChangeTimes->{{3.655444680960227*^9, 3.655444689614273*^9}}],
+
+Cell[BoxData[
+ RowBox[{"ListPlot", "[", 
+  RowBox[{"deca2ndEmpty", ",", 
+   RowBox[{"AspectRatio", "\[Rule]", "1.0"}]}], "]"}]], "Input",
+ CellChangeTimes->{3.655444693735347*^9}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"dode2nd", "=", 
+   RowBox[{"ReadUnXZData", "[", 
+    RowBox[{
+     RowBox[{"dataFilesDir", "<>", "\"\<secorder/dodecagonal.env.xz\>\""}], 
+     ",", "ReadDoubleData"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Length", "[", "dode2nd", "]"}]}], "Input",
+ CellChangeTimes->{{3.655447003563671*^9, 3.655447007754695*^9}}],
+
+Cell[BoxData[
+ RowBox[{"ListPlot3D", "[", 
+  RowBox[{
+   RowBox[{"transformEnvData2D", "[", 
+    RowBox[{"dode2nd", ",", 
+     RowBox[{"guessHisto2DParams", "[", 
+      RowBox[{"4.0", ",", "0.02"}], "]"}]}], "]"}], ",", 
+   RowBox[{"PlotRange", "\[Rule]", "Full"}]}], "]"}]], "Input",
+ CellChangeTimes->{3.655447018865815*^9}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"dode2ndEmpty", "=", 
+   RowBox[{"ReadUnXZData", "[", 
+    RowBox[{
+     RowBox[{"dataFilesDir", "<>", "\"\<secorder/dodecagonal.empty.xz\>\""}], 
+     ",", "ReadDoubleVec2Data"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Length", "[", "dode2ndEmpty", "]"}]}], "Input",
+ CellChangeTimes->{{3.6554447153157377`*^9, 3.655444721780025*^9}}],
+
+Cell[BoxData[
+ RowBox[{"ListPlot", "[", 
+  RowBox[{"dode2ndEmpty", ",", 
+   RowBox[{"AspectRatio", "\[Rule]", "1.0"}]}], "]"}]], "Input",
+ CellChangeTimes->{3.655444727704834*^9}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"rhmbp2nd", "=", 
+   RowBox[{"ReadUnXZData", "[", 
+    RowBox[{
+     RowBox[{"dataFilesDir", "<>", "\"\<secorder/rhombic.env.xz\>\""}], ",", 
+     "ReadDoubleData"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Length", "[", "rhmbp2nd", "]"}]}], "Input",
+ CellChangeTimes->{{3.656655026265107*^9, 3.656655035614699*^9}}],
+
+Cell[BoxData[
+ RowBox[{"ListPlot3D", "[", 
+  RowBox[{
+   RowBox[{"transformEnvData2D", "[", 
+    RowBox[{"rhmbp2nd", ",", 
+     RowBox[{"guessHisto2DParams", "[", 
+      RowBox[{"4.0", ",", "0.02"}], "]"}]}], "]"}], ",", 
+   RowBox[{"PlotRange", "\[Rule]", "Full"}]}], "]"}]], "Input",
+ CellChangeTimes->{3.656655058445669*^9}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"rhmbp2ndEmpty", "=", 
+   RowBox[{"ReadUnXZData", "[", 
+    RowBox[{
+     RowBox[{"dataFilesDir", "<>", "\"\<secorder/rhombic.empty.xz\>\""}], ",",
+      "ReadDoubleVec2Data"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Length", "[", "rhmbp2ndEmpty", "]"}]}], "Input",
+ CellChangeTimes->{{3.6578810940004263`*^9, 3.657881100489875*^9}}],
+
+Cell[BoxData[
+ RowBox[{"ListPlot", "[", 
+  RowBox[{"rhmbp2ndEmpty", ",", 
+   RowBox[{"AspectRatio", "\[Rule]", "1.0"}]}], "]"}]], "Input",
+ CellChangeTimes->{3.657881104324617*^9}]
 },
 WindowSize->{1920, 1140},
 WindowMargins->{{0, Automatic}, {Automatic, 0}},
@@ -224,14 +418,35 @@ Cell[557, 20, 360, 8, 38, "Input"],
 Cell[920, 30, 237, 6, 38, "Input"],
 Cell[1160, 38, 2716, 69, 264, "Input"],
 Cell[3879, 109, 423, 8, 38, "Input"],
-Cell[4305, 119, 299, 7, 38, "Input"],
-Cell[4607, 128, 554, 11, 64, "Input"],
-Cell[5164, 141, 380, 9, 38, "Input"],
-Cell[5547, 152, 495, 10, 64, "Input"],
-Cell[6045, 164, 204, 4, 38, "Input"],
-Cell[6252, 170, 364, 8, 64, "Input"],
-Cell[6619, 180, 356, 8, 38, "Input"],
-Cell[6978, 190, 457, 13, 38, "Input"]
+Cell[4305, 119, 199, 5, 38, "Input"],
+Cell[4507, 126, 299, 7, 38, "Input"],
+Cell[4809, 135, 603, 12, 64, "Input"],
+Cell[5415, 149, 401, 9, 38, "Input"],
+Cell[5819, 160, 549, 11, 64, "Input"],
+Cell[6371, 173, 231, 5, 38, "Input"],
+Cell[6605, 180, 364, 8, 64, "Input"],
+Cell[6972, 190, 356, 8, 38, "Input"],
+Cell[7331, 200, 457, 13, 38, "Input"],
+Cell[7791, 215, 359, 8, 64, "Input"],
+Cell[8153, 225, 351, 8, 38, "Input"],
+Cell[8507, 235, 426, 9, 64, "Input"],
+Cell[8936, 246, 230, 5, 38, "Input"],
+Cell[9169, 253, 391, 9, 64, "Input"],
+Cell[9563, 264, 326, 8, 38, "Input"],
+Cell[9892, 274, 430, 9, 64, "Input"],
+Cell[10325, 285, 179, 4, 38, "Input"],
+Cell[10507, 291, 361, 8, 64, "Input"],
+Cell[10871, 301, 350, 8, 38, "Input"],
+Cell[11224, 311, 377, 8, 64, "Input"],
+Cell[11604, 321, 179, 4, 38, "Input"],
+Cell[11786, 327, 363, 8, 64, "Input"],
+Cell[12152, 337, 326, 8, 38, "Input"],
+Cell[12481, 347, 381, 8, 64, "Input"],
+Cell[12865, 357, 179, 4, 38, "Input"],
+Cell[13047, 363, 361, 8, 64, "Input"],
+Cell[13411, 373, 327, 8, 38, "Input"],
+Cell[13741, 383, 379, 8, 64, "Input"],
+Cell[14123, 393, 180, 4, 38, "Input"]
 }
 ]
 *)
