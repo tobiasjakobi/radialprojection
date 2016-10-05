@@ -30,6 +30,8 @@ const double vec2d::sectorL11 = tan(2.0 * Constants::pi / 11.0);
 
 double Common::RadiusSelector::radiusSq = 0.0;
 
+const mtx2x2i mtx2x2i::identity(1, 0, 0, 1);
+
 vec2i vec2i::multUnitGM(int k) const {
   int a = x;
   int b = y;
@@ -441,6 +443,21 @@ vec4s vec4s::directL10ToUnique() const {
   const vec2i ry(y.divGM(g).multUnitGM(k));
 
   return vec4s(rx, ry);
+}
+
+
+void mtx2x2i::invertibleList(vector<mtx2x2i>& v, uint r) {
+  const int range = r;
+
+  for (int i = -range; i <= range; ++i)
+  for (int j = -range; j <= range; ++j)
+  for (int k = -range; k <= range; ++k)
+  for (int l = -range; l <= range; ++l) {
+    const mtx2x2i m(i, j, k, l);
+
+    if (m.invertible())
+      v.push_back(m);
+  }
 }
 
 vec2iExt::vec2iExt(const vec2i& in) {
@@ -1598,6 +1615,13 @@ ostream& operator<<(ostream &os, const vec4s& v) {
 ostream& operator<<(ostream &os, const vec2s& v) {
   os << '{' << int(v[0])
      << ',' << int(v[1]) << '}';
+
+  return os;
+}
+
+ostream& operator<<(ostream &os, const mtx2x2i& m) {
+  os << "{{" << int(m[0]) << ',' << int(m[1]) << "},{"
+     << int(m[2]) << ',' << int(m[3]) << "}}";
 
   return os;
 }

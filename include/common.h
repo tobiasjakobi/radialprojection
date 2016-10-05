@@ -1349,6 +1349,95 @@ public:
 
 };
 
+/*
+ * Simple 2x2 integer matrix class.
+ */
+class mtx2x2i {
+private:
+  union {
+    struct {
+      int a, b, c, d;
+    };
+    int m[4];
+  };
+
+public:
+  mtx2x2i() {
+    // Nothing here
+  }
+
+  mtx2x2i(int a_, int b_, int c_, int d_) : a(a_), b(b_), c(c_), d(d_) {
+    // Nothing here.
+  }
+
+  int det() const {
+    return (a*d - b*c);
+  }
+
+  bool invertible() const {
+    return (abs(this->det()) == 1);
+  }
+
+  mtx2x2i invert() const {
+    const int x = this->det();
+    assert(abs(x) == 1);
+
+    return mtx2x2i(d / x, -b / x, -c / x, a / x);
+  }
+
+  mtx2x2i& operator=(const mtx2x2i& m) {
+    a = m.a;
+    b = m.b;
+    c = m.c;
+    d = m.d;
+    return *this;
+  }
+
+  mtx2x2i operator*(const mtx2x2i& m) const {
+    return mtx2x2i(
+      a * m.a + b * m.c,
+      a * m.b + b * m.d,
+      c * m.a + d * m.c,
+      c * m.b + d * m.d
+    );
+  }
+
+  vec2i operator*(const vec2i& v) const {
+    return vec2i(
+      a * v.x + b * v.y,
+      c * v.x + d * v.y
+    );
+  }
+
+  int operator[](uint idx) const {
+    assert(idx < 4);
+
+    return m[idx];
+  }
+
+  vec2i column(uint idx) const {
+    assert(idx < 2);
+
+    switch (idx) {
+    case 0:
+      return vec2i(a, c);
+    case 1:
+    default:
+      return vec2i(b, d);
+    }
+  }
+
+  // The identity matrix.
+  static const mtx2x2i identity;
+
+  /*
+   * Create a list of invertible (over the integer) matrices where
+   * the absolute value of the components is less or equal than 'r'.
+   */
+  static void invertibleList(vector<mtx2x2i>& v, uint r);
+
+};
+
 /* The 'vec2iExt' class provides an efficient way to compute (correct)
  * visibility of a set of elements from Z^2.
  *
@@ -1865,6 +1954,7 @@ ostream& operator<<(ostream &os, const vec4i& v);
 ostream& operator<<(ostream &os, const vec8s& v);
 ostream& operator<<(ostream &os, const vec4s& v);
 ostream& operator<<(ostream &os, const vec2s& v);
+ostream& operator<<(ostream &os, const mtx2x2i& m);
 ostream& operator<<(ostream &os, const vec2iExt& rhs);
 ostream& operator<<(ostream &os, const tilingEdge& e);
 

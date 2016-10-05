@@ -431,6 +431,13 @@ namespace ArithVisibility {
     }
   };
 
+  /*
+   * Test for determining the subgroup that leaves the square-free
+   * Gaussian integers invariant.
+   */
+  bool powerTest(const mtx2x2i& m, uint n);
+  bool multTest(const mtx2x2i& m, const vec2i& v);
+
 };
 
 ostream& operator<<(ostream &os, const ArithVisibility::vec2iq& v);

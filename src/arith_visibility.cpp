@@ -1502,6 +1502,45 @@ void ArithVisibility::radialProjGM(const uint r, Common::dlist& out) {
   normalizeAngDists(out, meandist);
 }
 
+/*
+ * If we have an invertible (over Z) 2x2 matrix M, then M can only leave
+ * the square-free Gaussian invariant, if the following property holds:
+ *
+ * Let n be a natural number, then for every 1 <= k <= n, the k-th
+ * power of M should have square-free rows, i.e. write
+ * M^k = {{a, b}, {c, d}}, then both a + c*I and b + d*I should be
+ * square-free Gaussian integers.
+ */
+bool ArithVisibility::powerTest(const mtx2x2i& m, uint n) {
+  mtx2x2i temp(mtx2x2i::identity);
+
+  for (uint i = 0; i <= n; ++i) {
+    temp = temp * m;
+
+    if (!visibility2FreeGI(temp.column(0)) ||
+        !visibility2FreeGI(temp.column(1)))
+      return false;
+  }
+
+  return true;
+}
+
+/*
+ * If we have an invertible (over Z) 2x2 matrix M, then M can only leave
+ * the square-free Gaussian invariant, if the following property holds:
+ *
+ * For each vector (m, n) where m and n are coprime and m + n*I is
+ * square-free, M multipied with (m,n) has to be square-free again.
+ *
+ * We usually create a large region of the square-free coprime Gaussians
+ * and then apply the test for each element.
+ */
+bool ArithVisibility::multTest(const mtx2x2i& m, const vec2i& v) {
+  const vec2i mv(m * v);
+
+  return visibility2FreeGI(mv);
+}
+
 ostream& operator<<(ostream &os, const ArithVisibility::vec2iq& v) {
   os << '{' << v.getNumerator() << ',' << v.getDenominator() << '}';
   return os;
@@ -2253,6 +2292,89 @@ int main_sqfree_grid(int argc, char* argv[]) {
   return 0;
 }
 
+/*
+ * We know that the visible lattice points of Z^2 are invariant under
+ * GL_2(Z). Now consider the square-free integers of Z[i] as a subset
+ * of Z^2. Denote the subset as S. We can ask the same question here.
+ * Which matrices leave S invariant? S is certainly going to be a
+ * subgroup of GL_2(Z).
+ *
+ * To explore this question we check invertible matrices with components
+ * in a certain range (here given by 'inv_range'). We apply the following
+ * two tests:
+ * (1) power test (see ArithVisibility::powerTest() for docu)
+ * (2) multiplication test (see ArithVisibility::multTest() for docu)
+ *
+ * The powers used in (1) are configured through 'pow_range', the number
+ * of elements used for (2) is configured through 'sqf_range'.
+ */
+int main_invariant_subgroup(int argc, char* argv[]) {
+  using namespace ArithVisibility;
+
+  cerr << "info: invariant subgroup main mode selected." << endl;
+
+  stringstream parser;
+
+  uint inv_range = 30, sqf_range = 40, pow_range = 20;
+
+  Common::vec2ilist table, sampleCoprimeSqFree;
+  vector<mtx2x2i> sampleGL2Z, output;
+
+  // Parse parameters passed to the application
+  if (argc >= 2) {
+    parser.str(argv[1]);
+    parser.clear();
+    parser >> inv_range;
+
+    if (argc >= 3) {
+      parser.str(argv[2]);
+      parser.clear();
+      parser >> sqf_range;
+
+      if (argc >= 4) {
+        parser.str(argv[3]);
+        parser.clear();
+        parser >> pow_range;
+      }
+    }
+  }
+
+  // Sample GL_2(Z)
+  mtx2x2i::invertibleList(sampleGL2Z, inv_range);
+
+  // Sample coprime square-free Gaussian integers
+  vTableGI(sqf_range, table);
+  for (Common::vec2ilist::const_iterator i = table.begin();
+       i != table.end(); ++i) {
+    if (visibility2FreeGI(*i) && i->coprime())
+      sampleCoprimeSqFree.push_back(*i);
+  }
+
+  for (vector<mtx2x2i>::const_iterator i = sampleGL2Z.begin();
+       i != sampleGL2Z.end(); ++i) {
+    bool failed = false;
+
+    if (!ArithVisibility::powerTest(*i, pow_range))
+      continue;
+
+    for (Common::vec2ilist::const_iterator j = sampleCoprimeSqFree.begin();
+         j != sampleCoprimeSqFree.end(); ++j) {
+      if (!ArithVisibility::multTest(*i, *j)) {
+        failed = true;
+        break;
+      }
+    }
+
+    if (!failed)
+      output.push_back(*i);
+  }
+
+  cout << "info: number of elements found = " << output.size() << endl;
+  cout << "info: elements = " << output << endl;
+
+  return 0;
+}
+
 void print_usage() {
   cerr << "arithmetic visibility: usage:" << endl;
 
@@ -2273,6 +2395,11 @@ void print_usage() {
   cerr << "\t\tparameter 1: mode (see diffraction main mode)" << endl;
   cerr << "\t\t\t(both even and odd map to the same mode)" << endl;
   cerr << "\t\tparameter 2: range (number of vertices depends on mode)" << endl;
+
+  cerr << "arith_visibility --invariant-subgroup: selects invariant subgroup main mode" << endl;
+  cerr << "\t\tparameter 1: sampling range of GL_2(Z) (default = 30)" << endl;
+  cerr << "\t\tparameter 2: sampling range of square-free Gaussians (default = 40)" << endl;
+  cerr << "\t\tparameter 3: range of powers applied to the matrices (default = 20)" << endl;
 }
 
 int main(int argc, char* argv[]) {
@@ -2292,6 +2419,8 @@ int main(int argc, char* argv[]) {
     ret = main_radialproj(argc - 1, argv + 1);
   else if (main_mode == "--sqfree-grid")
     ret = main_sqfree_grid(argc - 1, argv + 1);
+  else if (main_mode == "--invariant-subgroup")
+    ret = main_invariant_subgroup(argc - 1, argv + 1);
   else
     print_usage();
 
