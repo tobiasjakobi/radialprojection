@@ -2339,6 +2339,9 @@ int main_invariant_subgroup(int argc, char* argv[]) {
     }
   }
 
+  cerr << "info: input parameters = {" << inv_range << ", " << sqf_range
+       << ", " << pow_range << '}' << endl;
+
   // Sample GL_2(Z)
   mtx2x2i::invertibleList(sampleGL2Z, inv_range);
 
@@ -2349,6 +2352,11 @@ int main_invariant_subgroup(int argc, char* argv[]) {
     if (visibility2FreeGI(*i) && i->coprime())
       sampleCoprimeSqFree.push_back(*i);
   }
+
+  cerr << "info: number of matrices from GL_2(Z) = "
+       << sampleGL2Z.size() << endl;
+  cerr << "info: number of coprime square-free Gaussians = "
+       << sampleCoprimeSqFree.size() << endl;
 
   for (vector<mtx2x2i>::const_iterator i = sampleGL2Z.begin();
        i != sampleGL2Z.end(); ++i) {
@@ -2370,7 +2378,7 @@ int main_invariant_subgroup(int argc, char* argv[]) {
   }
 
   cout << "info: number of elements found = " << output.size() << endl;
-  cout << "info: elements = " << output << endl;
+  cerr << "info: elements = " << output << endl;
 
   return 0;
 }
