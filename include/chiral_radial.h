@@ -130,59 +130,62 @@ namespace Chair2D {
 
   };
 
-  class vismap {
+  class VisibilityMap {
   private:
-    typedef vector<bool> blist;
+    typedef vector<bool> boolvec;
 
-    int gridsize;
-    vector<blist>* bmap;
+    uint range, rowlen, size;
+    boolvec vmap;
 
     bool access(const vec2s& v) const {
-      const int x = v[0];
-      const int y = v[1];
+      const int r = range;
+      const int pos = (v[1] + r) * int(rowlen) + (v[0] + r);
 
-      assert(-gridsize <= x && x <= gridsize &&
-             -gridsize <= y && y <= gridsize);
-      return (*bmap)[x + gridsize][y + gridsize];
+      assert(pos >= 0 && pos < int(size));
+
+      return vmap[pos];
+    }
+
+    void set(const vec2s& v) {
+      const int r = range;
+      const int pos = (v[1] + r) * int(rowlen) + (v[0] + r);
+      assert(pos >= 0 && pos < int(size));
+
+      vmap[pos] = true;
     }
 
   public:
-
     // constructor
-    vismap(const llist& patch, uint steps) {
-      gridsize = 2 * Common::ipower(2, steps);
-      bmap = new vector<blist>(2 * gridsize + 1, blist(2 * gridsize + 1, false));
+    VisibilityMap(const llist& patch, uint steps) {
+      range = 2 * Common::ipower(2, steps);
+      rowlen = 2 * range + 1;
+      size = rowlen * rowlen;
+
+      vmap.resize(size, false);
 
       for (llist::const_iterator i = patch.begin(); i != patch.end(); ++i) {
         vec2s temp[6];
         i->getVertices(temp);
 
-        for (uint j = 0; j < 6; ++j) {
-          const vec2s current(temp[j]);
-
-          assert(-gridsize <= current[0] && current[0] <= gridsize &&
-                 -gridsize <= current[1] && current[1] <= gridsize);
-          (*bmap)[current[0] + gridsize][current[1] + gridsize] = true;
-        }
+        for (uint j = 0; j < 6; ++j)
+          set(temp[j]);
       }
     }
 
     // destructor
-    ~vismap() {
-      delete bmap;
-    }
+    ~VisibilityMap() {}
 
     // copy-constructor
-    vismap(const vismap& m) {
-      gridsize = m.gridsize;
-      bmap = new vector<blist>(*m.bmap);
-    }
+    VisibilityMap(const VisibilityMap& vm) : range(vm.range), rowlen(vm.rowlen),
+      size(vm.size), vmap(vm.vmap) {}
 
     bool isVisible(const vec2s& v) const {
-      if (v[0] == 0 && v[1] == 0) return false;
+      if (v[0] == 0 && v[1] == 0)
+        return false;
 
       const int agcd = Coprime::gcdZFast(abs(v[0]), abs(v[1]));
-      if (agcd == 1) return true;
+      if (agcd == 1)
+        return true;
 
       /* A single check for coprime coordinates isn't correct in this case, since the   *
        * corresponding primitive point doesn't have to be part of the tiling vertices   *
@@ -195,7 +198,8 @@ namespace Chair2D {
       const vec2s primitive(v[0] / agcd, v[1] / agcd);
 
       for (int k = 1; k < agcd; ++k) {
-        if (access(primitive * k)) return false;
+        if (access(primitive * k))
+          return false;
       }
 
       return true;
