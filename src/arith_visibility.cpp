@@ -1348,7 +1348,7 @@ void ArithVisibility::radialProjZ2(const uint r, Common::dlist& out) {
   vec2ilist circleZ2, sqfreeZ2;
   vCircleZ2(r, circleZ2);
 
-  cerr << "info: constructed patch of the Minkowski embedding of Z[tau] with "
+  cerr << "info: constructed patch of the Minkowski embedding of Z[Sqrt[2]] with "
        << circleZ2.size() << " vertices.\n";
 
   sqfreeZ2.reserve(lround(double(circleZ2.size()) * 0.71));
