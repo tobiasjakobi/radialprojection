@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[     99394,       2598]
-NotebookOptionsPosition[     96156,       2511]
-NotebookOutlinePosition[     96513,       2527]
-CellTagsIndexPosition[     96470,       2524]
+NotebookDataLength[    102013,       2681]
+NotebookOptionsPosition[     98575,       2589]
+NotebookOutlinePosition[     98932,       2605]
+CellTagsIndexPosition[     98889,       2602]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -569,6 +569,26 @@ Cell[BoxData[
 
 Cell[BoxData[
  RowBox[{
+  RowBox[{"ClearAll", "[", "BasisZ2", "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.685101092149579*^9, 3.68510109564869*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"BasisZ2", "=", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"1", ",", 
+       RowBox[{"Sqrt", "[", "2", "]"}]}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"1", ",", 
+       RowBox[{"-", 
+        RowBox[{"Sqrt", "[", "2", "]"}]}]}], "}"}]}], "}"}]}], ";"}]], "Input",\
+
+ CellChangeTimes->{{3.685101087888338*^9, 3.685101118083351*^9}}],
+
+Cell[BoxData[
+ RowBox[{
   RowBox[{"ClearAll", "[", 
    RowBox[{
    "vTableZ2", ",", "miEmbedZ2", ",", "vDrawZ2", ",", "checkBoxZ2", ",", 
@@ -885,6 +905,23 @@ Cell[BoxData[
    3.6199526286126013`*^9, 3.619952629548936*^9}, 3.621597745630142*^9, {
    3.6221974129763117`*^9, 3.622197413253587*^9}, {3.6221984576158133`*^9, 
    3.622198459311124*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ClearAll", "[", "zetaZ2", "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.685100962179604*^9, 3.685100966601892*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"zetaZ2", "=", 
+   RowBox[{
+    RowBox[{"DirichletL", "[", 
+     RowBox[{"8", ",", "2", ",", "2"}], "]"}], "*", 
+    RowBox[{"Zeta", "[", "2", "]"}]}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"FullSimplify", "[", "zetaZ2", "]"}], ",", 
+   RowBox[{"N", "[", "zetaZ2", "]"}]}], "}"}]}], "Input"],
 
 Cell[BoxData[
  RowBox[{"N", "[", 
@@ -1298,31 +1335,31 @@ Cell[BoxData[
 Cell[BoxData[{
  RowBox[{
   RowBox[{"ClearAll", "[", 
-   RowBox[{
-   "zetaZ2", ",", "intensityZ2", ",", "qCoprime", ",", "qCoprimeCheck"}], 
-   "]"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{"intensityZ2", ",", "qCoprime", ",", "qCoprimeCheck"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"ClearAll", "[", 
    RowBox[{"vTableQ2", ",", "vTableQ2Recip", ",", "ReduceQ2"}], "]"}], 
   ";"}]}], "Input",
  CellChangeTimes->{{3.620986982071972*^9, 3.62098700781362*^9}, {
   3.622197539870987*^9, 3.6221975429756308`*^9}, {3.622198568338558*^9, 
-  3.622198587683249*^9}, {3.622198864408379*^9, 3.622198864775817*^9}}],
+  3.622198587683249*^9}, {3.622198864408379*^9, 3.622198864775817*^9}, {
+  3.685186881682987*^9, 3.685186881926695*^9}}],
 
 Cell[BoxData[{
  RowBox[{
-  RowBox[{"zetaZ2", "=", 
-   RowBox[{"1", "/", 
-    RowBox[{"(", 
-     RowBox[{
-      RowBox[{"DirichletL", "[", 
-       RowBox[{"8", ",", "2", ",", "2"}], "]"}], "*", 
-      RowBox[{"Zeta", "[", "2", "]"}]}], ")"}]}]}], 
+  RowBox[{"volumeZ2", "=", 
+   RowBox[{"2", "*", 
+    RowBox[{"Sqrt", "[", "2", "]"}]}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Assert", "[", 
+   RowBox[{"volumeZ2", "\[Equal]", 
+    RowBox[{"Abs", "[", 
+     RowBox[{"Det", "[", "BasisZ2", "]"}], "]"}]}], "]"}], 
   ";"}], "\[IndentingNewLine]", 
- RowBox[{"FullSimplify", "[", "zetaZ2", "]"}]}], "Input",
- CellChangeTimes->{{3.619873904221664*^9, 3.619873922244322*^9}, {
-  3.619873962058263*^9, 3.6198739637318087`*^9}, {3.6221975537983294`*^9, 
-  3.622197556462962*^9}, {3.622289741558078*^9, 3.6222897418677883`*^9}}],
+ RowBox[{"N", "[", "volumeZ2", "]"}]}], "Input",
+ CellChangeTimes->{{3.685100995657007*^9, 3.6851010611622763`*^9}, {
+  3.685101138677001*^9, 3.685101158915378*^9}}],
 
 Cell[BoxData[
  RowBox[{
@@ -1367,8 +1404,7 @@ Cell[BoxData[
        RowBox[{"f", "=", 
         RowBox[{"1", "/", 
          RowBox[{"(", 
-          RowBox[{"2", "*", 
-           RowBox[{"Sqrt", "[", "2", "]"}], "*", "zetaZ2"}], ")"}]}]}], ";", 
+          RowBox[{"volumeZ2", "*", "zetaZ2"}], ")"}]}]}], ";", 
        "\[IndentingNewLine]", 
        RowBox[{"prod", "=", 
         RowBox[{"Apply", "[", 
@@ -1396,7 +1432,8 @@ Cell[BoxData[
    3.619874047381275*^9, 3.619874048863287*^9}, {3.619944854292705*^9, 
    3.619944872567794*^9}, {3.620119846568282*^9, 3.620119905763736*^9}, 
    3.620992143179669*^9, {3.622197544437027*^9, 3.622197549477878*^9}, 
-   3.622198314167677*^9, {3.62219872095313*^9, 3.62219872202209*^9}}],
+   3.622198314167677*^9, {3.62219872095313*^9, 3.62219872202209*^9}, 
+   3.685101169890389*^9}],
 
 Cell[BoxData[
  RowBox[{
@@ -2432,6 +2469,47 @@ Cell[BoxData[
    3.6212469992696037`*^9, {3.622198764213282*^9, 3.622198775505205*^9}}],
 
 Cell[BoxData[
+ RowBox[{"Show", "[", 
+  RowBox[{
+   RowBox[{"intensityPlotZ2", "[", 
+    RowBox[{
+     RowBox[{"vTableQ2RecipAlt", "[", 
+      RowBox[{"20", ",", "16"}], "]"}], ",", 
+     RowBox[{
+      RowBox[{"0.4", "*", 
+       RowBox[{"Sqrt", "[", "#", "]"}]}], "&"}], ",", "clipCutZ2"}], "]"}], 
+   ",", "\[IndentingNewLine]", 
+   RowBox[{"Graphics", "[", 
+    RowBox[{"{", 
+     RowBox[{"Red", ",", 
+      RowBox[{"Arrowheads", "[", "0.03", "]"}], ",", 
+      RowBox[{"Arrow", "[", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"0", ",", "0"}], "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"1", "/", "2"}], ",", 
+           RowBox[{"1", "/", "2"}]}], "}"}]}], "}"}], "]"}], ",", 
+      RowBox[{"Arrow", "[", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"0", ",", "0"}], "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"Sqrt", "[", "2", "]"}], "/", "4"}], ",", 
+           RowBox[{
+            RowBox[{"-", 
+             RowBox[{"Sqrt", "[", "2", "]"}]}], "/", "4"}]}], "}"}]}], "}"}], 
+       "]"}]}], "}"}], "]"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.68423608538662*^9, 3.684236093239005*^9}, {
+   3.684236188998951*^9, 3.684236208628828*^9}, {3.684237394597172*^9, 
+   3.68423742170536*^9}, 3.685188170044518*^9}],
+
+Cell[BoxData[
  RowBox[{"intensityExportZ2", "[", 
   RowBox[{
    RowBox[{"vTableQ2RecipAlt", "[", 
@@ -2541,65 +2619,70 @@ Cell[11134, 329, 843, 26, 64, "Input"],
 Cell[11980, 357, 3470, 81, 239, "Input"],
 Cell[15453, 440, 1181, 27, 64, "Input"],
 Cell[16637, 469, 3983, 98, 314, "Input"],
-Cell[20623, 569, 346, 8, 38, "Input"],
-Cell[20972, 579, 1360, 36, 64, "Input"],
-Cell[22335, 617, 1443, 37, 89, "Input"],
-Cell[23781, 656, 1341, 28, 64, "Input"],
-Cell[25125, 686, 494, 11, 38, "Input"],
-Cell[25622, 699, 947, 24, 89, "Input"],
-Cell[26572, 725, 485, 13, 38, "Input"],
-Cell[27060, 740, 430, 9, 38, "Input"],
-Cell[27493, 751, 1388, 26, 38, "Input"],
-Cell[28884, 779, 977, 22, 64, "Input"],
-Cell[29864, 803, 971, 27, 64, "Input"],
-Cell[30838, 832, 418, 9, 38, "Input"],
-Cell[31259, 843, 1020, 23, 64, "Input"],
-Cell[32282, 868, 695, 18, 38, "Input"],
-Cell[32980, 888, 335, 9, 38, "Input"],
-Cell[33318, 899, 675, 16, 64, "Input"],
-Cell[33996, 917, 415, 10, 38, "Input"],
-Cell[34414, 929, 288, 7, 38, "Input"],
-Cell[34705, 938, 2345, 60, 214, "Input"],
-Cell[37053, 1000, 1771, 47, 189, "Input"],
-Cell[38827, 1049, 2437, 62, 189, "Input"],
-Cell[41267, 1113, 1302, 31, 114, "Input"],
-Cell[42572, 1146, 4439, 100, 289, "Input"],
-Cell[47014, 1248, 595, 19, 64, "Input"],
-Cell[47612, 1269, 378, 7, 38, "Input"],
-Cell[47993, 1278, 568, 17, 38, "Input"],
-Cell[48564, 1297, 521, 12, 64, "Input"],
-Cell[49088, 1311, 553, 13, 64, "Input"],
-Cell[49644, 1326, 2754, 72, 214, "Input"],
-Cell[52401, 1400, 2676, 70, 139, "Input"],
-Cell[55080, 1472, 2295, 63, 114, "Input"],
-Cell[57378, 1537, 2034, 55, 89, "Input"],
-Cell[59415, 1594, 1777, 44, 64, "Input"],
-Cell[61195, 1640, 410, 11, 64, "Input"],
-Cell[61608, 1653, 492, 10, 38, "Input"],
-Cell[62103, 1665, 359, 9, 38, "Input"],
-Cell[62465, 1676, 210, 4, 38, "Input"],
-Cell[62678, 1682, 3051, 76, 239, "Input"],
-Cell[65732, 1760, 979, 24, 64, "Input"],
-Cell[66714, 1786, 5210, 121, 339, "Input"],
-Cell[71927, 1909, 441, 10, 64, "Input"],
-Cell[72371, 1921, 1466, 40, 89, "Input"],
-Cell[73840, 1963, 1344, 38, 89, "Input"],
-Cell[75187, 2003, 3400, 67, 189, "Input"],
-Cell[78590, 2072, 729, 17, 64, "Input"],
-Cell[79322, 2091, 2846, 63, 189, "Input"],
-Cell[82171, 2156, 175, 4, 38, "Input"],
-Cell[82349, 2162, 538, 12, 38, "Input"],
-Cell[82890, 2176, 1443, 38, 114, "Input"],
-Cell[84336, 2216, 693, 21, 89, "Input"],
-Cell[85032, 2239, 3888, 95, 264, "Input"],
-Cell[88923, 2336, 863, 23, 64, "Input"],
-Cell[89789, 2361, 2781, 56, 64, "Input"],
-Cell[92573, 2419, 660, 12, 38, "Input"],
-Cell[93236, 2433, 929, 16, 38, "Input"],
-Cell[94168, 2451, 888, 25, 114, "Input"],
-Cell[95059, 2478, 393, 10, 38, "Input"],
-Cell[95455, 2490, 484, 12, 64, "Input"],
-Cell[95942, 2504, 210, 5, 38, "Input"]
+Cell[20623, 569, 150, 3, 38, "Input"],
+Cell[20776, 574, 415, 13, 64, "Input"],
+Cell[21194, 589, 346, 8, 38, "Input"],
+Cell[21543, 599, 1360, 36, 64, "Input"],
+Cell[22906, 637, 1443, 37, 89, "Input"],
+Cell[24352, 676, 1341, 28, 64, "Input"],
+Cell[25696, 706, 494, 11, 38, "Input"],
+Cell[26193, 719, 947, 24, 89, "Input"],
+Cell[27143, 745, 485, 13, 38, "Input"],
+Cell[27631, 760, 430, 9, 38, "Input"],
+Cell[28064, 771, 1388, 26, 38, "Input"],
+Cell[29455, 799, 977, 22, 64, "Input"],
+Cell[30435, 823, 971, 27, 64, "Input"],
+Cell[31409, 852, 418, 9, 38, "Input"],
+Cell[31830, 863, 1020, 23, 64, "Input"],
+Cell[32853, 888, 695, 18, 38, "Input"],
+Cell[33551, 908, 150, 3, 38, "Input"],
+Cell[33704, 913, 358, 10, 64, "Input"],
+Cell[34065, 925, 335, 9, 38, "Input"],
+Cell[34403, 936, 675, 16, 64, "Input"],
+Cell[35081, 954, 415, 10, 38, "Input"],
+Cell[35499, 966, 288, 7, 38, "Input"],
+Cell[35790, 975, 2345, 60, 214, "Input"],
+Cell[38138, 1037, 1771, 47, 189, "Input"],
+Cell[39912, 1086, 2437, 62, 189, "Input"],
+Cell[42352, 1150, 1302, 31, 114, "Input"],
+Cell[43657, 1183, 4439, 100, 289, "Input"],
+Cell[48099, 1285, 595, 19, 64, "Input"],
+Cell[48697, 1306, 378, 7, 38, "Input"],
+Cell[49078, 1315, 568, 17, 38, "Input"],
+Cell[49649, 1334, 550, 12, 64, "Input"],
+Cell[50202, 1348, 502, 13, 89, "Input"],
+Cell[50707, 1363, 2737, 72, 214, "Input"],
+Cell[53447, 1437, 2676, 70, 139, "Input"],
+Cell[56126, 1509, 2295, 63, 114, "Input"],
+Cell[58424, 1574, 2034, 55, 89, "Input"],
+Cell[60461, 1631, 1777, 44, 64, "Input"],
+Cell[62241, 1677, 410, 11, 64, "Input"],
+Cell[62654, 1690, 492, 10, 38, "Input"],
+Cell[63149, 1702, 359, 9, 38, "Input"],
+Cell[63511, 1713, 210, 4, 38, "Input"],
+Cell[63724, 1719, 3051, 76, 239, "Input"],
+Cell[66778, 1797, 979, 24, 64, "Input"],
+Cell[67760, 1823, 5210, 121, 339, "Input"],
+Cell[72973, 1946, 441, 10, 64, "Input"],
+Cell[73417, 1958, 1466, 40, 89, "Input"],
+Cell[74886, 2000, 1344, 38, 89, "Input"],
+Cell[76233, 2040, 3400, 67, 189, "Input"],
+Cell[79636, 2109, 729, 17, 64, "Input"],
+Cell[80368, 2128, 2846, 63, 189, "Input"],
+Cell[83217, 2193, 175, 4, 38, "Input"],
+Cell[83395, 2199, 538, 12, 38, "Input"],
+Cell[83936, 2213, 1443, 38, 114, "Input"],
+Cell[85382, 2253, 693, 21, 89, "Input"],
+Cell[86078, 2276, 3888, 95, 264, "Input"],
+Cell[89969, 2373, 863, 23, 64, "Input"],
+Cell[90835, 2398, 2781, 56, 64, "Input"],
+Cell[93619, 2456, 660, 12, 38, "Input"],
+Cell[94282, 2470, 1370, 39, 64, "Input"],
+Cell[95655, 2511, 929, 16, 38, "Input"],
+Cell[96587, 2529, 888, 25, 114, "Input"],
+Cell[97478, 2556, 393, 10, 38, "Input"],
+Cell[97874, 2568, 484, 12, 64, "Input"],
+Cell[98361, 2582, 210, 5, 38, "Input"]
 }
 ]
 *)

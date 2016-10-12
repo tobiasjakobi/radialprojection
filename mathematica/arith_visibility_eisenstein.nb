@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[     57578,       1659]
-NotebookOptionsPosition[     55063,       1589]
-NotebookOutlinePosition[     55420,       1605]
-CellTagsIndexPosition[     55377,       1602]
+NotebookDataLength[     58163,       1678]
+NotebookOptionsPosition[     55568,       1606]
+NotebookOutlinePosition[     55925,       1622]
+CellTagsIndexPosition[     55882,       1619]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -773,19 +773,27 @@ Cell[BoxData[
  CellChangeTimes->{{3.6836367697097263`*^9, 3.6836368050695343`*^9}}],
 
 Cell[BoxData[
- RowBox[{"Export", "[", 
-  RowBox[{"\"\</homes/tjakobi/out1.eps\>\"", ",", 
-   RowBox[{"Out", "[", "580", "]"}]}], "]"}]], "Input",
- CellChangeTimes->{{3.6836378485273933`*^9, 3.683637859561118*^9}}],
+ RowBox[{
+  RowBox[{"ClearAll", "[", "zetaES", "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.6851008336535683`*^9, 3.685100836764844*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"zetaES", "=", 
+   RowBox[{
+    RowBox[{"Zeta", "[", "2", "]"}], "*", 
+    RowBox[{"DirichletL", "[", 
+     RowBox[{"3", ",", "2", ",", "2"}], "]"}]}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"FullSimplify", "[", "zetaES", "]"}], ",", 
+   RowBox[{"N", "[", "zetaES", "]"}]}], "}"}]}], "Input"],
 
 Cell[BoxData[
  RowBox[{"N", "[", 
-  RowBox[{"1", "/", 
-   RowBox[{"(", 
-    RowBox[{
-     RowBox[{"Zeta", "[", "2", "]"}], "*", 
-     RowBox[{"DirichletL", "[", 
-      RowBox[{"3", ",", "2", ",", "2"}], "]"}]}], ")"}]}], "]"}]], "Input"],
+  RowBox[{"1", "/", "zetaES"}], "]"}]], "Input",
+ CellChangeTimes->{{3.685100787042509*^9, 3.6851007882311563`*^9}}],
 
 Cell[BoxData[
  RowBox[{
@@ -1049,8 +1057,20 @@ Cell[BoxData[
 Cell[BoxData[
  RowBox[{
   RowBox[{"ClearAll", "[", 
-   RowBox[{"intensityES", ",", "vqTableRecipES"}], "]"}], ";"}]], "Input",
- CellChangeTimes->{{3.62237138062391*^9, 3.6223713824742393`*^9}}],
+   RowBox[{"intensityES", ",", "vqTableRecipES", ",", "volumeES"}], "]"}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.62237138062391*^9, 3.6223713824742393`*^9}, {
+  3.6851010052435923`*^9, 3.685101006722939*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"volumeES", "=", 
+   RowBox[{"Det", "[", "BasisES", "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"FullSimplify", "[", "volumeES", "]"}], ",", 
+   RowBox[{"N", "[", "volumeES", "]"}]}], "}"}]}], "Input",
+ CellChangeTimes->{{3.685100852163229*^9, 3.685100873746696*^9}}],
 
 Cell[BoxData[
  RowBox[{
@@ -1073,11 +1093,7 @@ Cell[BoxData[
       RowBox[{"f", "=", 
        RowBox[{"1", "/", 
         RowBox[{"(", 
-         RowBox[{
-          RowBox[{"Det", "[", "BasisES", "]"}], "*", 
-          RowBox[{"Zeta", "[", "2", "]"}], "*", 
-          RowBox[{"DirichletL", "[", 
-           RowBox[{"3", ",", "2", ",", "2"}], "]"}]}], ")"}]}]}], ";", 
+         RowBox[{"volumeES", "*", "zetaES"}], ")"}]}]}], ";", 
       "\[IndentingNewLine]", 
       RowBox[{"prod", "=", 
        RowBox[{"Apply", "[", 
@@ -1103,7 +1119,8 @@ Cell[BoxData[
  CellChangeTimes->{{3.6223712379855843`*^9, 3.622371278332347*^9}, {
    3.622371361899747*^9, 3.622371365597156*^9}, 3.622443768244409*^9, {
    3.6229660322274513`*^9, 3.622966036270218*^9}, {3.622989901545288*^9, 
-   3.622989930405751*^9}, {3.622991014225132*^9, 3.6229910145255127`*^9}}],
+   3.622989930405751*^9}, {3.622991014225132*^9, 3.6229910145255127`*^9}, 
+   3.685100592958907*^9, 3.685100879180943*^9}],
 
 Cell[BoxData[
  RowBox[{
@@ -1635,32 +1652,34 @@ Cell[23835, 691, 414, 11, 38, "Input"],
 Cell[24252, 704, 728, 19, 64, "Input"],
 Cell[24983, 725, 802, 21, 64, "Input"],
 Cell[25788, 748, 836, 24, 64, "Input"],
-Cell[26627, 774, 213, 4, 38, "Input"],
-Cell[26843, 780, 237, 7, 38, "Input"],
-Cell[27083, 789, 667, 17, 38, "Input"],
-Cell[27753, 808, 237, 6, 38, "Input"],
-Cell[27993, 816, 1367, 38, 164, "Input"],
-Cell[29363, 856, 1353, 38, 164, "Input"],
-Cell[30719, 896, 1354, 38, 164, "Input"],
-Cell[32076, 936, 909, 26, 114, "Input"],
-Cell[32988, 964, 3031, 76, 264, "Input"],
-Cell[36022, 1042, 179, 4, 38, "Input"],
-Cell[36204, 1048, 193, 4, 38, "Input"],
-Cell[36400, 1054, 1904, 51, 164, "Input"],
-Cell[38307, 1107, 1574, 45, 64, "Input"],
-Cell[39884, 1154, 230, 6, 38, "Input"],
-Cell[40117, 1162, 2227, 62, 214, "Input"],
-Cell[42347, 1226, 427, 13, 38, "Input"],
-Cell[42777, 1241, 3345, 86, 289, "Input"],
-Cell[46125, 1329, 240, 6, 38, "Input"],
-Cell[46368, 1337, 447, 15, 38, "Input"],
-Cell[46818, 1354, 1628, 43, 189, "Input"],
-Cell[48449, 1399, 369, 10, 38, "Input"],
-Cell[48821, 1411, 1876, 46, 89, "Input"],
-Cell[50700, 1459, 798, 21, 64, "Input"],
-Cell[51501, 1482, 379, 11, 64, "Input"],
-Cell[51883, 1495, 2525, 71, 214, "Input"],
-Cell[54411, 1568, 648, 19, 64, "Input"]
+Cell[26627, 774, 152, 3, 38, "Input"],
+Cell[26782, 779, 361, 11, 64, "Input"],
+Cell[27146, 792, 150, 3, 38, "Input"],
+Cell[27299, 797, 667, 17, 38, "Input"],
+Cell[27969, 816, 237, 6, 38, "Input"],
+Cell[28209, 824, 1367, 38, 164, "Input"],
+Cell[29579, 864, 1353, 38, 164, "Input"],
+Cell[30935, 904, 1354, 38, 164, "Input"],
+Cell[32292, 944, 909, 26, 114, "Input"],
+Cell[33204, 972, 3031, 76, 264, "Input"],
+Cell[36238, 1050, 179, 4, 38, "Input"],
+Cell[36420, 1056, 264, 6, 38, "Input"],
+Cell[36687, 1064, 335, 8, 64, "Input"],
+Cell[37025, 1074, 1784, 48, 164, "Input"],
+Cell[38812, 1124, 1574, 45, 64, "Input"],
+Cell[40389, 1171, 230, 6, 38, "Input"],
+Cell[40622, 1179, 2227, 62, 214, "Input"],
+Cell[42852, 1243, 427, 13, 38, "Input"],
+Cell[43282, 1258, 3345, 86, 289, "Input"],
+Cell[46630, 1346, 240, 6, 38, "Input"],
+Cell[46873, 1354, 447, 15, 38, "Input"],
+Cell[47323, 1371, 1628, 43, 189, "Input"],
+Cell[48954, 1416, 369, 10, 38, "Input"],
+Cell[49326, 1428, 1876, 46, 89, "Input"],
+Cell[51205, 1476, 798, 21, 64, "Input"],
+Cell[52006, 1499, 379, 11, 64, "Input"],
+Cell[52388, 1512, 2525, 71, 214, "Input"],
+Cell[54916, 1585, 648, 19, 64, "Input"]
 }
 ]
 *)
