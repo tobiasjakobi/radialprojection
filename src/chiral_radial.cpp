@@ -727,7 +727,7 @@ void Chair2D::createVerticesVis(Common::vec2dlist& vertices, const llist& initia
       vec2s temp[6];
       i->getVertices(temp);
 
-      for (uint j = 0; j < 4; ++j) {
+      for (uint j = 0; j < 6; ++j) {
         const vec2s current(temp[j]);
 
         if (occupied->isVisible(current))
