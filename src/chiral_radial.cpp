@@ -921,7 +921,7 @@ int main_chair(int argc, char* argv[]) {
   using namespace Chair2D;
   using namespace Common;
 
- while (argc >= 2) {
+  while (argc >= 2) {
     const string arg(argv[1]);
     bool parsefail = false;
 
