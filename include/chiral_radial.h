@@ -113,6 +113,8 @@ namespace Chair2D {
   class chairL;
   typedef vector<chairL> llist;
 
+  typedef double (&clipfunc)(uint);
+
   class chairL {
   public:
     uint rot;
@@ -127,6 +129,12 @@ namespace Chair2D {
 
     void inflate(llist& list) const;
     void getVertices(vec2s* list) const;
+
+    /*
+     * Check if at least one vertex of the tile is inside the circle
+     * of radius 'r' around the origin.
+     */
+    bool clip(double r) const;
 
   };
 

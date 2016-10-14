@@ -91,16 +91,22 @@ namespace Chair2D {
 
   uint numL(uint l, uint steps);
   uint countL(const llist& patch, uint steps);
+  double clipradius(uint steps);
 
   void iterate(const llist& patch, uint steps, llist& output);
 
-  void constructCross(llist& crossPatch);
+  /*
+   * Variant of iterate() that applies clipping with the function 'cfnc'
+   * in each step.
+   */
+  void iterateClip(const llist& patch, uint steps,
+                   clipfunc cfnc, llist& output);
+
+  void constructCross(llist& crossPatch, bool cut);
   void minmax(const llist& patch, vec2s& min, vec2s& max);
 
-  void createVertices(Common::vec2dlist& vertices,
-                      const llist& initial, uint steps);
-  void createVerticesVis(Common::vec2dlist& vertices, const llist& initial,
-                         uint steps, bool cutAndReduce);
+  void createVertices(Common::vec2dlist& vertices, uint steps);
+  void createVerticesVis(Common::vec2dlist& vertices, uint steps, bool cut);
 
   // Cut a sector from the patch generated from inflating the cross:
   void cutSector(const Common::vec2dlist& input,
@@ -168,6 +174,19 @@ void Chair2D::chairL::getVertices(vec2s* list) const {
   list[3] = ref + vec2s(1, 1).shift(rot);
   list[4] = ref + vec2s(1, 2).shift(rot);
   list[5] = ref + vec2s(0, 2).shift(rot);
+}
+
+bool Chair2D::chairL::clip(double r) const {
+  vec2s verts[6];
+  const double rsq = r*r;
+
+  this->getVertices(verts);
+  for (uint i = 0; i < 6; ++i) {
+    if (verts[i].transZ2ToR2().lengthSquared() <= rsq)
+      return true;
+  }
+
+  return false;
 }
 
 void ChiralLB::numRhombs(uint& a, uint& b) {
@@ -587,6 +606,10 @@ uint Chair2D::countL(const llist& patch, uint steps) {
   return numL(size, steps);
 }
 
+double Chair2D::clipradius(uint steps) {
+  return sqrt(2.0) * Common::power(2.0, steps);
+}
+
 void Chair2D::iterate(const llist& patch, uint steps, llist& output) {
   const uint l = countL(patch, steps);
 
@@ -616,15 +639,57 @@ void Chair2D::iterate(const llist& patch, uint steps, llist& output) {
        << sizeof(chairL) * output.size() << " bytes.\n";
 }
 
-void Chair2D::constructCross(llist& crossPatch) {
+void Chair2D::iterateClip(const llist& patch, uint steps,
+                  clipfunc cfnc, llist& output) {
+  const uint l = countL(patch, steps); // TODO: optimize
+
+  cerr << "Starting with an initial patch of " << patch.size()
+       << " L-shaped tiles." << endl;
+  cerr << "Clipping to circular shape is done in every iteration." << endl;
+
+  llist temp, to_clip;
+  temp.reserve(l);
+
+  // Clear output, reserve enough space and add the initial patch
+  output.clear();
+  output.reserve(l);
+  output.insert(output.end(), patch.begin(), patch.end());
+
+  for (uint i = 0; i < steps; ++i) {
+    const double cr = cfnc(i + 1);
+    temp.clear();
+
+    for (llist::const_iterator j = output.begin(); j != output.end(); ++j) {
+      to_clip.clear();
+      j->inflate(to_clip);
+
+      for (llist::const_iterator k = to_clip.begin(); k != to_clip.end(); ++k) {
+        if (k->clip(cr))
+          temp.push_back(*k);
+      }
+    }
+
+    output.swap(temp);
+  }
+
+  cerr << "After " << steps << " inflation steps the resulting patch has "
+       << l << " L-shaped tiles.\n";
+  cerr << "Amount of space used by data structures is "
+       << sizeof(chairL) * output.size() << " bytes.\n";
+}
+
+void Chair2D::constructCross(llist& crossPatch, bool cut) {
 
   crossPatch.clear();
-  crossPatch.reserve(4);
+  crossPatch.reserve(cut ? 1 : 4);
 
   crossPatch.push_back(chairL(0, vec2s()));
-  crossPatch.push_back(chairL(1, vec2s()));
-  crossPatch.push_back(chairL(2, vec2s()));
-  crossPatch.push_back(chairL(3, vec2s()));
+
+  if (!cut) {
+    crossPatch.push_back(chairL(1, vec2s()));
+    crossPatch.push_back(chairL(2, vec2s()));
+    crossPatch.push_back(chairL(3, vec2s()));
+  }
 }
 
 void Chair2D::minmax(const llist& patch, vec2s& min, vec2s& max) {
@@ -645,13 +710,12 @@ void Chair2D::minmax(const llist& patch, vec2s& min, vec2s& max) {
   }
 }
 
-void Chair2D::createVertices(Common::vec2dlist& vertices,
-               const llist& initial, uint steps) {
-  if (initial.empty())
-    return;
+void Chair2D::createVertices(Common::vec2dlist& vertices, uint steps) {
+  llist seed;
+  constructCross(seed, false);
 
   llist* patch = new llist;
-  iterate(initial, steps, *patch);
+  iterate(seed, steps, *patch);
 
   {
     vec2s min, max;
@@ -660,7 +724,7 @@ void Chair2D::createVertices(Common::vec2dlist& vertices,
   }
 
   vec2slist verts;
-  verts.reserve(double(countL(initial, steps)) * 3.0);
+  verts.reserve(double(countL(seed, steps)) * 3.0);
 
   for (llist::const_iterator i = patch->begin(); i != patch->end(); ++i) {
     vec2s temp[6];
@@ -686,21 +750,31 @@ void Chair2D::createVertices(Common::vec2dlist& vertices,
     vertices.push_back(i->transZ2ToR2());
 }
 
-void Chair2D::createVerticesVis(Common::vec2dlist& vertices, const llist& initial,
-                       uint steps, bool cutAndReduce) {
-  if (initial.empty())
-    return;
+void Chair2D::createVerticesVis(Common::vec2dlist& vertices,
+        uint steps, bool cut) {
+  llist seed;
+  constructCross(seed, cut);
 
   llist* patch = new llist;
-  iterate(initial, steps, *patch);
+
+  if (cut)
+    iterateClip(seed, steps, clipradius, *patch);
+  else
+    iterate(seed, steps, *patch);
+
+  {
+    vec2s min, max;
+    minmax(*patch, min, max);
+    cerr << "statistics: min = " << min << ", max = " << max << endl;
+  }
 
   vec2slist verts;
-  verts.reserve(double(countL(initial, steps)) * 3.0 * (cutAndReduce ? 0.25 : 1.0));
+  verts.reserve(double(countL(seed, steps)) * 3.0);
 
   // create a "occupation" map of the tiling vertices
   VisibilityMap* occupied = new VisibilityMap(*patch, steps);
 
-  if (cutAndReduce) {
+  if (cut) {
     cerr << "info: trimming the tiling into a circular area\n";
     const double cutoff = sqrt(2.0) * Common::power(2.0, steps);
     for (llist::const_iterator i = patch->begin(); i != patch->end(); ++i) {
@@ -956,9 +1030,6 @@ int main_chair(int argc, char* argv[]) {
     }
   }
 
-  llist initialChair;
-  constructCross(initialChair);
-
   llist tiles;
   vec2dlist verts;
   dlist spacings;
@@ -968,8 +1039,12 @@ int main_chair(int argc, char* argv[]) {
   switch (mode) {
   // Output rhomb data in Mathematica style (cut is ignored)
   case 0:
-    iterate(initialChair, steps, tiles);
-    minmax(tiles, min, max);
+    {
+      llist seed;
+      constructCross(seed, true);
+      iterate(seed, steps, tiles);
+      minmax(tiles, min, max);
+    }
 
     cerr << "statistics: min = " << min << ", max = " << max << endl;
     cout << tiles;
@@ -978,16 +1053,16 @@ int main_chair(int argc, char* argv[]) {
   // Output vertex data in Mathematica style
   case 1:
     if (visible_vertex)
-      createVerticesVis(verts, initialChair, steps, cut);
+      createVerticesVis(verts, steps, cut);
     else
-      createVertices(verts, initialChair, steps);
+      createVertices(verts, steps);
 
     cout << verts;
     break;
 
   // Do radial projection and output data in raw mode
   case 2:
-    createVerticesVis(verts, initialChair, steps, cut);
+    createVerticesVis(verts, steps, cut);
     radialProj(verts, spacings, mean);
 
     meanDistanceMessage(verts.size(), mean);
