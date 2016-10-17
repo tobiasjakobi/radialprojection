@@ -80,30 +80,33 @@ namespace ChiralLB {
 namespace Chair2D {
 
   typedef vector<vec2s> vec2slist;
+  typedef chairL<vec2s> item_type;
+  typedef item_type::list_type list_type;
 
-  ostream& operator<<(ostream &os, const chairL& l) {
+  template <typename T>
+  ostream& operator<<(ostream &os, const chairL<T>& l) {
     os << '{'
-       << l.ref << ',' << l.rot
+       << l.getRef() << ',' << l.getRot()
        << '}';
 
     return os;
   }
 
   uint numL(uint l, uint steps);
-  uint countL(const llist& patch, uint steps);
+  uint countL(const list_type& patch, uint steps);
   double clipradius(uint steps);
 
-  void iterate(const llist& patch, uint steps, llist& output);
+  void iterate(const list_type& patch, uint steps, list_type& output);
 
   /*
    * Variant of iterate() that applies clipping with the function 'cfnc'
    * in each step.
    */
-  void iterateClip(const llist& patch, uint steps,
-                   clipfunc cfnc, llist& output);
+  void iterateClip(const list_type& patch, uint steps,
+                   clipfunc cfnc, list_type& output);
 
-  void constructCross(llist& crossPatch, bool cut);
-  void minmax(const llist& patch, vec2s& min, vec2s& max);
+  void constructCross(list_type& crossPatch, bool cut);
+  void minmax(const list_type& patch, vec2s& min, vec2s& max);
 
   void createVertices(Common::vec2dlist& vertices, uint steps);
   void createVerticesVis(Common::vec2dlist& vertices, uint steps, bool cut);
@@ -156,16 +159,18 @@ vec8s ChiralLB::rhomb::midpoint() const {
     return scaled + (vec8s(18) + vec8s(10)).shift(rot);
 }
 
-void Chair2D::chairL::inflate(llist& list) const {
-  const vec2s newref(ref * 2);
+template <typename T>
+void Chair2D::chairL<T>::inflate(list_type& list) const {
+  const T newref(ref * 2);
 
-  list.push_back(chairL(rot + 0, newref));
-  list.push_back(chairL(rot + 0, newref + vec2s(1, 1).shift(rot)));
-  list.push_back(chairL(rot + 1, newref + vec2s(4, 0).shift(rot)));
-  list.push_back(chairL(rot + 3, newref + vec2s(0, 4).shift(rot)));
+  list.push_back(item_type(rot + 0, newref));
+  list.push_back(item_type(rot + 0, newref + vec2s(1, 1).shift(rot)));
+  list.push_back(item_type(rot + 1, newref + vec2s(4, 0).shift(rot)));
+  list.push_back(item_type(rot + 3, newref + vec2s(0, 4).shift(rot)));
 }
 
-void Chair2D::chairL::getVertices(vec2s* list) const {
+template <typename T>
+void Chair2D::chairL<T>::getVertices(T* list) const {
   assert(list != NULL);
 
   list[0] = ref;
@@ -176,8 +181,9 @@ void Chair2D::chairL::getVertices(vec2s* list) const {
   list[5] = ref + vec2s(0, 2).shift(rot);
 }
 
-bool Chair2D::chairL::clip(double r) const {
-  vec2s verts[6];
+template <typename T>
+bool Chair2D::chairL<T>::clip(double r) const {
+  T verts[6];
   const double rsq = r*r;
 
   this->getVertices(verts);
@@ -600,7 +606,7 @@ uint Chair2D::numL(uint l, uint steps) {
   return l;
 }
 
-uint Chair2D::countL(const llist& patch, uint steps) {
+uint Chair2D::countL(const list_type& patch, uint steps) {
   const uint size = patch.size();
 
   return numL(size, steps);
@@ -610,13 +616,13 @@ double Chair2D::clipradius(uint steps) {
   return sqrt(2.0) * Common::power(2.0, steps);
 }
 
-void Chair2D::iterate(const llist& patch, uint steps, llist& output) {
+void Chair2D::iterate(const list_type& patch, uint steps, list_type& output) {
   const uint l = countL(patch, steps);
 
   cerr << "Starting with an initial patch of " << patch.size()
        << " L-shaped tiles.\n";
 
-  llist temp;
+  list_type temp;
   temp.reserve(l);
 
   // Clear output, reserve enough space and add the initial patch
@@ -627,7 +633,7 @@ void Chair2D::iterate(const llist& patch, uint steps, llist& output) {
   for (uint i = 0; i < steps; ++i) {
     temp.clear();
 
-    for (llist::const_iterator j = output.begin(); j != output.end(); ++j)
+    for (list_type::const_iterator j = output.begin(); j != output.end(); ++j)
       j->inflate(temp);
 
     output.swap(temp);
@@ -636,11 +642,11 @@ void Chair2D::iterate(const llist& patch, uint steps, llist& output) {
   cerr << "After " << steps << " inflation steps the resulting patch has "
        << l << " L-shaped tiles.\n";
   cerr << "Amount of space used by data structures is "
-       << sizeof(chairL) * output.size() << " bytes.\n";
+       << sizeof(item_type) * output.size() << " bytes.\n";
 }
 
-void Chair2D::iterateClip(const llist& patch, uint steps,
-                  clipfunc cfnc, llist& output) {
+void Chair2D::iterateClip(const list_type& patch, uint steps,
+                  clipfunc cfnc, list_type& output) {
   const uint l = double(countL(patch, steps)) * 0.6;
 
   cerr << "Starting with an initial patch of " << patch.size()
@@ -648,7 +654,7 @@ void Chair2D::iterateClip(const llist& patch, uint steps,
   cerr << "Clipping to circular shape is done in every iteration." << endl;
   cerr << "Allocated storage for " << l << " L-shaped tiles." << endl;
 
-  llist temp, to_clip;
+  list_type temp, to_clip;
   temp.reserve(l);
 
   // Clear output, reserve enough space and add the initial patch
@@ -660,11 +666,11 @@ void Chair2D::iterateClip(const llist& patch, uint steps,
     const double cr = cfnc(i + 1);
     temp.clear();
 
-    for (llist::const_iterator j = output.begin(); j != output.end(); ++j) {
+    for (list_type::const_iterator j = output.begin(); j != output.end(); ++j) {
       to_clip.clear();
       j->inflate(to_clip);
 
-      for (llist::const_iterator k = to_clip.begin(); k != to_clip.end(); ++k) {
+      for (list_type::const_iterator k = to_clip.begin(); k != to_clip.end(); ++k) {
         if (k->clip(cr))
           temp.push_back(*k);
       }
@@ -678,29 +684,28 @@ void Chair2D::iterateClip(const llist& patch, uint steps,
        << (100.0 * double(output.size()) / double(l))
        << " percent of allocated storage used)." << endl;
   cerr << "Amount of space used by data structures is "
-       << sizeof(chairL) * output.size() << " bytes.\n";
+       << sizeof(item_type) * output.size() << " bytes.\n";
 }
 
-void Chair2D::constructCross(llist& crossPatch, bool cut) {
-
+void Chair2D::constructCross(list_type& crossPatch, bool cut) {
   crossPatch.clear();
   crossPatch.reserve(cut ? 1 : 4);
 
-  crossPatch.push_back(chairL(0, vec2s()));
+  crossPatch.push_back(item_type(0, vec2s()));
 
   if (!cut) {
-    crossPatch.push_back(chairL(1, vec2s()));
-    crossPatch.push_back(chairL(2, vec2s()));
-    crossPatch.push_back(chairL(3, vec2s()));
+    crossPatch.push_back(item_type(1, vec2s()));
+    crossPatch.push_back(item_type(2, vec2s()));
+    crossPatch.push_back(item_type(3, vec2s()));
   }
 }
 
-void Chair2D::minmax(const llist& patch, vec2s& min, vec2s& max) {
+void Chair2D::minmax(const list_type& patch, vec2s& min, vec2s& max) {
   min.set(0, 0);
   max.set(0, 0);
 
-  for (llist::const_iterator i = patch.begin(); i != patch.end(); ++i) {
-    const vec2s& ref = i->ref;
+  for (list_type::const_iterator i = patch.begin(); i != patch.end(); ++i) {
+    const vec2s& ref = i->getRef();
     for (uint j = 0; j < 2; ++j) {
       if (ref[j] > max[j]) {
         max[j] = ref[j];
@@ -714,10 +719,10 @@ void Chair2D::minmax(const llist& patch, vec2s& min, vec2s& max) {
 }
 
 void Chair2D::createVertices(Common::vec2dlist& vertices, uint steps) {
-  llist seed;
+  list_type seed;
   constructCross(seed, false);
 
-  llist* patch = new llist;
+  list_type* patch = new list_type;
   iterate(seed, steps, *patch);
 
   {
@@ -729,7 +734,7 @@ void Chair2D::createVertices(Common::vec2dlist& vertices, uint steps) {
   vec2slist verts;
   verts.reserve(double(countL(seed, steps)) * 3.0);
 
-  for (llist::const_iterator i = patch->begin(); i != patch->end(); ++i) {
+  for (list_type::const_iterator i = patch->begin(); i != patch->end(); ++i) {
     vec2s temp[6];
     i->getVertices(temp);
 
@@ -755,10 +760,10 @@ void Chair2D::createVertices(Common::vec2dlist& vertices, uint steps) {
 
 void Chair2D::createVerticesVis(Common::vec2dlist& vertices,
         uint steps, bool cut) {
-  llist seed;
+  list_type seed;
   constructCross(seed, cut);
 
-  llist* patch = new llist;
+  list_type* patch = new list_type;
 
   if (cut)
     iterateClip(seed, steps, clipradius, *patch);
@@ -780,7 +785,7 @@ void Chair2D::createVerticesVis(Common::vec2dlist& vertices,
   if (cut) {
     cerr << "info: trimming the tiling into a circular area\n";
     const double cutoff = sqrt(2.0) * Common::power(2.0, steps);
-    for (llist::const_iterator i = patch->begin(); i != patch->end(); ++i) {
+    for (list_type::const_iterator i = patch->begin(); i != patch->end(); ++i) {
       vec2s temp[6];
       i->getVertices(temp);
 
@@ -800,7 +805,7 @@ void Chair2D::createVerticesVis(Common::vec2dlist& vertices,
       }
     }
   } else {
-    for (llist::const_iterator i = patch->begin(); i != patch->end(); ++i) {
+    for (list_type::const_iterator i = patch->begin(); i != patch->end(); ++i) {
       vec2s temp[6];
       i->getVertices(temp);
 
@@ -1046,7 +1051,7 @@ int main_chair(int argc, char* argv[]) {
     return 1;
   }
 
-  llist tiles;
+  list_type tiles;
   vec2dlist verts;
   dlist spacings;
   double mean;
@@ -1056,7 +1061,7 @@ int main_chair(int argc, char* argv[]) {
   // Output rhomb data in Mathematica style (cut is ignored)
   case 0:
     {
-      llist seed;
+      list_type seed;
       constructCross(seed, true);
       iterate(seed, steps, tiles);
       minmax(tiles, min, max);

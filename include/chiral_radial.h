@@ -110,25 +110,28 @@ namespace ChiralLB {
 
 namespace Chair2D {
 
-  class chairL;
-  typedef vector<chairL> llist;
-
   typedef double (&clipfunc)(uint);
 
+  template <typename T>
   class chairL {
-  public:
+  private:
+    typedef chairL<T> item_type;
+
     uint rot;
-    vec2s ref;
+    T ref;
+
+  public:
+    typedef vector<item_type> list_type;
 
     chairL() : rot(0), ref() {}
+    chairL(uint r, const T& v) : rot(r), ref(v) {}
+    chairL(const item_type& l) : rot(l.rot), ref(l.ref) {}
 
-    chairL(uint r, const vec2s& v) : rot(r), ref(v) {}
+    uint getRot() const { return rot; }
+    const T& getRef() const { return ref; }
 
-    chairL(const chairL& l) : rot(l.rot),
-                              ref(l.ref) {}
-
-    void inflate(llist& list) const;
-    void getVertices(vec2s* list) const;
+    void inflate(list_type& list) const;
+    void getVertices(T* list) const;
 
     /*
      * Check if at least one vertex of the tile is inside the circle
@@ -139,6 +142,9 @@ namespace Chair2D {
   };
 
   class VisibilityMap {
+  public:
+    typedef chairL<vec2s>::list_type list_type;
+
   private:
     typedef vector<bool> boolvec;
     typedef boolvec::size_type bvsz;
@@ -168,7 +174,7 @@ namespace Chair2D {
 
   public:
     // constructor
-    VisibilityMap(const llist& patch, uint steps) {
+    VisibilityMap(const list_type& patch, uint steps) {
       range = 2 * Common::ipower(2, steps);
 
       assert(range <= numeric_limits<int>::max());
@@ -178,7 +184,7 @@ namespace Chair2D {
 
       vmap.resize(size, false);
 
-      for (llist::const_iterator i = patch.begin(); i != patch.end(); ++i) {
+      for (list_type::const_iterator i = patch.begin(); i != patch.end(); ++i) {
         vec2s temp[6];
         i->getVertices(temp);
 
@@ -222,7 +228,8 @@ namespace Chair2D {
 
   };
 
-  ostream& operator<<(ostream &os, const chairL& l);
+  template <typename T>
+  ostream& operator<<(ostream &os, const chairL<T>& l);
 
 };
 
