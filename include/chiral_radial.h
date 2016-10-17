@@ -181,7 +181,7 @@ namespace Chair2D {
     VisibilityMap(const list_type& patch, uint steps) {
       range = 2 * Common::ipower(2, steps);
 
-      assert(range <= numeric_limits<int>::max());
+      assert(range <= bvsz(numeric_limits<int>::max()));
 
       rowlen = 2 * range + 1;
       size = rowlen * rowlen;
