@@ -32,6 +32,10 @@ double Common::RadiusSelector::radiusSq = 0.0;
 
 const mtx2x2i mtx2x2i::identity(1, 0, 0, 1);
 
+vec2d vec2i::transZ2ToR2() const {
+  return vec2d(double(x), double(y));
+}
+
 vec2i vec2i::multUnitGM(int k) const {
   int a = x;
   int b = y;

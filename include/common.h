@@ -104,6 +104,41 @@ public:
     return vec2i(x + v.x, y + v.y);
   }
 
+  vec2i operator*(int val) const {
+    return vec2i(x * val, y * val);
+  }
+
+  int operator[](uint i) const {
+    assert(i < 2);
+    if (i == 0)
+      return x;
+    else
+      return y;
+  }
+
+  int& operator[](uint i) {
+    assert(i < 2);
+    if (i == 0)
+      return x;
+    else
+      return y;
+  }
+
+  vec2d transZ2ToR2() const;
+
+  vec2i shift(ushort r) const {
+    r %= 4;
+
+    int res[2] = {x, y};
+    for (uint i = 0; i < r; ++i) {
+      const int temp = res[0];
+      res[0] = -res[1];
+      res[1] = temp;
+    }
+
+    return vec2i(res[0], res[1]);
+  }
+
   void set(int a, int b) {
     x = a; y = b;
   }
