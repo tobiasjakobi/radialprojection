@@ -641,11 +641,12 @@ void Chair2D::iterate(const llist& patch, uint steps, llist& output) {
 
 void Chair2D::iterateClip(const llist& patch, uint steps,
                   clipfunc cfnc, llist& output) {
-  const uint l = countL(patch, steps); // TODO: optimize
+  const uint l = double(countL(patch, steps)) * 0.6;
 
   cerr << "Starting with an initial patch of " << patch.size()
        << " L-shaped tiles." << endl;
   cerr << "Clipping to circular shape is done in every iteration." << endl;
+  cerr << "Allocated storage for " << l << " L-shaped tiles." << endl;
 
   llist temp, to_clip;
   temp.reserve(l);
@@ -673,7 +674,9 @@ void Chair2D::iterateClip(const llist& patch, uint steps,
   }
 
   cerr << "After " << steps << " inflation steps the resulting patch has "
-       << l << " L-shaped tiles.\n";
+       << output.size() << " L-shaped tiles ("
+       << (100.0 * double(output.size()) / double(l))
+       << " percent of allocated storage used)." << endl;
   cerr << "Amount of space used by data structures is "
        << sizeof(chairL) * output.size() << " bytes.\n";
 }
