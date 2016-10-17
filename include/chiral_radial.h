@@ -121,6 +121,7 @@ namespace Chair2D {
     T ref;
 
   public:
+    typedef T coord_type;
     typedef vector<item_type> list_type;
 
     chairL() : rot(0), ref() {}
@@ -141,9 +142,12 @@ namespace Chair2D {
 
   };
 
+  template <typename T>
   class VisibilityMap {
   public:
-    typedef chairL<vec2s>::list_type list_type;
+    typedef typename T::coord_type coord_type;
+    typedef typename T::list_type list_type;
+    typedef typename list_type::const_iterator iter_type;
 
   private:
     typedef vector<bool> boolvec;
@@ -152,7 +156,7 @@ namespace Chair2D {
     bvsz range, rowlen, size;
     boolvec vmap;
 
-    bool access(const vec2s& v) const {
+    bool access(const coord_type& v) const {
       assert((v[0] + int(range)) >= 0 && (v[1] + int(range)) >= 0);
 
       const bvsz pos = (v[1] + range) * rowlen + (v[0] + range);
@@ -162,7 +166,7 @@ namespace Chair2D {
       return vmap[pos];
     }
 
-    void set(const vec2s& v) {
+    void set(const coord_type& v) {
       assert((v[0] + int(range)) >= 0 && (v[1] + int(range)) >= 0);
 
       const bvsz pos = (v[1] + range) * rowlen + (v[0] + range);
@@ -184,8 +188,8 @@ namespace Chair2D {
 
       vmap.resize(size, false);
 
-      for (list_type::const_iterator i = patch.begin(); i != patch.end(); ++i) {
-        vec2s temp[6];
+      for (iter_type i = patch.begin(); i != patch.end(); ++i) {
+        coord_type temp[6];
         i->getVertices(temp);
 
         for (uint j = 0; j < 6; ++j)
@@ -200,7 +204,7 @@ namespace Chair2D {
     VisibilityMap(const VisibilityMap& vm) : range(vm.range), rowlen(vm.rowlen),
       size(vm.size), vmap(vm.vmap) {}
 
-    bool isVisible(const vec2s& v) const {
+    bool isVisible(const coord_type& v) const {
       if (v[0] == 0 && v[1] == 0)
         return false;
 
@@ -216,7 +220,7 @@ namespace Chair2D {
        * Indeed this does make a difference to the radial projection if this correct    *
        * method is used (instead of the "naive" (and wrong) gcd-only test).             */
 
-      const vec2s primitive(v[0] / agcd, v[1] / agcd);
+      const coord_type primitive(v[0] / agcd, v[1] / agcd);
 
       for (int k = 1; k < agcd; ++k) {
         if (access(primitive * k))

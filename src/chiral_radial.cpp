@@ -780,7 +780,7 @@ void Chair2D::createVerticesVis(Common::vec2dlist& vertices,
   verts.reserve(double(countL(seed, steps)) * 3.0);
 
   // create a "occupation" map of the tiling vertices
-  VisibilityMap* occupied = new VisibilityMap(*patch, steps);
+  VisibilityMap<item_type>* occupied = new VisibilityMap<item_type>(*patch, steps);
 
   if (cut) {
     cerr << "info: trimming the tiling into a circular area\n";
