@@ -712,15 +712,12 @@ void Chair2D::constructCross(list_type& crossPatch, bool cut) {
   crossPatch.clear();
   crossPatch.reserve(cut ? 1 : 4);
 
-  // TODO: what about class coord_type that don't initialize
-  //       themself when using the default constructor?
-
-  crossPatch.push_back(item_type(0, coord_type()));
+  crossPatch.push_back(item_type(0, coord_type(0, 0)));
 
   if (!cut) {
-    crossPatch.push_back(item_type(1, coord_type()));
-    crossPatch.push_back(item_type(2, coord_type()));
-    crossPatch.push_back(item_type(3, coord_type()));
+    crossPatch.push_back(item_type(1, coord_type(0, 0)));
+    crossPatch.push_back(item_type(2, coord_type(0, 0)));
+    crossPatch.push_back(item_type(3, coord_type(0, 0)));
   }
 }
 
