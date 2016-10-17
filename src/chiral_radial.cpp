@@ -18,6 +18,20 @@
 #include <sstream>
 #include <algorithm>
 
+/*
+ * Remove this define to enable large data structures for the coordinates
+ * used to create patches for the planar chair tiling.
+ *
+ * The regular structures use signed short integers, which work up to a
+ * inflation factor of 14, but overflow for higher factors.
+ * Removing this define essentially replaces the shorts with regular 32-bit
+ * signed integers.
+ *
+ * Be aware that an inflation factor 15 already consumes more than 6GB of
+ * system memory during construction.
+ */
+#define CHAIR_2D_LARGE_DISABLE
+
 namespace ChiralLB {
 
   // Inflation factor:
@@ -79,8 +93,13 @@ namespace ChiralLB {
 
 namespace Chair2D {
 
-  typedef vector<vec2s> vec2slist;
-  typedef chairL<vec2s> item_type;
+#ifdef CHAIR_2D_LARGE_DISABLE
+  typedef vec2s coord_type;
+#else
+  typedef vec2i coord_type;
+#endif
+
+  typedef chairL<coord_type> item_type;
   typedef item_type::list_type list_type;
 
   template <typename T>
@@ -106,7 +125,7 @@ namespace Chair2D {
                    clipfunc cfnc, list_type& output);
 
   void constructCross(list_type& crossPatch, bool cut);
-  void minmax(const list_type& patch, vec2s& min, vec2s& max);
+  void minmax(const list_type& patch, coord_type& min, coord_type& max);
 
   void createVertices(Common::vec2dlist& vertices, uint steps);
   void createVerticesVis(Common::vec2dlist& vertices, uint steps, bool cut);
@@ -161,12 +180,12 @@ vec8s ChiralLB::rhomb::midpoint() const {
 
 template <typename T>
 void Chair2D::chairL<T>::inflate(list_type& list) const {
-  const T newref(ref * 2);
+  const coord_type newref(ref * 2);
 
   list.push_back(item_type(rot + 0, newref));
-  list.push_back(item_type(rot + 0, newref + vec2s(1, 1).shift(rot)));
-  list.push_back(item_type(rot + 1, newref + vec2s(4, 0).shift(rot)));
-  list.push_back(item_type(rot + 3, newref + vec2s(0, 4).shift(rot)));
+  list.push_back(item_type(rot + 0, newref + coord_type(1, 1).shift(rot)));
+  list.push_back(item_type(rot + 1, newref + coord_type(4, 0).shift(rot)));
+  list.push_back(item_type(rot + 3, newref + coord_type(0, 4).shift(rot)));
 }
 
 template <typename T>
@@ -174,16 +193,16 @@ void Chair2D::chairL<T>::getVertices(T* list) const {
   assert(list != NULL);
 
   list[0] = ref;
-  list[1] = ref + vec2s(2, 0).shift(rot);
-  list[2] = ref + vec2s(2, 1).shift(rot);
-  list[3] = ref + vec2s(1, 1).shift(rot);
-  list[4] = ref + vec2s(1, 2).shift(rot);
-  list[5] = ref + vec2s(0, 2).shift(rot);
+  list[1] = ref + coord_type(2, 0).shift(rot);
+  list[2] = ref + coord_type(2, 1).shift(rot);
+  list[3] = ref + coord_type(1, 1).shift(rot);
+  list[4] = ref + coord_type(1, 2).shift(rot);
+  list[5] = ref + coord_type(0, 2).shift(rot);
 }
 
 template <typename T>
 bool Chair2D::chairL<T>::clip(double r) const {
-  T verts[6];
+  coord_type verts[6];
   const double rsq = r*r;
 
   this->getVertices(verts);
@@ -688,24 +707,29 @@ void Chair2D::iterateClip(const list_type& patch, uint steps,
 }
 
 void Chair2D::constructCross(list_type& crossPatch, bool cut) {
+  typedef item_type::coord_type coord_type;
+
   crossPatch.clear();
   crossPatch.reserve(cut ? 1 : 4);
 
-  crossPatch.push_back(item_type(0, vec2s()));
+  // TODO: what about class coord_type that don't initialize
+  //       themself when using the default constructor?
+
+  crossPatch.push_back(item_type(0, coord_type()));
 
   if (!cut) {
-    crossPatch.push_back(item_type(1, vec2s()));
-    crossPatch.push_back(item_type(2, vec2s()));
-    crossPatch.push_back(item_type(3, vec2s()));
+    crossPatch.push_back(item_type(1, coord_type()));
+    crossPatch.push_back(item_type(2, coord_type()));
+    crossPatch.push_back(item_type(3, coord_type()));
   }
 }
 
-void Chair2D::minmax(const list_type& patch, vec2s& min, vec2s& max) {
+void Chair2D::minmax(const list_type& patch, coord_type& min, coord_type& max) {
   min.set(0, 0);
   max.set(0, 0);
 
   for (list_type::const_iterator i = patch.begin(); i != patch.end(); ++i) {
-    const vec2s& ref = i->getRef();
+    const coord_type& ref = i->getRef();
     for (uint j = 0; j < 2; ++j) {
       if (ref[j] > max[j]) {
         max[j] = ref[j];
@@ -719,6 +743,9 @@ void Chair2D::minmax(const list_type& patch, vec2s& min, vec2s& max) {
 }
 
 void Chair2D::createVertices(Common::vec2dlist& vertices, uint steps) {
+  typedef vector<coord_type> vertexlist_type;
+  typedef vertexlist_type::const_iterator iter_type;
+
   list_type seed;
   constructCross(seed, false);
 
@@ -726,16 +753,16 @@ void Chair2D::createVertices(Common::vec2dlist& vertices, uint steps) {
   iterate(seed, steps, *patch);
 
   {
-    vec2s min, max;
+    coord_type min, max;
     minmax(*patch, min, max);
     cerr << "statistics: min = " << min << ", max = " << max << endl;
   }
 
-  vec2slist verts;
+  vertexlist_type verts;
   verts.reserve(double(countL(seed, steps)) * 3.0);
 
   for (list_type::const_iterator i = patch->begin(); i != patch->end(); ++i) {
-    vec2s temp[6];
+    coord_type temp[6];
     i->getVertices(temp);
 
     for (uint j = 0; j < 6; ++j)
@@ -754,12 +781,15 @@ void Chair2D::createVertices(Common::vec2dlist& vertices, uint steps) {
 
   vertices.clear();
   vertices.reserve(verts.size());
-  for (vec2slist::const_iterator i = verts.begin(); i != verts.end(); ++i)
+  for (iter_type i = verts.begin(); i != verts.end(); ++i)
     vertices.push_back(i->transZ2ToR2());
 }
 
 void Chair2D::createVerticesVis(Common::vec2dlist& vertices,
         uint steps, bool cut) {
+  typedef vector<coord_type> vertexlist_type;
+  typedef vertexlist_type::const_iterator iter_type;
+
   list_type seed;
   constructCross(seed, cut);
 
@@ -771,12 +801,12 @@ void Chair2D::createVerticesVis(Common::vec2dlist& vertices,
     iterate(seed, steps, *patch);
 
   {
-    vec2s min, max;
+    coord_type min, max;
     minmax(*patch, min, max);
     cerr << "statistics: min = " << min << ", max = " << max << endl;
   }
 
-  vec2slist verts;
+  vertexlist_type verts;
   verts.reserve(double(countL(seed, steps)) * 3.0);
 
   // create a "occupation" map of the tiling vertices
@@ -786,11 +816,11 @@ void Chair2D::createVerticesVis(Common::vec2dlist& vertices,
     cerr << "info: trimming the tiling into a circular area\n";
     const double cutoff = sqrt(2.0) * Common::power(2.0, steps);
     for (list_type::const_iterator i = patch->begin(); i != patch->end(); ++i) {
-      vec2s temp[6];
+      coord_type temp[6];
       i->getVertices(temp);
 
       for (uint j = 0; j < 6; ++j) {
-        const vec2s current(temp[j]);
+        const coord_type current(temp[j]);
 
         // check for visibility
         if (!occupied->isVisible(current)) continue;
@@ -806,11 +836,11 @@ void Chair2D::createVerticesVis(Common::vec2dlist& vertices,
     }
   } else {
     for (list_type::const_iterator i = patch->begin(); i != patch->end(); ++i) {
-      vec2s temp[6];
+      coord_type temp[6];
       i->getVertices(temp);
 
       for (uint j = 0; j < 6; ++j) {
-        const vec2s current(temp[j]);
+        const coord_type current(temp[j]);
 
         if (occupied->isVisible(current))
           verts.push_back(current);
@@ -833,7 +863,7 @@ void Chair2D::createVerticesVis(Common::vec2dlist& vertices,
 
   vertices.clear();
   vertices.reserve(verts.size());
-  for (vec2slist::const_iterator i = verts.begin(); i != verts.end(); ++i)
+  for (iter_type i = verts.begin(); i != verts.end(); ++i)
     vertices.push_back(i->transZ2ToR2());
 }
 
@@ -1038,6 +1068,7 @@ int main_chair(int argc, char* argv[]) {
     }
   }
 
+#ifdef CHAIR_2D_LARGE_DISABLE
   /*
    * We use signed shorts in the data structure for the tiles of the
    * planar chair tiling to keep memory usage low.
@@ -1050,12 +1081,13 @@ int main_chair(int argc, char* argv[]) {
     cerr << "error: maximum number of steps is 14 (at the moment)" << endl;
     return 1;
   }
+#endif
 
   list_type tiles;
   vec2dlist verts;
   dlist spacings;
   double mean;
-  vec2s min, max;
+  coord_type min, max;
 
   switch (mode) {
   // Output rhomb data in Mathematica style (cut is ignored)
