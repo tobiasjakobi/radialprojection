@@ -141,23 +141,27 @@ namespace Chair2D {
   class VisibilityMap {
   private:
     typedef vector<bool> boolvec;
+    typedef boolvec::size_type bvsz;
 
-    uint range, rowlen, size;
+    bvsz range, rowlen, size;
     boolvec vmap;
 
     bool access(const vec2s& v) const {
-      const int r = range;
-      const int pos = (v[1] + r) * int(rowlen) + (v[0] + r);
+      assert((v[0] + int(range)) >= 0 && (v[1] + int(range)) >= 0);
 
-      assert(pos >= 0 && pos < int(size));
+      const bvsz pos = (v[1] + range) * rowlen + (v[0] + range);
+
+      assert(pos < size);
 
       return vmap[pos];
     }
 
     void set(const vec2s& v) {
-      const int r = range;
-      const int pos = (v[1] + r) * int(rowlen) + (v[0] + r);
-      assert(pos >= 0 && pos < int(size));
+      assert((v[0] + int(range)) >= 0 && (v[1] + int(range)) >= 0);
+
+      const bvsz pos = (v[1] + range) * rowlen + (v[0] + range);
+
+      assert(pos < size);
 
       vmap[pos] = true;
     }
@@ -166,6 +170,9 @@ namespace Chair2D {
     // constructor
     VisibilityMap(const llist& patch, uint steps) {
       range = 2 * Common::ipower(2, steps);
+
+      assert(range <= numeric_limits<int>::max());
+
       rowlen = 2 * range + 1;
       size = rowlen * rowlen;
 
