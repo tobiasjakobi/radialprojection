@@ -162,19 +162,19 @@ public:
   }
 
   vec2i conjZ2() const {
-    return vec2i(this->x, -this->y);
+    return vec2i(x, -y);
   }
 
   vec2i conjGI() const {
-    return vec2i(this->x, -this->y);
+    return vec2i(x, -y);
   }
 
   vec2i conjES() const {
-    return vec2i(this->x - this->y, -this->y);
+    return vec2i(x - y, -y);
   }
 
   vec2i conjGM() const {
-    return vec2i(this->x + this->y, -this->y);
+    return vec2i(x + y, -y);
   }
 
   // Squaring in Z[Sqrt[2]]
