@@ -1033,6 +1033,19 @@ int main_chair(int argc, char* argv[]) {
     }
   }
 
+  /*
+   * We use signed shorts in the data structure for the tiles of the
+   * planar chair tiling to keep memory usage low.
+   * With 14 inflation steps the coordinates reach a maximum value of
+   * 23172. The signed short type can store values in the range
+   * [-32768, 32767]. Applying another inflation step doubles the values,
+   * leading to integer under- and overflow.
+   */
+  if (steps >= 15) {
+    cerr << "error: maximum number of steps is 14 (at the moment)" << endl;
+    return 1;
+  }
+
   llist tiles;
   vec2dlist verts;
   dlist spacings;
@@ -1085,7 +1098,7 @@ int main_chair(int argc, char* argv[]) {
 
   default:
     cerr << "error: unsupported mode selected!\n";
-    return 1;
+    return 2;
   }
 
   return 0;
