@@ -10,14 +10,22 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[     26086,        658]
-NotebookOptionsPosition[     25185,        629]
-NotebookOutlinePosition[     25619,        646]
-CellTagsIndexPosition[     25576,        643]
+NotebookDataLength[     27088,        689]
+NotebookOptionsPosition[     26074,        657]
+NotebookOutlinePosition[     26509,        674]
+CellTagsIndexPosition[     26466,        671]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
 Notebook[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ClearAll", "[", 
+   RowBox[{
+   "HasSameParity", ",", "GeneratePoints", ",", "GeneratePointsFast"}], "]"}],
+   ";"}]], "Input",
+ CellChangeTimes->{{3.685269930202169*^9, 3.6852699415114403`*^9}}],
+
 Cell[BoxData[
  RowBox[{
   RowBox[{
@@ -43,20 +51,20 @@ Cell[BoxData[
   RowBox[{
    RowBox[{"GeneratePoints", "[", 
     RowBox[{"R_", ",", "OnlySector_"}], "]"}], ":=", 
-   RowBox[{"Module", "[", "\[IndentingNewLine]", 
+   RowBox[{"Block", "[", 
     RowBox[{
      RowBox[{"{", 
       RowBox[{"range", ",", "quadrant", ",", "visible"}], "}"}], ",", 
      "\[IndentingNewLine]", 
      RowBox[{
-      RowBox[{"range", ":=", 
+      RowBox[{"range", "=", 
        RowBox[{"Floor", "[", "R", "]"}]}], ";", "\[IndentingNewLine]", 
       RowBox[{"(*", 
        RowBox[{"Generate", " ", "quadrant", " ", 
         RowBox[{"(", 
          RowBox[{"or", " ", "even", " ", "smaller", " ", "sector"}], ")"}], 
         " ", "of", " ", "Z2", " ", "lattice"}], "*)"}], "\[IndentingNewLine]", 
-      RowBox[{"quadrant", ":=", 
+      RowBox[{"quadrant", "=", 
        RowBox[{"If", "[", 
         RowBox[{"OnlySector", ",", "\[IndentingNewLine]", 
          RowBox[{"Flatten", "[", 
@@ -87,7 +95,7 @@ Cell[BoxData[
          RowBox[{
          "the", " ", "ones", " ", "with", " ", "coprime", " ", 
           "coordinates"}], ")"}]}], "*)"}], "\[IndentingNewLine]", 
-      RowBox[{"visible", ":=", 
+      RowBox[{"visible", "=", 
        RowBox[{"Select", "[", 
         RowBox[{"quadrant", ",", 
          RowBox[{
@@ -120,17 +128,18 @@ Cell[BoxData[
    3.531043022765326*^9, 3.531043048876602*^9}, {3.531043202766548*^9, 
    3.531043216150754*^9}, {3.531043300535833*^9, 3.531043334264872*^9}, 
    3.531043365932904*^9, 3.531045615359613*^9, {3.531051168867498*^9, 
-   3.531051169833677*^9}, 3.531662698399803*^9, 3.531662752917715*^9}],
+   3.531051169833677*^9}, 3.531662698399803*^9, 3.531662752917715*^9, {
+   3.685270024995777*^9, 3.68527003148444*^9}, 3.685270101135043*^9}],
 
 Cell[BoxData[
  RowBox[{
   RowBox[{
    RowBox[{"GeneratePointsFast", "[", "R_", "]"}], ":=", 
-   RowBox[{"Module", "[", "\[IndentingNewLine]", 
+   RowBox[{"Block", "[", 
     RowBox[{
      RowBox[{"{", "range", "}"}], ",", "\[IndentingNewLine]", 
      RowBox[{
-      RowBox[{"range", ":=", 
+      RowBox[{"range", "=", 
        RowBox[{"Floor", "[", "R", "]"}]}], ";", "\[IndentingNewLine]", 
       RowBox[{"Select", "[", "\[IndentingNewLine]", 
        RowBox[{
@@ -163,7 +172,8 @@ Cell[BoxData[
               RowBox[{"#", ",", "2"}], "]"}], "^", "2"}]}], "\[LessEqual]", 
            RowBox[{"R", "^", "2"}]}]}], "&"}]}], "]"}]}]}], 
     "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
- CellChangeTimes->{{3.531045777644369*^9, 3.531045888818414*^9}}],
+ CellChangeTimes->{{3.531045777644369*^9, 3.531045888818414*^9}, {
+  3.685270013286499*^9, 3.685270021114512*^9}}],
 
 Cell[BoxData[
  RowBox[{"(*", 
@@ -176,6 +186,14 @@ Cell[BoxData[
  CellChangeTimes->{{3.531743482931462*^9, 3.531743501781963*^9}, {
   3.531745359764973*^9, 3.531745369946085*^9}, {3.548684058643587*^9, 
   3.548684072637778*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ClearAll", "[", 
+   RowBox[{
+   "VisibleZ2", ",", "PlotDistChart", ",", "PlotDistChartFast", ",", 
+    "PlotDistChartFastPDF"}], "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.685269945900483*^9, 3.685269961948247*^9}}],
 
 Cell[BoxData[
  RowBox[{
@@ -208,13 +226,13 @@ Cell[BoxData[
     RowBox[{"R_", ",", "ShowQuad_", ",", "OldHisto_", ",", 
      RowBox[{"{", 
       RowBox[{"CutOff_", ",", "Step_"}], "}"}]}], "]"}], ":=", 
-   RowBox[{"Module", "[", "\[IndentingNewLine]", 
+   RowBox[{"Block", "[", 
     RowBox[{
      RowBox[{"{", 
       RowBox[{"quadrant", ",", "angles", ",", "distances"}], "}"}], ",", 
      "\[IndentingNewLine]", 
      RowBox[{
-      RowBox[{"quadrant", ":=", 
+      RowBox[{"quadrant", "=", 
        RowBox[{"GeneratePoints", "[", 
         RowBox[{"R", ",", "True"}], "]"}]}], ";", "\[IndentingNewLine]", 
       RowBox[{"If", "[", 
@@ -226,7 +244,7 @@ Cell[BoxData[
             RowBox[{"1", "/", 
              RowBox[{"Sqrt", "[", "2", "]"}]}]}]}], "]"}], "]"}], ",", 
         "Null"}], "]"}], ";", "\[IndentingNewLine]", 
-      RowBox[{"angles", ":=", 
+      RowBox[{"angles", "=", 
        RowBox[{"Sort", "[", 
         RowBox[{
          RowBox[{"Map", "[", 
@@ -240,7 +258,7 @@ Cell[BoxData[
                RowBox[{"#", ",", "2"}], "]"}]}], "]"}], "&"}], ",", 
            "quadrant"}], "]"}], ",", "Greater"}], "]"}]}], ";", 
       "\[IndentingNewLine]", 
-      RowBox[{"distances", ":=", 
+      RowBox[{"distances", "=", 
        RowBox[{"Drop", "[", 
         RowBox[{
          RowBox[{"angles", "-", 
@@ -283,7 +301,8 @@ Cell[BoxData[
    3.531038202780222*^9}, {3.531038441021641*^9, 3.531038441463504*^9}, {
    3.531038619906361*^9, 3.531038622602707*^9}, {3.5310413745204*^9, 
    3.531041391857918*^9}, {3.531045642660745*^9, 3.531045656684943*^9}, {
-   3.531045704465362*^9, 3.531045705660563*^9}}],
+   3.531045704465362*^9, 3.531045705660563*^9}, {3.685270093416181*^9, 
+   3.685270112020409*^9}}],
 
 Cell[BoxData[
  RowBox[{
@@ -292,13 +311,13 @@ Cell[BoxData[
     RowBox[{"R_", ",", 
      RowBox[{"{", 
       RowBox[{"CutOff_", ",", "Step_"}], "}"}]}], "]"}], ":=", 
-   RowBox[{"Module", "[", "\[IndentingNewLine]", 
+   RowBox[{"Block", "[", 
     RowBox[{
      RowBox[{"{", 
       RowBox[{"angles", ",", "mdist", ",", "distances"}], "}"}], ",", 
      "\[IndentingNewLine]", 
      RowBox[{
-      RowBox[{"angles", ":=", 
+      RowBox[{"angles", "=", 
        RowBox[{"Sort", "[", 
         RowBox[{
          RowBox[{"Map", "[", 
@@ -345,7 +364,7 @@ Cell[BoxData[
  CellChangeTimes->{
   3.531050378807611*^9, {3.531050418552786*^9, 3.531050541326122*^9}, {
    3.531050673781692*^9, 3.531050683140765*^9}, {3.548684299283909*^9, 
-   3.548684301062613*^9}}],
+   3.548684301062613*^9}, {3.6852701250759497`*^9, 3.685270129579342*^9}}],
 
 Cell[BoxData[
  RowBox[{
@@ -354,13 +373,13 @@ Cell[BoxData[
     RowBox[{"R_", ",", 
      RowBox[{"{", 
       RowBox[{"CutOff_", ",", "Step_"}], "}"}]}], "]"}], ":=", 
-   RowBox[{"Module", "[", "\[IndentingNewLine]", 
+   RowBox[{"Block", "[", 
     RowBox[{
      RowBox[{"{", 
       RowBox[{"angles", ",", "mdist", ",", "distances"}], "}"}], ",", 
      "\[IndentingNewLine]", 
      RowBox[{
-      RowBox[{"angles", ":=", 
+      RowBox[{"angles", "=", 
        RowBox[{"Sort", "[", 
         RowBox[{
          RowBox[{"Map", "[", 
@@ -405,7 +424,8 @@ Cell[BoxData[
           RowBox[{"Black", ",", 
            RowBox[{"EdgeForm", "[", "None", "]"}]}], "]"}]}]}], "]"}]}]}], 
     "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
- CellChangeTimes->{{3.557478952833796*^9, 3.557478959202388*^9}}],
+ CellChangeTimes->{{3.557478952833796*^9, 3.557478959202388*^9}, {
+  3.6852701329162283`*^9, 3.685270138090864*^9}}],
 
 Cell[BoxData[
  RowBox[{"(*", 
@@ -477,6 +497,13 @@ Cell[BoxData[
 
 Cell[BoxData[
  RowBox[{
+  RowBox[{"ClearAll", "[", 
+   RowBox[{"densityScaling", ",", "refRadius", ",", "pcolor"}], "]"}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.685269968050315*^9, 3.68526999545014*^9}}],
+
+Cell[BoxData[
+ RowBox[{
   RowBox[{"(*", " ", 
    RowBox[{
    "This", " ", "computes", " ", "an", " ", "approximate", " ", "scaling", 
@@ -521,7 +548,7 @@ Cell[BoxData[
 
 Cell[BoxData[{
  RowBox[{
-  RowBox[{"refRadius", ":=", "1000"}], ";"}], "\[IndentingNewLine]", 
+  RowBox[{"refRadius", "=", "1000"}], ";"}], "\[IndentingNewLine]", 
  RowBox[{"Show", "[", 
   RowBox[{
    RowBox[{"PlotDistChartFast", "[", 
@@ -583,12 +610,12 @@ Cell[BoxData[{
    3.535881855269706*^9, 3.535881856538771*^9}, {3.548684174809174*^9, 
    3.548684200806199*^9}, {3.548684238098261*^9, 3.548684241868642*^9}, 
    3.548684579120688*^9, {3.549280515312909*^9, 3.549280518557635*^9}, {
-   3.549635610596704*^9, 3.549635619647887*^9}}],
+   3.549635610596704*^9, 3.549635619647887*^9}, 3.6852701463865128`*^9}],
 
 Cell[BoxData[{
  RowBox[{
   RowBox[{
-   RowBox[{"refRadius", ":=", "1000"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{"refRadius", "=", "1000"}], ";"}], "\[IndentingNewLine]", 
   RowBox[{"(*", 
    RowBox[{
     RowBox[{
@@ -625,12 +652,13 @@ Cell[BoxData[{
      RowBox[{"Exclusions", "\[Rule]", "None"}]}], "]"}]}], "]"}]}], "Input",
  CellChangeTimes->{{3.55747897645503*^9, 3.557479014614385*^9}, 
    3.55748080557513*^9, {3.558352969364781*^9, 3.558353026447234*^9}, {
-   3.558950198462428*^9, 3.558950257882648*^9}, 3.55895278445063*^9}]
+   3.558950198462428*^9, 3.558950257882648*^9}, 3.55895278445063*^9, 
+   3.6852701494530478`*^9}]
 },
-WindowSize->{1600, 1143},
+WindowSize->{1600, 1136},
 WindowMargins->{{0, Automatic}, {Automatic, 0}},
 PrivateNotebookOptions->{"VersionedStylesheet"->{"Default.nb"[8.] -> False}},
-Magnification->1.5,
+Magnification->1.25,
 FrontEndVersion->"9.0 for Linux x86 (64-bit) (January 25, 2013)",
 StyleDefinitions->"Default.nb"
 ]
@@ -645,21 +673,24 @@ CellTagsIndex->{}
 *)
 (*NotebookFileOutline
 Notebook[{
-Cell[557, 20, 586, 18, 46, "Input"],
-Cell[1146, 40, 3411, 82, 377, "Input"],
-Cell[4560, 124, 1571, 41, 227, "Input"],
-Cell[6134, 167, 425, 10, 46, "Input"],
-Cell[6562, 179, 370, 9, 46, "Input"],
-Cell[6935, 190, 374, 11, 46, "Input"],
-Cell[7312, 203, 4000, 82, 317, "Input"],
-Cell[11315, 287, 2284, 60, 351, "Input"],
-Cell[13602, 349, 2191, 58, 351, "Input"],
-Cell[15796, 409, 801, 17, 64, "Input"],
-Cell[16600, 428, 1391, 28, 106, "Input"],
-Cell[17994, 458, 849, 17, 64, "Input"],
-Cell[18846, 477, 1757, 42, 229, "Input"],
-Cell[20606, 521, 3104, 64, 268, "Input"],
-Cell[23713, 587, 1468, 40, 268, "Input"]
+Cell[557, 20, 230, 6, 38, "Input"],
+Cell[790, 28, 586, 18, 38, "Input"],
+Cell[1379, 48, 3455, 83, 289, "Input"],
+Cell[4837, 133, 1595, 42, 164, "Input"],
+Cell[6435, 177, 425, 10, 38, "Input"],
+Cell[6863, 189, 253, 6, 38, "Input"],
+Cell[7119, 197, 370, 9, 38, "Input"],
+Cell[7492, 208, 374, 11, 38, "Input"],
+Cell[7869, 221, 4023, 83, 239, "Input"],
+Cell[11895, 306, 2307, 60, 189, "Input"],
+Cell[14205, 368, 2217, 59, 189, "Input"],
+Cell[16425, 429, 801, 17, 38, "Input"],
+Cell[17229, 448, 1391, 28, 64, "Input"],
+Cell[18623, 478, 849, 17, 38, "Input"],
+Cell[19475, 497, 207, 5, 38, "Input"],
+Cell[19685, 504, 1757, 42, 139, "Input"],
+Cell[21445, 548, 3127, 64, 164, "Input"],
+Cell[24575, 614, 1495, 41, 164, "Input"]
 }
 ]
 *)

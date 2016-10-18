@@ -1,19 +1,12 @@
-(* Content-type: application/vnd.wolfram.mathematica *)
-
-(*** Wolfram Notebook File ***)
-(* http://www.wolfram.com/nb *)
-
-(* CreatedBy='Mathematica 9.0' *)
-
 (*CacheID: 234*)
 (* Internal cache information:
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
-NotebookDataPosition[       157,          7]
-NotebookDataLength[     15792,        445]
-NotebookOptionsPosition[     14307,        399]
-NotebookOutlinePosition[     14664,        415]
-CellTagsIndexPosition[     14621,        412]
+NotebookDataPosition[         0,          0]
+NotebookDataLength[     16969,        472]
+NotebookOptionsPosition[     15325,        419]
+NotebookOutlinePosition[     15682,        435]
+CellTagsIndexPosition[     15639,        432]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -44,13 +37,13 @@ Cell[BoxData[
      RowBox[{"{", 
       RowBox[{"CutOff_", ",", "Step_"}], "}"}], ",", "nbidx_"}], "]"}], ":=", 
    
-   RowBox[{"Module", "[", "\[IndentingNewLine]", 
+   RowBox[{"Block", "[", "\[IndentingNewLine]", 
     RowBox[{
      RowBox[{"{", 
       RowBox[{"angles", ",", "mdist", ",", "distances", ",", "secondOrder"}], 
       "}"}], ",", "\[IndentingNewLine]", 
      RowBox[{
-      RowBox[{"angles", ":=", 
+      RowBox[{"angles", "=", 
        RowBox[{"Sort", "[", 
         RowBox[{
          RowBox[{"Map", "[", 
@@ -105,7 +98,8 @@ Cell[BoxData[
     "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
  CellChangeTimes->{{3.654507383592157*^9, 3.654507385623588*^9}, {
   3.65450794117118*^9, 3.654508001937334*^9}, {3.654508099020317*^9, 
-  3.6545080993078947`*^9}, {3.654508185708564*^9, 3.654508191352058*^9}}],
+  3.6545080993078947`*^9}, {3.654508185708564*^9, 3.654508191352058*^9}, {
+  3.6852700558026743`*^9, 3.685270067016822*^9}}],
 
 Cell[BoxData[
  RowBox[{"PlotDistChart2D", "[", 
@@ -174,9 +168,12 @@ Cell[BoxData[{
 Cell[BoxData[
  RowBox[{"ListPlot", "[", 
   RowBox[{"z2lat2ndEmpty", ",", 
-   RowBox[{"AspectRatio", "\[Rule]", "1.0"}]}], "]"}]], "Input",
+   RowBox[{"AspectRatio", "\[Rule]", "1.0"}], ",", 
+   RowBox[{"PlotStyle", "\[Rule]", 
+    RowBox[{"{", 
+     RowBox[{"GrayLevel", "[", "0.6", "]"}], "}"}]}]}], "]"}]], "Input",
  CellChangeTimes->{{3.6545098512586412`*^9, 3.654509854770549*^9}, 
-   3.65544713480305*^9}],
+   3.65544713480305*^9, {3.685787435210116*^9, 3.685787440403668*^9}}],
 
 Cell[BoxData[{
  RowBox[{
@@ -229,9 +226,10 @@ Cell[BoxData[
    RowBox[{"transformEnvData2D", "[", 
     RowBox[{"chair2nd", ",", 
      RowBox[{"guessHisto2DParams", "[", 
-      RowBox[{"4.0", ",", "0.02"}], "]"}]}], "]"}], ",", 
+      RowBox[{"4.0", ",", "0.01"}], "]"}]}], "]"}], ",", 
    RowBox[{"PlotRange", "\[Rule]", "Full"}]}], "]"}]], "Input",
- CellChangeTimes->{{3.654958635208927*^9, 3.654958636262239*^9}}],
+ CellChangeTimes->{{3.654958635208927*^9, 3.654958636262239*^9}, 
+   3.6857872902602873`*^9}],
 
 Cell[BoxData[{
  RowBox[{
@@ -247,9 +245,14 @@ Cell[BoxData[{
 Cell[BoxData[
  RowBox[{"ListPlot", "[", 
   RowBox[{"chair2ndEmpty", ",", 
-   RowBox[{"AspectRatio", "\[Rule]", "1.0"}]}], "]"}]], "Input",
+   RowBox[{"AspectRatio", "\[Rule]", "1.0"}], ",", 
+   RowBox[{"PlotStyle", "\[Rule]", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"PointSize", "[", "0.003", "]"}], ",", 
+      RowBox[{"GrayLevel", "[", "0.6", "]"}]}], "}"}]}]}], "]"}]], "Input",
  CellChangeTimes->{{3.655020154219508*^9, 3.655020195122463*^9}, 
-   3.655020317046019*^9}],
+   3.655020317046019*^9, {3.685787283804531*^9, 3.685787284090444*^9}}],
 
 Cell[BoxData[{
  RowBox[{
@@ -286,8 +289,12 @@ Cell[BoxData[{
 Cell[BoxData[
  RowBox[{"ListPlot", "[", 
   RowBox[{"octa2ndEmpty", ",", 
-   RowBox[{"AspectRatio", "\[Rule]", "1.0"}]}], "]"}]], "Input",
- CellChangeTimes->{3.655444625497097*^9}],
+   RowBox[{"AspectRatio", "\[Rule]", "1.0"}], ",", 
+   RowBox[{"PlotStyle", "\[Rule]", 
+    RowBox[{"{", 
+     RowBox[{"GrayLevel", "[", "0.6", "]"}], "}"}]}]}], "]"}]], "Input",
+ CellChangeTimes->{
+  3.655444625497097*^9, {3.6857874546442623`*^9, 3.685787454994048*^9}}],
 
 Cell[BoxData[{
  RowBox[{
@@ -305,9 +312,10 @@ Cell[BoxData[
    RowBox[{"transformEnvData2D", "[", 
     RowBox[{"deca2nd", ",", 
      RowBox[{"guessHisto2DParams", "[", 
-      RowBox[{"4.0", ",", "0.02"}], "]"}]}], "]"}], ",", 
+      RowBox[{"4.0", ",", "0.015"}], "]"}]}], "]"}], ",", 
    RowBox[{"PlotRange", "\[Rule]", "Full"}]}], "]"}]], "Input",
- CellChangeTimes->{{3.655446841803609*^9, 3.655446865325142*^9}}],
+ CellChangeTimes->{{3.655446841803609*^9, 3.655446865325142*^9}, {
+  3.68527045569965*^9, 3.6852704560825977`*^9}}],
 
 Cell[BoxData[{
  RowBox[{
@@ -322,8 +330,12 @@ Cell[BoxData[{
 Cell[BoxData[
  RowBox[{"ListPlot", "[", 
   RowBox[{"deca2ndEmpty", ",", 
-   RowBox[{"AspectRatio", "\[Rule]", "1.0"}]}], "]"}]], "Input",
- CellChangeTimes->{3.655444693735347*^9}],
+   RowBox[{"AspectRatio", "\[Rule]", "1.0"}], ",", 
+   RowBox[{"PlotStyle", "\[Rule]", 
+    RowBox[{"{", 
+     RowBox[{"GrayLevel", "[", "0.6", "]"}], "}"}]}]}], "]"}]], "Input",
+ CellChangeTimes->{
+  3.655444693735347*^9, {3.685787460717835*^9, 3.685787460926243*^9}}],
 
 Cell[BoxData[{
  RowBox[{
@@ -358,8 +370,12 @@ Cell[BoxData[{
 Cell[BoxData[
  RowBox[{"ListPlot", "[", 
   RowBox[{"dode2ndEmpty", ",", 
-   RowBox[{"AspectRatio", "\[Rule]", "1.0"}]}], "]"}]], "Input",
- CellChangeTimes->{3.655444727704834*^9}],
+   RowBox[{"AspectRatio", "\[Rule]", "1.0"}], ",", 
+   RowBox[{"PlotStyle", "\[Rule]", 
+    RowBox[{"{", 
+     RowBox[{"GrayLevel", "[", "0.6", "]"}], "}"}]}]}], "]"}]], "Input",
+ CellChangeTimes->{
+  3.655444727704834*^9, {3.6857874694548073`*^9, 3.685787469714419*^9}}],
 
 Cell[BoxData[{
  RowBox[{
@@ -394,8 +410,12 @@ Cell[BoxData[{
 Cell[BoxData[
  RowBox[{"ListPlot", "[", 
   RowBox[{"rhmbp2ndEmpty", ",", 
-   RowBox[{"AspectRatio", "\[Rule]", "1.0"}]}], "]"}]], "Input",
- CellChangeTimes->{3.657881104324617*^9}]
+   RowBox[{"AspectRatio", "\[Rule]", "1.0"}], ",", 
+   RowBox[{"PlotStyle", "\[Rule]", 
+    RowBox[{"{", 
+     RowBox[{"GrayLevel", "[", "0.6", "]"}], "}"}]}]}], "]"}]], "Input",
+ CellChangeTimes->{
+  3.657881104324617*^9, {3.685787475516757*^9, 3.685787475712611*^9}}]
 },
 WindowSize->{1920, 1140},
 WindowMargins->{{0, Automatic}, {Automatic, 0}},
@@ -414,41 +434,40 @@ CellTagsIndex->{}
 *)
 (*NotebookFileOutline
 Notebook[{
-Cell[557, 20, 360, 8, 38, "Input"],
-Cell[920, 30, 237, 6, 38, "Input"],
-Cell[1160, 38, 2716, 69, 264, "Input"],
-Cell[3879, 109, 423, 8, 38, "Input"],
-Cell[4305, 119, 199, 5, 38, "Input"],
-Cell[4507, 126, 299, 7, 38, "Input"],
-Cell[4809, 135, 603, 12, 64, "Input"],
-Cell[5415, 149, 401, 9, 38, "Input"],
-Cell[5819, 160, 549, 11, 64, "Input"],
-Cell[6371, 173, 231, 5, 38, "Input"],
-Cell[6605, 180, 364, 8, 64, "Input"],
-Cell[6972, 190, 356, 8, 38, "Input"],
-Cell[7331, 200, 457, 13, 38, "Input"],
-Cell[7791, 215, 359, 8, 64, "Input"],
-Cell[8153, 225, 351, 8, 38, "Input"],
-Cell[8507, 235, 426, 9, 64, "Input"],
-Cell[8936, 246, 230, 5, 38, "Input"],
-Cell[9169, 253, 391, 9, 64, "Input"],
-Cell[9563, 264, 326, 8, 38, "Input"],
-Cell[9892, 274, 430, 9, 64, "Input"],
-Cell[10325, 285, 179, 4, 38, "Input"],
-Cell[10507, 291, 361, 8, 64, "Input"],
-Cell[10871, 301, 350, 8, 38, "Input"],
-Cell[11224, 311, 377, 8, 64, "Input"],
-Cell[11604, 321, 179, 4, 38, "Input"],
-Cell[11786, 327, 363, 8, 64, "Input"],
-Cell[12152, 337, 326, 8, 38, "Input"],
-Cell[12481, 347, 381, 8, 64, "Input"],
-Cell[12865, 357, 179, 4, 38, "Input"],
-Cell[13047, 363, 361, 8, 64, "Input"],
-Cell[13411, 373, 327, 8, 38, "Input"],
-Cell[13741, 383, 379, 8, 64, "Input"],
-Cell[14123, 393, 180, 4, 38, "Input"]
+Cell[400, 13, 360, 8, 38, "Input"],
+Cell[763, 23, 237, 6, 38, "Input"],
+Cell[1003, 31, 2765, 70, 264, "Input"],
+Cell[3771, 103, 423, 8, 38, "Input"],
+Cell[4197, 113, 199, 5, 38, "Input"],
+Cell[4399, 120, 299, 7, 38, "Input"],
+Cell[4701, 129, 603, 12, 64, "Input"],
+Cell[5307, 143, 401, 9, 38, "Input"],
+Cell[5711, 154, 549, 11, 64, "Input"],
+Cell[6263, 167, 391, 8, 38, "Input"],
+Cell[6657, 177, 364, 8, 64, "Input"],
+Cell[7024, 187, 356, 8, 38, "Input"],
+Cell[7383, 197, 457, 13, 38, "Input"],
+Cell[7843, 212, 359, 8, 64, "Input"],
+Cell[8205, 222, 379, 9, 38, "Input"],
+Cell[8587, 233, 426, 9, 64, "Input"],
+Cell[9016, 244, 461, 10, 38, "Input"],
+Cell[9480, 256, 391, 9, 64, "Input"],
+Cell[9874, 267, 326, 8, 38, "Input"],
+Cell[10203, 277, 430, 9, 64, "Input"],
+Cell[10636, 288, 344, 8, 38, "Input"],
+Cell[10983, 298, 361, 8, 64, "Input"],
+Cell[11347, 308, 401, 9, 38, "Input"],
+Cell[11751, 319, 377, 8, 64, "Input"],
+Cell[12131, 329, 342, 8, 38, "Input"],
+Cell[12476, 339, 363, 8, 64, "Input"],
+Cell[12842, 349, 326, 8, 38, "Input"],
+Cell[13171, 359, 381, 8, 64, "Input"],
+Cell[13555, 369, 344, 8, 38, "Input"],
+Cell[13902, 379, 361, 8, 64, "Input"],
+Cell[14266, 389, 327, 8, 38, "Input"],
+Cell[14596, 399, 379, 8, 64, "Input"],
+Cell[14978, 409, 343, 8, 38, "Input"]
 }
 ]
 *)
 
-(* End of internal cache information *)
