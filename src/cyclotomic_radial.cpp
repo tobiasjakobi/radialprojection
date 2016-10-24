@@ -188,6 +188,10 @@ int SingleMachine::main(int argc, char* argv[]) {
       if (zero_origin && !force_nonlocal_test) {
         Decagonal::projTilingVisLocal(init, steps, sector, tiling, visible);
 
+        /*
+         * Same as with Octagonal::projTilingVisLocal() there is some
+         * optimisation done, but there might be some vertices in the
+         */
         if (sector) {
           Common::vec4ilist vistilSector;
           Decagonal::extractSector(visible, vistilSector);
