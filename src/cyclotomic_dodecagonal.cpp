@@ -305,6 +305,7 @@ void Dodecagonal::projTilingVisLocal(const vec4i& initpoint, uint maxstep,
         pp = p + hyperstep[j];
 
         if (!checkProjInWindow(pp, circularWindow)) continue;
+        if (sector && !checkPhyInSectorEps(pp.paraProjL12())) continue;
         if (!lvlman.insert(pp)) continue;
 
         /* By empirical tests the only type of vertices that can be visible *
@@ -454,9 +455,8 @@ void Dodecagonal::extractSector(const Common::vec4ilist& input,
   for (vec4ilist::const_iterator i = input.begin(); i != input.end(); ++i) {
     const vec2d physProj(i->paraProjL12());
 
-    if (physProj.inFirstQuadrant() && physProj.inSectorL12()) {
+    if (checkPhyInSector(physProj))
       output.push_back(*i);
-    }
   }
 }
 
