@@ -21,6 +21,18 @@
 
 const double Decagonal::VisOp::epsilon = 2.0 * numeric_limits<double>::epsilon();
 
+namespace {
+
+  bool checkPhyInSector(const vec2d& phy){
+    return (phy.inFirstQuadrant() && phy.inSectorL5());
+  }
+
+  bool checkPhyInSectorEps(const vec2d& phy){
+    return (phy.inFirstQuadrant() && phy.inSectorL5Eps());
+  }
+
+};
+
 bool Decagonal::checkProjInSector(const vec2d& orthpoint, bool useAlt) {
   using namespace Common;
 
