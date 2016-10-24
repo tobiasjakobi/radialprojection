@@ -27,20 +27,22 @@ namespace Dodecagonal {
   void projTiling(const vec4i& initpoint, uint maxstep,
                   Common::vec4ilist& tilingpoints);
 
-  /* projTilingVisLocal uses a modified local test to determine         *
-   * visibility. The test was derived partly from numerical             *
-   * simulations and also from direct computation with the              *
-   * geometrical visibility condition plus the model set                *
-   * description.                                                       */
+  /*
+   * projTilingVisLocal() uses a modified local test to determine visibility.
+   * The test was derived partly from numerical simulations and also from
+   * direct computation with the geometrical visibility condition plus the
+   * model set description.
+   */
   void projTilingVisLocal(const vec4i& initpoint, uint maxstep,
                           bool sector,
                           Common::vec4ilist& tilingpoints,
                           Common::vec4ilist& visiblepoints);
 
-  /* projTilingVis using a regular ray test to determine visibility:     *
-   * This method is the most exact one and should be used for            *
-   * reference. It is of course also vastly slower than the              *
-   * local test.                                                         */
+  /*
+   * projTilingVis() using a regular ray test to determine visibility:
+   * This method is the most exact one and should be used for reference. It
+   * is of course also vastly slower than the local test.
+   */
   void projTilingVis(const vec4i& initpoint,
                      const vec4i& origin,
                      uint maxstep, bool radialproj,
