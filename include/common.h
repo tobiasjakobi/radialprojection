@@ -540,6 +540,11 @@ public:
     return (a[1]/a[0] <= sectorL5);
   }
 
+  // Same as inSectorL5() but with a small epsilon.
+  bool inSectorL5Eps() const {
+    return (a[1]/a[0] <= sectorL5 + 0.01);
+  }
+
   // Checks for phi(x,y) <= 2*pi/6 (60 degree):
   bool inSectorL12() const {
     return (a[1]/a[0] <= sectorL12);
