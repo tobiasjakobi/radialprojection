@@ -226,6 +226,7 @@ void Decagonal::projTilingVisLocal(const vec4i& initpoint, uint maxstep,
         pp = p + hyperstep[j];
 
         if (!checkProjInWindow(pp, circularWindow)) continue;
+        if (sector && !checkPhyInSectorEps(pp.paraProjL5())) continue;
         if (!lvlman.insert(pp)) continue;
 
         /* Apply the local test for visibility:                                              *
@@ -258,9 +259,8 @@ void Decagonal::extractSector(const Common::vec4ilist& input,
   for (vec4ilist::const_iterator i = input.begin(); i != input.end(); ++i) {
     const vec2d physProj(i->paraProjL5());
 
-    if (physProj.inFirstQuadrant() && physProj.inSectorL5()) {
+    if (checkPhyInSector(physProj))
       output.push_back(*i);
-    }
   }
 }
 
