@@ -166,6 +166,14 @@ int SingleMachine::main(int argc, char* argv[]) {
       else
         Octagonal::projTilingVis(init, origin, steps, true, tiling, visible);
 
+      /*
+       * Even though there is some optimisation done in projTilingVisLocal()
+       * when sector=true, the algorithm might still produce some vertices
+       * located on the boundary of the sector that radialProj() then
+       * removes.
+       * This is the reason why the vertex count reported in
+       * projTilingVisLocal() and radialProj() is different.
+       */
       Octagonal::radialProj(visible, spacings, mean, sector);
     break;
 
