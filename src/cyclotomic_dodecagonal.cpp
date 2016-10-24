@@ -269,6 +269,7 @@ void Dodecagonal::projTiling(const vec4i& initpoint, uint maxstep,
 }
 
 void Dodecagonal::projTilingVisLocal(const vec4i& initpoint, uint maxstep,
+                     bool sector,
                      Common::vec4ilist& tilingpoints,
                      Common::vec4ilist& visiblepoints) {
   using namespace Common;
@@ -553,6 +554,11 @@ void Dodecagonal::radialProj(const Common::vec4ilist& input,
   sort(angles.begin(), angles.end());
   neighbourDiff(angles, output, meandist);
   normalizeAngDists(output, meandist);
+}
+
+void Dodecagonal::projTilingVisLocal2(const vec4i& initpoint, uint maxstep,
+          Common::vec4ilist& tilingpoints, Common::vec4ilist& visiblepoints) {
+  projTilingVisLocal(initpoint, maxstep, false, tilingpoints, visiblepoints);
 }
 
 void Dodecagonal::testWindow(Common::vec2ilist& output, uint resolution) {

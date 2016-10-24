@@ -33,6 +33,7 @@ namespace Dodecagonal {
    * geometrical visibility condition plus the model set                *
    * description.                                                       */
   void projTilingVisLocal(const vec4i& initpoint, uint maxstep,
+                          bool sector,
                           Common::vec4ilist& tilingpoints,
                           Common::vec4ilist& visiblepoints);
 
@@ -73,6 +74,11 @@ namespace Dodecagonal {
   void radialProj(const Common::vec4ilist& input,
                   Common::dlist& output,
                   double& meandist);
+
+  // Aliases for function pointer compatibility reasons
+  void projTilingVisLocal2(const vec4i& initpoint, uint maxstep,
+                           Common::vec4ilist& tilingpoints,
+                           Common::vec4ilist& visiblepoints);
 
   void testWindow(Common::vec2ilist& output, uint resolution);
 
