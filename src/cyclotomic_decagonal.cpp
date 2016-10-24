@@ -19,21 +19,73 @@
 
 #include <algorithm>
 
-const double Decagonal::VisOp::epsilon = 2.0 * numeric_limits<double>::epsilon();
-
+/*
+ * Beginning of anonymous namespace.
+ */
 namespace {
 
-  bool checkPhyInSector(const vec2d& phy){
-    return (phy.inFirstQuadrant() && phy.inSectorL5());
-  }
+// Decagon radii:
+const double innerRadius = 0.5 * (Constants::unitGM + 1.0);
+const double outerRadius = Constants::unitGM*Constants::unitGM /
+  sqrt(Constants::unitGM*Constants::unitGM + 1.0); // = sqrt(1 + 2/sqrt(5))
 
-  bool checkPhyInSectorEps(const vec2d& phy){
-    return (phy.inFirstQuadrant() && phy.inSectorL5Eps());
-  }
+const double innerRadSquared = 0.25 * (3.0 * Constants::unitGM + 2.0);
+const double outerRadSquared = 1.0 + 2.0/sqrt(5.0);
 
+const double refCircleRadiusSquared = sqrt((5.0 / 4.0) *
+  (11.0 * Constants::unitGM + 7.0)) / Constants::pi;
+
+const double tau = Constants::unitGM;
+
+/*
+ * Regular decagon with edge length sqrt((tau + 2)/5).
+ * The upper-most edge is aligned with the x-axis.
+ */
+const vec2d vertices[10] = {
+  vec2d(outerRadius, 0.0),
+  vec2d(sqrt((11.0*tau + 7.0)/5.0)*0.5, tau*0.5),
+  vec2d(sqrt((tau + 2.0)/5.0)*0.5, innerRadius),
+  vec2d(-sqrt((tau + 2.0)/5.0)*0.5, innerRadius),
+  vec2d(-sqrt((11.0*tau + 7.0)/5.0)*0.5, tau*0.5),
+  vec2d(-outerRadius, 0.0),
+  vec2d(-sqrt((11.0*tau + 7.0)/5.0)*0.5, -tau*0.5),
+  vec2d(-sqrt((tau + 2.0)/5.0)*0.5, -innerRadius),
+  vec2d(sqrt((tau + 2.0)/5.0)*0.5, -innerRadius),
+  vec2d(sqrt((11.0*tau + 7.0)/5.0)*0.5, -tau*0.5)
 };
 
-bool Decagonal::checkProjInSector(const vec2d& orthpoint, bool useAlt) {
+/*
+ * This is essentially the other decagon rotated by 18 degrees.
+ * Results in alignment of the right-most edge with the y-axis.
+ */
+const vec2d verticesAlt[10] = {
+  vec2d(innerRadius, -0.5 * sqrt((tau + 1.0)/(tau + 2.0))),
+  vec2d(innerRadius, 0.5 * sqrt((tau + 1.0)/(tau + 2.0))),
+  vec2d(0.5 * tau, 0.5 * sqrt((8.0 * tau + 5.0)/(tau + 2.0))),
+  vec2d(0.0, outerRadius), vec2d(-0.5 * tau,
+  0.5 * sqrt((8.0 * tau + 5.0)/(tau + 2.0))),
+  vec2d(-innerRadius, 0.5 * sqrt((tau + 1.0)/(tau + 2.0))),
+  vec2d(-innerRadius, -0.5 * sqrt((tau + 1.0)/(tau + 2.0))),
+  vec2d(-0.5 * tau, -0.5 * sqrt((8.0 * tau + 5.0)/(tau + 2.0))),
+  vec2d(0.0, -outerRadius),
+  vec2d(0.5 * tau, -0.5 * sqrt((8.0 * tau + 5.0)/(tau + 2.0)))
+};
+
+/*
+ * Important: When using verticesAlt as window, it needs to be shifted
+ * by a small epsilon. Otherwise FP precision issues appear since certain
+ * lattice vector are projected onto the window boundary.
+ */
+
+bool checkPhyInSector(const vec2d& phy){
+  return (phy.inFirstQuadrant() && phy.inSectorL5());
+}
+
+bool checkPhyInSectorEps(const vec2d& phy){
+  return (phy.inFirstQuadrant() && phy.inSectorL5Eps());
+}
+
+bool checkProjInSector(const vec2d& orthpoint, bool useAlt) {
   using namespace Common;
 
   const vec2d v(orthpoint.abs());
@@ -54,7 +106,7 @@ bool Decagonal::checkProjInSector(const vec2d& orthpoint, bool useAlt) {
   return true;
 }
 
-bool Decagonal::checkProjInWindow(const vec4i& point, bool useCircle) {
+bool checkProjInWindow(const vec4i& point, bool useCircle) {
   using namespace Common;
 
   const vec2d pt(point.orthProjShiftL5());
@@ -75,7 +127,7 @@ bool Decagonal::checkProjInWindow(const vec4i& point, bool useCircle) {
   }
 }
 
-bool Decagonal::checkScaledProjInWindow(const vec4i& point, bool useCircle) {
+bool checkScaledProjInWindow(const vec4i& point, bool useCircle) {
   using namespace Common;
 
   const vec2d pt(point.orthProjShiftL5(Constants::unitGM, true)); /* invert the shift here */
@@ -95,6 +147,72 @@ bool Decagonal::checkScaledProjInWindow(const vec4i& point, bool useCircle) {
     }
   }
 }
+
+struct VisOp {
+  typedef Common::vec4ilist list_type;
+  static const double epsilon;
+
+  static inline double angle(const vec4i& a) {
+    return a.paraProjL5().angle();
+  }
+
+  static inline vec2d toR2(const vec4i& a) {
+    return a.paraProjL5();
+  }
+
+  static bool rayTest(const vec4i& a, const vec4i& b);
+};
+
+bool VisOp::rayTest(const vec4i& a, const vec4i& b) {
+  // let Z<t> be Z[tau]
+  // transform into the Z<t>*1 + Z<t>*xi
+  // representation (this is a direct sum)
+  const vec4i pa(a.transL5ToDirect());
+  const vec4i pb(b.transL5ToDirect());
+
+  // first filter the trivial cases
+  if (pa.isFirstZero()) {
+    return pb.isFirstZero();
+  }
+
+  if (pb.isFirstZero()) {
+    return pa.isFirstZero();
+  }
+
+  if (pa.isSecondZero()) {
+    return pb.isSecondZero();
+  }
+
+  if (pb.isSecondZero()) {
+    return pa.isSecondZero();
+  }
+
+  // pa = z_a + w_a * xi
+  // pb = z_b + w_b * xi
+  // with z_a, z_b, w_a, w_b elements in Z<t>
+  vec2i c, d;
+
+  // now compute:
+  // c = z_a * w_b
+  // d = z_b * w_a
+  Coprime::multZTau(vec2i(pa[0], pa[1]),
+                    vec2i(pb[2], pb[3]), c);
+  Coprime::multZTau(vec2i(pb[0], pb[1]),
+                    vec2i(pa[2], pa[3]), d);
+
+  return (c == d);
+}
+
+const double VisOp::epsilon = 2.0 * numeric_limits<double>::epsilon();
+
+typedef VisTest::VisibleList<VisOp> VisList;
+
+};
+
+/*
+ * End of anonymous namespace.
+ */
+
 
 void Decagonal::projTiling(const vec4i& initpoint, uint maxstep,
                      Common::vec4ilist& tilingpoints) {
@@ -444,45 +562,5 @@ void Decagonal::innerOuterRadius(const Common::vec4ilist& tilingpoints,
 
   outer = sqrt(out);
   inner = cos(Constants::pi / 10.0) * outer;
-}
-
-bool Decagonal::VisOp::rayTest(const vec4i& a, const vec4i& b) {
-  // let Z<t> be Z[tau]
-  // transform into the Z<t>*1 + Z<t>*xi
-  // representation (this is a direct sum)
-  const vec4i pa(a.transL5ToDirect());
-  const vec4i pb(b.transL5ToDirect());
-
-  // first filter the trivial cases
-  if (pa.isFirstZero()) {
-    return pb.isFirstZero();
-  }
-
-  if (pb.isFirstZero()) {
-    return pa.isFirstZero();
-  }
-
-  if (pa.isSecondZero()) {
-    return pb.isSecondZero();
-  }
-
-  if (pb.isSecondZero()) {
-    return pa.isSecondZero();
-  }
-
-  // pa = z_a + w_a * xi
-  // pb = z_b + w_b * xi
-  // with z_a, z_b, w_a, w_b elements in Z<t>
-  vec2i c, d;
-
-  // now compute:
-  // c = z_a * w_b
-  // d = z_b * w_a
-  Coprime::multZTau(vec2i(pa[0], pa[1]),
-                    vec2i(pb[2], pb[3]), c);
-  Coprime::multZTau(vec2i(pb[0], pb[1]),
-                    vec2i(pa[2], pa[3]), d);
-
-  return (c == d);
 }
 
