@@ -1745,12 +1745,25 @@ namespace Common {
 
   void normalize(vec2ielist& in);
 
+  union binary_double {
+    double d;
+    ullong b;
+  };
+
   static inline ullong reinterpret_double_to_ullong(const double d) {
-    return *(reinterpret_cast<const ullong*>(&d));
+    assert(sizeof(ullong) == sizeof(double));
+    binary_double bd;
+
+    bd.d = d;
+    return bd.b;
   }
 
   static inline double reinterpret_ullong_to_double(const ullong l) {
-    return *(reinterpret_cast<const double*>(&l));
+    assert(sizeof(ullong) == sizeof(double));
+    binary_double bd;
+
+    bd.b = l;
+    return bd.d;
   }
 
   double checkPosition(const vec2d& a, const vec2d& b, const vec2d& c);
