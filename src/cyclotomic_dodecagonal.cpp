@@ -19,9 +19,64 @@
 
 #include <algorithm>
 
-const double Dodecagonal::VisOp::epsilon = 2.0 * numeric_limits<double>::epsilon();
+/*
+ * Beginning of anonymous namespace.
+ */
+namespace {
 
-bool Dodecagonal::checkProjInSector(const vec2d& orthpoint, bool useAlt) {
+// Dodecagon radii:
+const double innerRadius = Constants::unitZ3 * 0.5;
+const double outerRadius = sqrt(Constants::unitZ3);
+
+const double innerRadSquared = Constants::unitZ3 - 0.25;
+const double outerRadSquared = Constants::unitZ3;
+
+const double refCircleRadiusSquared = 3.0 * Constants::unitZ3 / Constants::pi;
+
+/*
+ * Regular dodecagon (12 sides) with edge length one.
+ * Orientation is the one resulting from connecting
+ * the twelve roots of unity (plus scaling).
+ */
+const vec2d vertices[12] = {
+  vec2d(outerRadius, 0.0), // v1
+  vec2d(0.5 * sqrt(3.0) * outerRadius, 0.5 * outerRadius), // v2
+  vec2d(0.5 * outerRadius, 0.5 * sqrt(3.0) * outerRadius), // v3
+  vec2d(0.0, outerRadius), // v4
+  vec2d(-0.5 * outerRadius, 0.5 * sqrt(3.0) * outerRadius), // v5
+  vec2d(-0.5 * sqrt(3.0) * outerRadius, 0.5 * outerRadius), // v6
+  vec2d(-outerRadius, 0.0), // v7 = -v1
+  vec2d(-0.5 * sqrt(3.0) * outerRadius, -0.5 * outerRadius), // v8 = -v2
+  vec2d(-0.5 * outerRadius, -0.5 * sqrt(3.0) * outerRadius), // v9 = -v3
+  vec2d(0.0, -outerRadius), // v10 = -v4
+  vec2d(0.5 * outerRadius, -0.5 * sqrt(3.0) * outerRadius), // v11 = -v5
+  vec2d(0.5 * sqrt(3.0) * outerRadius, -0.5 * outerRadius)  // v12 = -v6
+};
+
+const vec2d verticesAlt[12] = {
+  vec2d(0.5 * Constants::unitZ3, -0.5), // v12
+  vec2d(0.5 * Constants::unitZ3, 0.5), // v1
+  vec2d(0.5 * (Constants::unitZ3 - 1.0), 0.5 * (Constants::unitZ3 - 1.0)), // v2
+  vec2d(0.5, 0.5 * Constants::unitZ3), // v3
+  vec2d(-0.5, 0.5 * Constants::unitZ3), // v4
+  vec2d(-0.5 * (Constants::unitZ3 - 1.0), 0.5 * (Constants::unitZ3 - 1.0)), // v5
+  vec2d(-0.5 * Constants::unitZ3, 0.5), // v6
+  vec2d(-0.5 * Constants::unitZ3, -0.5), // v7
+  vec2d(-0.5 * (Constants::unitZ3 - 1.0), -0.5 * (Constants::unitZ3 - 1.0)), // v8
+  vec2d(-0.5, -0.5 * Constants::unitZ3), // v9
+  vec2d(0.5, -0.5 * Constants::unitZ3), // v10
+  vec2d(0.5 * (Constants::unitZ3 - 1.0), -0.5 * (Constants::unitZ3 - 1.0)) // v11
+};
+
+bool checkPhyInSector(const vec2d& phy){
+  return (phy.inFirstQuadrant() && phy.inSectorL12());
+}
+
+bool checkPhyInSectorEps(const vec2d& phy){
+  return (phy.inFirstQuadrant() && phy.inSectorL12Eps());
+}
+
+bool checkProjInSector(const vec2d& orthpoint, bool useAlt) {
   using namespace Common;
 
   const vec2d v(orthpoint.reduceIntoSectorL12());
@@ -42,7 +97,7 @@ bool Dodecagonal::checkProjInSector(const vec2d& orthpoint, bool useAlt) {
   return true;
 }
 
-bool Dodecagonal::checkProjInWindow(const vec4i& point, bool useCircle) {
+bool checkProjInWindow(const vec4i& point, bool useCircle) {
   using namespace Common;
 
   const vec2d pt(point.orthProjShiftL12());
@@ -63,8 +118,8 @@ bool Dodecagonal::checkProjInWindow(const vec4i& point, bool useCircle) {
   }
 }
 
-bool Dodecagonal::checkScaledProjInWindow(const vec4i& point,
-                    bool gcdNormTwo, bool useCircle) {
+bool checkScaledProjInWindow(const vec4i& point, bool gcdNormTwo,
+                             bool useCircle) {
   using namespace Common;
 
   /* Empirical tests with large patches indicate that the test  *
@@ -104,6 +159,72 @@ bool Dodecagonal::checkScaledProjInWindow(const vec4i& point,
     }
   }
 }
+
+struct VisOp {
+  typedef Common::vec4ilist list_type;
+  static const double epsilon;
+
+  static inline double angle(const vec4i& a) {
+    return a.paraProjL12().angle();
+  }
+
+  static inline vec2d toR2(const vec4i& a) {
+    return a.paraProjL12();
+  }
+
+  static bool rayTest(const vec4i& a, const vec4i& b);
+};
+
+bool VisOp::rayTest(const vec4i& a, const vec4i& b) {
+  // let Z<3> be Z[sqrt[3]]
+  // transform into the Z<3>*1 + Z<3>*xi
+  // representation (this is a direct sum)
+  const vec4i pa(a.transL12ToDirect());
+  const vec4i pb(b.transL12ToDirect());
+
+  // first filter the trivial cases
+  if (pa.isFirstZero()) {
+    return pb.isFirstZero();
+  }
+
+  if (pb.isFirstZero()) {
+    return pa.isFirstZero();
+  }
+
+  if (pa.isSecondZero()) {
+    return pb.isSecondZero();
+  }
+
+  if (pb.isSecondZero()) {
+    return pa.isSecondZero();
+  }
+
+  // pa = z_a + w_a * xi
+  // pb = z_b + w_b * xi
+  // with z_a, z_b, w_a, w_b elements in Z<3>
+  vec2i c, d;
+
+  // now compute:
+  // c = z_a * w_b
+  // d = z_b * w_a
+  Coprime::multZ3(vec2i(pa[0], pa[1]),
+                  vec2i(pb[2], pb[3]), c);
+  Coprime::multZ3(vec2i(pb[0], pb[1]),
+                  vec2i(pa[2], pa[3]), d);
+
+  return (c == d);
+}
+
+const double VisOp::epsilon = 2.0 * numeric_limits<double>::epsilon();
+
+typedef VisTest::VisibleList<VisOp> VisList;
+
+};
+
+/*
+ * End of anonymous namespace.
+ */
+
 
 void Dodecagonal::projTiling(const vec4i& initpoint, uint maxstep,
                      Common::vec4ilist& tilingpoints) {
@@ -452,45 +573,5 @@ void Dodecagonal::testWindow(Common::vec2ilist& output, uint resolution) {
       }
     }
   }
-}
-
-bool Dodecagonal::VisOp::rayTest(const vec4i& a, const vec4i& b) {
-  // let Z<3> be Z[sqrt[3]]
-  // transform into the Z<3>*1 + Z<3>*xi
-  // representation (this is a direct sum)
-  const vec4i pa(a.transL12ToDirect());
-  const vec4i pb(b.transL12ToDirect());
-
-  // first filter the trivial cases
-  if (pa.isFirstZero()) {
-    return pb.isFirstZero();
-  }
-
-  if (pb.isFirstZero()) {
-    return pa.isFirstZero();
-  }
-
-  if (pa.isSecondZero()) {
-    return pb.isSecondZero();
-  }
-
-  if (pb.isSecondZero()) {
-    return pa.isSecondZero();
-  }
-
-  // pa = z_a + w_a * xi
-  // pb = z_b + w_b * xi
-  // with z_a, z_b, w_a, w_b elements in Z<3>
-  vec2i c, d;
-
-  // now compute:
-  // c = z_a * w_b
-  // d = z_b * w_a
-  Coprime::multZ3(vec2i(pa[0], pa[1]),
-                  vec2i(pb[2], pb[3]), c);
-  Coprime::multZ3(vec2i(pb[0], pb[1]),
-                  vec2i(pa[2], pa[3]), d);
-
-  return (c == d);
 }
 

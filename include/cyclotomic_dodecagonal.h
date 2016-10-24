@@ -23,52 +23,6 @@ namespace Dodecagonal {
 
   // Inflation factor of the dodecagonal tiling is the unit of Z[Sqrt[3]].
 
-  /* dodecagon radii */
-  const double innerRadius = Constants::unitZ3 * 0.5;
-  const double outerRadius = sqrt(Constants::unitZ3);
-
-  const double innerRadSquared = Constants::unitZ3 - 0.25;
-  const double outerRadSquared = Constants::unitZ3;
-
-  const double refCircleRadiusSquared = 3.0 * Constants::unitZ3 / Constants::pi;
-
-  /* Regular dodecagon (12 sides) with edge length one. *
-   * Orientation is the one resulting from connecting   *
-   * the twelve roots of unity (plus scaling).          */
-  const vec2d vertices[12] = {
-    vec2d(outerRadius, 0.0), // v1
-    vec2d(0.5 * sqrt(3.0) * outerRadius, 0.5 * outerRadius), // v2
-    vec2d(0.5 * outerRadius, 0.5 * sqrt(3.0) * outerRadius), // v3
-    vec2d(0.0, outerRadius), // v4
-    vec2d(-0.5 * outerRadius, 0.5 * sqrt(3.0) * outerRadius), // v5
-    vec2d(-0.5 * sqrt(3.0) * outerRadius, 0.5 * outerRadius), // v6
-    vec2d(-outerRadius, 0.0), // v7 = -v1
-    vec2d(-0.5 * sqrt(3.0) * outerRadius, -0.5 * outerRadius), // v8 = -v2
-    vec2d(-0.5 * outerRadius, -0.5 * sqrt(3.0) * outerRadius), // v9 = -v3
-    vec2d(0.0, -outerRadius), // v10 = -v4
-    vec2d(0.5 * outerRadius, -0.5 * sqrt(3.0) * outerRadius), // v11 = -v5
-    vec2d(0.5 * sqrt(3.0) * outerRadius, -0.5 * outerRadius)  // v12 = -v6
-  };
-
-  const vec2d verticesAlt[12] = {
-    vec2d(0.5 * Constants::unitZ3, -0.5), // v12
-    vec2d(0.5 * Constants::unitZ3, 0.5), // v1
-    vec2d(0.5 * (Constants::unitZ3 - 1.0), 0.5 * (Constants::unitZ3 - 1.0)), // v2
-    vec2d(0.5, 0.5 * Constants::unitZ3), // v3
-    vec2d(-0.5, 0.5 * Constants::unitZ3), // v4
-    vec2d(-0.5 * (Constants::unitZ3 - 1.0), 0.5 * (Constants::unitZ3 - 1.0)), // v5
-    vec2d(-0.5 * Constants::unitZ3, 0.5), // v6
-    vec2d(-0.5 * Constants::unitZ3, -0.5), // v7
-    vec2d(-0.5 * (Constants::unitZ3 - 1.0), -0.5 * (Constants::unitZ3 - 1.0)), // v8
-    vec2d(-0.5, -0.5 * Constants::unitZ3), // v9
-    vec2d(0.5, -0.5 * Constants::unitZ3), // v10
-    vec2d(0.5 * (Constants::unitZ3 - 1.0), -0.5 * (Constants::unitZ3 - 1.0)) // v11
-  };
-
-  bool checkProjInSector(const vec2d& orthpoint, bool useAlt);
-  bool checkProjInWindow(const vec4i& point, bool useCircle);
-  bool checkScaledProjInWindow(const vec4i& point, bool gcdNormTwo, bool useCircle);
-
   /* projTiling only constructs the tiling, starting from the initpoint */
   void projTiling(const vec4i& initpoint, uint maxstep,
                   Common::vec4ilist& tilingpoints);
@@ -131,23 +85,6 @@ namespace Dodecagonal {
        return (gcd.normZ3() == 2);
     }
   };
-
-  struct VisOp {
-    typedef Common::vec4ilist list_type;
-    static const double epsilon;
-
-    static inline double angle(const vec4i& a) {
-      return a.paraProjL12().angle();
-    }
-
-    static inline vec2d toR2(const vec4i& a) {
-      return a.paraProjL12();
-    }
-
-    static bool rayTest(const vec4i& a, const vec4i& b);
-  };
-
-  typedef VisTest::VisibleList<VisOp> VisList;
 
 };
 
