@@ -171,7 +171,7 @@ int SingleMachine::main(int argc, char* argv[]) {
 
     case decagonal_tiling:
       if (zero_origin && !force_nonlocal_test) {
-        Decagonal::projTilingVisLocal(init, steps, tiling, visible);
+        Decagonal::projTilingVisLocal(init, steps, sector, tiling, visible);
 
         if (sector) {
           Common::vec4ilist vistilSector;
@@ -188,7 +188,7 @@ int SingleMachine::main(int argc, char* argv[]) {
       if (zero_origin && !force_nonlocal_test) {
         Common::vec4ilist vistilSector;
 
-        Decagonal::projTilingVisLocal(init, steps, tiling, visible);
+        Decagonal::projTilingVisLocal(init, steps, true, tiling, visible);
         Decagonal::extractSector(visible, vistilSector);
         Decagonal::radialProj(vistilSector, spacings, mean);
       } else {

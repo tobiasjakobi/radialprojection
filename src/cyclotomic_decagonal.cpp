@@ -187,6 +187,7 @@ void Decagonal::projTilingVis(const vec4i& initpoint,
 }
 
 void Decagonal::projTilingVisLocal(const vec4i& initpoint, uint maxstep,
+                     bool sector,
                      Common::vec4ilist& tilingpoints,
                      Common::vec4ilist& visiblepoints) {
   using namespace Common;
@@ -402,6 +403,11 @@ void Decagonal::radialProj(const Common::vec4ilist& input,
   sort(angles.begin(), angles.end());
   neighbourDiff(angles, output, meandist);
   normalizeAngDists(output, meandist);
+}
+
+void Decagonal::projTilingVisLocal2(const vec4i& initpoint, uint maxstep,
+          Common::vec4ilist& tilingpoints, Common::vec4ilist& visiblepoints) {
+  projTilingVisLocal(initpoint, maxstep, false, tilingpoints, visiblepoints);
 }
 
 void Decagonal::testWindow(Common::vec2ilist& output, uint resolution) {

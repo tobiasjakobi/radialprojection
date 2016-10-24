@@ -29,7 +29,7 @@ namespace CyclotomicRandom {
     Octagonal::estimateGrowth);
 
   const static RadialFunc decagonalRF(
-    Decagonal::projTiling, Decagonal::projTilingVisLocal,
+    Decagonal::projTiling, Decagonal::projTilingVisLocal2,
     Decagonal::extractVisibleFast, Decagonal::radialProj,
     Decagonal::estimateGrowth);
 
