@@ -21,18 +21,10 @@
 
 namespace Octagonal {
 
-  /* Inflation factor of the octagonal tiling is the silver
-   * mean, which is also the unit of Z[Sqrt[2]]. */
-
-  // Octagon radii
-  const double innerRadiusSquared = (2.0 * Constants::unitZ2 + 1.0) / 8.0;
-  const double outerRadiusSquared = (Constants::unitZ2 + 1.0) / 4.0;
-
-  const double refCircleRadiusSquared = Constants::unitZ2 / Constants::pi;
-
-  bool checkProjInSector(const vec2d& orthpoint);
-  bool checkProjInWindow(const vec4i& point, bool useCircle);
-  bool checkScaledProjInWindow(const vec4i& point, bool useCircle);
+  /*
+   * Inflation factor of the octagonal tiling is the silver
+   * mean, which is also the unit of Z[Sqrt[2]].
+   */
 
   // Only construct the tiling, starting from the initpoint.
   void projTiling(const vec4i& initpoint, uint maxstep,
@@ -92,23 +84,6 @@ namespace Octagonal {
       return x.paraProjL8().length();
     }
   };
-
-  struct VisOp {
-    typedef Common::vec4ilist list_type;
-    static const double epsilon;
-
-    static inline double angle(const vec4i& a) {
-      return a.paraProjL8().angle();
-    }
-
-    static inline vec2d toR2(const vec4i& a) {
-      return a.paraProjL8();
-    }
-
-    static bool rayTest(const vec4i& a, const vec4i& b);
-  };
-
-  typedef VisTest::VisibleList<VisOp> VisList;
 
 };
 

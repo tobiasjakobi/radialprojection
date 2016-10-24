@@ -19,9 +19,18 @@
 
 #include <algorithm>
 
-const double Octagonal::VisOp::epsilon = 2.0 * numeric_limits<double>::epsilon();
+/*
+ * Beginning of anonymous namespace.
+ */
+namespace {
 
-bool Octagonal::checkProjInSector(const vec2d& orthpoint) {
+// Octagon radii:
+const double innerRadiusSquared = (2.0 * Constants::unitZ2 + 1.0) / 8.0;
+const double outerRadiusSquared = (Constants::unitZ2 + 1.0) / 4.0;
+
+const double refCircleRadiusSquared = Constants::unitZ2 / Constants::pi;
+
+bool checkProjInSector(const vec2d& orthpoint) {
   using namespace Common;
 
   const vec2d v(orthpoint.abs());
@@ -44,7 +53,7 @@ bool Octagonal::checkProjInSector(const vec2d& orthpoint) {
   return false;
 }
 
-bool Octagonal::checkProjInWindow(const vec4i& point, bool useCircle) {
+bool checkProjInWindow(const vec4i& point, bool useCircle) {
   using namespace Common;
 
   const vec2d pt(point.orthProjL8());
@@ -65,7 +74,7 @@ bool Octagonal::checkProjInWindow(const vec4i& point, bool useCircle) {
   }
 }
 
-bool Octagonal::checkScaledProjInWindow(const vec4i& point, bool useCircle) {
+bool checkScaledProjInWindow(const vec4i& point, bool useCircle) {
   using namespace Common;
 
   const vec2d pt(point.orthProjL8() * Constants::unitZ2);
@@ -85,6 +94,72 @@ bool Octagonal::checkScaledProjInWindow(const vec4i& point, bool useCircle) {
     }
   }
 }
+
+struct VisOp {
+  typedef Common::vec4ilist list_type;
+  static const double epsilon;
+
+  static inline double angle(const vec4i& a) {
+    return a.paraProjL8().angle();
+  }
+
+  static inline vec2d toR2(const vec4i& a) {
+    return a.paraProjL8();
+  }
+
+  static bool rayTest(const vec4i& a, const vec4i& b);
+};
+
+bool VisOp::rayTest(const vec4i& a, const vec4i& b) {
+  // let Z<2> be Z[sqrt[2]]
+  // transform into the Z<2>*1 + Z<2>*xi
+  // representation (this is a direct sum)
+  const vec4i pa(a.transL8ToDirect());
+  const vec4i pb(b.transL8ToDirect());
+
+  // first filter the trivial cases
+  if (pa.isFirstZero()) {
+    return pb.isFirstZero();
+  }
+
+  if (pb.isFirstZero()) {
+    return pa.isFirstZero();
+  }
+
+  if (pa.isSecondZero()) {
+    return pb.isSecondZero();
+  }
+
+  if (pb.isSecondZero()) {
+    return pa.isSecondZero();
+  }
+
+  // pa = z_a + w_a * xi
+  // pb = z_b + w_b * xi
+  // with z_a, z_b, w_a, w_b elements in Z<2>
+  vec2i c, d;
+
+  // now compute:
+  // c = z_a * w_b
+  // d = z_b * w_a
+  Coprime::multZ2(vec2i(pa[0], pa[1]),
+                  vec2i(pb[2], pb[3]), c);
+  Coprime::multZ2(vec2i(pb[0], pb[1]),
+                  vec2i(pa[2], pa[3]), d);
+
+  return (c == d);
+}
+
+const double VisOp::epsilon = 2.0 * numeric_limits<double>::epsilon();
+
+typedef VisTest::VisibleList<VisOp> VisList;
+
+};
+
+/*
+ * End of anonymous namespace.
+ */
+
 
 void Octagonal::projTiling(const vec4i& initpoint, uint maxstep,
                  Common::vec4ilist& tilingpoints) {
@@ -421,45 +496,5 @@ void Octagonal::innerOuterRadius(const Common::vec4ilist& tilingpoints,
 
   outer = sqrt(out);
   inner = cos(Constants::pi / 8.0) * outer;
-}
-
-bool Octagonal::VisOp::rayTest(const vec4i& a, const vec4i& b) {
-  // let Z<2> be Z[sqrt[2]]
-  // transform into the Z<2>*1 + Z<2>*xi
-  // representation (this is a direct sum)
-  const vec4i pa(a.transL8ToDirect());
-  const vec4i pb(b.transL8ToDirect());
-
-  // first filter the trivial cases
-  if (pa.isFirstZero()) {
-    return pb.isFirstZero();
-  }
-
-  if (pb.isFirstZero()) {
-    return pa.isFirstZero();
-  }
-
-  if (pa.isSecondZero()) {
-    return pb.isSecondZero();
-  }
-
-  if (pb.isSecondZero()) {
-    return pa.isSecondZero();
-  }
-
-  // pa = z_a + w_a * xi
-  // pb = z_b + w_b * xi
-  // with z_a, z_b, w_a, w_b elements in Z<2>
-  vec2i c, d;
-
-  // now compute:
-  // c = z_a * w_b
-  // d = z_b * w_a
-  Coprime::multZ2(vec2i(pa[0], pa[1]),
-                  vec2i(pb[2], pb[3]), c);
-  Coprime::multZ2(vec2i(pb[0], pb[1]),
-                  vec2i(pa[2], pa[3]), d);
-
-  return (c == d);
 }
 
