@@ -158,6 +158,13 @@ int SingleMachine::main(int argc, char* argv[]) {
         Octagonal::projTilingVisLocal(init, steps, sector, tiling, visible);
       else
         Octagonal::projTilingVis(init, origin, steps, false, tiling, visible);
+
+      if (sector) {
+        /*
+         * TODO: There are still vertices outside the sector at this point.
+         *       Add some clipping here.
+         */
+      }
     break;
 
     case octagonal_radprj:
