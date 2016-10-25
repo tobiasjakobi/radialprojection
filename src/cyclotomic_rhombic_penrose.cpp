@@ -20,9 +20,60 @@
 
 #include <algorithm>
 
-const double RhombicPenrose::VisOp::epsilon = 2.0 * numeric_limits<double>::epsilon();
+/*
+ * Beginning of anonymous namespace.
+ */
+namespace {
 
-void RhombicPenrose::getInnerOuterSquared(double& inner, double& outer, uint window) {
+/*
+ * The rhombic penrose case uses four windows W1, W2, W3, W4:
+ * Let P be the convex hull of {1, xi, xi^2, xi^3, xi^4} with
+ * xi = exp(2*pi*i/5), then let
+ * W1 = P, W4 = -P, W3 = tau*P, W2 = -tau*P.
+ */
+
+// Pentagon radii:
+const double innerRadius[2] = {
+  0.5 * Constants::unitGM,
+  0.25 * (Constants::unitGM + 1.0)
+};
+const double outerRadius[2] = {1.0, Constants::unitGM}; 
+
+const double innerRadSquared[2] = {
+  0.25 * (Constants::unitGM + 1.0),
+  (7.0 + 3.0*sqrt(5.0)) / 8.0
+};
+const double outerRadSquared[2] = {1.0, Constants::unitGM*Constants::unitGM};
+
+const vec2d vertices[4][5] = {
+  {
+    vec2d(1.0, 0.0),
+    vec2d(0.5 * (Constants::unitGM - 1.0), 0.5 * sqrt(Constants::unitGM + 2.0)),
+    vec2d(-0.5 * Constants::unitGM, 0.5 * sqrt(3.0 - Constants::unitGM)),
+    vec2d(-0.5 * Constants::unitGM, -0.5 * sqrt(3.0 - Constants::unitGM)),
+    vec2d(0.5 * (Constants::unitGM - 1.0), -0.5 * sqrt(Constants::unitGM + 2.0))
+  }, {
+    vec2d(0.5 * (Constants::unitGM + 1.0), -0.5 * sqrt(Constants::unitGM + 2.0)),
+    vec2d(0.5 * (Constants::unitGM + 1.0), 0.5 * sqrt(Constants::unitGM + 2.0)),
+    vec2d(-0.5, 0.5 * sqrt(4.0*Constants::unitGM + 3.0)),
+    vec2d(-Constants::unitGM, 0.0),
+    vec2d(-0.5, -0.5 * sqrt(4.0*Constants::unitGM + 3.0))
+  }, {
+    vec2d(Constants::unitGM, 0.0),
+    vec2d(0.5, 0.5 * sqrt(4.0*Constants::unitGM + 3.0)),
+    vec2d(-0.5 * (Constants::unitGM + 1.0), 0.5 * sqrt(Constants::unitGM + 2.0)),
+    vec2d(-0.5 * (Constants::unitGM + 1.0), -0.5 * sqrt(Constants::unitGM + 2.0)),
+    vec2d(0.5, -0.5 * sqrt(4.0*Constants::unitGM + 3.0))
+  }, {
+    vec2d(0.5 * Constants::unitGM, -0.5 * sqrt(3.0 - Constants::unitGM)),
+    vec2d(0.5 * Constants::unitGM, 0.5 * sqrt(3.0 - Constants::unitGM)),
+    vec2d(-0.5 * (Constants::unitGM - 1.0), 0.5 * sqrt(Constants::unitGM + 2.0)),
+    vec2d(-1.0, 0.0),
+    vec2d(-0.5 * (Constants::unitGM - 1.0), -0.5 * sqrt(Constants::unitGM + 2.0))
+  }
+};
+
+void getInnerOuterSquared(double& inner, double& outer, uint window) {
   switch (window) {
     case 0:
     case 3:
@@ -41,7 +92,7 @@ void RhombicPenrose::getInnerOuterSquared(double& inner, double& outer, uint win
   }
 }
 
-bool RhombicPenrose::checkProjInSector(const vec2d& orthpoint, uint window) {
+bool checkProjInSector(const vec2d& orthpoint, uint window) {
   using namespace Common;
 
   const vec2d v(orthpoint.abs());
@@ -62,7 +113,7 @@ bool RhombicPenrose::checkProjInSector(const vec2d& orthpoint, uint window) {
   return true;
 }
 
-bool RhombicPenrose::checkProjInWindow(const vec4i& point, uint window) {
+bool checkProjInWindow(const vec4i& point, uint window) {
   using namespace Common;
 
   const vec2d pt(point.orthProjShiftL5());
@@ -82,7 +133,7 @@ bool RhombicPenrose::checkProjInWindow(const vec4i& point, uint window) {
   }
 }
 
-bool RhombicPenrose::checkScaledProjInWindow(const vec4i& point, uint window) {
+bool checkScaledProjInWindow(const vec4i& point, uint window) {
   using namespace Common;
 
   // Note that scaling with -tau (MINUS!) is correct!
@@ -104,6 +155,71 @@ bool RhombicPenrose::checkScaledProjInWindow(const vec4i& point, uint window) {
     }
   }
 }
+
+struct VisOp {
+  typedef Common::vec4ilist list_type;
+  static const double epsilon;
+
+  static inline double angle(const vec4i& a) {
+    return a.paraProjL5().angle();
+  }
+
+  static inline vec2d toR2(const vec4i& a) {
+    return a.paraProjL5();
+  }
+
+  static bool rayTest(const vec4i& a, const vec4i& b);
+};
+
+bool VisOp::rayTest(const vec4i& a, const vec4i& b) {
+  // transform into the Z[tau]*1 + Z[tau]*xi
+  // representation (this is a direct sum)
+  const vec4i pa(a.transL5ToDirect());
+  const vec4i pb(b.transL5ToDirect());
+
+  // first filter the trivial cases
+  if (pa.isFirstZero()) {
+    return pb.isFirstZero();
+  }
+
+  if (pb.isFirstZero()) {
+    return pa.isFirstZero();
+  }
+
+  if (pa.isSecondZero()) {
+    return pb.isSecondZero();
+  }
+
+  if (pb.isSecondZero()) {
+    return pa.isSecondZero();
+  }
+
+  // pa = z_a + w_a * xi
+  // pb = z_b + w_b * xi
+  // with z_a, z_b, w_a, w_b elements in Z[tau]
+  vec2i c, d;
+
+  // now compute:
+  // c = z_a * w_b
+  // d = z_b * w_a
+  Coprime::multZTau(vec2i(pa[0], pa[1]),
+                          vec2i(pb[2], pb[3]), c);
+  Coprime::multZTau(vec2i(pb[0], pb[1]),
+                          vec2i(pa[2], pa[3]), d);
+
+  return (c == d);
+}
+
+const double VisOp::epsilon = 2.0 * numeric_limits<double>::epsilon();
+
+typedef VisTest::VisibleList<VisOp> VisList;
+
+};
+
+/*
+ * End of anonymous namespace.
+ */
+
 
 void RhombicPenrose::projTiling(const vec4i& initpoint, uint maxstep,
              Common::vec4ilist& tilingpoints) {
@@ -360,44 +476,5 @@ void RhombicPenrose::testWindow(Common::vec2ilist& output,
       }
     }
   }
-}
-
-bool RhombicPenrose::VisOp::rayTest(const vec4i& a, const vec4i& b) {
-  // transform into the Z[tau]*1 + Z[tau]*xi
-  // representation (this is a direct sum)
-  const vec4i pa(a.transL5ToDirect());
-  const vec4i pb(b.transL5ToDirect());
-
-  // first filter the trivial cases
-  if (pa.isFirstZero()) {
-    return pb.isFirstZero();
-  }
-
-  if (pb.isFirstZero()) {
-    return pa.isFirstZero();
-  }
-
-  if (pa.isSecondZero()) {
-    return pb.isSecondZero();
-  }
-
-  if (pb.isSecondZero()) {
-    return pa.isSecondZero();
-  }
-
-  // pa = z_a + w_a * xi
-  // pb = z_b + w_b * xi
-  // with z_a, z_b, w_a, w_b elements in Z[tau]
-  vec2i c, d;
-
-  // now compute:
-  // c = z_a * w_b
-  // d = z_b * w_a
-  Coprime::multZTau(vec2i(pa[0], pa[1]),
-                          vec2i(pb[2], pb[3]), c);
-  Coprime::multZTau(vec2i(pb[0], pb[1]),
-                          vec2i(pa[2], pa[3]), d);
-
-  return (c == d);
 }
 

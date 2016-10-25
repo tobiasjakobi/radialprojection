@@ -24,58 +24,6 @@ namespace RhombicPenrose {
   /* Inflation factor of the decagonal tiling is the golden
    * mean, which is also the unit of Z[tau]. */
 
-  /* The rhombic penrose case uses four windows W1, W2, W3, W4: *
-   * Let P be the convex hull of {1, xi, xi^2, xi^3, xi^4} with *
-   * xi = exp(2*pi*i/5), then let                               *
-   * W1 = P, W4 = -P, W3 = tau*P, W2 = -tau*P.                  */
-
-  /* pentagon radii */
-  const double innerRadius[2] = {
-    0.5 * Constants::unitGM,
-    0.25 * (Constants::unitGM + 1.0)
-  };
-  const double outerRadius[2] = {1.0, Constants::unitGM}; 
-
-  const double innerRadSquared[2] = {
-    0.25 * (Constants::unitGM + 1.0),
-    (7.0 + 3.0*sqrt(5.0)) / 8.0
-  };
-  const double outerRadSquared[2] = {1.0, Constants::unitGM*Constants::unitGM};
-
-  const vec2d vertices[4][5] = {
-    {
-      vec2d(1.0, 0.0),
-      vec2d(0.5 * (Constants::unitGM - 1.0), 0.5 * sqrt(Constants::unitGM + 2.0)),
-      vec2d(-0.5 * Constants::unitGM, 0.5 * sqrt(3.0 - Constants::unitGM)),
-      vec2d(-0.5 * Constants::unitGM, -0.5 * sqrt(3.0 - Constants::unitGM)),
-      vec2d(0.5 * (Constants::unitGM - 1.0), -0.5 * sqrt(Constants::unitGM + 2.0))
-    }, {
-      vec2d(0.5 * (Constants::unitGM + 1.0), -0.5 * sqrt(Constants::unitGM + 2.0)),
-      vec2d(0.5 * (Constants::unitGM + 1.0), 0.5 * sqrt(Constants::unitGM + 2.0)),
-      vec2d(-0.5, 0.5 * sqrt(4.0*Constants::unitGM + 3.0)),
-      vec2d(-Constants::unitGM, 0.0),
-      vec2d(-0.5, -0.5 * sqrt(4.0*Constants::unitGM + 3.0))
-    }, {
-      vec2d(Constants::unitGM, 0.0),
-      vec2d(0.5, 0.5 * sqrt(4.0*Constants::unitGM + 3.0)),
-      vec2d(-0.5 * (Constants::unitGM + 1.0), 0.5 * sqrt(Constants::unitGM + 2.0)),
-      vec2d(-0.5 * (Constants::unitGM + 1.0), -0.5 * sqrt(Constants::unitGM + 2.0)),
-      vec2d(0.5, -0.5 * sqrt(4.0*Constants::unitGM + 3.0))
-    }, {
-      vec2d(0.5 * Constants::unitGM, -0.5 * sqrt(3.0 - Constants::unitGM)),
-      vec2d(0.5 * Constants::unitGM, 0.5 * sqrt(3.0 - Constants::unitGM)),
-      vec2d(-0.5 * (Constants::unitGM - 1.0), 0.5 * sqrt(Constants::unitGM + 2.0)),
-      vec2d(-1.0, 0.0),
-      vec2d(-0.5 * (Constants::unitGM - 1.0), -0.5 * sqrt(Constants::unitGM + 2.0))
-    }
-  };
-
-  void getInnerOuterSquared(double& inner, double& outer, uint window);
-
-  bool checkProjInSector(const vec2d& orthpoint, uint window);
-  bool checkProjInWindow(const vec4i& point, uint window);
-  bool checkScaledProjInWindow(const vec4i& point, uint window);
-
   /* projTiling only constructs the tiling, starting from the initpoint */
   void projTiling(const vec4i& initpoint, uint maxstep,
                   Common::vec4ilist& tilingpoints);
@@ -117,23 +65,6 @@ namespace RhombicPenrose {
                       Common::vec4ilist& visiblepoints);
 
   void testWindow(Common::vec2ilist& output, uint resolution, uint window);
-
-  struct VisOp {
-    typedef Common::vec4ilist list_type;
-    static const double epsilon;
-
-    static inline double angle(const vec4i& a) {
-      return a.paraProjL5().angle();
-    }
-
-    static inline vec2d toR2(const vec4i& a) {
-      return a.paraProjL5();
-    }
-
-    static bool rayTest(const vec4i& a, const vec4i& b);
-  };
-
-  typedef VisTest::VisibleList<VisOp> VisList;
 
 };
 
