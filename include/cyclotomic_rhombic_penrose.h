@@ -112,7 +112,7 @@ namespace RhombicPenrose {
                   double& meandist, uint window);
 
   // Aliases for function pointer compatibility reasons
-  void projTilingVis2(const vec4i& initpoint, uint maxstep,
+  void projTilingVis2(const vec4i& initpoint, uint maxstep, bool sector,
                       Common::vec4ilist& tilingpoints,
                       Common::vec4ilist& visiblepoints);
 

@@ -24,17 +24,17 @@
 
 namespace CyclotomicRandom {
   const static RadialFunc octagonalRF(
-    Octagonal::projTiling, Octagonal::projTilingVisLocal2,
+    Octagonal::projTiling, Octagonal::projTilingVisLocal,
     Octagonal::extractVisibleFast, Octagonal::radialProj2,
     Octagonal::estimateGrowth);
 
   const static RadialFunc decagonalRF(
-    Decagonal::projTiling, Decagonal::projTilingVisLocal2,
+    Decagonal::projTiling, Decagonal::projTilingVisLocal,
     Decagonal::extractVisibleFast, Decagonal::radialProj,
     Decagonal::estimateGrowth);
 
   const static RadialFunc dodecagonalRF(
-    Dodecagonal::projTiling, Dodecagonal::projTilingVisLocal2,
+    Dodecagonal::projTiling, Dodecagonal::projTilingVisLocal,
     Dodecagonal::extractVisibleFast, Dodecagonal::radialProj,
     Dodecagonal::estimateGrowth);
 
@@ -99,7 +99,7 @@ void CyclotomicRandom::RadialFunc::call(random_mode mode, uint steps,
   const uint steps_p = estimateGrowth(target_size, true);
 
   if (mode == cyclotomic_visrnd) {
-    projTilingVis(init, steps_p, tiling, visible);
+    projTilingVis(init, steps_p, false, tiling, visible);
     tiling.clear(); /* original tiling vertices are not used */
     randomize<Common::vec4ilist>(visible, tiling, prob);
     tiling.swap(visible);

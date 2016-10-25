@@ -64,11 +64,6 @@ namespace Decagonal {
                   const vec4i& origin, double radius,
                   Common::dlist& output, double& meandist);
 
-  // Aliases for function pointer compatibility reasons
-  void projTilingVisLocal2(const vec4i& initpoint, uint maxstep,
-                           Common::vec4ilist& tilingpoints,
-                           Common::vec4ilist& visiblepoints);
-
   void testWindow(Common::vec2ilist& output, uint resolution);
 
   /* Compute inner and outer radius of tiling. */

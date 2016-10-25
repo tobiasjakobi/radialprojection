@@ -53,7 +53,7 @@ namespace CyclotomicRandom {
   class RadialFunc {
   public:
     typedef void (*tilingfunc)(const vec4i&, uint, Common::vec4ilist&);
-    typedef void (*visfunc)(const vec4i&, uint, Common::vec4ilist&,
+    typedef void (*visfunc)(const vec4i&, uint, bool, Common::vec4ilist&,
                             Common::vec4ilist&);
     typedef void (*extractfunc)(const vec4i&, const Common::vec4ilist&,
                                 Common::vec4ilist&);

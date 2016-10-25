@@ -67,9 +67,6 @@ namespace Octagonal {
                   Common::dlist& output, double& meandist);
 
   // Aliases for function pointer compatibility reasons
-  void projTilingVisLocal2(const vec4i& initpoint, uint maxstep,
-                           Common::vec4ilist& tilingpoints,
-                           Common::vec4ilist& visiblepoints);
   void radialProj2(const Common::vec4ilist& input, Common::dlist& output,
                    double& meandist);
 

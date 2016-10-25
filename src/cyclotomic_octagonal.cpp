@@ -451,11 +451,6 @@ void Octagonal::radialProj(const Common::vec4ilist& input,
   normalizeAngDists(output, meandist);
 }
 
-void Octagonal::projTilingVisLocal2(const vec4i& initpoint, uint maxstep,
-          Common::vec4ilist& tilingpoints, Common::vec4ilist& visiblepoints) {
-  projTilingVisLocal(initpoint, maxstep, false, tilingpoints, visiblepoints);
-}
-
 void Octagonal::radialProj2(const Common::vec4ilist& input,
           Common::dlist& output, double& meandist) {
   radialProj(input, output, meandist, false);
