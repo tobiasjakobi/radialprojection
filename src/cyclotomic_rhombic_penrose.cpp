@@ -166,6 +166,56 @@ bool checkScaledProjInWindow(const vec4i& point, uint window) {
   }
 }
 
+/*
+ * Internal function to create the vertices of the rhombic Penrose tiling.
+ *
+ * Assumes that the parity of the initpoint is valid.
+ */
+void tilingVertices(const vec4i& initpoint, uint maxstep, bool sector,
+             Common::vec4ilist& vertices) {
+  using namespace Common;
+
+  vec4i p, pp;
+  uint parity;
+
+  const uint numsteps = 10;
+  const vec4i hyperstep[10] = {vec4i(1,0,0,0),  vec4i(0,1,0,0),
+                               vec4i(0,0,1,0),  vec4i(0,0,0,1),
+                               vec4i(1,1,1,1),  vec4i(-1,0,0,0),
+                               vec4i(0,-1,0,0), vec4i(0,0,-1,0),
+                               vec4i(0,0,0,-1), vec4i(-1,-1,-1,-1)};
+
+  assert(initpoint.kappaL5() != 0);
+
+  vertices.push_back(initpoint);
+
+  TVLManager<vec4ilist, 2 + 1> lvlman(vertices);
+
+  for (uint n = 0; n < maxstep; ++n) {
+    for (uint i = lvlman.begin(); i < lvlman.end(); ++i) {
+      p = vertices[i];
+
+      for (uint j = 0; j < numsteps; ++j) {
+        pp = p + hyperstep[j];
+        parity = pp.kappaL5();
+
+        if (parity == 0)
+          continue;
+
+        if (!checkProjInWindow(pp, parity - 1))
+          continue;
+
+        if (sector && !checkPhyInSectorEps(pp.paraProjL5()))
+          continue;
+
+        lvlman.insert(pp);
+      }
+    }
+
+    lvlman.advance();
+  }
+}
+
 struct VisOp {
   typedef Common::vec4ilist list_type;
   static const double epsilon;
