@@ -32,44 +32,46 @@ namespace {
  * W1 = P, W4 = -P, W3 = tau*P, W2 = -tau*P.
  */
 
+const double tau = Constants::unitGM;
+
 // Pentagon radii:
 const double innerRadius[2] = {
-  0.5 * Constants::unitGM,
-  0.25 * (Constants::unitGM + 1.0)
+  0.5 * tau,
+  0.25 * (tau + 1.0)
 };
-const double outerRadius[2] = {1.0, Constants::unitGM}; 
+const double outerRadius[2] = {1.0, tau};
 
 const double innerRadSquared[2] = {
-  0.25 * (Constants::unitGM + 1.0),
+  0.25 * (tau + 1.0),
   (7.0 + 3.0*sqrt(5.0)) / 8.0
 };
-const double outerRadSquared[2] = {1.0, Constants::unitGM*Constants::unitGM};
+const double outerRadSquared[2] = {1.0, tau*tau};
 
 const vec2d vertices[4][5] = {
   {
     vec2d(1.0, 0.0),
-    vec2d(0.5 * (Constants::unitGM - 1.0), 0.5 * sqrt(Constants::unitGM + 2.0)),
-    vec2d(-0.5 * Constants::unitGM, 0.5 * sqrt(3.0 - Constants::unitGM)),
-    vec2d(-0.5 * Constants::unitGM, -0.5 * sqrt(3.0 - Constants::unitGM)),
-    vec2d(0.5 * (Constants::unitGM - 1.0), -0.5 * sqrt(Constants::unitGM + 2.0))
+    vec2d(0.5 * (tau - 1.0), 0.5 * sqrt(tau + 2.0)),
+    vec2d(-0.5 * tau, 0.5 * sqrt(3.0 - tau)),
+    vec2d(-0.5 * tau, -0.5 * sqrt(3.0 - tau)),
+    vec2d(0.5 * (tau - 1.0), -0.5 * sqrt(tau + 2.0))
   }, {
-    vec2d(0.5 * (Constants::unitGM + 1.0), -0.5 * sqrt(Constants::unitGM + 2.0)),
-    vec2d(0.5 * (Constants::unitGM + 1.0), 0.5 * sqrt(Constants::unitGM + 2.0)),
-    vec2d(-0.5, 0.5 * sqrt(4.0*Constants::unitGM + 3.0)),
-    vec2d(-Constants::unitGM, 0.0),
-    vec2d(-0.5, -0.5 * sqrt(4.0*Constants::unitGM + 3.0))
+    vec2d(0.5 * (tau + 1.0), -0.5 * sqrt(tau + 2.0)),
+    vec2d(0.5 * (tau + 1.0), 0.5 * sqrt(tau + 2.0)),
+    vec2d(-0.5, 0.5 * sqrt(4.0*tau + 3.0)),
+    vec2d(-tau, 0.0),
+    vec2d(-0.5, -0.5 * sqrt(4.0*tau + 3.0))
   }, {
-    vec2d(Constants::unitGM, 0.0),
-    vec2d(0.5, 0.5 * sqrt(4.0*Constants::unitGM + 3.0)),
-    vec2d(-0.5 * (Constants::unitGM + 1.0), 0.5 * sqrt(Constants::unitGM + 2.0)),
-    vec2d(-0.5 * (Constants::unitGM + 1.0), -0.5 * sqrt(Constants::unitGM + 2.0)),
-    vec2d(0.5, -0.5 * sqrt(4.0*Constants::unitGM + 3.0))
+    vec2d(tau, 0.0),
+    vec2d(0.5, 0.5 * sqrt(4.0*tau + 3.0)),
+    vec2d(-0.5 * (tau + 1.0), 0.5 * sqrt(tau + 2.0)),
+    vec2d(-0.5 * (tau + 1.0), -0.5 * sqrt(tau + 2.0)),
+    vec2d(0.5, -0.5 * sqrt(4.0*tau + 3.0))
   }, {
-    vec2d(0.5 * Constants::unitGM, -0.5 * sqrt(3.0 - Constants::unitGM)),
-    vec2d(0.5 * Constants::unitGM, 0.5 * sqrt(3.0 - Constants::unitGM)),
-    vec2d(-0.5 * (Constants::unitGM - 1.0), 0.5 * sqrt(Constants::unitGM + 2.0)),
+    vec2d(0.5 * tau, -0.5 * sqrt(3.0 - tau)),
+    vec2d(0.5 * tau, 0.5 * sqrt(3.0 - tau)),
+    vec2d(-0.5 * (tau - 1.0), 0.5 * sqrt(tau + 2.0)),
     vec2d(-1.0, 0.0),
-    vec2d(-0.5 * (Constants::unitGM - 1.0), -0.5 * sqrt(Constants::unitGM + 2.0))
+    vec2d(-0.5 * (tau - 1.0), -0.5 * sqrt(tau + 2.0))
   }
 };
 
@@ -139,7 +141,7 @@ bool checkScaledProjInWindow(const vec4i& point, uint window) {
   // Note that scaling with -tau (MINUS!) is correct!
   // Usually this doesn't matter since the window is symmetric under
   // transformation with -1, but not here.
-  const vec2d pt(point.orthProjShiftL5() * -Constants::unitGM);
+  const vec2d pt(point.orthProjShiftL5() * -tau);
   const double pt1 = pt.lengthSquared();
 
   double innerSquared, outerSquared;
