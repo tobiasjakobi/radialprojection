@@ -34,6 +34,10 @@ namespace RhombicPenrose {
                      Common::vec4ilist& tilingpoints,
                      Common::vec4ilist& visiblepoints);
 
+  void projTilingVisFast(const vec4i& initpoint, uint maxstep, bool sector,
+                         Common::vec4ilist& tilingpoints,
+                         Common::vec4ilist& visiblepoints);
+
   /* The rhombic Penrose tiling doesn't allow for a local visibility test. */
 
   void extractSector(const Common::vec4ilist& input,

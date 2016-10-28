@@ -352,6 +352,72 @@ void RhombicPenrose::projTilingVis(const vec4i& initpoint,
   }
 }
 
+void RhombicPenrose::projTilingVisFast(const vec4i& initpoint, uint maxstep,
+                     bool sector,
+                     Common::vec4ilist& tilingpoints,
+                     Common::vec4ilist& visiblepoints) {
+  using namespace Common;
+
+  vec4ilist vertices;
+
+  vec4i p, pp;
+  uint parity;
+  const uint numsteps = 10;
+  const vec4i hyperstep[10] = {vec4i(1,0,0,0),  vec4i(0,1,0,0),
+                               vec4i(0,0,1,0),  vec4i(0,0,0,1),
+                               vec4i(1,1,1,1),  vec4i(-1,0,0,0),
+                               vec4i(0,-1,0,0), vec4i(0,0,-1,0),
+                               vec4i(0,0,0,-1), vec4i(-1,-1,-1,-1)};
+
+  if (initpoint.kappaL5() != 0) {
+    cerr << "error: initial point does not have zero parity.\n";
+    return;
+  }
+
+  vertices.push_back(initpoint);
+
+  // We need 2 + 1 levels to avoid going "back" (into the wrong direction) when creating the patch.
+  TVLManager<vec4ilist, 2 + 1> lvlman(vertices);
+
+  for (uint n = 0; n < maxstep; ++n) {
+    for (uint i = lvlman.begin(); i < lvlman.end(); ++i) {
+      p = vertices[i];
+
+      for (uint j = 0; j < numsteps; ++j) {
+        pp = p + hyperstep[j];
+        parity = pp.kappaL5();
+
+        if (parity == 0)
+          continue;
+
+        if (!checkProjInWindow(pp, parity - 1))
+          continue;
+
+        if (sector && !checkPhyInSectorEps(pp.paraProjL5()))
+          continue;
+
+        lvlman.insert(pp);
+      }
+    }
+
+    lvlman.advance();
+  }
+
+  // extractSector() clears the output vector, so no need to do this here.
+  if (sector) {
+    Decagonal::extractSector(vertices, tilingpoints);
+    tilingpoints.swap(vertices);
+  }
+
+  tilingpoints.swap(vertices);
+
+  extractVisibleFast(vec4i(0, 0, 0, 0), tilingpoints, visiblepoints);
+
+  cerr << "Constructed patch of rhombic penrose tiling with "
+       << tilingpoints.size() << " vertices and "
+       << visiblepoints.size() << " visible ones.\n";
+}
+
 void RhombicPenrose::extractSector(const Common::vec4ilist& input,
              Common::vec4ilist& output) {
   // Identical to the decagonal case:
