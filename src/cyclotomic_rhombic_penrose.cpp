@@ -370,12 +370,6 @@ void RhombicPenrose::projTilingVisFast(const vec4i& initpoint, uint maxstep,
        << visiblepoints.size() << " visible ones." << endl;
 }
 
-void RhombicPenrose::extractSector(const Common::vec4ilist& input,
-             Common::vec4ilist& output) {
-  // Identical to the decagonal case:
-  Decagonal::extractSector(input, output);
-}
-
 void RhombicPenrose::extractVisible(const vec4i& origin, bool sector,
                       const Common::vec4ilist& input, Common::vec4ilist& output) {
   using namespace Common;
