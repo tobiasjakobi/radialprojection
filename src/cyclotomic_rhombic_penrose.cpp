@@ -75,6 +75,14 @@ const vec2d vertices[4][5] = {
   }
 };
 
+bool checkPhyInSector(const vec2d& phy){
+  return (phy.inFirstQuadrant() && phy.inSectorL5());
+}
+
+bool checkPhyInSectorEps(const vec2d& phy){
+  return (phy.inFirstQuadrant() && phy.inSectorL5Eps());
+}
+
 void getInnerOuterSquared(double& inner, double& outer, uint window) {
   switch (window) {
     case 0:
@@ -369,25 +377,25 @@ void RhombicPenrose::extractVisible(const vec4i& origin, bool sector,
 
   if (sector) {
     for (vec4ilist::const_iterator i = input.begin(); i != input.end(); ++i) {
-      if (i->isZero()) continue;
+      if (i->isZero())
+        continue;
 
-      const vec2d physProj(i->paraProjL5());
-
-      if (physProj.inFirstQuadrant() && physProj.inSectorL5()) {
+      if (checkPhyInSector(i->paraProjL5()))
         vlist->insertSorted(*i);
-      }
     }
   } else {
     for (vec4ilist::const_iterator i = input.begin(); i != input.end(); ++i) {
       const vec4i shifted(*i - origin);
 
-      if (shifted.isZero()) continue;
-      vlist->insertSorted(shifted);
+      if (!shifted.isZero())
+        vlist->insertSorted(shifted);
     }
   }
 
-  /* This function is never used for radial projection, so always
-   * apply proper/correct visibility computation. */
+  /*
+   * This function is never used for radial projection, so always
+   * apply proper/correct visibility computation.
+   */
   vlist->removeInvisibleProper();
 
   output.clear();
