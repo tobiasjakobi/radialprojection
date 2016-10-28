@@ -304,46 +304,18 @@ void RhombicPenrose::projTilingVis(const vec4i& initpoint,
 
   vec4ilist tiling_sector;
 
-  vec4i p, pp;
-  const uint numsteps = 10;
-  const vec4i hyperstep[10] = {vec4i(1,0,0,0),  vec4i(0,1,0,0),
-                               vec4i(0,0,1,0),  vec4i(0,0,0,1),
-                               vec4i(1,1,1,1),  vec4i(-1,0,0,0),
-                               vec4i(0,-1,0,0), vec4i(0,0,-1,0),
-                               vec4i(0,0,0,-1), vec4i(-1,-1,-1,-1)};
-
   if (initpoint.kappaL5() != 0) {
-    cerr << "Initial point not of zero-parity.\n";
+    cerr << "error: initial point does not have zero parity." << endl;
     return;
   }
 
   tilingpoints.clear();
+  tilingVertices(initpoint, maxstep, false, tilingpoints);
+
+  cerr << "info: constructed patch of rhombic Penrose tiling with "
+       << tilingpoints.size() << " vertices." << endl;
+
   visiblepoints.clear();
-
-  tilingpoints.push_back(initpoint);
-
-  // We need 2 + 1 levels to avoid going "back" (into the wrong direction) when creating the patch.
-  TVLManager<vec4ilist, 2 + 1> lvlman(tilingpoints);
-
-  for (uint n = 0; n < maxstep; ++n) {
-    for (uint i = lvlman.begin(); i < lvlman.end(); ++i) {
-      p = tilingpoints[i];
-
-      for (uint j = 0; j < numsteps; ++j) {
-        pp = p + hyperstep[j];
-
-        const uint parity = pp.kappaL5();
-        if (parity == 0) continue;
-
-        if (checkProjInWindow(pp, parity - 1)) lvlman.insert(pp);
-      }
-    }
-
-    lvlman.advance();
-  }
-
-  cerr << "Constructed patch of rhombic penrose tiling with "
-       << tilingpoints.size() << " vertices.\n";
 
   switch (hint) {
   case proj_tiling_none:
@@ -352,7 +324,7 @@ void RhombicPenrose::projTilingVis(const vec4i& initpoint,
   case proj_tiling_radialprojection:
     /* Visibility computation is expensive here, so reduce the tiling
      * to a sector before proceeding. */
-    extractSector(tilingpoints, tiling_sector);
+    Decagonal::extractSector(tilingpoints, tiling_sector);
     tilingpoints.swap(tiling_sector);
     cerr << "Reduced full tiling to a sector containing "
          << tilingpoints.size() << " vertices.\n";
