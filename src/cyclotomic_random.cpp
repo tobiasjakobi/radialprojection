@@ -39,7 +39,7 @@ namespace CyclotomicRandom {
     Dodecagonal::estimateGrowth);
 
   const static RadialFunc rhombicPenroseRF(
-    RhombicPenrose::projTiling, RhombicPenrose::projTilingVis2,
+    RhombicPenrose::projTiling, RhombicPenrose::projTilingVisFast,
     RhombicPenrose::extractVisibleFast, RhombicPenrose::radialProj,
     RhombicPenrose::estimateGrowth);
 };

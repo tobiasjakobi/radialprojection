@@ -467,16 +467,6 @@ void RhombicPenrose::radialProj(const Common::vec4ilist& input,
   normalizeAngDists(output, meandist);
 }
 
-// The 'sector' argument is ignored.
-void RhombicPenrose::projTilingVis2(const vec4i& initpoint,
-          uint maxstep, bool sector,
-          Common::vec4ilist& tilingpoints, Common::vec4ilist& visiblepoints) {
-  static const vec4i def_origin(0, 0, 0, 0);
-
-  projTilingVis(initpoint, def_origin, maxstep, Common::proj_tiling_radialprojection,
-                tilingpoints, visiblepoints);
-}
-
 void RhombicPenrose::testWindow(Common::vec2ilist& output,
               uint resolution, uint window) {
   using namespace Common;
