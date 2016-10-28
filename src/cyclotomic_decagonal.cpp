@@ -347,11 +347,14 @@ void Decagonal::projTilingVisLocal(const vec4i& initpoint, uint maxstep,
         if (sector && !checkPhyInSectorEps(pp.paraProjL5())) continue;
         if (!lvlman.insert(pp)) continue;
 
-        /* Apply the local test for visibility:                                              *
-         * The test is similar to the AB one. It always again a test for coprimality of the  *
-         * coordinates (in the respective module), and a (scaled) window test. However here  *
-         * we are working with a shifted window. For the local visibility test to agree with *
-         * the generic / ray-test one, we have to invert the direction of the shift.         */
+        /*
+         * Apply the local test for visibility:
+         * The test is similar to the AB one. It consists again of a test for
+         * coprimality of the coordinates (in the respective algebraic
+         * integers), and a (scaled) window test. However here we are working
+         * with a shifted window. For the local visibility test to agree with
+         * the geometric test, we have to invert the direction of the shift.
+         */
         if (!checkScaledProjInWindow(pp, circularWindow) &&
             coprimeZTau(pp.transL5ToDirect())) {
            visiblepoints.push_back(pp);
