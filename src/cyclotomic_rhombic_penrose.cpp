@@ -283,45 +283,16 @@ typedef VisTest::VisibleList<VisOp> VisList;
 
 void RhombicPenrose::projTiling(const vec4i& initpoint, uint maxstep,
              Common::vec4ilist& tilingpoints) {
-  using namespace Common;
-
-  vec4i p, pp;
-  const uint numsteps = 10;
-  const vec4i hyperstep[10] = {vec4i(1,0,0,0),  vec4i(0,1,0,0),
-                               vec4i(0,0,1,0),  vec4i(0,0,0,1),
-                               vec4i(1,1,1,1),  vec4i(-1,0,0,0),
-                               vec4i(0,-1,0,0), vec4i(0,0,-1,0),
-                               vec4i(0,0,0,-1), vec4i(-1,-1,-1,-1)};
-
   if (initpoint.kappaL5() != 0) {
-    cerr << "Initial point not of zero-parity.\n";
+    cerr << "error: initial point does not have zero parity." << endl;
     return;
   }
 
   tilingpoints.clear();
-  tilingpoints.push_back(initpoint);
+  tilingVertices(initpoint, maxstep, false, tilingpoints);
 
-  TVLManager<vec4ilist, 2 + 1> lvlman(tilingpoints);
-
-  for (uint n = 0; n < maxstep; ++n) {
-    for (uint i = lvlman.begin(); i < lvlman.end(); ++i) {
-      p = tilingpoints[i];
-
-      for (uint j = 0; j < numsteps; ++j) {
-        pp = p + hyperstep[j];
-
-        const uint parity = pp.kappaL5();
-        if (parity == 0) continue;
-
-        if (checkProjInWindow(pp, parity - 1)) lvlman.insert(pp);
-      }
-    }
-
-    lvlman.advance();
-  }
-
-  cerr << "Constructed patch of rhombic Penrose tiling with "
-       << tilingpoints.size() << " vertices.\n";
+  cerr << "info: constructed patch of rhombic Penrose tiling with "
+       << tilingpoints.size() << " vertices." << endl;
 }
 
 void RhombicPenrose::projTilingVis(const vec4i& initpoint,
