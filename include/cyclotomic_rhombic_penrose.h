@@ -34,6 +34,11 @@ namespace RhombicPenrose {
                      Common::vec4ilist& tilingpoints,
                      Common::vec4ilist& visiblepoints);
 
+  /*
+   * Construction of the tiling vertices followed by fast computation
+   * of visible vertices. This method should be used for radial
+   * projection only.
+   */
   void projTilingVisFast(const vec4i& initpoint, uint maxstep, bool sector,
                          Common::vec4ilist& tilingpoints,
                          Common::vec4ilist& visiblepoints);
