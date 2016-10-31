@@ -1723,15 +1723,6 @@ namespace Common {
   // Replace the window by a circle of the same area.
   static const bool circularWindow = false;
 
-  /* Optimizations hints when producing tiling vertices via projection method:
-   * radialprojection: tiling vertices are used as input for radial projection
-   * onlysector: if the tiling has symmetries, try to isolate a single sector */
-  enum proj_tiling_hint {
-    proj_tiling_none,
-    proj_tiling_radialprojection,
-    proj_tiling_onlysector
-  };
-
 #ifdef COMMON_USE_SSE
   typedef vector<vec2d, AlignmentAllocator<vec2d, 16> > vec2dlist;
   typedef vector<vec4i, AlignmentAllocator<vec4i, 16> > vec4ilist;
