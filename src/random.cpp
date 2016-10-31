@@ -183,7 +183,8 @@ void RandomVis::radialProjRndVis(uint steps, double prob, Common::dlist& out) {
   for (vec2ilist::const_iterator i = vertices.begin(); i != vertices.end(); ++i)
     visible.push_back(i->primitive());
 
-  vertices.resize(0);
+  // This deallocates the memory of 'vertices'.
+  vec2ilist().swap(vertices);
 
   sort(visible.begin(), visible.end());
   visible.erase(unique(visible.begin(), visible.end()), visible.end());
@@ -198,7 +199,8 @@ void RandomVis::radialProjRndVis(uint steps, double prob, Common::dlist& out) {
   for (vec2ilist::const_iterator i = visible.begin(); i != visible.end(); ++i)
     angles.push_back(i->angle());
 
-  visible.resize(0);
+  // This deallocates the memory of 'visible'.
+  vec2ilist().swap(visible);
 
   sort(angles.begin(), angles.end());
 

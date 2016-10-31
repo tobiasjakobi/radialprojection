@@ -195,7 +195,8 @@ void Hexagonal::tilingVis(const vec2i& initpoint, uint maxstep,
     }
   }
 
-  helper.resize(0);
+  // This deallocates the memory of 'helper'.
+  vec2ilist().swap(helper);
 
   sort(ext.begin(), ext.end());
   normalize(ext);
