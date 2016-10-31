@@ -353,6 +353,12 @@ void RhombicPenrose::projTilingVisFast(const vec4i& initpoint, uint maxstep,
   const vec4i origin(0, 0, 0, 0);
 
   vec4ilist vertices;
+
+  if (initpoint.kappaL5() != 0) {
+    cerr << "error: initial point does not have zero parity." << endl;
+    return;
+  }
+
   tilingVertices(initpoint, maxstep, sector, vertices);
 
   // extractSector() clears the output vector, so no need to do this here.
