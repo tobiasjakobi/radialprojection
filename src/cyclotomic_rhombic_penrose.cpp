@@ -332,15 +332,14 @@ void RhombicPenrose::projTilingVis(const vec4i& initpoint, const vec4i& origin,
    */
   vec4ilist().swap(vertices);
 
+  // Both extractVisible() and extractVisibleFast() clear the output.
   if (radproj) {
     /*
      * If tiling vertices are going to be used for radial projection, we can
      * use fast visibility computation.
-     * extractVisibleFast() clears the output vector.
      */
     extractVisibleFast(origin, tilingpoints, visiblepoints);
   } else {
-    // TODO: Check if extractVisible() clears the output.
     extractVisible(origin, false, tilingpoints, visiblepoints);
   }
 }
@@ -376,45 +375,28 @@ void RhombicPenrose::projTilingVisFast(const vec4i& initpoint, uint maxstep,
        << visiblepoints.size() << " visible ones." << endl;
 }
 
-void RhombicPenrose::extractVisible(const vec4i& origin, bool sector,
+void RhombicPenrose::extractVisible(const vec4i& origin, bool radproj,
                       const Common::vec4ilist& input, Common::vec4ilist& output) {
   using namespace Common;
 
   VisList* vlist = new VisList;
-
-  // Assert that we're called with valid input parameters.
-  if (sector)
-    assert(origin.isZero());
-
-  if (sector)
-    vlist->reserve((input.size() - 1) / 5);
-  else
-    vlist->reserve(input.size() - 1);
+  vlist->reserve(input.size() - 1);
 
   vlist->init();
 
-  if (sector) {
-    for (vec4ilist::const_iterator i = input.begin(); i != input.end(); ++i) {
-      if (i->isZero())
-        continue;
+  for (vec4ilist::const_iterator i = input.begin(); i != input.end(); ++i) {
+    const vec4i shifted(*i - origin);
 
-      if (checkPhyInSector(i->paraProjL5()))
-        vlist->insertSorted(*i);
-    }
-  } else {
-    for (vec4ilist::const_iterator i = input.begin(); i != input.end(); ++i) {
-      const vec4i shifted(*i - origin);
+    if (shifted.isZero())
+      continue;
 
-      if (!shifted.isZero())
-        vlist->insertSorted(shifted);
-    }
+    vlist->insertSorted(shifted);
   }
 
-  /*
-   * This function is never used for radial projection, so always
-   * apply proper/correct visibility computation.
-   */
-  vlist->removeInvisibleProper();
+  if (radproj)
+    vlist->removeInvisibleFast();
+  else
+    vlist->removeInvisibleProper();
 
   output.clear();
   output.reserve(vlist->size());
