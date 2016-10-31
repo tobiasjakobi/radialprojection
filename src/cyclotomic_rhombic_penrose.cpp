@@ -295,53 +295,53 @@ void RhombicPenrose::projTiling(const vec4i& initpoint, uint maxstep,
        << tilingpoints.size() << " vertices." << endl;
 }
 
-void RhombicPenrose::projTilingVis(const vec4i& initpoint,
-             const vec4i& origin,
-             uint maxstep, enum Common::proj_tiling_hint hint,
+void RhombicPenrose::projTilingVis(const vec4i& initpoint, const vec4i& origin,
+             uint maxstep, bool sector, bool radproj,
              Common::vec4ilist& tilingpoints,
              Common::vec4ilist& visiblepoints) {
   using namespace Common;
 
-  vec4ilist tiling_sector;
+  vec4ilist vertices;
+
+  if (sector && !origin.isZero()) {
+    cerr << "error: tiling sector requested, but origin is not zero." << endl;
+    return;
+  }
 
   if (initpoint.kappaL5() != 0) {
     cerr << "error: initial point does not have zero parity." << endl;
     return;
   }
 
-  tilingpoints.clear();
-  tilingVertices(initpoint, maxstep, false, tilingpoints);
+  tilingVertices(initpoint, maxstep, sector, tilingpoints);
 
   cerr << "info: constructed patch of rhombic Penrose tiling with "
        << tilingpoints.size() << " vertices." << endl;
 
-  visiblepoints.clear();
+  // extractSector() clears the output vector, so no need to do this here.
+  if (sector) {
+    Decagonal::extractSector(vertices, tilingpoints);
+    tilingpoints.swap(vertices);
+  }
 
-  switch (hint) {
-  case proj_tiling_none:
-    extractVisible(origin, false, tilingpoints, visiblepoints);
+  tilingpoints.swap(vertices);
 
-  case proj_tiling_radialprojection:
-    /* Visibility computation is expensive here, so reduce the tiling
-     * to a sector before proceeding. */
-    Decagonal::extractSector(tilingpoints, tiling_sector);
-    tilingpoints.swap(tiling_sector);
-    cerr << "Reduced full tiling to a sector containing "
-         << tilingpoints.size() << " vertices.\n";
+  /*
+   * This deallocates the memory of 'vertices' which is the previous
+   * memory allocated for 'tilingpoints'.
+   */
+  vec4ilist().swap(vertices);
 
-    /* If tiling vertices are going to be used for radial projection, we can
-     * proceed using the fastvis routines. */
+  if (radproj) {
+    /*
+     * If tiling vertices are going to be used for radial projection, we can
+     * use fast visibility computation.
+     * extractVisibleFast() clears the output vector.
+     */
     extractVisibleFast(origin, tilingpoints, visiblepoints);
-    break;
-
-  case proj_tiling_onlysector:
-    assert(origin.isZero());
-    extractVisible(origin, true, tilingpoints, visiblepoints);
-    break;
-
-  default:
-    assert(false);
-    break;
+  } else {
+    // TODO: Check if extractVisible() clears the output.
+    extractVisible(origin, false, tilingpoints, visiblepoints);
   }
 }
 

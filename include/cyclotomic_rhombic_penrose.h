@@ -28,9 +28,8 @@ namespace RhombicPenrose {
   void projTiling(const vec4i& initpoint, uint maxstep,
                   Common::vec4ilist& tilingpoints);
 
-  void projTilingVis(const vec4i& initpoint,
-                     const vec4i& origin,
-                     uint maxstep, enum Common::proj_tiling_hint hint,
+  void projTilingVis(const vec4i& initpoint, const vec4i& origin,
+                     uint maxstep, bool sector, bool radproj,
                      Common::vec4ilist& tilingpoints,
                      Common::vec4ilist& visiblepoints);
 

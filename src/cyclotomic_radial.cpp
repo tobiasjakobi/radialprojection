@@ -245,9 +245,8 @@ int SingleMachine::main(int argc, char* argv[]) {
     break;
 
     case rhmbpenrose_tiling:
-      RhombicPenrose::projTilingVis(init, origin, steps,
-        sector ? Common::proj_tiling_onlysector : Common::proj_tiling_none,
-        tiling, visible);
+      RhombicPenrose::projTilingVis(init, origin, steps, sector, false,
+                                    tiling, visible);
     break;
 
     case rhmbpenrose_radprj:
@@ -255,8 +254,7 @@ int SingleMachine::main(int argc, char* argv[]) {
         RhombicPenrose::projTilingVisFast(init, steps, true,
                                           tiling, visible);
       } else {
-        RhombicPenrose::projTilingVis(init, origin, steps,
-                                      Common::proj_tiling_radialprojection,
+        RhombicPenrose::projTilingVis(init, origin, steps, true, true,
                                       tiling, visible);
       }
 
