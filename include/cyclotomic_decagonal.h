@@ -44,10 +44,6 @@ namespace Decagonal {
   void extractSector(const Common::vec4ilist& input,
                      Common::vec4ilist& output);
 
-  void extractVisible(const vec4i& origin, bool radialproj,
-                      const Common::vec4ilist& input,
-                      Common::vec4ilist& output);
-
   // Fast computation of (incorrect) visibility, useful for radial projection.
   void extractVisibleFast(const vec4i& origin, const Common::vec4ilist& input,
                           Common::vec4ilist& output);

@@ -44,9 +44,6 @@ namespace RhombicPenrose {
 
   /* The rhombic Penrose tiling doesn't allow for a local visibility test. */
 
-  void extractVisible(const vec4i& origin, bool sector, const Common::vec4ilist& input,
-                      Common::vec4ilist& output);
-
   // Fast computation of (incorrect) visibility, useful for radial projection.
   void extractVisibleFast(const vec4i& origin, const Common::vec4ilist& input,
                           Common::vec4ilist& output);

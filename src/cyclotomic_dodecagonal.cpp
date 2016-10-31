@@ -219,6 +219,38 @@ const double VisOp::epsilon = 2.0 * numeric_limits<double>::epsilon();
 
 typedef VisTest::VisibleList<VisOp> VisList;
 
+void extractVisible(const vec4i& origin, bool radproj,
+                    const Common::vec4ilist& input,
+                    Common::vec4ilist& output) {
+  using namespace Common;
+
+  VisList* vlist = new VisList;
+  vlist->reserve(input.size() - 1);
+
+  vlist->init();
+
+  for (vec4ilist::const_iterator i = input.begin(); i != input.end(); ++i) {
+    const vec4i shifted(*i - origin);
+
+    // zero = reference point (not visible)
+    if (shifted.isZero())
+      continue;
+
+    vlist->insertSorted(shifted);
+  }
+
+  if (radproj)
+    vlist->removeInvisibleFast();
+  else
+    vlist->removeInvisibleProper();
+
+  output.clear();
+  output.reserve(vlist->size());
+  vlist->dump(output);
+
+  delete vlist;
+}
+
 };
 
 /*
@@ -459,36 +491,6 @@ void Dodecagonal::extractSector(const Common::vec4ilist& input,
       output.push_back(*i);
   }
 }
-
-void Dodecagonal::extractVisible(const vec4i& origin, bool radialproj,
-                      const Common::vec4ilist& input,
-                      Common::vec4ilist& output) {
-  using namespace Common;
-
-  VisList* vlist = new VisList;
-  vlist->reserve(input.size() - 1);
-
-  vlist->init();
-
-  for (vec4ilist::const_iterator i = input.begin(); i != input.end(); ++i) {
-    const vec4i shifted(*i - origin);
-
-    if (shifted.isZero()) continue; // zero = reference point (not visible)
-    vlist->insertSorted(shifted);
-  }
-
-  if (radialproj)
-    vlist->removeInvisibleFast();
-  else
-    vlist->removeInvisibleProper();
-
-  output.clear();
-  output.reserve(vlist->size());
-  vlist->dump(output);
-
-  delete vlist;
-}
-
 
 void Dodecagonal::extractVisibleFast(const vec4i& origin,
                 const Common::vec4ilist& input, Common::vec4ilist& output) {
