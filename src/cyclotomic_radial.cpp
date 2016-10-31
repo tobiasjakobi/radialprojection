@@ -251,9 +251,15 @@ int SingleMachine::main(int argc, char* argv[]) {
     break;
 
     case rhmbpenrose_radprj:
-      RhombicPenrose::projTilingVis(init, origin, steps,
-                                    Common::proj_tiling_radialprojection,
-                                    tiling, visible);
+      if (zero_origin) {
+        RhombicPenrose::projTilingVisFast(init, steps, true,
+                                          tiling, visible);
+      } else {
+        RhombicPenrose::projTilingVis(init, origin, steps,
+                                      Common::proj_tiling_radialprojection,
+                                      tiling, visible);
+      }
+
       RhombicPenrose::radialProj(visible, spacings, mean);
     break;
 
