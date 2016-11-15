@@ -185,7 +185,7 @@ void tilingVertices(const vec4i& initpoint, uint maxstep, bool sector,
                                vec4i(0,-1,0,0), vec4i(0,0,-1,0),
                                vec4i(0,0,0,-1), vec4i(-1,-1,-1,-1)};
 
-  assert(initpoint.kappaL5() != 0);
+  assert(initpoint.kappaL5() == 0);
 
   vertices.push_back(initpoint);
 
