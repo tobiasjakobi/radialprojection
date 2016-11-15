@@ -1549,7 +1549,7 @@ void Common::normalizeAngDists(dlist& input, double mean) {
 }
 
 void Common::secondOrderSpacings(const dlist& input, vec2dlist& output) {
-  if (input.size() < 2)
+  if (input.size() <= 1)
     return;
 
   dlist::const_iterator i = input.begin();
