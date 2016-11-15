@@ -1985,6 +1985,7 @@ namespace Common {
   void neighbourDiff(const dlist& input, dlist& output, double& mean);
   void normalizeAngDists(dlist& input, double mean);
   void secondOrderSpacings(const dlist& input, vec2dlist& output);
+  void secondOrderSpacings(const dlist& input, vec2dlist& output, uint h);
   void radialProj(const vec2dlist& input,
                   dlist& output, double& meandist);
 

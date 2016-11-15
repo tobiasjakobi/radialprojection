@@ -1559,6 +1559,21 @@ void Common::secondOrderSpacings(const dlist& input, vec2dlist& output) {
     output.push_back(vec2d(*i, *j));
 }
 
+void Common::secondOrderSpacings(const dlist& input, vec2dlist& output,
+                                 uint h) {
+  assert(h > 0);
+
+  if (input.size() <= h)
+    return;
+
+  dlist::const_iterator i = input.begin();
+  dlist::const_iterator j = i + h;
+
+  for (; j != input.end(); ++i, ++j)
+    output.push_back(vec2d(*i, *j));
+}
+
+
 void Common::radialProj(const vec2dlist& input,
                 dlist& output, double& meandist) {
   output.clear();
