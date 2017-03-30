@@ -1,0 +1,139 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 9.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[      4085,        130]
+NotebookOptionsPosition[      3662,        112]
+NotebookOutlinePosition[      3998,        127]
+CellTagsIndexPosition[      3955,        124]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "Another", " ", "approach", " ", "to", " ", "illustrate", " ", "the", " ", 
+    "interpolation", " ", "behaviour"}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{"when", " ", "thinning", " ", "the", " ", 
+    RowBox[{"tiling", ".", " ", "Create"}], " ", "a", " ", "single", " ", 
+    "mesh", " ", "from", " ", "all", " ", "the"}], " ", "*)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{"data", " ", "and", " ", "draw", " ", "the", " ", 
+    RowBox[{"mesh", "."}]}], " ", "*)"}]}]], "Input",
+ CellChangeTimes->{{3.699360021463476*^9, 3.699360090051228*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ClearAll", "[", 
+   RowBox[{"toTriple", ",", "toMesh"}], "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.699359700259102*^9, 3.699359707985303*^9}, 
+   3.6993597466251087`*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"toTriple", "[", 
+    RowBox[{"a_", ",", "b_"}], "]"}], ":=", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"Part", "[", 
+      RowBox[{"a", ",", "1"}], "]"}], ",", "b", ",", 
+     RowBox[{"Part", "[", 
+      RowBox[{"a", ",", "2"}], "]"}]}], "}"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.699359671182568*^9, 3.6993596727084618`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"toMesh", "[", 
+    RowBox[{"y_", ",", "func_"}], "]"}], ":=", 
+   RowBox[{"Map", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"toTriple", "[", 
+       RowBox[{"#", ",", 
+        RowBox[{"y", "/", "100.0"}]}], "]"}], "&"}], ",", 
+     RowBox[{"func", "[", "y", "]"}]}], "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.699359612220552*^9, 3.699359614019068*^9}, {
+  3.6993596850490017`*^9, 3.699359696418535*^9}, {3.699359754058558*^9, 
+  3.6993597571026163`*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"VisRndMesh", "=", 
+   RowBox[{"Flatten", "[", 
+    RowBox[{
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"toMesh", "[", 
+        RowBox[{"i", ",", 
+         RowBox[{
+          RowBox[{"transformEnvData", "[", 
+           RowBox[{"VisRnd", "[", "#", "]"}], "]"}], "&"}]}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "5", ",", "95", ",", "5"}], "}"}]}], "]"}], ",", 
+     "1"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"RndVisMesh", "=", 
+   RowBox[{"Flatten", "[", 
+    RowBox[{
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"toMesh", "[", 
+        RowBox[{"i", ",", 
+         RowBox[{
+          RowBox[{"transformEnvData", "[", 
+           RowBox[{"RndVis", "[", "#", "]"}], "]"}], "&"}]}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "5", ",", "95", ",", "5"}], "}"}]}], "]"}], ",", 
+     "1"}], "]"}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.699359816593607*^9, 3.699359863061893*^9}}],
+
+Cell[BoxData[
+ RowBox[{"GraphicsRow", "[", 
+  RowBox[{"{", 
+   RowBox[{
+    RowBox[{"ListPlot3D", "[", "VisRndMesh", "]"}], ",", 
+    RowBox[{"ListPlot3D", "[", "RndVisMesh", "]"}]}], "}"}], "]"}]], "Input",
+ CellChangeTimes->{{3.699359759765874*^9, 3.6993597866173563`*^9}, {
+  3.69935984586836*^9, 3.699359911092145*^9}}]
+},
+WindowSize->{1920, 1140},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"9.0 for Linux x86 (64-bit) (January 25, 2013)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[557, 20, 660, 14, 77, "Input"],
+Cell[1220, 36, 209, 5, 32, "Input"],
+Cell[1432, 43, 380, 11, 32, "Input"],
+Cell[1815, 56, 511, 14, 32, "Input"],
+Cell[2329, 72, 1003, 29, 55, "Input"],
+Cell[3335, 103, 323, 7, 32, "Input"]
+}
+]
+*)
+
+(* End of internal cache information *)
