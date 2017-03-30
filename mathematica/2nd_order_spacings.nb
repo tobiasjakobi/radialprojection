@@ -3,10 +3,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[         0,          0]
-NotebookDataLength[     18525,        515]
-NotebookOptionsPosition[     16798,        460]
-NotebookOutlinePosition[     17155,        476]
-CellTagsIndexPosition[     17112,        473]
+NotebookDataLength[     18697,        519]
+NotebookOptionsPosition[     16969,        464]
+NotebookOutlinePosition[     17326,        480]
+CellTagsIndexPosition[     17283,        477]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -369,10 +369,10 @@ Cell[BoxData[
     RowBox[{"{", 
      RowBox[{
       RowBox[{"GrayLevel", "[", "0.6", "]"}], ",", 
-      RowBox[{"PointSize", "[", "0.003", "]"}]}], "}"}]}]}], "]"}]], "Input",
+      RowBox[{"PointSize", "[", "0.005", "]"}]}], "}"}]}]}], "]"}]], "Input",
  CellChangeTimes->{
   3.655444693735347*^9, {3.685787460717835*^9, 3.685787460926243*^9}, {
-   3.686394526696419*^9, 3.686394526853354*^9}}],
+   3.686394526696419*^9, 3.686394526853354*^9}, 3.687605623882619*^9}],
 
 Cell[BoxData[{
  RowBox[{
@@ -434,9 +434,10 @@ Cell[BoxData[
    RowBox[{"transformEnvData2D", "[", 
     RowBox[{"rhmbp2nd", ",", 
      RowBox[{"guessHisto2DParams", "[", 
-      RowBox[{"4.0", ",", "0.02"}], "]"}]}], "]"}], ",", 
+      RowBox[{"4.0", ",", "0.015"}], "]"}]}], "]"}], ",", 
    RowBox[{"PlotRange", "\[Rule]", "Full"}]}], "]"}]], "Input",
- CellChangeTimes->{3.656655058445669*^9}],
+ CellChangeTimes->{
+  3.656655058445669*^9, {3.6876037051356087`*^9, 3.687603705454342*^9}}],
 
 Cell[BoxData[{
  RowBox[{
@@ -454,9 +455,12 @@ Cell[BoxData[
    RowBox[{"AspectRatio", "\[Rule]", "1.0"}], ",", 
    RowBox[{"PlotStyle", "\[Rule]", 
     RowBox[{"{", 
-     RowBox[{"GrayLevel", "[", "0.6", "]"}], "}"}]}]}], "]"}]], "Input",
+     RowBox[{
+      RowBox[{"PointSize", "[", "0.006", "]"}], ",", 
+      RowBox[{"GrayLevel", "[", "0.6", "]"}]}], "}"}]}]}], "]"}]], "Input",
  CellChangeTimes->{
-  3.657881104324617*^9, {3.685787475516757*^9, 3.685787475712611*^9}}]
+  3.657881104324617*^9, {3.685787475516757*^9, 3.685787475712611*^9}, 
+   3.687603700746743*^9}]
 },
 WindowSize->{1920, 1140},
 WindowMargins->{{0, Automatic}, {Automatic, 0}},
@@ -501,15 +505,15 @@ Cell[11941, 325, 237, 5, 38, "Input"],
 Cell[12181, 332, 361, 8, 64, "Input"],
 Cell[12545, 342, 401, 9, 38, "Input"],
 Cell[12949, 353, 377, 8, 64, "Input"],
-Cell[13329, 363, 463, 11, 38, "Input"],
-Cell[13795, 376, 363, 8, 64, "Input"],
-Cell[14161, 386, 380, 9, 38, "Input"],
-Cell[14544, 397, 381, 8, 64, "Input"],
-Cell[14928, 407, 444, 11, 38, "Input"],
-Cell[15375, 420, 361, 8, 64, "Input"],
-Cell[15739, 430, 327, 8, 38, "Input"],
-Cell[16069, 440, 379, 8, 64, "Input"],
-Cell[16451, 450, 343, 8, 38, "Input"]
+Cell[13329, 363, 485, 11, 38, "Input"],
+Cell[13817, 376, 363, 8, 64, "Input"],
+Cell[14183, 386, 380, 9, 38, "Input"],
+Cell[14566, 397, 381, 8, 64, "Input"],
+Cell[14950, 407, 444, 11, 38, "Input"],
+Cell[15397, 420, 361, 8, 64, "Input"],
+Cell[15761, 430, 379, 9, 38, "Input"],
+Cell[16143, 441, 379, 8, 64, "Input"],
+Cell[16525, 451, 440, 11, 38, "Input"]
 }
 ]
 *)
