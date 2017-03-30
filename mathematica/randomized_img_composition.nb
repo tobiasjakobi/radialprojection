@@ -1,0 +1,1767 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 9.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[     59423,       1758]
+NotebookOptionsPosition[     55405,       1650]
+NotebookOutlinePosition[     55762,       1666]
+CellTagsIndexPosition[     55719,       1663]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"(*", " ", 
+  RowBox[{
+  "Notebook", " ", "used", " ", "to", " ", "create", " ", "the", " ", "image",
+    " ", "series", " ", "for", " ", "the", " ", "randomisation", " ", 
+   RowBox[{"chapter", "."}]}], " ", "*)"}]], "Input",
+ CellChangeTimes->{{3.6986602117758923`*^9, 3.698660228046226*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ClearAll", "[", 
+   RowBox[{
+   "pathPrefix", ",", "currentPath", ",", "filePrefix", ",", 
+    "fileExtension"}], "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.69865997494307*^9, 3.6986599899894857`*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"pathPrefix", "=", "\"\</dev/shm/tjakobi/\>\""}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"currentPath", "=", "\"\<octagonal_visrnd_1800s/\>\""}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"filePrefix", "=", "\"\<octagonal_visrnd_\>\""}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"fileExtension", "=", "\"\<.env\>\""}], ";"}]}], "Input",
+ CellChangeTimes->{{3.698659834984022*^9, 3.6986598596197033`*^9}, {
+   3.698659905280136*^9, 3.698659968119948*^9}, 3.698660076496587*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"Test", " ", "string", " ", 
+    RowBox[{"concatenation", "."}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"StringJoin", "[", 
+   RowBox[{"pathPrefix", ",", "currentPath", ",", "filePrefix", ",", 
+    RowBox[{"ToString", "[", "1", "]"}], ",", "fileExtension"}], 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.698660094139947*^9, 3.6986601419481792`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ClearAll", "[", 
+   RowBox[{
+   "imgInterpRange", ",", "imgPlotRange", ",", "envelopeData", ",", 
+    "envelopeFct"}], "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.698660272676517*^9, 3.69866027409523*^9}, {
+  3.6986608111553087`*^9, 3.6986608139116077`*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"imgInterpRange", "[", "t_", "]"}], ":=", 
+   RowBox[{"{", 
+    RowBox[{"t", ",", "1", ",", "99", ",", "1"}], "}"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"imgPlotRange", ":=", 
+   RowBox[{"{", 
+    RowBox[{"3.0", ",", "0.01"}], "}"}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.698660195257204*^9, 3.69866019784687*^9}, {
+  3.698660239840796*^9, 3.6986602448879633`*^9}, {3.698660323023947*^9, 
+  3.698660330623767*^9}, {3.698660577562714*^9, 3.6986606144912167`*^9}, {
+  3.698660713919147*^9, 3.6986607466400137`*^9}, {3.698660791776774*^9, 
+  3.698660808173539*^9}}],
+
+Cell[BoxData[
+ RowBox[{"With", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"x", "=", 
+     RowBox[{"imgInterpRange", "[", "i", "]"}]}], "}"}], ",", 
+   RowBox[{"Table", "[", 
+    RowBox[{"i", ",", "x"}], "]"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.6986605669416924`*^9, 3.6986605743439407`*^9}, {
+   3.698660619707821*^9, 3.698660620075685*^9}, 3.69866073523838*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Map", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      RowBox[{
+       RowBox[{"envelopeData", "[", 
+        RowBox[{"ABVisRnd", "[", "#", "]"}], "]"}], "=", 
+       RowBox[{"ReadDoubleData", "[", 
+        RowBox[{"StringJoin", "[", 
+         RowBox[{
+         "pathPrefix", ",", "currentPath", ",", "filePrefix", ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"ToString", "[", "#", "]"}], ",", "fileExtension"}], "]"}], 
+        "]"}]}], ";"}], "&"}], ",", 
+    RowBox[{"With", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"x", "=", 
+        RowBox[{"imgInterpRange", "[", "i", "]"}]}], "}"}], ",", 
+      RowBox[{"Table", "[", 
+       RowBox[{"i", ",", "x"}], "]"}]}], "]"}]}], "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.698659972290844*^9, 3.698659973143969*^9}, {
+   3.698660004115695*^9, 3.6986600910792294`*^9}, 3.698660160789852*^9, {
+   3.6986602605893784`*^9, 3.698660302708941*^9}, {3.698660347928568*^9, 
+   3.6986603624670143`*^9}, 3.698660635178288*^9, 3.6986607507228518`*^9, {
+   3.698672086566613*^9, 3.698672090461808*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Map", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      RowBox[{
+       RowBox[{"envelopeFct", "[", 
+        RowBox[{"ABVisRnd", "[", "#", "]"}], "]"}], "=", 
+       RowBox[{"Interpolation", "[", 
+        RowBox[{"transformEnvData", "[", 
+         RowBox[{
+          RowBox[{"ABVisRnd", "[", "#", "]"}], ",", "\[IndentingNewLine]", 
+          "imgPlotRange"}], "]"}], "]"}]}], ";"}], "&"}], ",", 
+    RowBox[{"With", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"x", "=", 
+        RowBox[{"imgInterpRange", "[", "i", "]"}]}], "}"}], ",", 
+      RowBox[{"Table", "[", 
+       RowBox[{"i", ",", "x"}], "]"}]}], "]"}]}], "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.698660185591361*^9, 3.6986601886797667`*^9}, 
+   3.6986606492981243`*^9, {3.69866069038072*^9, 3.698660693475169*^9}, {
+   3.698660755072263*^9, 3.698660762161339*^9}, {3.6986720952036963`*^9, 
+   3.698672096863132*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Plot", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"envelopeFct", "[", 
+     RowBox[{"ABVisRnd", "[", "1", "]"}], "]"}], "[", "x", "]"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x", ",", "0", ",", 
+     RowBox[{"imgPlotRange", "[", 
+      RowBox[{"[", "1", "]"}], "]"}]}], "}"}], ",", 
+   RowBox[{"Filling", "\[Rule]", "Axis"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.698660704359049*^9, 3.698660705515018*^9}, {
+   3.698660767286121*^9, 3.6986608495007763`*^9}, 3.698672098213373*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ClearAll", "[", 
+   RowBox[{"makePairs", ",", "z2Pairs", ",", "pairPlot"}], "]"}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.698665341449456*^9, 3.69866535155075*^9}, {
+  3.698669341278566*^9, 3.698669350811727*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"makePairs", "[", "l_", "]"}], ":=", 
+   RowBox[{"Drop", "[", 
+    RowBox[{
+     RowBox[{"Transpose", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"#", ",", 
+          RowBox[{"RotateLeft", "[", "#", "]"}]}], "}"}], "&"}], "[", "l", 
+       "]"}], "]"}], ",", 
+     RowBox[{"-", "1"}]}], "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.6986649878937273`*^9, 3.698665018891424*^9}}],
+
+Cell[BoxData[
+ RowBox[{"makePairs", "[", 
+  RowBox[{"Table", "[", 
+   RowBox[{"i", ",", 
+    RowBox[{"{", 
+     RowBox[{"i", ",", "5", ",", "95", ",", "5"}], "}"}]}], "]"}], 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.698664460601372*^9, 3.6986644686876917`*^9}, {
+  3.6986645117731533`*^9, 3.6986645708773813`*^9}, {3.698665024739154*^9, 
+  3.698665029279111*^9}}],
+
+Cell[BoxData[
+ RowBox[{"z2Pairs", "=", 
+  RowBox[{"makePairs", "[", 
+   RowBox[{"Map", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"Round", "[", 
+       RowBox[{"100.0", "*", 
+        RowBox[{"(", 
+         RowBox[{"1.0", "-", "#"}], ")"}]}], "]"}], "&"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"0.85", ",", "0.7", ",", "0.45", ",", "0.3", ",", "0.15"}], 
+      "}"}]}], "]"}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.698665371094965*^9, 3.698665373525113*^9}, {
+  3.698665407013803*^9, 3.698665487727131*^9}, {3.698669331626302*^9, 
+  3.698669331884268*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"Plot", " ", "a", " ", "pair", " ", "of", " ", 
+    RowBox[{"functions", "."}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{"f", " ", "=", " ", 
+    RowBox[{"the", " ", "array", " ", "of", " ", "functions"}]}], " ", "*)"}],
+   "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{"pair", " ", "=", " ", 
+    RowBox[{"the", " ", "indices", " ", "of", " ", "the", " ", "pair"}]}], 
+   " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{"r", " ", "=", " ", 
+    RowBox[{"y", "-", 
+     RowBox[{"range", " ", "for", " ", "plot"}]}]}], " ", "*)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"pairPlot", "[", 
+     RowBox[{"f_", ",", "pair_", ",", "r_"}], "]"}], ":=", 
+    RowBox[{"Plot", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"f", "[", 
+          RowBox[{"pair", "[", 
+           RowBox[{"[", "1", "]"}], "]"}], "]"}], "[", "x", "]"}], ",", 
+        RowBox[{
+         RowBox[{"f", "[", 
+          RowBox[{"pair", "[", 
+           RowBox[{"[", "2", "]"}], "]"}], "]"}], "[", "x", "]"}]}], "}"}], 
+      ",", "\[IndentingNewLine]", 
+      RowBox[{"{", 
+       RowBox[{"x", ",", "0", ",", 
+        RowBox[{"imgPlotRange", "[", 
+         RowBox[{"[", "1", "]"}], "]"}]}], "}"}], ",", 
+      RowBox[{"PlotStyle", "\[Rule]", 
+       RowBox[{"{", 
+        RowBox[{"Red", ",", "Blue"}], "}"}]}], ",", 
+      RowBox[{"PlotRange", "\[Rule]", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"0", ",", 
+           RowBox[{"imgPlotRange", "[", 
+            RowBox[{"[", "1", "]"}], "]"}]}], "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"0", ",", "r"}], "}"}]}], "}"}]}]}], "]"}]}], 
+   ";"}]}]], "Input",
+ CellChangeTimes->{{3.698665048073453*^9, 3.698665110366315*^9}, {
+  3.698665987649992*^9, 3.698665997413188*^9}, {3.6986661393503847`*^9, 
+  3.698666166412792*^9}, {3.698667495870275*^9, 3.6986675473585997`*^9}, {
+  3.698669442820175*^9, 3.698669525581414*^9}, {3.6986702169808826`*^9, 
+  3.698670228483033*^9}, {3.698671267571986*^9, 3.698671373476313*^9}}],
+
+Cell[BoxData[
+ RowBox[{"pairPlot", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"envelopeFct", "[", 
+     RowBox[{"ABVisRnd", "[", "#", "]"}], "]"}], "&"}], ",", 
+   RowBox[{"z2Pairs", "[", 
+    RowBox[{"[", "1", "]"}], "]"}], ",", "1.1"}], "]"}]], "Input",
+ CellChangeTimes->{{3.698665116789804*^9, 3.698665123145484*^9}, 
+   3.698665492379552*^9, {3.698667506819529*^9, 3.698667513224184*^9}, 
+   3.698669359511985*^9, {3.69867138254207*^9, 3.698671404320717*^9}, 
+   3.698672101426579*^9}],
+
+Cell[BoxData["z2Pairs"], "Input",
+ CellChangeTimes->{{3.6986656999111443`*^9, 3.698665703102425*^9}, 
+   3.69866936642949*^9}],
+
+Cell[BoxData[
+ RowBox[{"(*", " ", 
+  RowBox[{
+   RowBox[{"At", " ", "this", " ", "point"}], ",", " ", 
+   RowBox[{"we", " ", "need", " ", "some", " ", "data", " ", "from", " ", 
+    RowBox[{"the", " ", "'"}], 
+    RowBox[{"randomized", "'"}], " ", 
+    RowBox[{"notebook", "."}]}]}], " ", "*)"}]], "Input",
+ CellChangeTimes->{{3.6986714461876287`*^9, 3.698671469299203*^9}}],
+
+Cell[BoxData[
+ RowBox[{"pairPlot", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"envelopeFct", "[", 
+     RowBox[{"VisRnd", "[", "#", "]"}], "]"}], "&"}], ",", 
+   RowBox[{"z2Pairs", "[", 
+    RowBox[{"[", "1", "]"}], "]"}], ",", "1.25"}], "]"}]], "Input",
+ CellChangeTimes->{{3.698667284637836*^9, 3.6986672917387123`*^9}, {
+   3.6986673268371983`*^9, 3.698667329979453*^9}, {3.698667384027458*^9, 
+   3.698667390381715*^9}, {3.69866756933359*^9, 3.698667589604506*^9}, 
+   3.6986693680036373`*^9, {3.6986714131982937`*^9, 3.698671414223497*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ClearAll", "[", 
+   RowBox[{"z2Alpha", ",", "z2Omega"}], "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.6986710167116547`*^9, 3.6986710266826353`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"alpha", "-", 
+    RowBox[{"thinning", " ", "of", " ", 
+     RowBox[{"Z2", "."}]}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"z2Alpha", "=", 
+   RowBox[{"GraphicsRow", "[", 
+    RowBox[{
+     RowBox[{"Map", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"pairPlot", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"envelopeFct", "[", 
+            RowBox[{"VisRnd", "[", "#", "]"}], "]"}], "&"}], ",", "#", ",", 
+          "1.25"}], "]"}], "&"}], ",", "z2Pairs"}], "]"}], ",", 
+     RowBox[{"Spacings", "\[Rule]", 
+      RowBox[{"-", "6.0"}]}], ",", 
+     RowBox[{"ImageSize", "\[Rule]", "1200"}]}], "]"}]}]}]], "Input",
+ CellChangeTimes->{
+  3.6986676958402033`*^9, {3.698667734592299*^9, 3.69866776418785*^9}, {
+   3.698667833368287*^9, 3.6986678341906843`*^9}, {3.6986681146746893`*^9, 
+   3.698668125318274*^9}, {3.6986681973556223`*^9, 3.698668202723723*^9}, 
+   3.698669372741362*^9, 3.698670993208441*^9, {3.6986715342202473`*^9, 
+   3.698671554741177*^9}}],
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{
+   RowBox[{"Export", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"HomeDirectory", "[", "]"}], "<>", 
+      "\"\</random_z2_post_series.eps\>\""}], ",", "z2Alpha"}], "]"}], ";"}], 
+  "*)"}]], "Input",
+ CellChangeTimes->{{3.6986681417922773`*^9, 3.698668206580532*^9}, {
+   3.6986683395315228`*^9, 3.698668384372221*^9}, {3.6986686856133747`*^9, 
+   3.698668687924725*^9}, {3.698670248470355*^9, 3.698670249662364*^9}, 
+   3.698670864611189*^9, {3.698670918788869*^9, 3.6986709210525017`*^9}, {
+   3.698671563994817*^9, 3.6986715653247843`*^9}, {3.6986738378449802`*^9, 
+   3.698673840348462*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"omega", "-", 
+    RowBox[{"thinning", " ", "of", " ", 
+     RowBox[{"Z2", "."}]}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"z2Omega", "=", 
+   RowBox[{"GraphicsRow", "[", 
+    RowBox[{
+     RowBox[{"Map", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"pairPlot", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"envelopeFct", "[", 
+            RowBox[{"RndVis", "[", "#", "]"}], "]"}], "&"}], ",", "#", ",", 
+          "1.15"}], "]"}], "&"}], ",", "z2Pairs"}], "]"}], ",", 
+     RowBox[{"Spacings", "\[Rule]", 
+      RowBox[{"-", "6.0"}]}], ",", 
+     RowBox[{"ImageSize", "\[Rule]", "1200"}]}], "]"}]}]}]], "Input",
+ CellChangeTimes->{{3.698667939152216*^9, 3.698667939994067*^9}, {
+   3.6986681288411417`*^9, 3.6986681328782043`*^9}, {3.698668208108665*^9, 
+   3.698668211262937*^9}, 3.698669375595434*^9, 3.698670991268387*^9, {
+   3.698673846252018*^9, 3.698673856705451*^9}}],
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{
+   RowBox[{"Export", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"HomeDirectory", "[", "]"}], "<>", 
+      "\"\</random_z2_pre_series.eps\>\""}], ",", "z2Omega"}], "]"}], ";"}], 
+  "*)"}]], "Input",
+ CellChangeTimes->{{3.6986683566976147`*^9, 3.698668368306923*^9}, {
+   3.698668691079598*^9, 3.698668693645255*^9}, {3.6986702662780037`*^9, 
+   3.69867026742778*^9}, 3.6986708704791727`*^9, {3.698670924010309*^9, 
+   3.698670926301846*^9}, {3.6986738748295517`*^9, 3.6986738828762493`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ClearAll", "[", 
+   RowBox[{"abPairs", ",", "abAlpha", ",", "abOmega"}], "]"}], ";"}]], "Input",\
+
+ CellChangeTimes->{{3.698671032634201*^9, 3.6986710449883757`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"abPairs", "=", 
+   RowBox[{"makePairs", "[", 
+    RowBox[{"Map", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Round", "[", 
+        RowBox[{"100.0", "*", 
+         RowBox[{"(", 
+          RowBox[{"1.0", "-", "#"}], ")"}]}], "]"}], "&"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"0.85", ",", "0.75", ",", "0.65", ",", "0.4", ",", "0.25"}], 
+       "}"}]}], "]"}], "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.69866954355702*^9, 3.698669563570464*^9}, {
+  3.698670725786865*^9, 3.698670729171115*^9}, {3.698670797743025*^9, 
+  3.6986708365041018`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"alpha", "-", 
+    RowBox[{"thinning", " ", "of", " ", 
+     RowBox[{"AB", "."}]}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"abAlpha", "=", 
+   RowBox[{"GraphicsRow", "[", 
+    RowBox[{
+     RowBox[{"Map", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"pairPlot", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"envelopeFct", "[", 
+            RowBox[{"ABVisRnd", "[", "#", "]"}], "]"}], "&"}], ",", "#", ",", 
+          "1.15"}], "]"}], "&"}], ",", "abPairs"}], "]"}], ",", 
+     RowBox[{"Spacings", "\[Rule]", 
+      RowBox[{"-", "4.0"}]}], ",", 
+     RowBox[{"ImageSize", "\[Rule]", "1200"}]}], "]"}]}]}]], "Input",
+ CellChangeTimes->{{3.698665515283106*^9, 3.6986655414383593`*^9}, {
+   3.69866560086202*^9, 3.698665647536077*^9}, {3.698667647206883*^9, 
+   3.698667665847186*^9}, 3.698670735303426*^9, {3.698670823221508*^9, 
+   3.698670852984014*^9}, 3.6986709892324343`*^9, 3.698671071130522*^9, 
+   3.698672113679294*^9, {3.698673891130693*^9, 3.6986738976415567`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{
+   RowBox[{"Export", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"HomeDirectory", "[", "]"}], "<>", 
+      "\"\</random_ab_post_series.eps\>\""}], ",", "abAlpha"}], "]"}], ";"}], 
+  "*)"}]], "Input",
+ CellChangeTimes->{{3.698663308040266*^9, 3.698663308958639*^9}, {
+  3.698670844073327*^9, 3.6986708629929457`*^9}, {3.698673912445512*^9, 
+  3.6986739146178827`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ClearAll", "[", 
+   RowBox[{"currentPath", ",", "filePrefix"}], "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.698671165611189*^9, 3.6986711797443542`*^9}, {
+  3.6986721287553883`*^9, 3.698672129008813*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{"Read", " ", "in", " ", "data", " ", "for", " ", "omega"}], "-", 
+    RowBox[{"thinned", " ", 
+     RowBox[{"AB", "."}]}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"currentPath", "=", "\"\<octagonal_rndvis_1800s/\>\""}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"filePrefix", "=", "\"\<octagonal_rndvis_\>\""}], 
+    ";"}]}]}]], "Input",
+ CellChangeTimes->{{3.698670969691559*^9, 3.698671002898632*^9}, 
+   3.698674052431871*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Map", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      RowBox[{
+       RowBox[{"envelopeData", "[", 
+        RowBox[{"ABRndVis", "[", "#", "]"}], "]"}], "=", 
+       RowBox[{"ReadDoubleData", "[", 
+        RowBox[{"StringJoin", "[", 
+         RowBox[{
+         "pathPrefix", ",", "currentPath", ",", "filePrefix", ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"ToString", "[", "#", "]"}], ",", "fileExtension"}], "]"}], 
+        "]"}]}], ";"}], "&"}], ",", 
+    RowBox[{"With", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"x", "=", 
+        RowBox[{"imgInterpRange", "[", "i", "]"}]}], "}"}], ",", 
+      RowBox[{"Table", "[", 
+       RowBox[{"i", ",", "x"}], "]"}]}], "]"}]}], "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.698672117119488*^9, 3.698672120237912*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Map", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      RowBox[{
+       RowBox[{"envelopeFct", "[", 
+        RowBox[{"ABRndVis", "[", "#", "]"}], "]"}], "=", 
+       RowBox[{"Interpolation", "[", 
+        RowBox[{"transformEnvData", "[", 
+         RowBox[{
+          RowBox[{"ABRndVis", "[", "#", "]"}], ",", "\[IndentingNewLine]", 
+          "imgPlotRange"}], "]"}], "]"}]}], ";"}], "&"}], ",", 
+    RowBox[{"With", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"x", "=", 
+        RowBox[{"imgInterpRange", "[", "i", "]"}]}], "}"}], ",", 
+      RowBox[{"Table", "[", 
+       RowBox[{"i", ",", "x"}], "]"}]}], "]"}]}], "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.698672122761158*^9, 3.698672123942358*^9}}],
+
+Cell[BoxData[
+ RowBox[{"abOmega", "=", 
+  RowBox[{"GraphicsRow", "[", 
+   RowBox[{
+    RowBox[{"Map", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"pairPlot", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"envelopeFct", "[", 
+           RowBox[{"ABRndVis", "[", "#", "]"}], "]"}], "&"}], ",", "#", ",", 
+         "1.05"}], "]"}], "&"}], ",", "abPairs"}], "]"}], ",", 
+    RowBox[{"Spacings", "\[Rule]", 
+     RowBox[{"-", "4.0"}]}], ",", 
+    RowBox[{"ImageSize", "\[Rule]", "1200"}]}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.6986711165558*^9, 3.6986711185570498`*^9}, 
+   3.6986721248235283`*^9, {3.698673927799453*^9, 3.698673936037373*^9}}],
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{
+   RowBox[{"Export", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"HomeDirectory", "[", "]"}], "<>", 
+      "\"\</random_ab_pret_series.eps\>\""}], ",", "abOmega"}], "]"}], ";"}], 
+  "*)"}]], "Input",
+ CellChangeTimes->{{3.698674768370673*^9, 3.698674772336588*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ClearAll", "[", 
+   RowBox[{"ttPairs", ",", "ttAlpha", ",", "ttOmega"}], "]"}], ";"}]], "Input",\
+
+ CellChangeTimes->{{3.6986741916792316`*^9, 3.698674204419471*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ttPairs", "=", 
+   RowBox[{"makePairs", "[", 
+    RowBox[{"Map", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Round", "[", 
+        RowBox[{"100.0", "*", 
+         RowBox[{"(", 
+          RowBox[{"1.0", "-", "#"}], ")"}]}], "]"}], "&"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"0.85", ",", "0.65", ",", "0.45", ",", "0.3", ",", "0.15"}], 
+       "}"}]}], "]"}], "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.698674190575865*^9, 3.698674190735166*^9}, 
+   3.698674238600239*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{"Read", " ", "in", " ", "data", " ", "for", " ", "alpha"}], "-", 
+    RowBox[{"thinned", " ", 
+     RowBox[{"TT", "."}]}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"currentPath", "=", "\"\<decagonal_visrnd_1800s/\>\""}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"filePrefix", "=", "\"\<decagonal_visrnd_\>\""}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"imgInterpRange", "[", "t_", "]"}], ":=", 
+     RowBox[{"{", 
+      RowBox[{"t", ",", "1", ",", "98", ",", "1"}], "}"}]}], 
+    ";"}]}]}]], "Input",
+ CellChangeTimes->{{3.698674055364229*^9, 3.6986741233149014`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Map", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      RowBox[{
+       RowBox[{"envelopeData", "[", 
+        RowBox[{"TTVisRnd", "[", "#", "]"}], "]"}], "=", 
+       RowBox[{"ReadDoubleData", "[", 
+        RowBox[{"StringJoin", "[", 
+         RowBox[{
+         "pathPrefix", ",", "currentPath", ",", "filePrefix", ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"ToString", "[", "#", "]"}], ",", "fileExtension"}], "]"}], 
+        "]"}]}], ";"}], "&"}], ",", 
+    RowBox[{"With", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"x", "=", 
+        RowBox[{"imgInterpRange", "[", "i", "]"}]}], "}"}], ",", 
+      RowBox[{"Table", "[", 
+       RowBox[{"i", ",", "x"}], "]"}]}], "]"}]}], "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.698674088258223*^9, 3.6986740904784718`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Map", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      RowBox[{
+       RowBox[{"envelopeFct", "[", 
+        RowBox[{"TTVisRnd", "[", "#", "]"}], "]"}], "=", 
+       RowBox[{"Interpolation", "[", 
+        RowBox[{"transformEnvData", "[", 
+         RowBox[{
+          RowBox[{"TTVisRnd", "[", "#", "]"}], ",", "\[IndentingNewLine]", 
+          "imgPlotRange"}], "]"}], "]"}]}], ";"}], "&"}], ",", 
+    RowBox[{"With", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"x", "=", 
+        RowBox[{"imgInterpRange", "[", "i", "]"}]}], "}"}], ",", 
+      RowBox[{"Table", "[", 
+       RowBox[{"i", ",", "x"}], "]"}]}], "]"}]}], "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.698674159767344*^9, 3.69867416089572*^9}}],
+
+Cell[BoxData[
+ RowBox[{"ttAlpha", "=", 
+  RowBox[{"GraphicsRow", "[", 
+   RowBox[{
+    RowBox[{"Map", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"pairPlot", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"envelopeFct", "[", 
+           RowBox[{"TTVisRnd", "[", "#", "]"}], "]"}], "&"}], ",", "#", ",", 
+         "1.25"}], "]"}], "&"}], ",", "ttPairs"}], "]"}], ",", 
+    RowBox[{"Spacings", "\[Rule]", 
+     RowBox[{"-", "4.0"}]}], ",", 
+    RowBox[{"ImageSize", "\[Rule]", "1200"}]}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.698674173031087*^9, 3.6986741734920397`*^9}, {
+   3.6986742074871407`*^9, 3.698674210916706*^9}, {3.6986742541226788`*^9, 
+   3.6986742628564873`*^9}, 3.698675445665853*^9}],
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{
+   RowBox[{"Export", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"HomeDirectory", "[", "]"}], "<>", 
+      "\"\</random_tt_post_series.eps\>\""}], ",", "ttAlpha"}], "]"}], ";"}], 
+  "*)"}]], "Input",
+ CellChangeTimes->{{3.698673947035915*^9, 3.69867396629959*^9}, {
+  3.69867428816263*^9, 3.6986742969141808`*^9}, {3.6986756980852613`*^9, 
+  3.6986757009548407`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{"Read", " ", "in", " ", "data", " ", "for", " ", "omega"}], "-", 
+    RowBox[{"thinned", " ", 
+     RowBox[{"TT", "."}]}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"currentPath", "=", "\"\<decagonal_rndvis_1600s/\>\""}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"filePrefix", "=", "\"\<decagonal_rndvis_\>\""}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"imgInterpRange", "[", "t_", "]"}], ":=", 
+     RowBox[{"{", 
+      RowBox[{"t", ",", "1", ",", "97", ",", "1"}], "}"}]}], 
+    ";"}]}]}]], "Input",
+ CellChangeTimes->{{3.698674315369646*^9, 3.698674342559536*^9}, {
+  3.698676002443058*^9, 3.6986760031825867`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Map", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      RowBox[{
+       RowBox[{"envelopeData", "[", 
+        RowBox[{"TTRndVis", "[", "#", "]"}], "]"}], "=", 
+       RowBox[{"ReadDoubleData", "[", 
+        RowBox[{"StringJoin", "[", 
+         RowBox[{
+         "pathPrefix", ",", "currentPath", ",", "filePrefix", ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"ToString", "[", "#", "]"}], ",", "fileExtension"}], "]"}], 
+        "]"}]}], ";"}], "&"}], ",", 
+    RowBox[{"With", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"x", "=", 
+        RowBox[{"imgInterpRange", "[", "i", "]"}]}], "}"}], ",", 
+      RowBox[{"Table", "[", 
+       RowBox[{"i", ",", "x"}], "]"}]}], "]"}]}], "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.698674513855611*^9, 3.698674515664558*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Map", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      RowBox[{
+       RowBox[{"envelopeFct", "[", 
+        RowBox[{"TTRndVis", "[", "#", "]"}], "]"}], "=", 
+       RowBox[{"Interpolation", "[", 
+        RowBox[{"transformEnvData", "[", 
+         RowBox[{
+          RowBox[{"TTRndVis", "[", "#", "]"}], ",", "\[IndentingNewLine]", 
+          "imgPlotRange"}], "]"}], "]"}]}], ";"}], "&"}], ",", 
+    RowBox[{"With", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"x", "=", 
+        RowBox[{"imgInterpRange", "[", "i", "]"}]}], "}"}], ",", 
+      RowBox[{"Table", "[", 
+       RowBox[{"i", ",", "x"}], "]"}]}], "]"}]}], "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.698674521116556*^9, 3.698674523165448*^9}}],
+
+Cell[BoxData[
+ RowBox[{"ttOmega", "=", 
+  RowBox[{"GraphicsRow", "[", 
+   RowBox[{
+    RowBox[{"Map", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"pairPlot", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"envelopeFct", "[", 
+           RowBox[{"TTRndVis", "[", "#", "]"}], "]"}], "&"}], ",", "#", ",", 
+         "1.15"}], "]"}], "&"}], ",", "ttPairs"}], "]"}], ",", 
+    RowBox[{"Spacings", "\[Rule]", 
+     RowBox[{"-", "4.0"}]}], ",", 
+    RowBox[{"ImageSize", "\[Rule]", "1200"}]}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.698674535325482*^9, 3.698674538211767*^9}, {
+   3.698674607921556*^9, 3.69867462172269*^9}, 3.69867545301464*^9}],
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{
+   RowBox[{"Export", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"HomeDirectory", "[", "]"}], "<>", 
+      "\"\</random_tt_pre_series.eps\>\""}], ",", "ttOmega"}], "]"}], ";"}], 
+  "*)"}]], "Input",
+ CellChangeTimes->{{3.698674302325038*^9, 3.698674302988862*^9}, {
+  3.698674527221081*^9, 3.698674528224152*^9}, {3.698675704215105*^9, 
+  3.698675706523572*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ClearAll", "[", 
+   RowBox[{"gsPairs", ",", "gsAlpha", ",", "gsOmega"}], "]"}], ";"}]], "Input",\
+
+ CellChangeTimes->{{3.698676079983549*^9, 3.698676084348258*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"gsPairs", "=", 
+   RowBox[{"makePairs", "[", 
+    RowBox[{"Map", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Round", "[", 
+        RowBox[{"100.0", "*", 
+         RowBox[{"(", 
+          RowBox[{"1.0", "-", "#"}], ")"}]}], "]"}], "&"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"0.85", ",", "0.75", ",", "0.55", ",", "0.3", ",", "0.15"}], 
+       "}"}]}], "]"}], "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.698676095501676*^9, 3.6986760959413023`*^9}, 
+   3.698676138353202*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{"Read", " ", "in", " ", "data", " ", "for", " ", "alpha"}], "-", 
+    RowBox[{"thinned", " ", 
+     RowBox[{"GS", "."}]}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"currentPath", "=", "\"\<dodecagonal_visrnd_1400s/\>\""}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"filePrefix", "=", "\"\<dodecagonal_visrnd_\>\""}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"imgInterpRange", "[", "t_", "]"}], ":=", 
+     RowBox[{"{", 
+      RowBox[{"t", ",", "1", ",", "98", ",", "1"}], "}"}]}], 
+    ";"}]}]}]], "Input",
+ CellChangeTimes->{{3.6986760115811462`*^9, 3.698676028218306*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Map", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      RowBox[{
+       RowBox[{"envelopeData", "[", 
+        RowBox[{"GSVisRnd", "[", "#", "]"}], "]"}], "=", 
+       RowBox[{"ReadDoubleData", "[", 
+        RowBox[{"StringJoin", "[", 
+         RowBox[{
+         "pathPrefix", ",", "currentPath", ",", "filePrefix", ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"ToString", "[", "#", "]"}], ",", "fileExtension"}], "]"}], 
+        "]"}]}], ";"}], "&"}], ",", 
+    RowBox[{"With", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"x", "=", 
+        RowBox[{"imgInterpRange", "[", "i", "]"}]}], "}"}], ",", 
+      RowBox[{"Table", "[", 
+       RowBox[{"i", ",", "x"}], "]"}]}], "]"}]}], "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.698676054334291*^9, 3.698676054681082*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Map", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      RowBox[{
+       RowBox[{"envelopeFct", "[", 
+        RowBox[{"GSVisRnd", "[", "#", "]"}], "]"}], "=", 
+       RowBox[{"Interpolation", "[", 
+        RowBox[{"transformEnvData", "[", 
+         RowBox[{
+          RowBox[{"GSVisRnd", "[", "#", "]"}], ",", "\[IndentingNewLine]", 
+          "imgPlotRange"}], "]"}], "]"}]}], ";"}], "&"}], ",", 
+    RowBox[{"With", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"x", "=", 
+        RowBox[{"imgInterpRange", "[", "i", "]"}]}], "}"}], ",", 
+      RowBox[{"Table", "[", 
+       RowBox[{"i", ",", "x"}], "]"}]}], "]"}]}], "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.6986760658334293`*^9, 3.6986760669811287`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"gsAlpha", "=", 
+  RowBox[{"GraphicsRow", "[", 
+   RowBox[{
+    RowBox[{"Map", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"pairPlot", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"envelopeFct", "[", 
+           RowBox[{"GSVisRnd", "[", "#", "]"}], "]"}], "&"}], ",", "#", ",", 
+         "1.1"}], "]"}], "&"}], ",", "gsPairs"}], "]"}], ",", 
+    RowBox[{"Spacings", "\[Rule]", 
+     RowBox[{"-", "4.0"}]}], ",", 
+    RowBox[{"ImageSize", "\[Rule]", "1200"}]}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.6986761604132643`*^9, 3.698676171147582*^9}, {
+  3.698677247054283*^9, 3.698677248742079*^9}}],
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{
+   RowBox[{"Export", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"HomeDirectory", "[", "]"}], "<>", 
+      "\"\</random_gs_post_series.eps\>\""}], ",", "gsAlpha"}], "]"}], ";"}], 
+  "*)"}]], "Input",
+ CellChangeTimes->{{3.6986762098111362`*^9, 3.698676215552474*^9}, {
+  3.698676917196917*^9, 3.698676919501198*^9}, {3.698677257607168*^9, 
+  3.698677258452734*^9}, {3.698677438133925*^9, 3.698677440358624*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{"Read", " ", "in", " ", "data", " ", "for", " ", "omega"}], "-", 
+    RowBox[{"thinned", " ", 
+     RowBox[{"GS", "."}]}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"currentPath", "=", "\"\<dodecagonal_rndvis_1500s/\>\""}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"filePrefix", "=", "\"\<dodecagonal_rndvis_\>\""}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"imgInterpRange", "[", "t_", "]"}], ":=", 
+     RowBox[{"{", 
+      RowBox[{"t", ",", "1", ",", "98", ",", "1"}], "}"}]}], 
+    ";"}]}]}]], "Input",
+ CellChangeTimes->{{3.698676231461987*^9, 3.698676249800597*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Map", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      RowBox[{
+       RowBox[{"envelopeData", "[", 
+        RowBox[{"GSRndVis", "[", "#", "]"}], "]"}], "=", 
+       RowBox[{"ReadDoubleData", "[", 
+        RowBox[{"StringJoin", "[", 
+         RowBox[{
+         "pathPrefix", ",", "currentPath", ",", "filePrefix", ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"ToString", "[", "#", "]"}], ",", "fileExtension"}], "]"}], 
+        "]"}]}], ";"}], "&"}], ",", 
+    RowBox[{"With", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"x", "=", 
+        RowBox[{"imgInterpRange", "[", "i", "]"}]}], "}"}], ",", 
+      RowBox[{"Table", "[", 
+       RowBox[{"i", ",", "x"}], "]"}]}], "]"}]}], "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.698676276369089*^9, 3.698676277969451*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Map", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      RowBox[{
+       RowBox[{"envelopeFct", "[", 
+        RowBox[{"GSRndVis", "[", "#", "]"}], "]"}], "=", 
+       RowBox[{"Interpolation", "[", 
+        RowBox[{"transformEnvData", "[", 
+         RowBox[{
+          RowBox[{"GSRndVis", "[", "#", "]"}], ",", "\[IndentingNewLine]", 
+          "imgPlotRange"}], "]"}], "]"}]}], ";"}], "&"}], ",", 
+    RowBox[{"With", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"x", "=", 
+        RowBox[{"imgInterpRange", "[", "i", "]"}]}], "}"}], ",", 
+      RowBox[{"Table", "[", 
+       RowBox[{"i", ",", "x"}], "]"}]}], "]"}]}], "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.6986762882486477`*^9, 3.698676289778376*^9}}],
+
+Cell[BoxData[
+ RowBox[{"gsOmega", "=", 
+  RowBox[{"GraphicsRow", "[", 
+   RowBox[{
+    RowBox[{"Map", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"pairPlot", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"envelopeFct", "[", 
+           RowBox[{"GSRndVis", "[", "#", "]"}], "]"}], "&"}], ",", "#", ",", 
+         "0.9"}], "]"}], "&"}], ",", "gsPairs"}], "]"}], ",", 
+    RowBox[{"Spacings", "\[Rule]", 
+     RowBox[{"-", "4.0"}]}], ",", 
+    RowBox[{"ImageSize", "\[Rule]", "1200"}]}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.698676267164674*^9, 3.698676316337854*^9}, {
+  3.6986772508811903`*^9, 3.698677251334982*^9}}],
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{
+   RowBox[{"Export", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"HomeDirectory", "[", "]"}], "<>", 
+      "\"\</random_gs_pre_series.eps\>\""}], ",", "gsOmega"}], "]"}], ";"}], 
+  "*)"}]], "Input",
+ CellChangeTimes->{{3.6986763605722713`*^9, 3.6986763653303137`*^9}, {
+  3.698676924843196*^9, 3.698676926965136*^9}, {3.6986772635098133`*^9, 
+  3.698677264252419*^9}, {3.698677433169304*^9, 3.698677435356517*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ClearAll", "[", 
+   RowBox[{"rpPairs", ",", "rpAlpha", ",", "rpOmega"}], "]"}], ";"}]], "Input",\
+
+ CellChangeTimes->{{3.698676947588407*^9, 3.6986769528420343`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"rpPairs", "=", 
+   RowBox[{"makePairs", "[", 
+    RowBox[{"Map", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Round", "[", 
+        RowBox[{"100.0", "*", 
+         RowBox[{"(", 
+          RowBox[{"1.0", "-", "#"}], ")"}]}], "]"}], "&"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"0.85", ",", "0.75", ",", "0.55", ",", "0.3", ",", "0.15"}], 
+       "}"}]}], "]"}], "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.698677101647275*^9, 3.698677122390111*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{"Read", " ", "in", " ", "data", " ", "for", " ", "alpha"}], "-", 
+    RowBox[{"thinned", " ", 
+     RowBox[{"RP", "."}]}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"currentPath", "=", "\"\<rhombic_penrose_visrnd_1700s/\>\""}], 
+    ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"filePrefix", "=", "\"\<rhombic_penrose_visrnd_\>\""}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"imgInterpRange", "[", "t_", "]"}], ":=", 
+     RowBox[{"{", 
+      RowBox[{"t", ",", "1", ",", "99", ",", "1"}], "}"}]}], 
+    ";"}]}]}]], "Input",
+ CellChangeTimes->{{3.698677139546071*^9, 3.698677139783925*^9}, {
+  3.698677187016345*^9, 3.698677201657036*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Map", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      RowBox[{
+       RowBox[{"envelopeData", "[", 
+        RowBox[{"RPVisRnd", "[", "#", "]"}], "]"}], "=", 
+       RowBox[{"ReadDoubleData", "[", 
+        RowBox[{"StringJoin", "[", 
+         RowBox[{
+         "pathPrefix", ",", "currentPath", ",", "filePrefix", ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"ToString", "[", "#", "]"}], ",", "fileExtension"}], "]"}], 
+        "]"}]}], ";"}], "&"}], ",", 
+    RowBox[{"With", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"x", "=", 
+        RowBox[{"imgInterpRange", "[", "i", "]"}]}], "}"}], ",", 
+      RowBox[{"Table", "[", 
+       RowBox[{"i", ",", "x"}], "]"}]}], "]"}]}], "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.698677209520369*^9, 3.698677209910939*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Map", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      RowBox[{
+       RowBox[{"envelopeFct", "[", 
+        RowBox[{"RPVisRnd", "[", "#", "]"}], "]"}], "=", 
+       RowBox[{"Interpolation", "[", 
+        RowBox[{"transformEnvData", "[", 
+         RowBox[{
+          RowBox[{"RPVisRnd", "[", "#", "]"}], ",", "\[IndentingNewLine]", 
+          "imgPlotRange"}], "]"}], "]"}]}], ";"}], "&"}], ",", 
+    RowBox[{"With", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"x", "=", 
+        RowBox[{"imgInterpRange", "[", "i", "]"}]}], "}"}], ",", 
+      RowBox[{"Table", "[", 
+       RowBox[{"i", ",", "x"}], "]"}]}], "]"}]}], "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.698677217067904*^9, 3.6986772181696*^9}}],
+
+Cell[BoxData[
+ RowBox[{"rpAlpha", "=", 
+  RowBox[{"GraphicsRow", "[", 
+   RowBox[{
+    RowBox[{"Map", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"pairPlot", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"envelopeFct", "[", 
+           RowBox[{"RPVisRnd", "[", "#", "]"}], "]"}], "&"}], ",", "#", ",", 
+         "1.1"}], "]"}], "&"}], ",", "rpPairs"}], "]"}], ",", 
+    RowBox[{"Spacings", "\[Rule]", 
+     RowBox[{"-", "4.0"}]}], ",", 
+    RowBox[{"ImageSize", "\[Rule]", "1200"}]}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.698677232220199*^9, 3.6986772372217607`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{
+   RowBox[{"Export", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"HomeDirectory", "[", "]"}], "<>", 
+      "\"\</random_rp_post_series.eps\>\""}], ",", "rpAlpha"}], "]"}], ";"}], 
+  "*)"}]], "Input",
+ CellChangeTimes->{{3.6986772891418056`*^9, 3.698677292792471*^9}, {
+  3.698677420045092*^9, 3.698677422181679*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{"Read", " ", "in", " ", "data", " ", "for", " ", "omega"}], "-", 
+    RowBox[{"thinned", " ", 
+     RowBox[{"RP", "."}]}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"currentPath", "=", "\"\<rhombic_penrose_rndvis_1800s/\>\""}], 
+    ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"filePrefix", "=", "\"\<rhombic_penrose_rndvis_\>\""}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"imgInterpRange", "[", "t_", "]"}], ":=", 
+     RowBox[{"{", 
+      RowBox[{"t", ",", "1", ",", "99", ",", "1"}], "}"}]}], 
+    ";"}]}]}]], "Input",
+ CellChangeTimes->{{3.69867730037743*^9, 3.698677336072761*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Map", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      RowBox[{
+       RowBox[{"envelopeData", "[", 
+        RowBox[{"RPRndVis", "[", "#", "]"}], "]"}], "=", 
+       RowBox[{"ReadDoubleData", "[", 
+        RowBox[{"StringJoin", "[", 
+         RowBox[{
+         "pathPrefix", ",", "currentPath", ",", "filePrefix", ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"ToString", "[", "#", "]"}], ",", "fileExtension"}], "]"}], 
+        "]"}]}], ";"}], "&"}], ",", 
+    RowBox[{"With", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"x", "=", 
+        RowBox[{"imgInterpRange", "[", "i", "]"}]}], "}"}], ",", 
+      RowBox[{"Table", "[", 
+       RowBox[{"i", ",", "x"}], "]"}]}], "]"}]}], "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.698677344992981*^9, 3.698677346850107*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Map", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      RowBox[{
+       RowBox[{"envelopeFct", "[", 
+        RowBox[{"RPRndVis", "[", "#", "]"}], "]"}], "=", 
+       RowBox[{"Interpolation", "[", 
+        RowBox[{"transformEnvData", "[", 
+         RowBox[{
+          RowBox[{"RPRndVis", "[", "#", "]"}], ",", "\[IndentingNewLine]", 
+          "imgPlotRange"}], "]"}], "]"}]}], ";"}], "&"}], ",", 
+    RowBox[{"With", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"x", "=", 
+        RowBox[{"imgInterpRange", "[", "i", "]"}]}], "}"}], ",", 
+      RowBox[{"Table", "[", 
+       RowBox[{"i", ",", "x"}], "]"}]}], "]"}]}], "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.698677359320023*^9, 3.698677360431917*^9}}],
+
+Cell[BoxData[
+ RowBox[{"rpOmega", "=", 
+  RowBox[{"GraphicsRow", "[", 
+   RowBox[{
+    RowBox[{"Map", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"pairPlot", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"envelopeFct", "[", 
+           RowBox[{"RPRndVis", "[", "#", "]"}], "]"}], "&"}], ",", "#", ",", 
+         "1.05"}], "]"}], "&"}], ",", "rpPairs"}], "]"}], ",", 
+    RowBox[{"Spacings", "\[Rule]", 
+     RowBox[{"-", "4.0"}]}], ",", 
+    RowBox[{"ImageSize", "\[Rule]", "1200"}]}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.698677367119238*^9, 3.698677383707582*^9}}],
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{
+   RowBox[{"Export", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"HomeDirectory", "[", "]"}], "<>", 
+      "\"\</random_rp_pre_series.eps\>\""}], ",", "rpOmega"}], "]"}], ";"}], 
+  "*)"}]], "Input",
+ CellChangeTimes->{{3.698677414592634*^9, 3.698677426606534*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ClearAll", "[", 
+   RowBox[{"gapSizePlot", ",", "peakPlot"}], "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.69867852784405*^9, 3.69867854358953*^9}, 
+   3.698678604415244*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"gapSizePlot", "[", 
+    RowBox[{"file1_", ",", "file2_"}], "]"}], ":=", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"data1", ",", "data2", ",", "minval1", ",", "minval2"}], "}"}], 
+     ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"file1", "===", "Null"}], "||", 
+         RowBox[{"file2", "===", "Null"}]}], ",", 
+        RowBox[{"Return", "[", "]"}]}], "]"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"data1", "=", 
+       RowBox[{"<<", 
+        RowBox[{"(", 
+         RowBox[{"StringJoin", "[", 
+          RowBox[{"filePrefix", ",", "file1"}], "]"}], ")"}]}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"data2", "=", 
+       RowBox[{"<<", 
+        RowBox[{"(", 
+         RowBox[{"StringJoin", "[", 
+          RowBox[{"filePrefix", ",", "file2"}], "]"}], ")"}]}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"minval1", "=", 
+       RowBox[{"Map", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"1.0", "-", 
+             RowBox[{"Part", "[", 
+              RowBox[{"#", ",", "1"}], "]"}]}], ",", 
+            RowBox[{"Part", "[", 
+             RowBox[{"#", ",", "2"}], "]"}]}], "}"}], "&"}], ",", "data1"}], 
+        "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"minval2", "=", 
+       RowBox[{"Map", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"1.0", "-", 
+             RowBox[{"Part", "[", 
+              RowBox[{"#", ",", "1"}], "]"}]}], ",", 
+            RowBox[{"Part", "[", 
+             RowBox[{"#", ",", "2"}], "]"}]}], "}"}], "&"}], ",", "data2"}], 
+        "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"ListLinePlot", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"minval1", ",", "minval2"}], "}"}], ",", 
+        RowBox[{"PlotStyle", "\[Rule]", 
+         RowBox[{"{", 
+          RowBox[{"Red", ",", "Blue"}], "}"}]}]}], "]"}]}]}], 
+    "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.698678533547989*^9, 3.698678536725293*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"peakPlot", "[", 
+    RowBox[{"file1_", ",", "file2_"}], "]"}], ":=", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "data1", ",", "data2", ",", "peak1", ",", "peak2", ",", "flin1"}], 
+      "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"file1", "===", "Null"}], "||", 
+         RowBox[{"file2", "===", "Null"}]}], ",", 
+        RowBox[{"Return", "[", "]"}]}], "]"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"data1", "=", 
+       RowBox[{"<<", 
+        RowBox[{"(", 
+         RowBox[{"StringJoin", "[", 
+          RowBox[{"filePrefix", ",", "file1"}], "]"}], ")"}]}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"data2", "=", 
+       RowBox[{"<<", 
+        RowBox[{"(", 
+         RowBox[{"StringJoin", "[", 
+          RowBox[{"filePrefix", ",", "file2"}], "]"}], ")"}]}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"peak1", "=", 
+       RowBox[{"Map", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"1.0", "-", 
+             RowBox[{"Part", "[", 
+              RowBox[{"#", ",", "1"}], "]"}]}], ",", 
+            RowBox[{"Part", "[", 
+             RowBox[{"#", ",", "4"}], "]"}]}], "}"}], "&"}], ",", "data1"}], 
+        "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"peak2", "=", 
+       RowBox[{"Map", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"1.0", "-", 
+             RowBox[{"Part", "[", 
+              RowBox[{"#", ",", "1"}], "]"}]}], ",", 
+            RowBox[{"Part", "[", 
+             RowBox[{"#", ",", "4"}], "]"}]}], "}"}], "&"}], ",", "data2"}], 
+        "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"flin1", "=", 
+       RowBox[{"FindFit", "[", 
+        RowBox[{"peak1", ",", 
+         RowBox[{"fitFuncLinear", "[", "t", "]"}], ",", "fitVarsLinear", ",", 
+         "t"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"Show", "[", 
+       RowBox[{
+        RowBox[{"ListLinePlot", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"peak1", ",", "peak2"}], "}"}], ",", 
+          RowBox[{"PlotStyle", "\[Rule]", 
+           RowBox[{"{", 
+            RowBox[{"Red", ",", "Blue"}], "}"}]}]}], "]"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"Plot", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"fitFuncLinear", "[", "t", "]"}], "/.", "flin1"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"t", ",", "0", ",", "1"}], "}"}], ",", 
+          RowBox[{"PlotStyle", "\[Rule]", 
+           RowBox[{"{", 
+            RowBox[{"Red", ",", "Dashed"}], "}"}]}]}], "]"}]}], "]"}]}]}], 
+    "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.6986785949951687`*^9, 3.698678600765935*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ClearAll", "[", 
+   RowBox[{"abGapSize", ",", "abPeak", ",", "ttGapSize", ",", "ttPeak"}], 
+   "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.698679297798114*^9, 3.698679311757374*^9}}],
+
+Cell[BoxData[
+ RowBox[{"statsFiles", "[", 
+  RowBox[{"[", "1", "]"}], "]"}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{"abGapSize", "=", 
+  RowBox[{"gapSizePlot", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"statsFiles", "[", 
+      RowBox[{"[", "1", "]"}], "]"}], "[", 
+     RowBox[{"[", "1", "]"}], "]"}], ",", 
+    RowBox[{
+     RowBox[{"statsFiles", "[", 
+      RowBox[{"[", "1", "]"}], "]"}], "[", 
+     RowBox[{"[", "2", "]"}], "]"}]}], "]"}]}]], "Input",
+ CellChangeTimes->{
+  3.698678612840452*^9, {3.698678730076289*^9, 3.698678737177238*^9}}],
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{
+   RowBox[{"Export", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"HomeDirectory", "[", "]"}], "<>", 
+      "\"\</random_ab_post_pre_gap.eps\>\""}], ",", "abGapSize"}], "]"}], 
+   ";"}], "*)"}]], "Input",
+ CellChangeTimes->{{3.6986787250320883`*^9, 3.69867882502632*^9}}],
+
+Cell[BoxData[
+ RowBox[{"abPeak", "=", 
+  RowBox[{"peakPlot", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"statsFiles", "[", 
+      RowBox[{"[", "1", "]"}], "]"}], "[", 
+     RowBox[{"[", "1", "]"}], "]"}], ",", 
+    RowBox[{
+     RowBox[{"statsFiles", "[", 
+      RowBox[{"[", "1", "]"}], "]"}], "[", 
+     RowBox[{"[", "2", "]"}], "]"}]}], "]"}]}]], "Input",
+ CellChangeTimes->{
+  3.6986786203110743`*^9, {3.698678739547235*^9, 3.698678742851756*^9}}],
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{
+   RowBox[{"Export", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"HomeDirectory", "[", "]"}], "<>", 
+      "\"\</random_ab_post_pre_peak.eps\>\""}], ",", "abPeak"}], "]"}], ";"}],
+   "*)"}]], "Input",
+ CellChangeTimes->{{3.698678812656273*^9, 3.6986788411332684`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"statsFiles", "[", 
+  RowBox[{"[", "2", "]"}], "]"}]], "Input",
+ CellChangeTimes->{3.698678690817651*^9}],
+
+Cell[BoxData[
+ RowBox[{"ttGapSize", "=", 
+  RowBox[{"gapSizePlot", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"statsFiles", "[", 
+      RowBox[{"[", "2", "]"}], "]"}], "[", 
+     RowBox[{"[", "1", "]"}], "]"}], ",", 
+    RowBox[{
+     RowBox[{"statsFiles", "[", 
+      RowBox[{"[", "2", "]"}], "]"}], "[", 
+     RowBox[{"[", "2", "]"}], "]"}]}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.698678696400015*^9, 3.698678697531061*^9}, {
+  3.6986792565886097`*^9, 3.698679258668767*^9}}],
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{
+   RowBox[{"Export", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"HomeDirectory", "[", "]"}], "<>", 
+      "\"\</random_tt_post_pre_gap.eps\>\""}], ",", "ttGapSize"}], "]"}], 
+   ";"}], "*)"}]], "Input",
+ CellChangeTimes->{{3.698679275991994*^9, 3.6986792797165527`*^9}, {
+  3.698679653801302*^9, 3.698679656015417*^9}}],
+
+Cell[BoxData[
+ RowBox[{"ttPeak", "=", 
+  RowBox[{"peakPlot", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"statsFiles", "[", 
+      RowBox[{"[", "2", "]"}], "]"}], "[", 
+     RowBox[{"[", "1", "]"}], "]"}], ",", 
+    RowBox[{
+     RowBox[{"statsFiles", "[", 
+      RowBox[{"[", "2", "]"}], "]"}], "[", 
+     RowBox[{"[", "2", "]"}], "]"}]}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.6986792297637377`*^9, 3.6986792315977983`*^9}, {
+  3.698679288135872*^9, 3.6986792913321247`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{
+   RowBox[{"Export", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"HomeDirectory", "[", "]"}], "<>", 
+      "\"\</random_tt_post_pre_peak.eps\>\""}], ",", "ttPeak"}], "]"}], ";"}],
+   "*)"}]], "Input",
+ CellChangeTimes->{{3.698679321148686*^9, 3.698679327972431*^9}, {
+  3.6986796589296417`*^9, 3.6986796612235737`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ClearAll", "[", 
+   RowBox[{"gsGapSize", ",", "gsPeak", ",", "rpGapSize", ",", "rpPeak"}], 
+   "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.698679331457992*^9, 3.698679333154365*^9}, {
+  3.6986795188146887`*^9, 3.698679533952486*^9}}],
+
+Cell[BoxData[
+ RowBox[{"statsFiles", "[", 
+  RowBox[{"[", "3", "]"}], "]"}]], "Input",
+ CellChangeTimes->{3.698679543771516*^9}],
+
+Cell[BoxData[
+ RowBox[{"gsGapSize", "=", 
+  RowBox[{"gapSizePlot", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"statsFiles", "[", 
+      RowBox[{"[", "3", "]"}], "]"}], "[", 
+     RowBox[{"[", "1", "]"}], "]"}], ",", 
+    RowBox[{
+     RowBox[{"statsFiles", "[", 
+      RowBox[{"[", "3", "]"}], "]"}], "[", 
+     RowBox[{"[", "2", "]"}], "]"}]}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.6986795506891317`*^9, 3.69867955667167*^9}}],
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{
+   RowBox[{"Export", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"HomeDirectory", "[", "]"}], "<>", 
+      "\"\</random_gs_post_pre_gap.eps\>\""}], ",", "gsGapSize"}], "]"}], 
+   ";"}], "*)"}]], "Input",
+ CellChangeTimes->{{3.6986795687323303`*^9, 3.698679571342198*^9}, {
+  3.698679722529531*^9, 3.698679724567419*^9}}],
+
+Cell[BoxData[
+ RowBox[{"gsPeak", "=", 
+  RowBox[{"peakPlot", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"statsFiles", "[", 
+      RowBox[{"[", "3", "]"}], "]"}], "[", 
+     RowBox[{"[", "1", "]"}], "]"}], ",", 
+    RowBox[{
+     RowBox[{"statsFiles", "[", 
+      RowBox[{"[", "3", "]"}], "]"}], "[", 
+     RowBox[{"[", "2", "]"}], "]"}]}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.6986795783002234`*^9, 3.698679584034617*^9}}],
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{
+   RowBox[{"Export", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"HomeDirectory", "[", "]"}], "<>", 
+      "\"\</random_gs_post_pre_peak.eps\>\""}], ",", "gsPeak"}], "]"}], ";"}],
+   "*)"}]], "Input",
+ CellChangeTimes->{{3.698679632572*^9, 3.698679636579814*^9}, {
+  3.698679728110054*^9, 3.69867973025626*^9}}],
+
+Cell[BoxData[
+ RowBox[{"statsFiles", "[", 
+  RowBox[{"[", "4", "]"}], "]"}]], "Input",
+ CellChangeTimes->{3.6986796436621313`*^9}],
+
+Cell[BoxData[
+ RowBox[{"rpGapSize", "=", 
+  RowBox[{"gapSizePlot", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"statsFiles", "[", 
+      RowBox[{"[", "4", "]"}], "]"}], "[", 
+     RowBox[{"[", "1", "]"}], "]"}], ",", 
+    RowBox[{
+     RowBox[{"statsFiles", "[", 
+      RowBox[{"[", "4", "]"}], "]"}], "[", 
+     RowBox[{"[", "2", "]"}], "]"}]}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.698679672641018*^9, 3.698679677372053*^9}}],
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{
+   RowBox[{"Export", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"HomeDirectory", "[", "]"}], "<>", 
+      "\"\</random_rp_post_pre_gap.eps\>\""}], ",", "rpGapSize"}], "]"}], 
+   ";"}], "*)"}]], "Input",
+ CellChangeTimes->{{3.698679686007436*^9, 3.698679689131315*^9}, {
+  3.6986797343341217`*^9, 3.698679737102734*^9}}],
+
+Cell[BoxData[
+ RowBox[{"rpPeak", "=", 
+  RowBox[{"peakPlot", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"statsFiles", "[", 
+      RowBox[{"[", "4", "]"}], "]"}], "[", 
+     RowBox[{"[", "1", "]"}], "]"}], ",", 
+    RowBox[{
+     RowBox[{"statsFiles", "[", 
+      RowBox[{"[", "4", "]"}], "]"}], "[", 
+     RowBox[{"[", "2", "]"}], "]"}]}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.6986796965926113`*^9, 3.698679700404522*^9}}],
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{
+   RowBox[{"Export", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"HomeDirectory", "[", "]"}], "<>", 
+      "\"\</random_rp_post_pre_peak.eps\>\""}], ",", "rpPeak"}], "]"}], ";"}],
+   "*)"}]], "Input",
+ CellChangeTimes->{{3.698679713878723*^9, 3.6986797419722843`*^9}}]
+},
+WindowSize->{1920, 1140},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+Magnification->1.25,
+FrontEndVersion->"9.0 for Linux x86 (64-bit) (January 25, 2013)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[557, 20, 317, 6, 38, "Input"],
+Cell[877, 28, 239, 6, 38, "Input"],
+Cell[1119, 36, 551, 13, 114, "Input"],
+Cell[1673, 51, 416, 9, 64, "Input"],
+Cell[2092, 62, 295, 7, 38, "Input"],
+Cell[2390, 71, 633, 15, 64, "Input"],
+Cell[3026, 88, 372, 9, 38, "Input"],
+Cell[3401, 99, 1101, 27, 64, "Input"],
+Cell[4505, 128, 930, 24, 64, "Input"],
+Cell[5438, 154, 504, 12, 38, "Input"],
+Cell[5945, 168, 251, 6, 38, "Input"],
+Cell[6199, 176, 458, 14, 38, "Input"],
+Cell[6660, 192, 363, 9, 38, "Input"],
+Cell[7026, 203, 564, 15, 38, "Input"],
+Cell[7593, 220, 2168, 56, 164, "Input"],
+Cell[9764, 278, 488, 11, 38, "Input"],
+Cell[10255, 291, 126, 2, 38, "Input"],
+Cell[10384, 295, 374, 8, 38, "Input"],
+Cell[10761, 305, 543, 11, 38, "Input"],
+Cell[11307, 318, 185, 4, 38, "Input"],
+Cell[11495, 324, 1048, 26, 64, "Input"],
+Cell[12546, 352, 639, 14, 38, "Input"],
+Cell[13188, 368, 968, 24, 64, "Input"],
+Cell[14159, 394, 535, 12, 38, "Input"],
+Cell[14697, 408, 201, 5, 38, "Input"],
+Cell[14901, 415, 595, 16, 38, "Input"],
+Cell[15499, 433, 1065, 25, 64, "Input"],
+Cell[16567, 460, 411, 11, 38, "Input"],
+Cell[16981, 473, 241, 5, 38, "Input"],
+Cell[17225, 480, 550, 15, 89, "Input"],
+Cell[17778, 497, 827, 23, 64, "Input"],
+Cell[18608, 522, 753, 21, 64, "Input"],
+Cell[19364, 545, 663, 17, 38, "Input"],
+Cell[20030, 564, 309, 9, 38, "Input"],
+Cell[20342, 575, 201, 5, 38, "Input"],
+Cell[20546, 582, 522, 15, 38, "Input"],
+Cell[21071, 599, 722, 20, 114, "Input"],
+Cell[21796, 621, 829, 23, 64, "Input"],
+Cell[22628, 646, 752, 21, 64, "Input"],
+Cell[23383, 669, 719, 18, 38, "Input"],
+Cell[24105, 689, 411, 11, 38, "Input"],
+Cell[24519, 702, 771, 21, 114, "Input"],
+Cell[25293, 725, 827, 23, 64, "Input"],
+Cell[26123, 750, 753, 21, 64, "Input"],
+Cell[26879, 773, 659, 17, 38, "Input"],
+Cell[27541, 792, 406, 11, 38, "Input"],
+Cell[27950, 805, 199, 5, 38, "Input"],
+Cell[28152, 812, 524, 15, 38, "Input"],
+Cell[28679, 829, 726, 20, 114, "Input"],
+Cell[29408, 851, 827, 23, 64, "Input"],
+Cell[30238, 876, 757, 21, 64, "Input"],
+Cell[30998, 899, 639, 17, 38, "Input"],
+Cell[31640, 918, 455, 11, 38, "Input"],
+Cell[32098, 931, 724, 20, 114, "Input"],
+Cell[32825, 953, 827, 23, 64, "Input"],
+Cell[33655, 978, 755, 21, 64, "Input"],
+Cell[34413, 1001, 639, 17, 38, "Input"],
+Cell[35055, 1020, 458, 11, 38, "Input"],
+Cell[35516, 1033, 201, 5, 38, "Input"],
+Cell[35720, 1040, 496, 14, 38, "Input"],
+Cell[36219, 1056, 782, 21, 114, "Input"],
+Cell[37004, 1079, 827, 23, 64, "Input"],
+Cell[37834, 1104, 751, 21, 64, "Input"],
+Cell[38588, 1127, 590, 16, 38, "Input"],
+Cell[39181, 1145, 360, 10, 38, "Input"],
+Cell[39544, 1157, 732, 20, 114, "Input"],
+Cell[40279, 1179, 827, 23, 64, "Input"],
+Cell[41109, 1204, 753, 21, 64, "Input"],
+Cell[41865, 1227, 589, 16, 38, "Input"],
+Cell[42457, 1245, 308, 9, 38, "Input"],
+Cell[42768, 1256, 210, 5, 38, "Input"],
+Cell[42981, 1263, 2180, 61, 214, "Input"],
+Cell[45164, 1326, 2875, 79, 264, "Input"],
+Cell[48042, 1407, 219, 5, 38, "Input"],
+Cell[48264, 1414, 86, 2, 38, "Input"],
+Cell[48353, 1418, 456, 13, 38, "Input"],
+Cell[48812, 1433, 314, 9, 38, "Input"],
+Cell[49129, 1444, 452, 13, 38, "Input"],
+Cell[49584, 1459, 312, 9, 38, "Input"],
+Cell[49899, 1470, 128, 3, 38, "Input"],
+Cell[50030, 1475, 482, 13, 38, "Input"],
+Cell[50515, 1490, 364, 10, 38, "Input"],
+Cell[50882, 1502, 480, 13, 38, "Input"],
+Cell[51365, 1517, 363, 10, 38, "Input"],
+Cell[51731, 1529, 270, 6, 38, "Input"],
+Cell[52004, 1537, 128, 3, 38, "Input"],
+Cell[52135, 1542, 432, 12, 38, "Input"],
+Cell[52570, 1556, 364, 10, 38, "Input"],
+Cell[52937, 1568, 427, 12, 38, "Input"],
+Cell[53367, 1582, 355, 10, 38, "Input"],
+Cell[53725, 1594, 130, 3, 38, "Input"],
+Cell[53858, 1599, 431, 12, 38, "Input"],
+Cell[54292, 1613, 364, 10, 38, "Input"],
+Cell[54659, 1625, 427, 12, 38, "Input"],
+Cell[55089, 1639, 312, 9, 38, "Input"]
+}
+]
+*)
+
+(* End of internal cache information *)
