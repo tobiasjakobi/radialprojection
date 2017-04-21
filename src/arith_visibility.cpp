@@ -2377,8 +2377,91 @@ int main_invariant_subgroup(int argc, char* argv[]) {
       output.push_back(*i);
   }
 
-  cout << "info: number of elements found = " << output.size() << endl;
-  cerr << "info: elements = " << output << endl;
+  cerr << "info: number of elements found = " << output.size() << endl;
+  cout << "info: elements = " << output << endl;
+
+  return 0;
+}
+
+int main_invariant_subgroup_chuck(int argc, char* argv[]) {
+  using namespace ArithVisibility;
+
+  cerr << "info: invariant subgroup main mode selected." << endl;
+
+  stringstream parser;
+
+  uint inv_range = 30, sqf_range = 40;
+
+  Common::vec2ilist table, sampleSqFree;
+  vector<mtx2x2i> sampleGL2Z, output;
+
+  // Parse parameters passed to the application
+  if (argc >= 2) {
+    parser.str(argv[1]);
+    parser.clear();
+    parser >> inv_range;
+
+    if (argc >= 3) {
+      parser.str(argv[2]);
+      parser.clear();
+      parser >> sqf_range;
+    }
+  }
+
+  cerr << "info: input parameters = {" << inv_range << ", " << sqf_range
+       << '}' << endl;
+
+  // Sample GL_2(Z)
+  mtx2x2i::invertibleList(sampleGL2Z, inv_range);
+
+  // Sample coprime square-free Gaussian integers
+  vTableGI(sqf_range, table);
+  for (Common::vec2ilist::const_iterator i = table.begin();
+       i != table.end(); ++i) {
+    if (visibility2FreeGI(*i))
+      sampleSqFree.push_back(*i);
+  }
+
+  cerr << "info: number of matrices from GL_2(Z) = "
+       << sampleGL2Z.size() << endl;
+  cerr << "info: number of square-free Gaussians = "
+       << sampleSqFree.size() << endl;
+
+  const vec2i splittings[] = {
+    vec2i(-3,  4),
+    vec2i(-3, -4)
+  };
+  const uint num_splitting = sizeof(splittings) / sizeof(splittings[0]);
+
+  for (vector<mtx2x2i>::const_iterator i = sampleGL2Z.begin();
+       i != sampleGL2Z.end(); ++i) {
+
+    bool is_divisible = false;
+
+    for (Common::vec2ilist::const_iterator j = sampleSqFree.begin();
+         j != sampleSqFree.end(); ++j) {
+
+      const vec2i Av((*i) * (*j));
+
+      for (unsigned k = 0; k < num_splitting; ++k) {
+        if (Av.isDivGI(splittings[k])) {
+          is_divisible = true;
+          break;
+        }
+      }
+
+      if (is_divisible)
+        break;
+    }
+
+    if (is_divisible)
+      continue;
+
+    output.push_back(*i);
+  }
+
+  cerr << "info: number of elements found = " << output.size() << endl;
+  cout << "info: elements = " << output << endl;
 
   return 0;
 }
@@ -2408,6 +2491,10 @@ void print_usage() {
   cerr << "\t\tparameter 1: sampling range of GL_2(Z) (default = 30)" << endl;
   cerr << "\t\tparameter 2: sampling range of square-free Gaussians (default = 40)" << endl;
   cerr << "\t\tparameter 3: range of powers applied to the matrices (default = 20)" << endl;
+
+  cerr << "arith_visibility --invariant-subgroup-chuck: selects invariant subgroup (Christian) main mode" << endl;
+  cerr << "\t\tparameter 1: sampling range of GL_2(Z) (default = 30)" << endl;
+  cerr << "\t\tparameter 2: sampling range of square-free Gaussians (default = 40)" << endl;
 }
 
 int main(int argc, char* argv[]) {
@@ -2429,6 +2516,8 @@ int main(int argc, char* argv[]) {
     ret = main_sqfree_grid(argc - 1, argv + 1);
   else if (main_mode == "--invariant-subgroup")
     ret = main_invariant_subgroup(argc - 1, argv + 1);
+  else if (main_mode == "--invariant-subgroup-chuck")
+    ret = main_invariant_subgroup_chuck(argc - 1, argv + 1);
   else
     print_usage();
 
