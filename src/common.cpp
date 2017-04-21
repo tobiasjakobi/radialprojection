@@ -451,8 +451,45 @@ vec4s vec4s::directL10ToUnique() const {
 
 
 void mtx2x2i::invertibleList(vector<mtx2x2i>& v, uint r) {
-  const int range = r;
+  if (r == 0)
+    return;
 
+  const int range = r;
+  div_t res;
+
+  for (int i = -range; i <= range; ++i) {
+    if (i == 0)
+      continue;
+
+    for (int j = -range; j <= range; ++j)
+    for (int k = -range; k <= range; ++k) {
+      res = div(j*k + 1, i);
+      if (res.rem == 0 && abs(res.quot) <= range) {
+        const mtx2x2i m(i, j, k, res.quot);
+        v.push_back(m);
+      }
+
+      res = div(j*k - 1, i);
+      if (res.rem == 0 && abs(res.quot) <= range) {
+        const mtx2x2i m(i, j, k, res.quot);
+        v.push_back(m);
+      }
+    }
+  }
+
+  for (int j = -1; j <= 1; ++j)
+  for (int k = -1; k <= 1; ++k) {
+    if (abs(j*k) != 1)
+      continue;
+
+    for (int l = -range; l <= range; ++l) {
+      const mtx2x2i m(0, j, k, l);
+      v.push_back(m);
+    }
+  }
+
+#if 0
+  /* Old native implementation (just here for reference). */
   for (int i = -range; i <= range; ++i)
   for (int j = -range; j <= range; ++j)
   for (int k = -range; k <= range; ++k)
@@ -462,6 +499,7 @@ void mtx2x2i::invertibleList(vector<mtx2x2i>& v, uint r) {
     if (m.invertible())
       v.push_back(m);
   }
+#endif
 }
 
 vec2iExt::vec2iExt(const vec2i& in) {
