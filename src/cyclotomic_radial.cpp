@@ -85,11 +85,11 @@ int SingleMachine::main(int argc, char* argv[]) {
     }
   }
 
-  /* create dodecagonal tiling with edges
+  /* Create dodecagonal tiling with edges.
   {
     vec4i::shift.set(1.0e-4, 1.0e-4);
     Common::edgelist edges;
-    DodecagonalRadial::projTilingPatch(init, 15, tiling, edges);
+    Dodecagonal::projTilingPatch(init, 15, tiling, edges);
     cout << '{' << tiling << ',' << edges << '}' << endl;
     return 0;
   }
